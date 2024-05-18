@@ -913,6 +913,14 @@
 <td align="center">8</td>
 </tr>
 </tbody></table>
+<h1 id="大小调关系"><a href="#大小调关系" class="headerlink" title="大小调关系"></a>大小调关系</h1><ul>
+<li>大调音阶的6级音为其关系小调的根音；小调音阶的3级音为其关系大调的根音</li>
+<li>大调指型+1为小调指型</li>
+</ul>
+<h1 id="五声音阶"><a href="#五声音阶" class="headerlink" title="五声音阶"></a>五声音阶</h1><p>每个弦上都只有两个音符</p>
+<h2 id="大调"><a href="#大调" class="headerlink" title="大调"></a>大调</h2><p>去除4级音和7级音</p>
+<h2 id="小调"><a href="#小调" class="headerlink" title="小调"></a>小调</h2><p>去除2级音和六级音</p>
+<h2 id="关系五声音阶"><a href="#关系五声音阶" class="headerlink" title="关系五声音阶"></a>关系五声音阶</h2><p>同大小调关系，其去除的音不能作为根音</p>
 ]]></content>
       <tags>
         <tag>杂项</tag>
