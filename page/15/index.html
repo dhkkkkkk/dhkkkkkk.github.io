@@ -195,6 +195,171 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2022/07/30/C%E8%AF%AD%E8%A8%802/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/zoe.gif">
+      <meta itemprop="name" content="dhk">
+      <meta itemprop="description" content="记录一些学习日常">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小董的BLOG">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/07/30/C%E8%AF%AD%E8%A8%802/" class="post-title-link" itemprop="url">字符串复习</a>
+        </h2>
+
+        <div class="post-meta">
+		  
+		  
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-07-30 22:42:02" itemprop="dateCreated datePublished" datetime="2022-07-30T22:42:02+08:00">2022-07-30</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-09-04 21:39:01" itemprop="dateModified" datetime="2022-09-04T21:39:01+08:00">2022-09-04</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="字符串"><a href="#字符串" class="headerlink" title="字符串"></a>字符串</h1><h2 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h2><p>字符串是位于双引号中的字符序列，因此在内存中以“\0”结束,所占字节比实际多一个。</p>
+<p>（‘\0’是字符串结束的标志，因此数组中没有‘\0’时只是字符数组，且元素中间不能出现’\0’）</p>
+<h2 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h2><p>当数组元素个数大于存储字符内容时, 未被初始化的部分默认值是0。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"> <span class="type">char</span> name[] = <span class="string">&quot;c\0ool&quot;</span>;</span><br><span class="line"> <span class="built_in">printf</span>(<span class="string">&quot;name = %s\n&quot;</span>,name);</span><br><span class="line"><span class="comment">//输出结果: c</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>注意点:<ul>
+<li>对一个字符串数组, 如果不做初始化赋值, 必须指定数组长度；</li>
+<li>字符串数组最后一个字符的位置要留给字符串的结尾标示‘\0’；</li>
+<li>当用scanf函数输入字符串时,字符串中不能含有空格,否则将以空格作为串的结束符。</li>
+</ul>
+</li>
+</ul>
+<h3 id="正确的赋值方法："><a href="#正确的赋值方法：" class="headerlink" title="正确的赋值方法："></a>正确的赋值方法：</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">char</span> str[<span class="number">10</span>]=<span class="string">&quot;string&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="type">char</span> str[]=<span class="string">&quot;string&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="type">char</span> str[<span class="number">10</span>];</span><br><span class="line"><span class="built_in">scanf</span>(<span class="string">&quot;%s&quot;</span>,&amp;str);<span class="comment">//或scanf(&quot;%s&quot;,str);</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="错误的赋值方法"><a href="#错误的赋值方法" class="headerlink" title="错误的赋值方法:"></a>错误的赋值方法:</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">char</span> str[<span class="number">10</span>];</span><br><span class="line">str=<span class="string">&quot;string&quot;</span>; <span class="comment">//这是因为数组名是一个地址常量，是不可被赋值的</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="※常用函数※"><a href="#※常用函数※" class="headerlink" title="※常用函数※"></a>※常用函数※</h2><p>使用字符串函数应包含头文件”string.h”</p>
+<h3 id="（1）输出函数"><a href="#（1）输出函数" class="headerlink" title="（1）输出函数"></a>（1）输出函数</h3><ul>
+<li><p>格式: puts(字符数组名)</p>
+</li>
+<li><p>功能:把字符数组中的字符串输出到显示器。即在屏幕上显示该字符串。</p>
+</li>
+<li><p>优点:</p>
+<ul>
+<li>自动换行；</li>
+<li>可以是数组的任意元素地址。</li>
+</ul>
+</li>
+<li><p>缺点</p>
+<ul>
+<li>不能自定义输出格式</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">char</span> ch[] = <span class="string">&quot;dhk&quot;</span>;</span><br><span class="line"><span class="built_in">puts</span>(ch); <span class="comment">//输出结果: dhk</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>当使用printf且输出格式为&amp;s时，输出项直接为数组名，而不是数组元素</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">char</span> s[<span class="number">10</span>]=<span class="string">&quot;dhk&quot;</span>;</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;%s&quot;</span>,s);<span class="comment">//正确</span></span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;%s&quot;</span>,s[<span class="number">0</span>]);<span class="comment">//错误</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="（2）输入函数"><a href="#（2）输入函数" class="headerlink" title="（2）输入函数"></a>（2）输入函数</h3><ul>
+<li>格式: gets (字符数组名)</li>
+<li>功能:从标准输入设备键盘上输入一个字符串。</li>
+</ul>
+<p>当输入的字符串中含有空格时,输出仍为全部字符串。说明gets函数并不以空格作为字符串输入结束的标志,<em><strong>而只以回车作为输入结束</strong></em>。这是与scanf函数不同的。</p>
+<ul>
+<li>若要使用scanf一个字符串类型，则需要注意scanf会自动把空格当作分隔符</li>
+</ul>
+<h3 id="（3）计算长度"><a href="#（3）计算长度" class="headerlink" title="（3）计算长度"></a>（3）计算长度</h3><h4 id="1-sizeof（）"><a href="#1-sizeof（）" class="headerlink" title="1.sizeof（）"></a>1.sizeof（）</h4><p>数值包含’\0’，且当对象为字符串数组时，计算的是整个数组分配空间的长度</p>
+<h4 id="2-strlen"><a href="#2-strlen" class="headerlink" title="2.strlen()"></a>2.strlen()</h4><p>测量字符串实际长度，不包含;\0’。</p>
+<h3 id="（4）连接函数"><a href="#（4）连接函数" class="headerlink" title="（4）连接函数"></a>（4）连接函数</h3><ul>
+<li>格式: strcat(字符数组名1,字符数组名2)  &#x2F;strncat(<del>,</del>,num);</li>
+<li>功能:把字符数组2中的字符串连接到字符数组1 中字符串的后面,并删去字符串1后的串标志 “\0”。<strong>本函数返回值是字符数组1的首地址</strong>。</li>
+</ul>
+<h3 id="（5）比较函数"><a href="#（5）比较函数" class="headerlink" title="（5）比较函数"></a>（5）比较函数</h3><ul>
+<li><p>格式: strcmp(字符数组名1,字符数组名2)  </p>
+</li>
+<li><p>功能:<em><strong>按照ASCII码顺序</strong></em>比较两个数组中的字符串,并由函数返回值返回比较结果。</p>
+<ul>
+<li>字符串1&#x3D;字符串2,返回值&#x3D;0;</li>
+<li>字符串1&gt;字符串2,返回值1;</li>
+<li>字符串1&lt;字符串2,返回值-1。</li>
+</ul>
+<p>需要注意的是，比较顺序是从左至右依次比较每一个字符的ASCII码大小，只要出现不同字符就只按照当前字符大小比较，与之后字符大小就无关了。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span>&#123;</span><br><span class="line">	<span class="type">char</span> str1[<span class="number">10</span>] =<span class="string">&quot;acb&quot;</span>;     </span><br><span class="line">	<span class="type">char</span> str2[<span class="number">10</span>] =<span class="string">&quot;abc&quot;</span>;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>, <span class="built_in">strcmp</span>(str1,str2));</span><br><span class="line">    <span class="comment">//输出1，由于&#x27;c&#x27;&gt;&#x27;b&#x27;,与第三个及以后的字符大小无关</span></span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>感觉不是很好用，就拿来比较是否相同就行。</p>
+</li>
+</ul>
+<h3 id="（6）拷贝函数"><a href="#（6）拷贝函数" class="headerlink" title="（6）拷贝函数"></a>（6）拷贝函数</h3><ul>
+<li>格式： strcpy(char* dest,char* src);   &#x2F;   strncpy(char* dest,const char* src,size_t num);</li>
+<li>功能：将参数src字符串拷贝至参数dest所指的地址。</li>
+<li>返回值：返回参数dest的字符串起始地址。</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span>&#123;</span><br><span class="line">	<span class="type">char</span> str1[<span class="number">10</span>] =<span class="string">&quot;aaaaaa&quot;</span>;     </span><br><span class="line">	<span class="type">char</span> str2[<span class="number">10</span>] = <span class="string">&quot;bbb&quot;</span>;</span><br><span class="line">	<span class="built_in">strncpy</span>(str1,str2,<span class="number">2</span>);</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%s\n&quot;</span>, str1); <span class="comment">//结果为&quot;bbaaaa&quot; </span></span><br><span class="line">    <span class="comment">//当num长度大于srt2中字符串长度时仅会打印bbb（结果可能与编译器相关）</span></span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>strcpy会覆盖原来的整个字符串，而strncpy只会覆盖n个字节原来的字符串，剩下的保留（当n超长时应该是默认使用strcpy）</strong></p>
+<h3 id="（7）检索函数"><a href="#（7）检索函数" class="headerlink" title="（7）检索函数"></a>（7）检索函数</h3><h4 id="1-char-strstr-const-char-str-const-char-substr"><a href="#1-char-strstr-const-char-str-const-char-substr" class="headerlink" title="1. char* strstr(const char* str,const char* substr)"></a>1. char* strstr(const char* str,const char* substr)</h4><ul>
+<li><p>功能：检索子串在字符串中<strong>首次出现的位置</strong>。</p>
+</li>
+<li><p>返回值：返回字符串str中第一次出现子串substr的地址；如果没有检索到子串，则返回NULL。</p>
+<h4 id="2-char-strchr-const-char-str-char-c"><a href="#2-char-strchr-const-char-str-char-c" class="headerlink" title="2. char* strchr(const char* str,char c)"></a>2. char* strchr(const char* str,char c)</h4></li>
+<li><p>功能：查找字符串中第一次出现c的位置。</p>
+</li>
+<li><p>返回值：规律同strstr()。</p>
+<h4 id="3-char-strrchr-const-char-str-char-c"><a href="#3-char-strrchr-const-char-str-char-c" class="headerlink" title="3. char* strrchr(const char* str,char c)"></a>3. char* strrchr(const char* str,char c)</h4></li>
+<li><p>功能：查找字符串中最后一次出现c的位置。</p>
+</li>
+<li><p>返回值：同上。</p>
+</li>
+</ul>
+<h3 id="（8）其余函数"><a href="#（8）其余函数" class="headerlink" title="（8）其余函数"></a>（8）其余函数</h3><h4 id="字符转换"><a href="#字符转换" class="headerlink" title="字符转换"></a>字符转换</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">tolower</span><span class="params">(<span class="type">int</span> c)</span>：转化字符为小写字母； </span><br><span class="line"><span class="type">int</span> <span class="title function_">toupper</span><span class="params">(<span class="type">int</span> c)</span>：转化字符为大写字母；</span><br></pre></td></tr></table></figure>
+
+<h4 id="整型转换"><a href="#整型转换" class="headerlink" title="整型转换"></a>整型转换</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">atoi</span><span class="params">(<span class="type">const</span> <span class="type">char</span>* str)</span></span><br></pre></td></tr></table></figure>
+
+<p>​	返回转换后的整型数。</p>
+<h4 id="字符串大小写转换"><a href="#字符串大小写转换" class="headerlink" title="字符串大小写转换"></a>字符串大小写转换</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">strlwr(<span class="type">const</span> <span class="type">char</span>* str);<span class="comment">//转小写</span></span><br><span class="line">strupr(<span class="type">const</span> <span class="type">char</span>* str);<span class="comment">//转大写</span></span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2022/07/30/hexo-2/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -351,92 +516,9 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2022/07/28/%E7%AD%94%E8%BE%A9%E9%97%AE%E9%A2%98/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/zoe.gif">
-      <meta itemprop="name" content="dhk">
-      <meta itemprop="description" content="记录一些学习日常">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="小董的BLOG">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/07/28/%E7%AD%94%E8%BE%A9%E9%97%AE%E9%A2%98/" class="post-title-link" itemprop="url">答辩问题（自用）</a>
-        </h2>
-
-        <div class="post-meta">
-		  
-		  
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2022-07-28 22:32:43" itemprop="dateCreated datePublished" datetime="2022-07-28T22:32:43+08:00">2022-07-28</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-09-08 20:18:38" itemprop="dateModified" datetime="2022-09-08T20:18:38+08:00">2022-09-08</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="1-整体工作流程"><a href="#1-整体工作流程" class="headerlink" title="1.整体工作流程"></a>1.整体工作流程</h1><h2 id="避障问题"><a href="#避障问题" class="headerlink" title="避障问题"></a>避障问题</h2><p>本代机器人使用的超声波检测避障，但在实际运行中发现工作效果不佳，在后续迭代的过程中会考虑到使用激光雷达或者碰撞检测来完成避障。</p>
-<h2 id="下位机处理视觉数据问题"><a href="#下位机处理视觉数据问题" class="headerlink" title="下位机处理视觉数据问题"></a>下位机处理视觉数据问题</h2><p>上位机以一定频率下发粪便距离铲取装置的距离，下位机将数据处理为底盘行为。</p>
-<p>例：粪便偏离视野中心，底盘同时调整x，y轴的分速度。</p>
-<p>​	    当粪便距离已经较近时，减慢速度，进行微调。</p>
-<h2 id="舵机相关问题"><a href="#舵机相关问题" class="headerlink" title="舵机相关问题"></a>舵机相关问题</h2><p>50Hz，固定占空比，固定角度。</p>
-<h2 id="运输机构"><a href="#运输机构" class="headerlink" title="运输机构"></a>运输机构</h2><p>不需要很精准的控制，直接通过延时完成。</p>
-<p>推杆10s；传送带10s；进膜15s；激光切割18s。</p>
-<h2 id="进膜问题"><a href="#进膜问题" class="headerlink" title="进膜问题"></a>进膜问题</h2><p>进膜机构设置有灰度传感器，只有当pvc塑料膜储备足够且正确地切割、装填后才会进入下一任务。</p>
-<p>（视频中为方便调试没有安装（如果问到的话））</p>
-<h2 id="激光发射问题"><a href="#激光发射问题" class="headerlink" title="激光发射问题"></a>激光发射问题</h2><p>500Hz，12V；pwm控制占空比，默认功率最大。</p>
-<h2 id="底盘控制"><a href="#底盘控制" class="headerlink" title="底盘控制"></a>底盘控制</h2><p>底盘采用PID控制，当出现卡死现象时，底盘会先向反方向运动，再继续工作。</p>
-<h2 id="检测装满"><a href="#检测装满" class="headerlink" title="检测装满"></a>检测装满</h2><p>同时检测储物仓中垃圾的体积和重量，当任意一方满足条件后都会触发装满任务。</p>
-<h2 id="下位机主控"><a href="#下位机主控" class="headerlink" title="下位机主控"></a>下位机主控</h2><p>采用STM32F103ZET6芯片，初始化2路不同频率PWM;使用串口与上位机通信；使用IIC通讯协议与PAJ76020通讯。</p>
-<h3 id="程序具体流程："><a href="#程序具体流程：" class="headerlink" title="程序具体流程："></a>程序具体流程：</h3><p>1.各项初始化</p>
-<p>2.进入定时器中断以一定频率接收、处理上位机数据、检测障碍物。</p>
-<p>3.当检测到相关信号后进入相关任务。（例如：避障任务，铲取粪便任务)</p>
-<h1 id="2022-7-30-更新"><a href="#2022-7-30-更新" class="headerlink" title="2022.7.30 更新"></a>2022.7.30 更新</h1><p>本来紧张的一，结果最后什么问题也没问捏QAQ.</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/14/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/14/">14</a><span class="page-number current">15</span><a class="page-number" href="/page/16/">16</a><a class="extend next" rel="next" href="/page/16/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/14/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/14/">14</a><span class="page-number current">15</span><a class="page-number" href="/page/16/">16</a><a class="page-number" href="/page/17/">17</a><a class="extend next" rel="next" href="/page/16/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -503,7 +585,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">48</span>
+          <span class="site-state-item-count">49</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>

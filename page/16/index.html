@@ -195,6 +195,89 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2022/07/28/%E7%AD%94%E8%BE%A9%E9%97%AE%E9%A2%98/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/zoe.gif">
+      <meta itemprop="name" content="dhk">
+      <meta itemprop="description" content="记录一些学习日常">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小董的BLOG">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/07/28/%E7%AD%94%E8%BE%A9%E9%97%AE%E9%A2%98/" class="post-title-link" itemprop="url">答辩问题（自用）</a>
+        </h2>
+
+        <div class="post-meta">
+		  
+		  
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-07-28 22:32:43" itemprop="dateCreated datePublished" datetime="2022-07-28T22:32:43+08:00">2022-07-28</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-09-08 20:18:38" itemprop="dateModified" datetime="2022-09-08T20:18:38+08:00">2022-09-08</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="1-整体工作流程"><a href="#1-整体工作流程" class="headerlink" title="1.整体工作流程"></a>1.整体工作流程</h1><h2 id="避障问题"><a href="#避障问题" class="headerlink" title="避障问题"></a>避障问题</h2><p>本代机器人使用的超声波检测避障，但在实际运行中发现工作效果不佳，在后续迭代的过程中会考虑到使用激光雷达或者碰撞检测来完成避障。</p>
+<h2 id="下位机处理视觉数据问题"><a href="#下位机处理视觉数据问题" class="headerlink" title="下位机处理视觉数据问题"></a>下位机处理视觉数据问题</h2><p>上位机以一定频率下发粪便距离铲取装置的距离，下位机将数据处理为底盘行为。</p>
+<p>例：粪便偏离视野中心，底盘同时调整x，y轴的分速度。</p>
+<p>​	    当粪便距离已经较近时，减慢速度，进行微调。</p>
+<h2 id="舵机相关问题"><a href="#舵机相关问题" class="headerlink" title="舵机相关问题"></a>舵机相关问题</h2><p>50Hz，固定占空比，固定角度。</p>
+<h2 id="运输机构"><a href="#运输机构" class="headerlink" title="运输机构"></a>运输机构</h2><p>不需要很精准的控制，直接通过延时完成。</p>
+<p>推杆10s；传送带10s；进膜15s；激光切割18s。</p>
+<h2 id="进膜问题"><a href="#进膜问题" class="headerlink" title="进膜问题"></a>进膜问题</h2><p>进膜机构设置有灰度传感器，只有当pvc塑料膜储备足够且正确地切割、装填后才会进入下一任务。</p>
+<p>（视频中为方便调试没有安装（如果问到的话））</p>
+<h2 id="激光发射问题"><a href="#激光发射问题" class="headerlink" title="激光发射问题"></a>激光发射问题</h2><p>500Hz，12V；pwm控制占空比，默认功率最大。</p>
+<h2 id="底盘控制"><a href="#底盘控制" class="headerlink" title="底盘控制"></a>底盘控制</h2><p>底盘采用PID控制，当出现卡死现象时，底盘会先向反方向运动，再继续工作。</p>
+<h2 id="检测装满"><a href="#检测装满" class="headerlink" title="检测装满"></a>检测装满</h2><p>同时检测储物仓中垃圾的体积和重量，当任意一方满足条件后都会触发装满任务。</p>
+<h2 id="下位机主控"><a href="#下位机主控" class="headerlink" title="下位机主控"></a>下位机主控</h2><p>采用STM32F103ZET6芯片，初始化2路不同频率PWM;使用串口与上位机通信；使用IIC通讯协议与PAJ76020通讯。</p>
+<h3 id="程序具体流程："><a href="#程序具体流程：" class="headerlink" title="程序具体流程："></a>程序具体流程：</h3><p>1.各项初始化</p>
+<p>2.进入定时器中断以一定频率接收、处理上位机数据、检测障碍物。</p>
+<p>3.当检测到相关信号后进入相关任务。（例如：避障任务，铲取粪便任务)</p>
+<h1 id="2022-7-30-更新"><a href="#2022-7-30-更新" class="headerlink" title="2022.7.30 更新"></a>2022.7.30 更新</h1><p>本来紧张的一，结果最后什么问题也没问捏QAQ.</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2022/07/28/%E4%BA%8C%E7%BB%B4%E6%95%B0%E7%BB%84/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -415,81 +498,9 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2022/07/27/hello-world/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/zoe.gif">
-      <meta itemprop="name" content="dhk">
-      <meta itemprop="description" content="记录一些学习日常">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="小董的BLOG">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/07/27/hello-world/" class="post-title-link" itemprop="url">Hello World</a>
-        </h2>
-
-        <div class="post-meta">
-		  
-		  
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2022-07-27 00:12:07" itemprop="dateCreated datePublished" datetime="2022-07-27T00:12:07+08:00">2022-07-27</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/15/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/15/">15</a><span class="page-number current">16</span>
+    <a class="extend prev" rel="prev" href="/page/15/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/15/">15</a><span class="page-number current">16</span><a class="page-number" href="/page/17/">17</a><a class="extend next" rel="next" href="/page/17/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -556,7 +567,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">48</span>
+          <span class="site-state-item-count">49</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
