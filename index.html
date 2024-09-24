@@ -403,10 +403,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2024-09-10 08:56:25 / 修改时间：10:19:27" itemprop="dateCreated datePublished" datetime="2024-09-10T08:56:25+08:00">2024-09-10</time>
+              <time title="创建时间：2024-09-10 08:56:25" itemprop="dateCreated datePublished" datetime="2024-09-10T08:56:25+08:00">2024-09-10</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2024-09-24 11:06:18" itemprop="dateModified" datetime="2024-09-24T11:06:18+08:00">2024-09-24</time>
+              </span>
 
           
 
@@ -438,6 +444,8 @@
 </li>
 </ul>
 <p>同时，imageFolder()过程只会加载index，而不会执行transform操作（transform操作是懒加载的，只有使用dataLoader的时候才会执行）</p>
+<h1 id="对同一数据集进行分割"><a href="#对同一数据集进行分割" class="headerlink" title="对同一数据集进行分割"></a>对同一数据集进行分割</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 从训练集的50000个样本中，取49000个作为训练集，剩余1000个作为验证集</span></span><br><span class="line">NUM_TRAIN = <span class="number">49000</span></span><br><span class="line"></span><br><span class="line">loader_train = DataLoader(dataset, batch_size=<span class="number">64</span>, sampler=sampler.SubsetRandomSampler(<span class="built_in">range</span>(NUM_TRAIN)))</span><br><span class="line"></span><br><span class="line">loader_val = DataLoader(dataset, batch_size=<span class="number">64</span>, sampler=sampler.SubsetRandomSampler(<span class="built_in">range</span>(NUM_TRAIN, <span class="number">50000</span>)))</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
 
       
     </div>
