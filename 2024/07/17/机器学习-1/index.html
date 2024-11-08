@@ -24,7 +24,7 @@
 
   <meta name="description" content="监督学习监督学习是从对应了某种特定标签的的训练数据（例如房价预测中的输入里，一个面积对应一个的价格）中学习并建立模型，然后基于该模型预测未知的样本。其中，模型的输入是某个样本数据的特征，而函数的输出是与该样本相对应的标签。监督学习算法则负责预测输入到输出之间的映射关系 例如：输入为语音，输出为文字，则该监督学习的应用即为语音识别 分类：  回归算法(regression) 分类算法(classfi">
 <meta property="og:type" content="article">
-<meta property="og:title" content="机器学习_1">
+<meta property="og:title" content="机器学习的一些概念">
 <meta property="og:url" content="https://dhkkkkkk.github.io/2024/07/17/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-1/index.html">
 <meta property="og:site_name" content="小董的BLOG">
 <meta property="og:description" content="监督学习监督学习是从对应了某种特定标签的的训练数据（例如房价预测中的输入里，一个面积对应一个的价格）中学习并建立模型，然后基于该模型预测未知的样本。其中，模型的输入是某个样本数据的特征，而函数的输出是与该样本相对应的标签。监督学习算法则负责预测输入到输出之间的映射关系 例如：输入为语音，输出为文字，则该监督学习的应用即为语音识别 分类：  回归算法(regression) 分类算法(classfi">
@@ -35,7 +35,7 @@
 <meta property="og:image" content="https://dhkkkkkk.github.io/images/loading.png">
 <meta property="og:image" content="https://dhkkkkkk.github.io/images/loading.png">
 <meta property="article:published_time" content="2024-07-17T06:17:08.000Z">
-<meta property="article:modified_time" content="2024-09-10T01:02:14.045Z">
+<meta property="article:modified_time" content="2024-10-22T08:45:06.198Z">
 <meta property="article:author" content="dhk">
 <meta property="article:tag" content="深度学习">
 <meta name="twitter:card" content="summary">
@@ -67,7 +67,7 @@
   padding: 1px 4px;
 }
 </style>
-  <title>机器学习_1 | 小董的BLOG</title>
+  <title>机器学习的一些概念 | 小董的BLOG</title>
   
 
 
@@ -218,7 +218,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          机器学习_1
+          机器学习的一些概念
         </h1>
 
         <div class="post-meta">
@@ -237,7 +237,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-09-10 09:02:14" itemprop="dateModified" datetime="2024-09-10T09:02:14+08:00">2024-09-10</time>
+                <time title="修改时间：2024-10-22 16:45:06" itemprop="dateModified" datetime="2024-10-22T16:45:06+08:00">2024-10-22</time>
               </span>
 
           
@@ -265,7 +265,7 @@
 <li>模型：用于预测的函数  </li>
 <li>预测y-hat(^)（prediction）：模型的输出，<strong>注意区分y和y-hat</strong></li>
 </ul>
-<h3 id="代价函数（cost-function）"><a href="#代价函数（cost-function）" class="headerlink" title="代价函数（cost function）"></a>代价函数（cost function）</h3><p>用于评估模型输出和训练数据的拟合程度</p>
+<h3 id="代价函数（cost-function）or损失函数（loss）"><a href="#代价函数（cost-function）or损失函数（loss）" class="headerlink" title="代价函数（cost function）or损失函数（loss）"></a>代价函数（cost function）or损失函数（loss）</h3><p>用于评估模型输出和训练数据的拟合程度</p>
 <p>因此代价函数输出应尽可能<strong>小</strong></p>
 <h4 id="平方误差代价函数（squared-error-cost-function）"><a href="#平方误差代价函数（squared-error-cost-function）" class="headerlink" title="平方误差代价函数（squared error cost function）"></a>平方误差代价函数（squared error cost function）</h4><img src="/images/loading.png" data-original="/2024/07/17/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-1/2.JPG" class title="This is an image"> 
 
@@ -391,7 +391,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%9B%91%E7%9D%A3%E5%AD%A6%E4%B9%A0"><span class="nav-number">1.</span> <span class="nav-text">监督学习</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E6%A8%A1%E5%9E%8B%EF%BC%88linear-regression%EF%BC%89"><span class="nav-number">1.1.</span> <span class="nav-text">线性回归模型（linear regression）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%A3%E4%BB%B7%E5%87%BD%E6%95%B0%EF%BC%88cost-function%EF%BC%89"><span class="nav-number">1.1.1.</span> <span class="nav-text">代价函数（cost function）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B9%B3%E6%96%B9%E8%AF%AF%E5%B7%AE%E4%BB%A3%E4%BB%B7%E5%87%BD%E6%95%B0%EF%BC%88squared-error-cost-function%EF%BC%89"><span class="nav-number">1.1.1.1.</span> <span class="nav-text">平方误差代价函数（squared error cost function）</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D%E7%AE%97%E6%B3%95%EF%BC%88gradient-descent%EF%BC%89"><span class="nav-number">1.1.2.</span> <span class="nav-text">梯度下降算法（gradient descent）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%86%E7%B1%BB%E7%AE%97%E6%B3%95"><span class="nav-number">1.2.</span> <span class="nav-text">分类算法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%80%BB%E8%BE%91%E5%9B%9E%E5%BD%92%E7%AE%97%E6%B3%95%EF%BC%88%E9%9D%9E%E5%9B%9E%E5%BD%92%E7%AE%97%E6%B3%95%EF%BC%89logistic-regression"><span class="nav-number">1.2.1.</span> <span class="nav-text">逻辑回归算法（非回归算法）logistic regression</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%9D%9E%E7%9B%91%E7%9D%A3%E5%AD%A6%E4%B9%A0"><span class="nav-number">2.</span> <span class="nav-text">非监督学习</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#jupyter-Notebook"><span class="nav-number">3.</span> <span class="nav-text">jupyter Notebook</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%82%E6%95%B0%E5%BD%92%E4%B8%80%E5%8C%96%EF%BC%88normalization%EF%BC%89"><span class="nav-number">4.</span> <span class="nav-text">参数归一化（normalization）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B9%B3%E5%9D%87%E5%BD%92%E4%B8%80%E5%8C%96%EF%BC%88mean-normalization%EF%BC%89"><span class="nav-number">4.1.</span> <span class="nav-text">平均归一化（mean normalization）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Z-score-normalization"><span class="nav-number">4.2.</span> <span class="nav-text">Z-score normalization</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%9B%91%E7%9D%A3%E5%AD%A6%E4%B9%A0"><span class="nav-number">1.</span> <span class="nav-text">监督学习</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E6%A8%A1%E5%9E%8B%EF%BC%88linear-regression%EF%BC%89"><span class="nav-number">1.1.</span> <span class="nav-text">线性回归模型（linear regression）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%A3%E4%BB%B7%E5%87%BD%E6%95%B0%EF%BC%88cost-function%EF%BC%89or%E6%8D%9F%E5%A4%B1%E5%87%BD%E6%95%B0%EF%BC%88loss%EF%BC%89"><span class="nav-number">1.1.1.</span> <span class="nav-text">代价函数（cost function）or损失函数（loss）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B9%B3%E6%96%B9%E8%AF%AF%E5%B7%AE%E4%BB%A3%E4%BB%B7%E5%87%BD%E6%95%B0%EF%BC%88squared-error-cost-function%EF%BC%89"><span class="nav-number">1.1.1.1.</span> <span class="nav-text">平方误差代价函数（squared error cost function）</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D%E7%AE%97%E6%B3%95%EF%BC%88gradient-descent%EF%BC%89"><span class="nav-number">1.1.2.</span> <span class="nav-text">梯度下降算法（gradient descent）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%86%E7%B1%BB%E7%AE%97%E6%B3%95"><span class="nav-number">1.2.</span> <span class="nav-text">分类算法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%80%BB%E8%BE%91%E5%9B%9E%E5%BD%92%E7%AE%97%E6%B3%95%EF%BC%88%E9%9D%9E%E5%9B%9E%E5%BD%92%E7%AE%97%E6%B3%95%EF%BC%89logistic-regression"><span class="nav-number">1.2.1.</span> <span class="nav-text">逻辑回归算法（非回归算法）logistic regression</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%9D%9E%E7%9B%91%E7%9D%A3%E5%AD%A6%E4%B9%A0"><span class="nav-number">2.</span> <span class="nav-text">非监督学习</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#jupyter-Notebook"><span class="nav-number">3.</span> <span class="nav-text">jupyter Notebook</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%82%E6%95%B0%E5%BD%92%E4%B8%80%E5%8C%96%EF%BC%88normalization%EF%BC%89"><span class="nav-number">4.</span> <span class="nav-text">参数归一化（normalization）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B9%B3%E5%9D%87%E5%BD%92%E4%B8%80%E5%8C%96%EF%BC%88mean-normalization%EF%BC%89"><span class="nav-number">4.1.</span> <span class="nav-text">平均归一化（mean normalization）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Z-score-normalization"><span class="nav-number">4.2.</span> <span class="nav-text">Z-score normalization</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -407,7 +407,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">56</span>
+          <span class="site-state-item-count">57</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -522,11 +522,11 @@
         pbOptions.networks = "Wechat,QQZone,Weibo,Douban,Twitter,Facebook";
       new needShareButton('#needsharebutton-postbottom', pbOptions);
   </script>
-<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script><script>
+<script>
             window.imageLazyLoadSetting = {
                 isSPA: false,
                 preloadRatio: 1,
                 processImages: null,
             };
-        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(e.href.match(t)||e.href.match(r))&&(e.href=a.dataset.original)})});</script><script>!function(n){n.imageLazyLoadSetting.processImages=o;var e=n.imageLazyLoadSetting.isSPA,i=n.imageLazyLoadSetting.preloadRatio||1,r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]"));function o(){e&&(r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")));for(var t,a=0;a<r.length;a++)0<=(t=(t=r[a]).getBoundingClientRect()).bottom&&0<=t.left&&t.top<=(n.innerHeight*i||document.documentElement.clientHeight*i)&&function(){var t,e,n,i,o=r[a];t=o,e=function(){r=r.filter(function(t){return o!==t})},n=new Image,i=t.getAttribute("data-original"),n.onload=function(){t.src=i,e&&e()},t.src!==i&&(n.src=i)}()}o(),n.addEventListener("scroll",function(){var t,e;t=o,e=n,clearTimeout(t.tId),t.tId=setTimeout(function(){t.call(e)},500)})}(this);</script></body>
+        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(e.href.match(t)||e.href.match(r))&&(e.href=a.dataset.original)})});</script><script>!function(n){n.imageLazyLoadSetting.processImages=o;var e=n.imageLazyLoadSetting.isSPA,i=n.imageLazyLoadSetting.preloadRatio||1,r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]"));function o(){e&&(r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")));for(var t,a=0;a<r.length;a++)0<=(t=(t=r[a]).getBoundingClientRect()).bottom&&0<=t.left&&t.top<=(n.innerHeight*i||document.documentElement.clientHeight*i)&&function(){var t,e,n,i,o=r[a];t=o,e=function(){r=r.filter(function(t){return o!==t})},n=new Image,i=t.getAttribute("data-original"),n.onload=function(){t.src=i,e&&e()},t.src!==i&&(n.src=i)}()}o(),n.addEventListener("scroll",function(){var t,e;t=o,e=n,clearTimeout(t.tId),t.tId=setTimeout(function(){t.call(e)},500)})}(this);</script><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script></body>
 </html>

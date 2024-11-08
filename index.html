@@ -276,6 +276,89 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2024/10/22/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%9A%84%E4%B8%80%E4%BA%9B%E6%A6%82%E5%BF%B5%E6%80%A7%E7%90%86%E8%A7%A3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/zoe.gif">
+      <meta itemprop="name" content="dhk">
+      <meta itemprop="description" content="记录一些学习日常">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小董的BLOG">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/10/22/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%9A%84%E4%B8%80%E4%BA%9B%E6%A6%82%E5%BF%B5%E6%80%A7%E7%90%86%E8%A7%A3/" class="post-title-link" itemprop="url">深度学习的一些概念性理解</a>
+        </h2>
+
+        <div class="post-meta">
+		  
+		  
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2024-10-22 16:46:18" itemprop="dateCreated datePublished" datetime="2024-10-22T16:46:18+08:00">2024-10-22</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2024-11-08 20:08:12" itemprop="dateModified" datetime="2024-11-08T20:08:12+08:00">2024-11-08</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="激活函数"><a href="#激活函数" class="headerlink" title="激活函数"></a>激活函数</h1><h2 id="为什么要使用激活函数"><a href="#为什么要使用激活函数" class="headerlink" title="为什么要使用激活函数"></a>为什么要使用激活函数</h2><p>如果没有激活函数，神经网络中将只存在大量的<code>权重*输入</code>（还有偏置）的线性叠加，无法拟合出非线性函数的效果。当引入非线性的激活函数后，神经网络便可以逼近任何线性、非线性函数</p>
+<h2 id="常见激活函数"><a href="#常见激活函数" class="headerlink" title="常见激活函数"></a>常见激活函数</h2><h3 id="sigmoid函数"><a href="#sigmoid函数" class="headerlink" title="sigmoid函数"></a>sigmoid函数</h3><p>指一类S型函数</p>
+<ul>
+<li>优点：logistic函数可以将输出归一到(0,1)，而Tanh函数可以处理负数输入，因此Tanh会更常用一些</li>
+<li>缺点：<strong>在两个饱和处，其斜率变化较缓，导致w的变化对loss的影响较小，最终导致w的更新变慢</strong>（梯度消失）（我感觉这样说好理解一点）</li>
+</ul>
+<h3 id="ReLU函数"><a href="#ReLU函数" class="headerlink" title="ReLU函数"></a>ReLU函数</h3><p>引入了负数全部置0的非线性元素，且其正部本身为线性，斜率为1，不会出现梯度消失问题</p>
+<p>缺点：但如果参数在一次不恰当的更新后，导致某一个层输入到某个神经元的值为0时，<strong>该神经元输出到后面所有神经元的值全为0，此时该神经元的w无论怎么变化，输出到下一层所有神经元的值都为0（梯度为0），导致该神经元前的参数都无法更新</strong>，出现dead relu</p>
+<h1 id="反向传播（BP）"><a href="#反向传播（BP）" class="headerlink" title="反向传播（BP）"></a>反向传播（BP）</h1><h2 id="参数学习"><a href="#参数学习" class="headerlink" title="参数学习"></a>参数学习</h2><p>以交叉熵损失函数为例，假设y为one-hot向量（仅标签位置为1，其他0），则可以延伸至多分类问题，且其输出仅与标签位置处的y^相关，y^越小，损失函数越大(y^&lt;1)</p>
+<img src="/images/loading.png" data-original="/2024/10/22/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%9A%84%E4%B8%80%E4%BA%9B%E6%A6%82%E5%BF%B5%E6%80%A7%E7%90%86%E8%A7%A3/1.jpg" class title="This is an image"> 
+
+<p>由于y^是W（权重矩阵）和偏置的函数，因此Loss函数也为W和b的函数，通过优化迭代他们的值即可接近Loss的最小值，而要降低Loss，通常是借助各w的梯度实现</p>
+<h2 id="反向传播算法"><a href="#反向传播算法" class="headerlink" title="反向传播算法"></a>反向传播算法</h2><p>当一次正向传播后，Loss值已经确定，此时Loss对所有w的偏导都已确定，因此计算出这些偏导即可完成一次梯度下降。如果从开头通过链式法则对所有w逐一计算效率较低。但由链式法则又可得：</p>
+<p><strong>loss对某一w的偏导可通过下一层的所有w偏导计算而得，因此从输出层对w偏导进行反向计算效率更高</strong></p>
+<h1 id="注意力机制"><a href="#注意力机制" class="headerlink" title="注意力机制"></a>注意力机制</h1><h2 id="向量点乘的几何意义"><a href="#向量点乘的几何意义" class="headerlink" title="向量点乘的几何意义"></a>向量点乘的几何意义</h2><p>向量<strong>x</strong>在向量<strong>y</strong>方向上的投影再与向量<strong>y</strong>的乘积，能够反应两个向量的相似度。<u>向量点乘结果越大，两个向量越相似。</u></p>
+<h2 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h2><p>注意力机制通过计算输入序列中每个位置（时间步）的权重，来决定每个时间步的重要性。权重越高，说明该时间步包含的信息越关键，模型就会更“关注”该部分。</p>
+<p>与之相比，卷积只能使输入局部相关，而全连接层则计算量大，<strong>注意力机制则可以根据整个输入序列实时调整权重</strong></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2024/09/14/%E5%AF%B9%E6%AF%94%E5%AD%A6%E4%B9%A0%E4%B9%8BSimCLR/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -374,93 +457,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2024/09/10/%E5%88%B6%E4%BD%9C%E6%95%B0%E6%8D%AE%E9%9B%86/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/zoe.gif">
-      <meta itemprop="name" content="dhk">
-      <meta itemprop="description" content="记录一些学习日常">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="小董的BLOG">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/09/10/%E5%88%B6%E4%BD%9C%E6%95%B0%E6%8D%AE%E9%9B%86/" class="post-title-link" itemprop="url">制作数据集</a>
-        </h2>
-
-        <div class="post-meta">
-		  
-		  
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2024-09-10 08:56:25" itemprop="dateCreated datePublished" datetime="2024-09-10T08:56:25+08:00">2024-09-10</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-09-24 11:06:18" itemprop="dateModified" datetime="2024-09-24T11:06:18+08:00">2024-09-24</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>最近看了几个算法的数据集建立方法，在此记录一下，方便以后借用</p>
-<h1 id="对于数量较少且每种图片数量相同的情况"><a href="#对于数量较少且每种图片数量相同的情况" class="headerlink" title="对于数量较少且每种图片数量相同的情况"></a>对于数量较少且每种图片数量相同的情况</h1><p>若要使用该方法，图片在文件夹中<strong>需按顺序排列</strong></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> glob</span><br><span class="line"><span class="keyword">from</span> torch.utils.data <span class="keyword">import</span> Dataset, DataLoader</span><br><span class="line"><span class="keyword">from</span> PIL <span class="keyword">import</span> Image</span><br><span class="line"><span class="keyword">from</span> torchvision <span class="keyword">import</span> transforms</span><br><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> train_test_split</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Mydataset</span>(<span class="title class_ inherited__">Dataset</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, images, labels, transform</span>):</span><br><span class="line">        self.images = images</span><br><span class="line">        self.labels = labels</span><br><span class="line">        self.transform = transform</span><br><span class="line">        dataset = []</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(labels)):	<span class="comment">#每个图片都有对应的标签元素，因此标签数量=图片数量</span></span><br><span class="line">            temp_img = Image.<span class="built_in">open</span>(images[i])</span><br><span class="line">            temp_img = self.transform(temp_img)  <span class="comment"># transforms.Compose对象可直接输入图像</span></span><br><span class="line">            dataset.append((temp_img, labels[i]))<span class="comment">#经过train_test_split的图片标签一一对应</span></span><br><span class="line">        self.dataset = dataset</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__getitem__</span>(<span class="params">self, index</span>):</span><br><span class="line">        <span class="keyword">return</span> self.dataset[index]</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__len__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">len</span>(self.labels)</span><br><span class="line"></span><br><span class="line"><span class="comment">#先看这个</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">load_dataset</span>(<span class="params">self</span>):</span><br><span class="line">    data = []</span><br><span class="line">    all_imgs_path = glob.glob(<span class="string">r&#x27;dataset\*.png&#x27;</span>)	<span class="comment">#查找文件夹中的所有png文件</span></span><br><span class="line">    <span class="keyword">for</span> ip <span class="keyword">in</span> all_imgs_path:</span><br><span class="line">        data.append(ip)		<span class="comment">#此处是保存了每个图像路径的列表</span></span><br><span class="line">    labels = []</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">20</span>): <span class="comment">#只适用于知道每个类别图片数量的情况，且数量最好相等且不多</span></span><br><span class="line">        labels.extend([i] * <span class="number">72</span>) <span class="comment">#图片有20种，每种有72张</span></span><br><span class="line">      <span class="comment">#分别生成72个0、1...20，此处i即为标签</span></span><br><span class="line">    tr_imgs, te_imgs, tr_labs, te_labs = train_test_split(data, labels, train_size=<span class="number">0.9</span>)	<span class="comment">#因为data按照文件顺序排列，因此图片与标签可以一一对应，训练集:验证集=9:1</span></span><br><span class="line">   </span><br><span class="line">    transform = transforms.Compose([</span><br><span class="line">        transforms.Resize((<span class="number">128</span>, <span class="number">128</span>)),</span><br><span class="line">        transforms.ToTensor()</span><br><span class="line">    ])</span><br><span class="line">      </span><br><span class="line">    tr_set = Mydataset(tr_imgs, tr_labs, transform)</span><br><span class="line">    te_set = Mydataset(te_imgs, te_labs, transform)</span><br><span class="line">    tr_loader = DataLoader(tr_set, batch_size=self.args.train_batch_size, shuffle=<span class="literal">True</span>, num_workers=self.args.workers,</span><br><span class="line">                           pin_memory=<span class="literal">True</span>)</span><br><span class="line">    te_loader = DataLoader(te_set, batch_size=self.args.train_batch_size, shuffle=<span class="literal">True</span>, num_workers=self.args.workers,</span><br><span class="line">                           pin_memory=<span class="literal">True</span>)</span><br><span class="line">    <span class="keyword">return</span> tr_loader, te_loader</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h1 id="对于图片已按照文件夹分好的情况"><a href="#对于图片已按照文件夹分好的情况" class="headerlink" title="对于图片已按照文件夹分好的情况"></a>对于图片已按照文件夹分好的情况</h1><h2 id="数据集划分"><a href="#数据集划分" class="headerlink" title="数据集划分"></a>数据集划分</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">from</span> shutil <span class="keyword">import</span> copy</span><br><span class="line"><span class="keyword">import</span> random</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">mkfile</span>(<span class="params">file</span>):</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> os.path.exists(file):</span><br><span class="line">        os.makedirs(file)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 获取 flower_photos 文件夹下除 .txt 文件以外所有文件夹名（即5种花的类名）</span></span><br><span class="line">file_path = <span class="string">&#x27;flower_data/flower_photos&#x27;</span></span><br><span class="line">flower_class = [cla <span class="keyword">for</span> cla <span class="keyword">in</span> os.listdir(file_path) <span class="keyword">if</span> <span class="string">&quot;.txt&quot;</span> <span class="keyword">not</span> <span class="keyword">in</span> cla]</span><br><span class="line"><span class="comment">#os.listdir会返回文件夹下的文件夹名的列表</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建 训练集train 文件夹，并由5种类名在其目录下创建5个子目录</span></span><br><span class="line">mkfile(<span class="string">&#x27;flower_data/train&#x27;</span>)</span><br><span class="line"><span class="keyword">for</span> cla <span class="keyword">in</span> flower_class:</span><br><span class="line">    mkfile(<span class="string">&#x27;flower_data/train/&#x27;</span> + cla)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建 验证集val 文件夹，并由5种类名在其目录下创建5个子目录</span></span><br><span class="line">mkfile(<span class="string">&#x27;flower_data/val&#x27;</span>)</span><br><span class="line"><span class="keyword">for</span> cla <span class="keyword">in</span> flower_class:</span><br><span class="line">    mkfile(<span class="string">&#x27;flower_data/val/&#x27;</span> + cla)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 划分比例，训练集 : 验证集 = 9 : 1</span></span><br><span class="line">split_rate = <span class="number">0.1</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 遍历5种花的全部图像并按比例分成训练集和验证集</span></span><br><span class="line"><span class="keyword">for</span> cla <span class="keyword">in</span> flower_class:</span><br><span class="line">    cla_path = file_path + <span class="string">&#x27;/&#x27;</span> + cla + <span class="string">&#x27;/&#x27;</span>  <span class="comment"># 某一类别花的子目录</span></span><br><span class="line">    images = os.listdir(cla_path)  <span class="comment"># iamges 列表存储了该目录下所有图像的名称</span></span><br><span class="line">    num = <span class="built_in">len</span>(images)</span><br><span class="line">    eval_index = random.sample(images, k=<span class="built_in">int</span>(num * split_rate))  <span class="comment"># 从images列表中随机抽取 k 个图像名称</span></span><br><span class="line">    <span class="keyword">for</span> index, image <span class="keyword">in</span> <span class="built_in">enumerate</span>(images):  <span class="comment">#创建验证集</span></span><br><span class="line">        <span class="comment"># eval_index 中保存验证集val的图像名称</span></span><br><span class="line">        <span class="keyword">if</span> image <span class="keyword">in</span> eval_index:</span><br><span class="line">            image_path = cla_path + image</span><br><span class="line">            new_path = <span class="string">&#x27;flower_data/val/&#x27;</span> + cla</span><br><span class="line">            copy(image_path, new_path)  <span class="comment"># 将选中的图像复制到新路径</span></span><br><span class="line"></span><br><span class="line">        <span class="comment"># 其余的图像保存在训练集train中</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            image_path = cla_path + image</span><br><span class="line">            new_path = <span class="string">&#x27;flower_data/train/&#x27;</span> + cla</span><br><span class="line">            copy(image_path, new_path)</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;\r[&#123;&#125;] processing [&#123;&#125;/&#123;&#125;]&quot;</span>.<span class="built_in">format</span>(cla, index + <span class="number">1</span>, num), end=<span class="string">&quot;&quot;</span>)  <span class="comment"># processing bar</span></span><br><span class="line">    <span class="built_in">print</span>()</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;processing done!&quot;</span>)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h2 id="pytorch加载数据集"><a href="#pytorch加载数据集" class="headerlink" title="pytorch加载数据集"></a>pytorch加载数据集</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 获取图像数据集的路径</span></span><br><span class="line">data_root = os.path.abspath(os.path.join(os.getcwd(), <span class="string">&quot;../..&quot;</span>))  <span class="comment"># get data root path 返回上上层目录</span></span><br><span class="line">image_path = data_root + <span class="string">&quot;/data_set/flower_data/&quot;</span>  			<span class="comment"># flower data_set path</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 导入训练集并进行预处理</span></span><br><span class="line">train_dataset = datasets.ImageFolder(root=image_path + <span class="string">&quot;/train&quot;</span>,		</span><br><span class="line">                                     transform=data_transform[<span class="string">&quot;train&quot;</span>])</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p><code>ImageFolder()</code>返回的对象是一个包含数据集所有图像及对应标签构成的二维元组容器，支持索引和迭代，可作为<code>torch.utils.data.DataLoader</code>的输入，其有三种方法：</p>
-<ul>
-<li><p>self.classes：用一个列表保存类别名称，例如[‘dog’,’cat’]</p>
-</li>
-<li><p>self.class_to_idx：得到字典：类别 + 对应的索引值，例如{‘dog’:1,’cat’:2}</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">flower_list = train_dataset.class_to_idx</span><br><span class="line"><span class="comment"># 将 flower_list 中的 key 和 val 调换位置</span></span><br><span class="line">cla_dict = <span class="built_in">dict</span>((val, key) <span class="keyword">for</span> key, val <span class="keyword">in</span> flower_list.items())</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>self.imgs：保存(图像路径, 它所属于的类别index) tuple的 list</p>
-</li>
-</ul>
-<p>同时，imageFolder()过程只会加载index，而不会执行transform操作（transform操作是懒加载的，只有使用dataLoader的时候才会执行）</p>
-<h1 id="对同一数据集进行分割"><a href="#对同一数据集进行分割" class="headerlink" title="对同一数据集进行分割"></a>对同一数据集进行分割</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 从训练集的50000个样本中，取49000个作为训练集，剩余1000个作为验证集</span></span><br><span class="line">NUM_TRAIN = <span class="number">49000</span></span><br><span class="line"></span><br><span class="line">loader_train = DataLoader(dataset, batch_size=<span class="number">64</span>, sampler=sampler.SubsetRandomSampler(<span class="built_in">range</span>(NUM_TRAIN)))</span><br><span class="line"></span><br><span class="line">loader_val = DataLoader(dataset, batch_size=<span class="number">64</span>, sampler=sampler.SubsetRandomSampler(<span class="built_in">range</span>(NUM_TRAIN, <span class="number">50000</span>)))</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   
   <nav class="pagination">
     <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/19/">19</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
@@ -530,7 +526,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">56</span>
+          <span class="site-state-item-count">57</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -645,11 +641,11 @@
         pbOptions.networks = "Wechat,QQZone,Weibo,Douban,Twitter,Facebook";
       new needShareButton('#needsharebutton-postbottom', pbOptions);
   </script>
-<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script><script>
+<script>
             window.imageLazyLoadSetting = {
                 isSPA: false,
                 preloadRatio: 1,
                 processImages: null,
             };
-        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(e.href.match(t)||e.href.match(r))&&(e.href=a.dataset.original)})});</script><script>!function(n){n.imageLazyLoadSetting.processImages=o;var e=n.imageLazyLoadSetting.isSPA,i=n.imageLazyLoadSetting.preloadRatio||1,r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]"));function o(){e&&(r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")));for(var t,a=0;a<r.length;a++)0<=(t=(t=r[a]).getBoundingClientRect()).bottom&&0<=t.left&&t.top<=(n.innerHeight*i||document.documentElement.clientHeight*i)&&function(){var t,e,n,i,o=r[a];t=o,e=function(){r=r.filter(function(t){return o!==t})},n=new Image,i=t.getAttribute("data-original"),n.onload=function(){t.src=i,e&&e()},t.src!==i&&(n.src=i)}()}o(),n.addEventListener("scroll",function(){var t,e;t=o,e=n,clearTimeout(t.tId),t.tId=setTimeout(function(){t.call(e)},500)})}(this);</script></body>
+        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(e.href.match(t)||e.href.match(r))&&(e.href=a.dataset.original)})});</script><script>!function(n){n.imageLazyLoadSetting.processImages=o;var e=n.imageLazyLoadSetting.isSPA,i=n.imageLazyLoadSetting.preloadRatio||1,r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]"));function o(){e&&(r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")));for(var t,a=0;a<r.length;a++)0<=(t=(t=r[a]).getBoundingClientRect()).bottom&&0<=t.left&&t.top<=(n.innerHeight*i||document.documentElement.clientHeight*i)&&function(){var t,e,n,i,o=r[a];t=o,e=function(){r=r.filter(function(t){return o!==t})},n=new Image,i=t.getAttribute("data-original"),n.onload=function(){t.src=i,e&&e()},t.src!==i&&(n.src=i)}()}o(),n.addEventListener("scroll",function(){var t,e;t=o,e=n,clearTimeout(t.tId),t.tId=setTimeout(function(){t.call(e)},500)})}(this);</script><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script></body>
 </html>
