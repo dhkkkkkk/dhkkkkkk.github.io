@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/xxw/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="/xxw/pace/pace-theme-minimal.min.css">
+  <script src="/xxw/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"dhkkkkkk.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="try语句与异常处理通常的异常处理包括三部分：  throw表达式：使用throw表达式表示当前程序遇到了某个问题（异常声明） try语句块：与catch配合用于处理各类异常声明 一套异常类：用于传递具体的异常信息（异常声明的含义）  例程12345678910111213141516171819202122232425#include&lt;iostream&gt;#include&lt;win">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C++的语句与函数">
+<meta property="og:url" content="https://dhkkkkkk.github.io/2022/10/11/C++-5/index.html">
+<meta property="og:site_name" content="小董的BLOG">
+<meta property="og:description" content="try语句与异常处理通常的异常处理包括三部分：  throw表达式：使用throw表达式表示当前程序遇到了某个问题（异常声明） try语句块：与catch配合用于处理各类异常声明 一套异常类：用于传递具体的异常信息（异常声明的含义）  例程12345678910111213141516171819202122232425#include&lt;iostream&gt;#include&lt;win">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-10-11T08:00:25.000Z">
+<meta property="article:modified_time" content="2022-10-30T11:06:41.614Z">
+<meta property="article:author" content="dhk">
+<meta property="article:tag" content="C++学习">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://dhkkkkkk.github.io/2022/10/11/C++-5/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+<link rel="stylesheet" href="//cdn.jsdelivr.net/gh/theme-next/theme-next-needmoreshare2@1/needsharebutton.min.css"><style>
+#needsharebutton-postbottom {
+  cursor: pointer;
+  height: 26px;
+  margin-top: 10px;
+  position: relative;
+}
+#needsharebutton-postbottom .btn {
+  border: 1px solid $btn-default-border-color;
+  border-radius: 3px;
+  display: initial;
+  padding: 1px 4px;
+}
+</style>
+  <title>C++的语句与函数 | 小董的BLOG</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">小董的BLOG</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-目录">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tag fa-fw"></i>目录</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2022/10/11/C++-5/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/zoe.gif">
+      <meta itemprop="name" content="dhk">
+      <meta itemprop="description" content="记录一些学习日常">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小董的BLOG">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          C++的语句与函数
+        </h1>
+
+        <div class="post-meta">
+		  
+		  
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-10-11 16:00:25" itemprop="dateCreated datePublished" datetime="2022-10-11T16:00:25+08:00">2022-10-11</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-10-30 19:06:41" itemprop="dateModified" datetime="2022-10-30T19:06:41+08:00">2022-10-30</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="try语句与异常处理"><a href="#try语句与异常处理" class="headerlink" title="try语句与异常处理"></a>try语句与异常处理</h1><p>通常的异常处理包括三部分：</p>
+<ul>
+<li>throw表达式：使用throw表达式表示当前程序遇到了某个问题（异常声明）</li>
+<li>try语句块：与catch配合用于处理各类异常声明</li>
+<li>一套异常类：用于传递具体的异常信息（异常声明的含义）</li>
+</ul>
+<h2 id="例程"><a href="#例程" class="headerlink" title="例程"></a>例程</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;windows.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdexcept&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> std::vector;</span><br><span class="line"><span class="keyword">using</span> std::string;</span><br><span class="line"><span class="keyword">using</span> std::cin;</span><br><span class="line"><span class="keyword">using</span> std::cout;</span><br><span class="line"><span class="keyword">using</span> std::endl;</span><br><span class="line"><span class="keyword">using</span> std::runtime_error;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="type">int</span> a,b;</span><br><span class="line">    cin&gt;&gt;a&gt;&gt;b;</span><br><span class="line">    <span class="keyword">try</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span>(a!=b) <span class="keyword">throw</span> <span class="built_in">runtime_error</span>(<span class="string">&quot;ERROR!!!&quot;</span>);</span><br><span class="line">        cout&lt;&lt;<span class="string">&quot;good&quot;</span>&lt;&lt;endl;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">catch</span>(runtime_error err)</span><br><span class="line">    &#123;</span><br><span class="line">        cout&lt;&lt;err.<span class="built_in">what</span>();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">system</span>(<span class="string">&quot;pause&quot;</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="throw表达式"><a href="#throw表达式" class="headerlink" title="throw表达式"></a>throw表达式</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(a!=b) <span class="keyword">throw</span> <span class="built_in">runtime_error</span>(<span class="string">&quot;ERROR!!!&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>格式：throw+异常类+初始化异常类对象</p>
+<ul>
+<li><p>该初始化的对象只用于提供一些关于异常的辅助信息（用户自行定义）</p>
+</li>
+<li><p>异常类为一系列在库中定义的类型，使用时需要声明其命名空间，以下是几种常用的异常类，在头文件stdexcept中</p>
+<table>
+<thead>
+<tr>
+<th align="center">exception</th>
+<th align="center">一般错误</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">runtime_error</td>
+<td align="center">运行时才能检测出的任务</td>
+</tr>
+<tr>
+<td align="center">range_error</td>
+<td align="center">运行时：生成结果超出有意义的值域范围的错误</td>
+</tr>
+<tr>
+<td align="center">overflow_error</td>
+<td align="center">运行时：计算上溢错误</td>
+</tr>
+<tr>
+<td align="center">underflow_error</td>
+<td align="center">运行时：计算下溢错误</td>
+</tr>
+<tr>
+<td align="center">logic_error</td>
+<td align="center">程序逻辑错误</td>
+</tr>
+<tr>
+<td align="center">domain_error</td>
+<td align="center">逻辑错误：参数对应的结果不存在</td>
+</tr>
+<tr>
+<td align="center">invalid_error</td>
+<td align="center">逻辑错误：无效参数</td>
+</tr>
+<tr>
+<td align="center">length_error</td>
+<td align="center">逻辑错误：超出对象类型长度</td>
+</tr>
+<tr>
+<td align="center">out_of_range</td>
+<td align="center">逻辑错误：超出有效范围</td>
+</tr>
+</tbody></table>
+<ul>
+<li><p>除exception外其他类型都<strong>必须</strong>用一个字符串初始化，而exception则不允许这种初始化</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">if</span>(a!=b) <span class="keyword">throw</span> <span class="built_in">exception</span>();</span><br><span class="line">	cout&lt;&lt;<span class="string">&quot;good&quot;</span>&lt;&lt;endl;</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">catch</span>(exception)</span><br><span class="line">&#123;</span><br><span class="line">   cout&lt;&lt;<span class="string">&quot;ERROR!!&quot;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ul>
+<h2 id="try语句块"><a href="#try语句块" class="headerlink" title="try语句块"></a>try语句块</h2><p>格式：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span></span><br><span class="line">&#123; &#125;<span class="comment">//程序正常逻辑，异常类在此throw出 </span></span><br><span class="line"><span class="built_in">catch</span>(异常声明)</span><br><span class="line">&#123;&#125;</span><br><span class="line"><span class="built_in">catch</span>(异常声明)</span><br><span class="line">&#123;&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>当try内一旦提出异常类时，就不再执行该throw表达式后的内容；反之，若没有throw任何异常，则不会触发任何catch语句，程序正常执行完try语句。</li>
+<li>catch括号中需定义一个对象，类型为触发的异常类，这些异常类只有一个子函数what，用于输出初始化时的字符串（不能用于exception类）</li>
+</ul>
+<p>当有多个try语句块嵌套时，当最内部try提出了一个异常，会由内到外执行catch，若最终都没有对应catch，则程序转到terminate的标准库函数，该函数行为与系统有关，通常执行该函数会导致程序非正常退出。</p>
+<h1 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h1><h2 id="参数传递"><a href="#参数传递" class="headerlink" title="参数传递"></a>参数传递</h2><ul>
+<li>形参实参之间的转递为值拷贝</li>
+<li>C++中建议用引用类型的形参代替指针形参，引用类型同样可以达到修改值的内容，并且可以避免拷贝，因为引用是与实参绑定的。</li>
+</ul>
+<h2 id="数组的传递"><a href="#数组的传递" class="headerlink" title="数组的传递"></a>数组的传递</h2><p>以下三种对形参的定义是等价的：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">a</span><span class="params">(<span class="type">const</span> <span class="type">int</span>*)</span></span>;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">b</span><span class="params">(<span class="type">const</span> <span class="type">int</span>[])</span></span>;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">c</span><span class="params">(<span class="type">const</span> <span class="type">int</span>[<span class="number">10</span>])</span></span>;</span><br></pre></td></tr></table></figure>
+
+<p>编译器在编译时只会检查传入的参数类型是否为const int*型，甚至不会检查传入数组的长度是否超出形参大小。</p>
+<h3 id="数组的引用形参"><a href="#数组的引用形参" class="headerlink" title="数组的引用形参"></a>数组的引用形参</h3><p>可以使用数组的引用作为形参：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">test</span><span class="params">(<span class="type">int</span> (&amp;arr)[<span class="number">10</span>])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">   <span class="keyword">for</span>(<span class="keyword">auto</span> elem : arr)</span><br><span class="line">      cout&lt;&lt;elem&lt;&lt;endl;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>使用数组的引用作为形参需要注意：</p>
+<ul>
+<li>初始化时必须使用括号括起&amp;arr</li>
+<li>输入的实参<strong>必须为一个int [10]类型</strong>的对象</li>
+</ul>
+<h2 id="函数的返回类型"><a href="#函数的返回类型" class="headerlink" title="函数的返回类型"></a>函数的返回类型</h2><h3 id="返回引用"><a href="#返回引用" class="headerlink" title="返回引用"></a>返回引用</h3><p>函数返回引用可以理解为返回的为一个地址</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">char</span> <span class="title">test1</span><span class="params">(string s ,string::size_type num)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">   <span class="keyword">return</span> s[num];</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">char</span> &amp;<span class="title">test2</span><span class="params">(string &amp;s ,string::size_type num)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">   <span class="keyword">return</span> s[num];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">   <span class="function">srting <span class="title">s</span><span class="params">(<span class="string">&quot;test&quot;</span>)</span></span>;</span><br><span class="line">   cout&lt;&lt;<span class="built_in">test1</span>(s,<span class="number">0</span>)&lt;&lt;endl; <span class="comment">//t</span></span><br><span class="line">   <span class="built_in">test2</span>(s,<span class="number">0</span>)=<span class="string">&#x27;a&#x27;</span>;</span><br><span class="line">   cout&lt;&lt;s[<span class="number">0</span>]&lt;&lt;endl;       <span class="comment">//a</span></span><br><span class="line">   <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>当一个函数的返回值为引用时，该返回值为左值而非右值，因此可以像使用其他左值一样使用这个返回值</p>
+<p>（注：左值≠地址，它仍然是一个值）</p>
+<ul>
+<li><p><strong>不可返回局部变量的引用</strong>，由于局部变量在函数完成后会被释放，因此在函数完成后引用会找不到它的对象。例如上一个例程，如果把test2()函数改为：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">char</span> &amp;<span class="title">test2</span><span class="params">(string s ,string::size_type num)</span><span class="comment">//此处形参不再是引用</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">   <span class="keyword">return</span> s[num];</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">   <span class="function">srting <span class="title">s</span><span class="params">(<span class="string">&quot;test&quot;</span>)</span></span>;</span><br><span class="line">   <span class="built_in">test2</span>(s,<span class="number">0</span>)=<span class="string">&#x27;a&#x27;</span>;</span><br><span class="line">   cout&lt;&lt;s[<span class="number">0</span>]&lt;&lt;endl;      <span class="comment">//t</span></span><br><span class="line">   <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>该函数的返回值为对s的引用，但s本身为一个局部变量，在函数完成时已经被释放，因此该引用是无效的（但是这样<strong>返回形参的引用</strong>编译器并不会报错，而返回<strong>函数内定义的局部变量</strong>的引用会报错）</p>
+<p>但如果形参定义为引用，由于引用本身是不占用存储空间的，所以’a’可以通过引用直接向s[0]赋值</p>
+</li>
+</ul>
+<h3 id="返回数组指针"><a href="#返回数组指针" class="headerlink" title="返回数组指针"></a>返回数组指针</h3><ul>
+<li><p>尾置返回类型</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">auto</span> <span class="title">func</span><span class="params">(<span class="type">int</span> i)</span> -&gt; <span class="title">int</span><span class="params">(*)</span>[10]</span></span><br></pre></td></tr></table></figure>
+
+<p>声明函数的返回值为一个含有十个整数的数组的指针</p>
+</li>
+<li><p>使用decltype</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> test[<span class="number">5</span>]=&#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>&#125;;</span><br><span class="line"><span class="keyword">decltype</span>(test) *<span class="built_in">func</span>()</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">return</span> &amp;test;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;	</span><br><span class="line">	cout&lt;&lt;*(*func+<span class="number">1</span>); <span class="comment">//输出2</span></span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>decltype(test)的结果是一个数组，因此函数前要用*声明返回值为指针</li>
+<li>使用此方法返回的是一个数组的整体地址，而不是首地址，类型为int*[5]，因此一次解引用的结果才是首地址</li>
+</ul>
+</li>
+</ul>
+<h2 id="内联函数"><a href="#内联函数" class="headerlink" title="内联函数"></a>内联函数</h2><p>正常的调用函数一般比等价的表达式要慢（保存寄存器、拷贝等操作），因此对于规模较小的函数可以定义为内联函数类型：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">inline</span> <span class="type">int</span> <span class="title">fuc</span><span class="params">(<span class="type">int</span> a,<span class="type">int</span> b)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">return</span> a+b;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="constexpr函数"><a href="#constexpr函数" class="headerlink" title="constexpr函数"></a>constexpr函数</h2><p>将函数隐式地定义为内联函数，但函数内只能有一条return语句，且返回值必须为字面值</p>
+
+    </div>
+
+    
+    
+    <div class="post-widgets">
+      <div id="needsharebutton-postbottom">
+        <span class="btn">
+          <i class="fa fa-share-alt" aria-hidden="true"></i>
+        </span>
+      </div>
+    </div>
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/C-%E5%AD%A6%E4%B9%A0/" rel="tag"><i class="fa fa-tag"></i># C++学习</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/10/03/C++-4/" rel="prev" title="C++_表达式">
+      <i class="fa fa-chevron-left"></i> C++_表达式
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2022/10/14/51%E5%8D%95%E7%89%87%E6%9C%BA%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80/" rel="next" title="51单片机汇编指令查询">
+      51单片机汇编指令查询 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#try%E8%AF%AD%E5%8F%A5%E4%B8%8E%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86"><span class="nav-number">1.</span> <span class="nav-text">try语句与异常处理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BE%8B%E7%A8%8B"><span class="nav-number">1.1.</span> <span class="nav-text">例程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#throw%E8%A1%A8%E8%BE%BE%E5%BC%8F"><span class="nav-number">1.2.</span> <span class="nav-text">throw表达式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#try%E8%AF%AD%E5%8F%A5%E5%9D%97"><span class="nav-number">1.3.</span> <span class="nav-text">try语句块</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%87%BD%E6%95%B0"><span class="nav-number">2.</span> <span class="nav-text">函数</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E6%95%B0%E4%BC%A0%E9%80%92"><span class="nav-number">2.1.</span> <span class="nav-text">参数传递</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E7%BB%84%E7%9A%84%E4%BC%A0%E9%80%92"><span class="nav-number">2.2.</span> <span class="nav-text">数组的传递</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E7%BB%84%E7%9A%84%E5%BC%95%E7%94%A8%E5%BD%A2%E5%8F%82"><span class="nav-number">2.2.1.</span> <span class="nav-text">数组的引用形参</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%87%BD%E6%95%B0%E7%9A%84%E8%BF%94%E5%9B%9E%E7%B1%BB%E5%9E%8B"><span class="nav-number">2.3.</span> <span class="nav-text">函数的返回类型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%94%E5%9B%9E%E5%BC%95%E7%94%A8"><span class="nav-number">2.3.1.</span> <span class="nav-text">返回引用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%94%E5%9B%9E%E6%95%B0%E7%BB%84%E6%8C%87%E9%92%88"><span class="nav-number">2.3.2.</span> <span class="nav-text">返回数组指针</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%86%85%E8%81%94%E5%87%BD%E6%95%B0"><span class="nav-number">2.4.</span> <span class="nav-text">内联函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#constexpr%E5%87%BD%E6%95%B0"><span class="nav-number">2.5.</span> <span class="nav-text">constexpr函数</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="dhk"
+      src="/images/zoe.gif">
+  <p class="site-author-name" itemprop="name">dhk</p>
+  <div class="site-description" itemprop="description">记录一些学习日常</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">58</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/dhkkkkkk" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;dhkkkkkk" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/1154012965@qq.com" title="QQ email → 1154012965@qq.com"><i class="fa fa-envelope fa-fw"></i>QQ email</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"> </div>
+
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">dhk</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/xxw/anime.min.js"></script>
+  <script src="/xxw/velocity/velocity.min.js"></script>
+  <script src="/xxw/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  <script src="//cdn.jsdelivr.net/gh/theme-next/theme-next-needmoreshare2@1/needsharebutton.min.js"></script>
+  <script>
+      pbOptions = {};
+        pbOptions.iconStyle = "box";
+        pbOptions.boxForm = "horizontal";
+        pbOptions.position = "bottomCenter";
+        pbOptions.networks = "Wechat,QQZone,Weibo,Douban,Twitter,Facebook";
+      new needShareButton('#needsharebutton-postbottom', pbOptions);
+  </script>
+<script>
+            window.imageLazyLoadSetting = {
+                isSPA: false,
+                preloadRatio: 1,
+                processImages: null,
+            };
+        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(e.href.match(t)||e.href.match(r))&&(e.href=a.dataset.original)})});</script><script>!function(n){n.imageLazyLoadSetting.processImages=o;var e=n.imageLazyLoadSetting.isSPA,i=n.imageLazyLoadSetting.preloadRatio||1,r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]"));function o(){e&&(r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")));for(var t,a=0;a<r.length;a++)0<=(t=(t=r[a]).getBoundingClientRect()).bottom&&0<=t.left&&t.top<=(n.innerHeight*i||document.documentElement.clientHeight*i)&&function(){var t,e,n,i,o=r[a];t=o,e=function(){r=r.filter(function(t){return o!==t})},n=new Image,i=t.getAttribute("data-original"),n.onload=function(){t.src=i,e&&e()},t.src!==i&&(n.src=i)}()}o(),n.addEventListener("scroll",function(){var t,e;t=o,e=n,clearTimeout(t.tId),t.tId=setTimeout(function(){t.call(e)},500)})}(this);</script><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script></body>
+</html>

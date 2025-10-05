@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/xxw/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="/xxw/pace/pace-theme-minimal.min.css">
+  <script src="/xxw/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"dhkkkkkk.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="Ubuntu网络图标消失123sudo service network-manager stopsudo rm &#x2F;var&#x2F;lib&#x2F;NetworkManager&#x2F;NetworkManager.state sudo service network-manager start  常用命令   ls 查看当前目录    cd 进入目标路径   pwd 查看当前路径   mkdir 创建目录   rmdir">
+<meta property="og:type" content="article">
+<meta property="og:title" content="linux、ROS杂">
+<meta property="og:url" content="https://dhkkkkkk.github.io/2024/02/19/linux%E6%9D%82/index.html">
+<meta property="og:site_name" content="小董的BLOG">
+<meta property="og:description" content="Ubuntu网络图标消失123sudo service network-manager stopsudo rm &#x2F;var&#x2F;lib&#x2F;NetworkManager&#x2F;NetworkManager.state sudo service network-manager start  常用命令   ls 查看当前目录    cd 进入目标路径   pwd 查看当前路径   mkdir 创建目录   rmdir">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-02-19T09:06:26.000Z">
+<meta property="article:modified_time" content="2024-04-19T08:28:13.926Z">
+<meta property="article:author" content="dhk">
+<meta property="article:tag" content="ROS">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://dhkkkkkk.github.io/2024/02/19/linux%E6%9D%82/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+<link rel="stylesheet" href="//cdn.jsdelivr.net/gh/theme-next/theme-next-needmoreshare2@1/needsharebutton.min.css"><style>
+#needsharebutton-postbottom {
+  cursor: pointer;
+  height: 26px;
+  margin-top: 10px;
+  position: relative;
+}
+#needsharebutton-postbottom .btn {
+  border: 1px solid $btn-default-border-color;
+  border-radius: 3px;
+  display: initial;
+  padding: 1px 4px;
+}
+</style>
+  <title>linux、ROS杂 | 小董的BLOG</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">小董的BLOG</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-目录">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tag fa-fw"></i>目录</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2024/02/19/linux%E6%9D%82/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/zoe.gif">
+      <meta itemprop="name" content="dhk">
+      <meta itemprop="description" content="记录一些学习日常">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小董的BLOG">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          linux、ROS杂
+        </h1>
+
+        <div class="post-meta">
+		  
+		  
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2024-02-19 17:06:26" itemprop="dateCreated datePublished" datetime="2024-02-19T17:06:26+08:00">2024-02-19</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2024-04-19 16:28:13" itemprop="dateModified" datetime="2024-04-19T16:28:13+08:00">2024-04-19</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="Ubuntu网络图标消失"><a href="#Ubuntu网络图标消失" class="headerlink" title="Ubuntu网络图标消失"></a>Ubuntu网络图标消失</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo service network-manager stop</span><br><span class="line">sudo rm /var/lib/NetworkManager/NetworkManager.state </span><br><span class="line">sudo service network-manager start</span><br></pre></td></tr></table></figure>
+
+<h1 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h1><table>
+<thead>
+<tr>
+<th>ls</th>
+<th>查看当前目录</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>cd</td>
+<td>进入目标路径</td>
+</tr>
+<tr>
+<td>pwd</td>
+<td>查看当前路径</td>
+</tr>
+<tr>
+<td>mkdir</td>
+<td>创建目录</td>
+</tr>
+<tr>
+<td>rmdir&#x2F;rm</td>
+<td>删除目录</td>
+</tr>
+<tr>
+<td>touch</td>
+<td>创建空文件</td>
+</tr>
+<tr>
+<td>echo</td>
+<td>将内容回显到标准输出，可重定向</td>
+</tr>
+<tr>
+<td>file</td>
+<td>查看文件类型</td>
+</tr>
+<tr>
+<td>more&#x2F;less</td>
+<td>查看文件内容，空格翻页，q退出。（less更灵活，&#x2F;..搜索字符串）</td>
+</tr>
+<tr>
+<td>head&#x2F;tail</td>
+<td>查看文件头部&#x2F;尾部</td>
+</tr>
+<tr>
+<td>cat</td>
+<td>将一个或多个文件输出到标准输出，可重定向</td>
+</tr>
+<tr>
+<td>cat -n</td>
+<td>从1开始对输出行进行编号，-s：将多行空白合并</td>
+</tr>
+<tr>
+<td>tar</td>
+<td>-c文件打包；-x解包；-A合并；-f指定文件，加在最后；-C到指定目录</td>
+</tr>
+<tr>
+<td><em>cvf xvf ..-C..</em></td>
+<td>-j调用bzip2；-z调用gzip；-Z调用compress；-t列出列表;-v详细信息</td>
+</tr>
+<tr>
+<td>mv</td>
+<td>文件改名、移动。路径相同则改名，不同则移动</td>
+</tr>
+<tr>
+<td>cp</td>
+<td>文件复制</td>
+</tr>
+<tr>
+<td>clear</td>
+<td>清屏</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<ul>
+<li><p>find [路径] -name “”</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">无路径默认桌面</span><br><span class="line">find -name &quot;*1*&quot;	名字含1的文件</span><br><span class="line">find -name &quot;*.txt&quot;	为后缀的文件</span><br><span class="line">find -name &quot;1*&quot;	以1为开头的文件</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>tar</p>
+<p>打&#x2F;解包文件，解包后文件存放路径为当且文件夹</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">tar -cvf test.tar 1 2</span><br><span class="line">tar -xvf test.tar</span><br></pre></td></tr></table></figure>
+
+<p>tar下的压缩与解压</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">tar -zcvf test.gz 1 2</span><br><span class="line">tar -zxvf test.gz</span><br><span class="line">tar -zxvf test.gz -C 指定路径（必须存在）</span><br><span class="line"></span><br><span class="line">tar -jcvf test.bz2 1 2</span><br><span class="line">tar -jxvf test.bz2</span><br><span class="line">tar -jxvf test.bz2 -C 指定路径（必须存在）</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>软件安装</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># 1. 安装软件</span><br><span class="line">sudo apt install 软件包</span><br><span class="line"># 2. 卸载软件</span><br><span class="line">sudo apt remove 软件名</span><br><span class="line"># 3. 更新已安装的包</span><br><span class="line">sudo apt upgrade</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>which 提示文件&#x2F;命令所在位置</p>
+</li>
+</ul>
+<h2 id="杀死进程"><a href="#杀死进程" class="headerlink" title="杀死进程"></a>杀死进程</h2><ul>
+<li>xkill	强制关闭窗口</li>
+<li>kill (pid号)     pid号用ps -aux查询</li>
+<li>pkill (程序名)</li>
+</ul>
+<h1 id="ROS无法定位软件包"><a href="#ROS无法定位软件包" class="headerlink" title="ROS无法定位软件包"></a>ROS无法定位软件包</h1><p><a target="_blank" rel="noopener" href="https://fishros.org.cn/forum/topic/149/e-%E6%97%A0%E6%B3%95%E5%AE%9A%E4%BD%8D%E8%BD%AF%E4%BB%B6%E5%8C%85/3">E：无法定位软件包 | 鱼香ROS (fishros.org.cn)</a></p>
+<p>版本对应or源的问题，ubuntu20对应noetic</p>
+<h1 id="ROS-TF乌龟程序报错"><a href="#ROS-TF乌龟程序报错" class="headerlink" title="ROS TF乌龟程序报错"></a>ROS TF乌龟程序报错</h1><p><code>sudo apt install python-is-python3</code>升级python版本</p>
+<h1 id="view-frames意外停止"><a href="#view-frames意外停止" class="headerlink" title="view_frames意外停止"></a><strong>view_frames</strong>意外停止</h1><ul>
+<li><code>sudo apt-get install vim</code></li>
+<li><code>sudo vim /opt/ros/noetic/lib/tf/view_frames</code> </li>
+<li>89行处，修改为 <code>m = r.search(vstr.decode(&#39;utf-8&#39;))</code></li>
+</ul>
+<h2 id="Vim的输入模式"><a href="#Vim的输入模式" class="headerlink" title="Vim的输入模式"></a>Vim的输入模式</h2><p>在输入模式下，Vim 可以对文件执行写操作，类似于在 Windows 系统的文档中输入内容。</p>
+<p>使 Vim 进行输入模式的方式是在命令模式状态下输入 i、I、a、A、o、O 等插入命令（各指令的具体功能如表 3 所示），<strong>当编辑文件完成后按 Esc 键即可返回命令模式。</strong></p>
+<table>
+<thead>
+<tr>
+<th>快捷键</th>
+<th>功能描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>i</td>
+<td><strong>在当前光标所在位置插入随后输入的文本，光标后的文本相应向右移动</strong></td>
+</tr>
+<tr>
+<td>I</td>
+<td>在光标所在行的行首插入随后输入的文本，行首是该行的第一个非空白字符，相当于光标移动到行首执行 i 命令</td>
+</tr>
+<tr>
+<td>o</td>
+<td>在光标所在行的下面插入新的一行。光标停在空行首，等待输入文本</td>
+</tr>
+<tr>
+<td>O</td>
+<td>在光标所在行的上面插入新的一行。光标停在空行的行首，等待输入文本</td>
+</tr>
+<tr>
+<td>a</td>
+<td>在当前光标所在位置之后插入随后输入的文本</td>
+</tr>
+<tr>
+<td>A</td>
+<td>在光标所在行的行尾插入随后输入的文本，相当于光标移动到行尾再执行a命令</td>
+</tr>
+</tbody></table>
+<h2 id="退出vim"><a href="#退出vim" class="headerlink" title="退出vim"></a>退出vim</h2><p><strong>按esc</strong>后，输入如下，一般<code>:wq</code>就行</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">:q  </span><br><span class="line">//退出</span><br><span class="line"></span><br><span class="line">:q! </span><br><span class="line">//退出且不保存（:quit!的缩写）</span><br><span class="line"></span><br><span class="line">:wq</span><br><span class="line">//保存并退出</span><br><span class="line"></span><br><span class="line">:wq!</span><br><span class="line">//保存并退出即使文件没有写入权限（强制保存退出）</span><br><span class="line"></span><br><span class="line">:x</span><br><span class="line">//保存并退出（类似:wq，但是只有在有更改的情况下才保存）</span><br><span class="line"></span><br><span class="line">:exit</span><br><span class="line">//保存并退出（和:x相同）</span><br><span class="line"></span><br><span class="line">:qa</span><br><span class="line">//退出所有(:quitall的缩写)</span><br><span class="line"></span><br><span class="line">:cq</span><br><span class="line">//退出且不保存（即便有错误）</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+    </div>
+
+    
+    
+    <div class="post-widgets">
+      <div id="needsharebutton-postbottom">
+        <span class="btn">
+          <i class="fa fa-share-alt" aria-hidden="true"></i>
+        </span>
+      </div>
+    </div>
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/ROS/" rel="tag"><i class="fa fa-tag"></i># ROS</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2024/02/05/%E5%9F%BA%E7%A1%80%E4%B9%90%E7%90%86/" rel="prev" title="基础乐理">
+      <i class="fa fa-chevron-left"></i> 基础乐理
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2024/03/15/%E6%B5%8B%E8%AF%95%E6%8A%80%E6%9C%AF%EF%BC%88%E8%87%AA%E7%94%A8%EF%BC%89/" rel="next" title="测试技术（自用）">
+      测试技术（自用） <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Ubuntu%E7%BD%91%E7%BB%9C%E5%9B%BE%E6%A0%87%E6%B6%88%E5%A4%B1"><span class="nav-number">1.</span> <span class="nav-text">Ubuntu网络图标消失</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4"><span class="nav-number">2.</span> <span class="nav-text">常用命令</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9D%80%E6%AD%BB%E8%BF%9B%E7%A8%8B"><span class="nav-number">2.1.</span> <span class="nav-text">杀死进程</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ROS%E6%97%A0%E6%B3%95%E5%AE%9A%E4%BD%8D%E8%BD%AF%E4%BB%B6%E5%8C%85"><span class="nav-number">3.</span> <span class="nav-text">ROS无法定位软件包</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ROS-TF%E4%B9%8C%E9%BE%9F%E7%A8%8B%E5%BA%8F%E6%8A%A5%E9%94%99"><span class="nav-number">4.</span> <span class="nav-text">ROS TF乌龟程序报错</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#view-frames%E6%84%8F%E5%A4%96%E5%81%9C%E6%AD%A2"><span class="nav-number">5.</span> <span class="nav-text">view_frames意外停止</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Vim%E7%9A%84%E8%BE%93%E5%85%A5%E6%A8%A1%E5%BC%8F"><span class="nav-number">5.1.</span> <span class="nav-text">Vim的输入模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%80%80%E5%87%BAvim"><span class="nav-number">5.2.</span> <span class="nav-text">退出vim</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="dhk"
+      src="/images/zoe.gif">
+  <p class="site-author-name" itemprop="name">dhk</p>
+  <div class="site-description" itemprop="description">记录一些学习日常</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">58</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/dhkkkkkk" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;dhkkkkkk" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/1154012965@qq.com" title="QQ email → 1154012965@qq.com"><i class="fa fa-envelope fa-fw"></i>QQ email</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"> </div>
+
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">dhk</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/xxw/anime.min.js"></script>
+  <script src="/xxw/velocity/velocity.min.js"></script>
+  <script src="/xxw/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  <script src="//cdn.jsdelivr.net/gh/theme-next/theme-next-needmoreshare2@1/needsharebutton.min.js"></script>
+  <script>
+      pbOptions = {};
+        pbOptions.iconStyle = "box";
+        pbOptions.boxForm = "horizontal";
+        pbOptions.position = "bottomCenter";
+        pbOptions.networks = "Wechat,QQZone,Weibo,Douban,Twitter,Facebook";
+      new needShareButton('#needsharebutton-postbottom', pbOptions);
+  </script>
+<script>
+            window.imageLazyLoadSetting = {
+                isSPA: false,
+                preloadRatio: 1,
+                processImages: null,
+            };
+        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(e.href.match(t)||e.href.match(r))&&(e.href=a.dataset.original)})});</script><script>!function(n){n.imageLazyLoadSetting.processImages=o;var e=n.imageLazyLoadSetting.isSPA,i=n.imageLazyLoadSetting.preloadRatio||1,r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]"));function o(){e&&(r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")));for(var t,a=0;a<r.length;a++)0<=(t=(t=r[a]).getBoundingClientRect()).bottom&&0<=t.left&&t.top<=(n.innerHeight*i||document.documentElement.clientHeight*i)&&function(){var t,e,n,i,o=r[a];t=o,e=function(){r=r.filter(function(t){return o!==t})},n=new Image,i=t.getAttribute("data-original"),n.onload=function(){t.src=i,e&&e()},t.src!==i&&(n.src=i)}()}o(),n.addEventListener("scroll",function(){var t,e;t=o,e=n,clearTimeout(t.tId),t.tId=setTimeout(function(){t.call(e)},500)})}(this);</script><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script></body>
+</html>

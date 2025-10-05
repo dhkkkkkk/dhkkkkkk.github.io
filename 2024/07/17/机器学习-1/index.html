@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/xxw/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="/xxw/pace/pace-theme-minimal.min.css">
+  <script src="/xxw/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"dhkkkkkk.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="监督学习监督学习是从对应了某种特定标签的的训练数据（例如房价预测中的输入里，一个面积对应一个的价格）中学习并建立模型，然后基于该模型预测未知的样本。其中，模型的输入是某个样本数据的特征，而函数的输出是与该样本相对应的标签。监督学习算法则负责预测输入到输出之间的映射关系 例如：输入为语音，输出为文字，则该监督学习的应用即为语音识别 分类：  回归算法(regression) 分类算法(classfi">
+<meta property="og:type" content="article">
+<meta property="og:title" content="机器学习的一些概念">
+<meta property="og:url" content="https://dhkkkkkk.github.io/2024/07/17/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-1/index.html">
+<meta property="og:site_name" content="小董的BLOG">
+<meta property="og:description" content="监督学习监督学习是从对应了某种特定标签的的训练数据（例如房价预测中的输入里，一个面积对应一个的价格）中学习并建立模型，然后基于该模型预测未知的样本。其中，模型的输入是某个样本数据的特征，而函数的输出是与该样本相对应的标签。监督学习算法则负责预测输入到输出之间的映射关系 例如：输入为语音，输出为文字，则该监督学习的应用即为语音识别 分类：  回归算法(regression) 分类算法(classfi">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://dhkkkkkk.github.io/images/loading.png">
+<meta property="og:image" content="https://dhkkkkkk.github.io/images/loading.png">
+<meta property="og:image" content="https://dhkkkkkk.github.io/images/loading.png">
+<meta property="og:image" content="https://dhkkkkkk.github.io/images/loading.png">
+<meta property="og:image" content="https://dhkkkkkk.github.io/images/loading.png">
+<meta property="article:published_time" content="2024-07-17T06:17:08.000Z">
+<meta property="article:modified_time" content="2024-10-22T08:45:06.198Z">
+<meta property="article:author" content="dhk">
+<meta property="article:tag" content="深度学习">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://dhkkkkkk.github.io/images/loading.png">
+
+<link rel="canonical" href="https://dhkkkkkk.github.io/2024/07/17/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-1/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+<link rel="stylesheet" href="//cdn.jsdelivr.net/gh/theme-next/theme-next-needmoreshare2@1/needsharebutton.min.css"><style>
+#needsharebutton-postbottom {
+  cursor: pointer;
+  height: 26px;
+  margin-top: 10px;
+  position: relative;
+}
+#needsharebutton-postbottom .btn {
+  border: 1px solid $btn-default-border-color;
+  border-radius: 3px;
+  display: initial;
+  padding: 1px 4px;
+}
+</style>
+  <title>机器学习的一些概念 | 小董的BLOG</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">小董的BLOG</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-目录">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tag fa-fw"></i>目录</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2024/07/17/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/zoe.gif">
+      <meta itemprop="name" content="dhk">
+      <meta itemprop="description" content="记录一些学习日常">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小董的BLOG">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          机器学习的一些概念
+        </h1>
+
+        <div class="post-meta">
+		  
+		  
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2024-07-17 14:17:08" itemprop="dateCreated datePublished" datetime="2024-07-17T14:17:08+08:00">2024-07-17</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2024-10-22 16:45:06" itemprop="dateModified" datetime="2024-10-22T16:45:06+08:00">2024-10-22</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="监督学习"><a href="#监督学习" class="headerlink" title="监督学习"></a>监督学习</h1><p>监督学习是从<strong>对应了某种特定标签的的训练数据（例如房价预测中的输入里，一个面积对应一个的价格）</strong>中学习并建立模型，然后基于该模型预测未知的样本。其中，模型的<strong>输入是某个样本数据的特征</strong>，而函数的输出是<strong>与该样本相对应的标签</strong>。监督学习算法则负责预测输入到输出之间的<strong>映射关系</strong></p>
+<p>例如：输入为语音，输出为文字，则该监督学习的应用即为语音识别</p>
+<p>分类：</p>
+<ul>
+<li>回归算法(regression)</li>
+<li>分类算法(classfication)。分类预测的是一个小的、有限的一套阐述类别（输出大多为离散、有限的）</li>
+</ul>
+<h2 id="线性回归模型（linear-regression）"><a href="#线性回归模型（linear-regression）" class="headerlink" title="线性回归模型（linear regression）"></a>线性回归模型（linear regression）</h2><ul>
+<li>训练集（training set）：用于训练模型的已知数据<strong>集合</strong></li>
+<li>输入变量x(input&#x2F;feature)：训练集中的输入</li>
+<li>输出变量y (output&#x2F;target)：训练集中的输出</li>
+<li>模型：用于预测的函数  </li>
+<li>预测y-hat(^)（prediction）：模型的输出，<strong>注意区分y和y-hat</strong></li>
+</ul>
+<h3 id="代价函数（cost-function）or损失函数（loss）"><a href="#代价函数（cost-function）or损失函数（loss）" class="headerlink" title="代价函数（cost function）or损失函数（loss）"></a>代价函数（cost function）or损失函数（loss）</h3><p>用于评估模型输出和训练数据的拟合程度</p>
+<p>因此代价函数输出应尽可能<strong>小</strong></p>
+<h4 id="平方误差代价函数（squared-error-cost-function）"><a href="#平方误差代价函数（squared-error-cost-function）" class="headerlink" title="平方误差代价函数（squared error cost function）"></a>平方误差代价函数（squared error cost function）</h4><img src="/images/loading.png" data-original="/2024/07/17/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-1/2.JPG" class title="This is an image"> 
+
+<p>模型参数w，b会影响代价函数的输出，而找到当前训练集下使代价函数输出最小的参数w，b，即可找到对当前训练集最适合的线性回归模型</p>
+<img src="/images/loading.png" data-original="/2024/07/17/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-1/3.jpg" class title="This is an image"> 
+
+<p><u>对于使用平方误差代价函数的线性回归中总会出现弓形、吊床形的图像</u></p>
+<p>即只有一个最小值</p>
+<h3 id="梯度下降算法（gradient-descent）"><a href="#梯度下降算法（gradient-descent）" class="headerlink" title="梯度下降算法（gradient descent）"></a>梯度下降算法（gradient descent）</h3><p>可用于尝试最小化任何函数</p>
+<img src="/images/loading.png" data-original="/2024/07/17/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-1/4.jpg" class title="This is an image"> 
+
+<ul>
+<li><p>参数w、b必须同时更新，而不算将更新后的w用于b的更新中</p>
+</li>
+<li><p>α：学习率，学习率过大会导致代价函数无法收敛，甚至效果越来越差</p>
+</li>
+<li><p>由式可以看出，<strong>梯度下降算法只 能找到代价函数中的某个极小值</strong>，而对于找到的极小值则与w，b在梯度下降算法中的初始值有关</p>
+</li>
+</ul>
+<img src="/images/loading.png" data-original="/2024/07/17/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-1/5.jpg" class title="This is an image">
+
+<p>由于两个参数的梯度下降式是互相独立的，因此对w或b的更新可以视作，另一个参数固定。再结合梯度下降算式可以看出该算法其实是利用了斜率的正负特性进行找极小值的过程 </p>
+<h2 id="分类算法"><a href="#分类算法" class="headerlink" title="分类算法"></a>分类算法</h2><h3 id="逻辑回归算法（非回归算法）logistic-regression"><a href="#逻辑回归算法（非回归算法）logistic-regression" class="headerlink" title="逻辑回归算法（非回归算法）logistic regression"></a>逻辑回归算法（非回归算法）logistic regression</h3><h1 id="非监督学习"><a href="#非监督学习" class="headerlink" title="非监督学习"></a>非监督学习</h1><p>非监督学习算法的输入样本<strong>不对应某种特定的标签</strong>，而是<strong>自动</strong>地从样本中学习以找到某种结构、模式……</p>
+<p>分类：</p>
+<ul>
+<li>聚类算法(clustering)：例如从数万篇文章中找到相似词（<strong>非特定</strong>）并聚类</li>
+<li>异常检测（anomaly detection）</li>
+<li>降维（dimensionality reduction）</li>
+</ul>
+<p>吴恩达の小练习：（其中两个为监督两个为非监督）</p>
+<img src="/images/loading.png" data-original="/2024/07/17/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-1/1.jpg" class title="This is an image"> 
+
+<h1 id="jupyter-Notebook"><a href="#jupyter-Notebook" class="headerlink" title="jupyter Notebook"></a>jupyter Notebook</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">python -m pip install --upgrade pip</span><br><span class="line">pip install jupyter notebook</span><br></pre></td></tr></table></figure>
+
+<p>剩下的一些操作lab1文件写的很清楚，忘了就去看看</p>
+<h1 id="参数归一化（normalization）"><a href="#参数归一化（normalization）" class="headerlink" title="参数归一化（normalization）"></a>参数归一化（normalization）</h1><p>由于各参数（特征）的变化范围、大小、单位不同，需要先进行归一化处理后才输入到模型</p>
+<h2 id="平均归一化（mean-normalization）"><a href="#平均归一化（mean-normalization）" class="headerlink" title="平均归一化（mean normalization）"></a>平均归一化（mean normalization）</h2><h2 id="Z-score-normalization"><a href="#Z-score-normalization" class="headerlink" title="Z-score normalization"></a>Z-score normalization</h2>
+    </div>
+
+    
+    
+    <div class="post-widgets">
+      <div id="needsharebutton-postbottom">
+        <span class="btn">
+          <i class="fa fa-share-alt" aria-hidden="true"></i>
+        </span>
+      </div>
+    </div>
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" rel="tag"><i class="fa fa-tag"></i># 深度学习</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2024/07/12/%E8%AE%BA%E6%96%87%E6%92%B0%E5%86%99/" rel="prev" title="论文撰写">
+      <i class="fa fa-chevron-left"></i> 论文撰写
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2024/07/23/YOLO-v8/" rel="next" title="YOLO_v8">
+      YOLO_v8 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%9B%91%E7%9D%A3%E5%AD%A6%E4%B9%A0"><span class="nav-number">1.</span> <span class="nav-text">监督学习</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E6%A8%A1%E5%9E%8B%EF%BC%88linear-regression%EF%BC%89"><span class="nav-number">1.1.</span> <span class="nav-text">线性回归模型（linear regression）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%A3%E4%BB%B7%E5%87%BD%E6%95%B0%EF%BC%88cost-function%EF%BC%89or%E6%8D%9F%E5%A4%B1%E5%87%BD%E6%95%B0%EF%BC%88loss%EF%BC%89"><span class="nav-number">1.1.1.</span> <span class="nav-text">代价函数（cost function）or损失函数（loss）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B9%B3%E6%96%B9%E8%AF%AF%E5%B7%AE%E4%BB%A3%E4%BB%B7%E5%87%BD%E6%95%B0%EF%BC%88squared-error-cost-function%EF%BC%89"><span class="nav-number">1.1.1.1.</span> <span class="nav-text">平方误差代价函数（squared error cost function）</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D%E7%AE%97%E6%B3%95%EF%BC%88gradient-descent%EF%BC%89"><span class="nav-number">1.1.2.</span> <span class="nav-text">梯度下降算法（gradient descent）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%86%E7%B1%BB%E7%AE%97%E6%B3%95"><span class="nav-number">1.2.</span> <span class="nav-text">分类算法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%80%BB%E8%BE%91%E5%9B%9E%E5%BD%92%E7%AE%97%E6%B3%95%EF%BC%88%E9%9D%9E%E5%9B%9E%E5%BD%92%E7%AE%97%E6%B3%95%EF%BC%89logistic-regression"><span class="nav-number">1.2.1.</span> <span class="nav-text">逻辑回归算法（非回归算法）logistic regression</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%9D%9E%E7%9B%91%E7%9D%A3%E5%AD%A6%E4%B9%A0"><span class="nav-number">2.</span> <span class="nav-text">非监督学习</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#jupyter-Notebook"><span class="nav-number">3.</span> <span class="nav-text">jupyter Notebook</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%82%E6%95%B0%E5%BD%92%E4%B8%80%E5%8C%96%EF%BC%88normalization%EF%BC%89"><span class="nav-number">4.</span> <span class="nav-text">参数归一化（normalization）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B9%B3%E5%9D%87%E5%BD%92%E4%B8%80%E5%8C%96%EF%BC%88mean-normalization%EF%BC%89"><span class="nav-number">4.1.</span> <span class="nav-text">平均归一化（mean normalization）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Z-score-normalization"><span class="nav-number">4.2.</span> <span class="nav-text">Z-score normalization</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="dhk"
+      src="/images/zoe.gif">
+  <p class="site-author-name" itemprop="name">dhk</p>
+  <div class="site-description" itemprop="description">记录一些学习日常</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">58</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/dhkkkkkk" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;dhkkkkkk" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/1154012965@qq.com" title="QQ email → 1154012965@qq.com"><i class="fa fa-envelope fa-fw"></i>QQ email</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"> </div>
+
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">dhk</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/xxw/anime.min.js"></script>
+  <script src="/xxw/velocity/velocity.min.js"></script>
+  <script src="/xxw/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  <script src="//cdn.jsdelivr.net/gh/theme-next/theme-next-needmoreshare2@1/needsharebutton.min.js"></script>
+  <script>
+      pbOptions = {};
+        pbOptions.iconStyle = "box";
+        pbOptions.boxForm = "horizontal";
+        pbOptions.position = "bottomCenter";
+        pbOptions.networks = "Wechat,QQZone,Weibo,Douban,Twitter,Facebook";
+      new needShareButton('#needsharebutton-postbottom', pbOptions);
+  </script>
+<script>
+            window.imageLazyLoadSetting = {
+                isSPA: false,
+                preloadRatio: 1,
+                processImages: null,
+            };
+        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(e.href.match(t)||e.href.match(r))&&(e.href=a.dataset.original)})});</script><script>!function(n){n.imageLazyLoadSetting.processImages=o;var e=n.imageLazyLoadSetting.isSPA,i=n.imageLazyLoadSetting.preloadRatio||1,r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]"));function o(){e&&(r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")));for(var t,a=0;a<r.length;a++)0<=(t=(t=r[a]).getBoundingClientRect()).bottom&&0<=t.left&&t.top<=(n.innerHeight*i||document.documentElement.clientHeight*i)&&function(){var t,e,n,i,o=r[a];t=o,e=function(){r=r.filter(function(t){return o!==t})},n=new Image,i=t.getAttribute("data-original"),n.onload=function(){t.src=i,e&&e()},t.src!==i&&(n.src=i)}()}o(),n.addEventListener("scroll",function(){var t,e;t=o,e=n,clearTimeout(t.tId),t.tId=setTimeout(function(){t.call(e)},500)})}(this);</script><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script></body>
+</html>

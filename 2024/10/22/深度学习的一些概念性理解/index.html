@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/xxw/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="/xxw/pace/pace-theme-minimal.min.css">
+  <script src="/xxw/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"dhkkkkkk.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="激活函数为什么要使用激活函数如果没有激活函数，神经网络中将只存在大量的权重*输入（还有偏置）的线性叠加，无法拟合出非线性函数的效果。当引入非线性的激活函数后，神经网络便可以逼近任何线性、非线性函数 常见激活函数sigmoid函数指一类S型函数  优点：logistic函数可以将输出归一到(0,1)，而Tanh函数可以处理负数输入，因此Tanh会更常用一些 缺点：在两个饱和处，其斜率变化较缓，导致w">
+<meta property="og:type" content="article">
+<meta property="og:title" content="深度学习的一些概念性理解">
+<meta property="og:url" content="https://dhkkkkkk.github.io/2024/10/22/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%9A%84%E4%B8%80%E4%BA%9B%E6%A6%82%E5%BF%B5%E6%80%A7%E7%90%86%E8%A7%A3/index.html">
+<meta property="og:site_name" content="小董的BLOG">
+<meta property="og:description" content="激活函数为什么要使用激活函数如果没有激活函数，神经网络中将只存在大量的权重*输入（还有偏置）的线性叠加，无法拟合出非线性函数的效果。当引入非线性的激活函数后，神经网络便可以逼近任何线性、非线性函数 常见激活函数sigmoid函数指一类S型函数  优点：logistic函数可以将输出归一到(0,1)，而Tanh函数可以处理负数输入，因此Tanh会更常用一些 缺点：在两个饱和处，其斜率变化较缓，导致w">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://dhkkkkkk.github.io/images/loading.png">
+<meta property="article:published_time" content="2024-10-22T08:46:18.000Z">
+<meta property="article:modified_time" content="2024-11-08T12:08:12.638Z">
+<meta property="article:author" content="dhk">
+<meta property="article:tag" content="深度学习">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://dhkkkkkk.github.io/images/loading.png">
+
+<link rel="canonical" href="https://dhkkkkkk.github.io/2024/10/22/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%9A%84%E4%B8%80%E4%BA%9B%E6%A6%82%E5%BF%B5%E6%80%A7%E7%90%86%E8%A7%A3/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+<link rel="stylesheet" href="//cdn.jsdelivr.net/gh/theme-next/theme-next-needmoreshare2@1/needsharebutton.min.css"><style>
+#needsharebutton-postbottom {
+  cursor: pointer;
+  height: 26px;
+  margin-top: 10px;
+  position: relative;
+}
+#needsharebutton-postbottom .btn {
+  border: 1px solid $btn-default-border-color;
+  border-radius: 3px;
+  display: initial;
+  padding: 1px 4px;
+}
+</style>
+  <title>深度学习的一些概念性理解 | 小董的BLOG</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">小董的BLOG</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-目录">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tag fa-fw"></i>目录</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2024/10/22/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%9A%84%E4%B8%80%E4%BA%9B%E6%A6%82%E5%BF%B5%E6%80%A7%E7%90%86%E8%A7%A3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/zoe.gif">
+      <meta itemprop="name" content="dhk">
+      <meta itemprop="description" content="记录一些学习日常">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小董的BLOG">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          深度学习的一些概念性理解
+        </h1>
+
+        <div class="post-meta">
+		  
+		  
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2024-10-22 16:46:18" itemprop="dateCreated datePublished" datetime="2024-10-22T16:46:18+08:00">2024-10-22</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2024-11-08 20:08:12" itemprop="dateModified" datetime="2024-11-08T20:08:12+08:00">2024-11-08</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="激活函数"><a href="#激活函数" class="headerlink" title="激活函数"></a>激活函数</h1><h2 id="为什么要使用激活函数"><a href="#为什么要使用激活函数" class="headerlink" title="为什么要使用激活函数"></a>为什么要使用激活函数</h2><p>如果没有激活函数，神经网络中将只存在大量的<code>权重*输入</code>（还有偏置）的线性叠加，无法拟合出非线性函数的效果。当引入非线性的激活函数后，神经网络便可以逼近任何线性、非线性函数</p>
+<h2 id="常见激活函数"><a href="#常见激活函数" class="headerlink" title="常见激活函数"></a>常见激活函数</h2><h3 id="sigmoid函数"><a href="#sigmoid函数" class="headerlink" title="sigmoid函数"></a>sigmoid函数</h3><p>指一类S型函数</p>
+<ul>
+<li>优点：logistic函数可以将输出归一到(0,1)，而Tanh函数可以处理负数输入，因此Tanh会更常用一些</li>
+<li>缺点：<strong>在两个饱和处，其斜率变化较缓，导致w的变化对loss的影响较小，最终导致w的更新变慢</strong>（梯度消失）（我感觉这样说好理解一点）</li>
+</ul>
+<h3 id="ReLU函数"><a href="#ReLU函数" class="headerlink" title="ReLU函数"></a>ReLU函数</h3><p>引入了负数全部置0的非线性元素，且其正部本身为线性，斜率为1，不会出现梯度消失问题</p>
+<p>缺点：但如果参数在一次不恰当的更新后，导致某一个层输入到某个神经元的值为0时，<strong>该神经元输出到后面所有神经元的值全为0，此时该神经元的w无论怎么变化，输出到下一层所有神经元的值都为0（梯度为0），导致该神经元前的参数都无法更新</strong>，出现dead relu</p>
+<h1 id="反向传播（BP）"><a href="#反向传播（BP）" class="headerlink" title="反向传播（BP）"></a>反向传播（BP）</h1><h2 id="参数学习"><a href="#参数学习" class="headerlink" title="参数学习"></a>参数学习</h2><p>以交叉熵损失函数为例，假设y为one-hot向量（仅标签位置为1，其他0），则可以延伸至多分类问题，且其输出仅与标签位置处的y^相关，y^越小，损失函数越大(y^&lt;1)</p>
+<img src="/images/loading.png" data-original="/2024/10/22/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%9A%84%E4%B8%80%E4%BA%9B%E6%A6%82%E5%BF%B5%E6%80%A7%E7%90%86%E8%A7%A3/1.jpg" class title="This is an image"> 
+
+<p>由于y^是W（权重矩阵）和偏置的函数，因此Loss函数也为W和b的函数，通过优化迭代他们的值即可接近Loss的最小值，而要降低Loss，通常是借助各w的梯度实现</p>
+<h2 id="反向传播算法"><a href="#反向传播算法" class="headerlink" title="反向传播算法"></a>反向传播算法</h2><p>当一次正向传播后，Loss值已经确定，此时Loss对所有w的偏导都已确定，因此计算出这些偏导即可完成一次梯度下降。如果从开头通过链式法则对所有w逐一计算效率较低。但由链式法则又可得：</p>
+<p><strong>loss对某一w的偏导可通过下一层的所有w偏导计算而得，因此从输出层对w偏导进行反向计算效率更高</strong></p>
+<h1 id="注意力机制"><a href="#注意力机制" class="headerlink" title="注意力机制"></a>注意力机制</h1><h2 id="向量点乘的几何意义"><a href="#向量点乘的几何意义" class="headerlink" title="向量点乘的几何意义"></a>向量点乘的几何意义</h2><p>向量<strong>x</strong>在向量<strong>y</strong>方向上的投影再与向量<strong>y</strong>的乘积，能够反应两个向量的相似度。<u>向量点乘结果越大，两个向量越相似。</u></p>
+<h2 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h2><p>注意力机制通过计算输入序列中每个位置（时间步）的权重，来决定每个时间步的重要性。权重越高，说明该时间步包含的信息越关键，模型就会更“关注”该部分。</p>
+<p>与之相比，卷积只能使输入局部相关，而全连接层则计算量大，<strong>注意力机制则可以根据整个输入序列实时调整权重</strong></p>
+
+    </div>
+
+    
+    
+    <div class="post-widgets">
+      <div id="needsharebutton-postbottom">
+        <span class="btn">
+          <i class="fa fa-share-alt" aria-hidden="true"></i>
+        </span>
+      </div>
+    </div>
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" rel="tag"><i class="fa fa-tag"></i># 深度学习</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2024/09/14/%E5%AF%B9%E6%AF%94%E5%AD%A6%E4%B9%A0%E4%B9%8BSimCLR/" rel="prev" title="对比学习之SimCLR">
+      <i class="fa fa-chevron-left"></i> 对比学习之SimCLR
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2024/11/13/xLSTM%E7%BB%93%E6%9E%84%E6%A2%B3%E7%90%86/" rel="next" title="xLSTM结构梳理">
+      xLSTM结构梳理 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%BF%80%E6%B4%BB%E5%87%BD%E6%95%B0"><span class="nav-number">1.</span> <span class="nav-text">激活函数</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E4%BD%BF%E7%94%A8%E6%BF%80%E6%B4%BB%E5%87%BD%E6%95%B0"><span class="nav-number">1.1.</span> <span class="nav-text">为什么要使用激活函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%B8%E8%A7%81%E6%BF%80%E6%B4%BB%E5%87%BD%E6%95%B0"><span class="nav-number">1.2.</span> <span class="nav-text">常见激活函数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#sigmoid%E5%87%BD%E6%95%B0"><span class="nav-number">1.2.1.</span> <span class="nav-text">sigmoid函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ReLU%E5%87%BD%E6%95%B0"><span class="nav-number">1.2.2.</span> <span class="nav-text">ReLU函数</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD%EF%BC%88BP%EF%BC%89"><span class="nav-number">2.</span> <span class="nav-text">反向传播（BP）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E6%95%B0%E5%AD%A6%E4%B9%A0"><span class="nav-number">2.1.</span> <span class="nav-text">参数学习</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD%E7%AE%97%E6%B3%95"><span class="nav-number">2.2.</span> <span class="nav-text">反向传播算法</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%B3%A8%E6%84%8F%E5%8A%9B%E6%9C%BA%E5%88%B6"><span class="nav-number">3.</span> <span class="nav-text">注意力机制</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%91%E9%87%8F%E7%82%B9%E4%B9%98%E7%9A%84%E5%87%A0%E4%BD%95%E6%84%8F%E4%B9%89"><span class="nav-number">3.1.</span> <span class="nav-text">向量点乘的几何意义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%9C%E7%94%A8"><span class="nav-number">3.2.</span> <span class="nav-text">作用</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="dhk"
+      src="/images/zoe.gif">
+  <p class="site-author-name" itemprop="name">dhk</p>
+  <div class="site-description" itemprop="description">记录一些学习日常</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">58</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/dhkkkkkk" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;dhkkkkkk" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/1154012965@qq.com" title="QQ email → 1154012965@qq.com"><i class="fa fa-envelope fa-fw"></i>QQ email</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"> </div>
+
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">dhk</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/xxw/anime.min.js"></script>
+  <script src="/xxw/velocity/velocity.min.js"></script>
+  <script src="/xxw/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  <script src="//cdn.jsdelivr.net/gh/theme-next/theme-next-needmoreshare2@1/needsharebutton.min.js"></script>
+  <script>
+      pbOptions = {};
+        pbOptions.iconStyle = "box";
+        pbOptions.boxForm = "horizontal";
+        pbOptions.position = "bottomCenter";
+        pbOptions.networks = "Wechat,QQZone,Weibo,Douban,Twitter,Facebook";
+      new needShareButton('#needsharebutton-postbottom', pbOptions);
+  </script>
+<script>
+            window.imageLazyLoadSetting = {
+                isSPA: false,
+                preloadRatio: 1,
+                processImages: null,
+            };
+        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(e.href.match(t)||e.href.match(r))&&(e.href=a.dataset.original)})});</script><script>!function(n){n.imageLazyLoadSetting.processImages=o;var e=n.imageLazyLoadSetting.isSPA,i=n.imageLazyLoadSetting.preloadRatio||1,r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]"));function o(){e&&(r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")));for(var t,a=0;a<r.length;a++)0<=(t=(t=r[a]).getBoundingClientRect()).bottom&&0<=t.left&&t.top<=(n.innerHeight*i||document.documentElement.clientHeight*i)&&function(){var t,e,n,i,o=r[a];t=o,e=function(){r=r.filter(function(t){return o!==t})},n=new Image,i=t.getAttribute("data-original"),n.onload=function(){t.src=i,e&&e()},t.src!==i&&(n.src=i)}()}o(),n.addEventListener("scroll",function(){var t,e;t=o,e=n,clearTimeout(t.tId),t.tId=setTimeout(function(){t.call(e)},500)})}(this);</script><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script></body>
+</html>

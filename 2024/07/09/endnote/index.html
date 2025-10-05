@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/xxw/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="/xxw/pace/pace-theme-minimal.min.css">
+  <script src="/xxw/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"dhkkkkkk.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="本文学习基于endnote中科大慕课_bilibili 基本使用    在线搜索可在不同数据库中按需检索文献 Retrieve result可选检索结果显示数量 ➕可将选中文献复制到本地数据库 查找全文可搜索原文PDF；也可通过打开网址进行检索。PDF最好用endnote内置阅读器打开 可在左侧栏对数据库文献进行分组，直接拖拽就可  在word中使用endnote关联word 在endnote安装">
+<meta property="og:type" content="article">
+<meta property="og:title" content="EndNote">
+<meta property="og:url" content="https://dhkkkkkk.github.io/2024/07/09/endnote/index.html">
+<meta property="og:site_name" content="小董的BLOG">
+<meta property="og:description" content="本文学习基于endnote中科大慕课_bilibili 基本使用    在线搜索可在不同数据库中按需检索文献 Retrieve result可选检索结果显示数量 ➕可将选中文献复制到本地数据库 查找全文可搜索原文PDF；也可通过打开网址进行检索。PDF最好用endnote内置阅读器打开 可在左侧栏对数据库文献进行分组，直接拖拽就可  在word中使用endnote关联word 在endnote安装">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://dhkkkkkk.github.io/images/loading.png">
+<meta property="og:image" content="https://dhkkkkkk.github.io/images/loading.png">
+<meta property="article:published_time" content="2024-07-09T08:12:39.000Z">
+<meta property="article:modified_time" content="2024-07-14T11:08:53.020Z">
+<meta property="article:author" content="dhk">
+<meta property="article:tag" content="软件&amp;工具的学习笔记">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://dhkkkkkk.github.io/images/loading.png">
+
+<link rel="canonical" href="https://dhkkkkkk.github.io/2024/07/09/endnote/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+<link rel="stylesheet" href="//cdn.jsdelivr.net/gh/theme-next/theme-next-needmoreshare2@1/needsharebutton.min.css"><style>
+#needsharebutton-postbottom {
+  cursor: pointer;
+  height: 26px;
+  margin-top: 10px;
+  position: relative;
+}
+#needsharebutton-postbottom .btn {
+  border: 1px solid $btn-default-border-color;
+  border-radius: 3px;
+  display: initial;
+  padding: 1px 4px;
+}
+</style>
+  <title>EndNote | 小董的BLOG</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">小董的BLOG</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-目录">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tag fa-fw"></i>目录</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2024/07/09/endnote/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/zoe.gif">
+      <meta itemprop="name" content="dhk">
+      <meta itemprop="description" content="记录一些学习日常">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小董的BLOG">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          EndNote
+        </h1>
+
+        <div class="post-meta">
+		  
+		  
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2024-07-09 16:12:39" itemprop="dateCreated datePublished" datetime="2024-07-09T16:12:39+08:00">2024-07-09</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2024-07-14 19:08:53" itemprop="dateModified" datetime="2024-07-14T19:08:53+08:00">2024-07-14</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>本文学习基于<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1W4411b7GM/?p=3&spm_id_from=pageDriver&vd_source=063d3dd412d275078eaf18c62b5f21f6">endnote中科大慕课_bilibili</a></p>
+<h1 id="基本使用"><a href="#基本使用" class="headerlink" title="基本使用"></a>基本使用</h1><img src="/images/loading.png" data-original="/2024/07/09/endnote/1.jpg" class title="This is an image"> 
+
+<ul>
+<li>在线搜索可在不同数据库中按需检索文献</li>
+<li>Retrieve result可选检索结果显示数量</li>
+<li>➕可将选中文献复制到本地数据库</li>
+<li><u>查找全文</u>可搜索原文PDF；也可通过<u>打开网址</u>进行检索。PDF最好用endnote内置阅读器打开</li>
+<li>可在左侧栏对数据库文献进行分组，直接拖拽就可</li>
+</ul>
+<h1 id="在word中使用"><a href="#在word中使用" class="headerlink" title="在word中使用"></a>在word中使用</h1><h2 id="endnote关联word"><a href="#endnote关联word" class="headerlink" title="endnote关联word"></a>endnote关联word</h2><ul>
+<li><p>在endnote安装路径下运行configure endnote并勾选第一个选项</p>
+</li>
+<li><p>文件-选项-加载项-管理COM加载项 转到-勾选Endnote cite while you write，如果出现<strong>报错</strong>：</p>
+<ul>
+<li><p>检查window系统位数（一般为64），在endnote安装路径下的Product-Support&#x2F;CWYW中将..x64.dat改为压缩包格式后缀并解压，将解压后的5个文件复制到word的endnote加载项地址进行替换</p>
+</li>
+<li><p>如果还是不行，检查<strong>word</strong>是否为64位，如果win系统为64位而word为32位建议<strong>重装一个64位office（</strong>本人原为32位office2019，全网的方法都试过了还是不行，重装为64位office2021后就正常了，使用的是endnote 21）</p>
+</li>
+<li><p>其他问题可参考：<a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_45936544/article/details/134223088?spm=1001.2014.3001.5506">Word 找不到 Endnote选项_word加载项里找不到endnote-CSDN博客</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/340094831/answer/1057369528"> word2019与endnote如何关联？ - 知乎 (zhihu.com)</a></p>
+<p>如果上述方法都不行真的建议立刻重装一个64位office，反正我是被折磨了一整天的😥</p>
+<p>office卸载建议使用微软官方的彻底卸载（整个过程大概20min左右）：<a target="_blank" rel="noopener" href="https://support.microsoft.com/zh-cn/office/%E4%BB%8E-pc-%E5%8D%B8%E8%BD%BD-office-9dd49b83-264a-477a-8fcc-2fdf5dbf61d8?ui=zh-cn&rs=zh-cn&ad=cn">卸载 Office -Microsoft 支持</a></p>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="在word中插入参考文献"><a href="#在word中插入参考文献" class="headerlink" title="在word中插入参考文献"></a>在word中插入参考文献</h2><img src="/images/loading.png" data-original="/2024/07/09/endnote/2.jpg" class title="This is an image"> 
+
+<ul>
+<li>可在<strong>word中插入</strong>endnote中选中的文献</li>
+<li>也可以<strong>在endnote中</strong>有个引号图标在指定文档中插入文献</li>
+<li>也可以直接在endnote中把相关文献<strong>拖</strong>进word（需打开word中的即时格式化）</li>
+<li>在样式中可以根据要求选择不同的<strong>引用格式</strong></li>
+<li>在插入引文中可以插入<strong>作者名</strong>等信息（需endnote账号）</li>
+<li>在“编辑＆管理引文”中可以<strong>移除引文</strong></li>
+<li>投稿前需将论文在“转换引文和参考文献”中转换为纯文本</li>
+</ul>
+<h2 id="修改引文样式"><a href="#修改引文样式" class="headerlink" title="修改引文样式"></a>修改引文样式</h2><p>endnote21 中 工具-输出样式-编辑xx or新样式</p>
+<h2 id="使用论文模板"><a href="#使用论文模板" class="headerlink" title="使用论文模板"></a>使用论文模板</h2><p>endnote21 中 工具-格式化论文-格式论文</p>
+<h2 id="插图"><a href="#插图" class="headerlink" title="插图"></a>插图</h2><p>使用endnote插图可以自动根据选择的样式进行排版</p>
+<ul>
+<li>新建文献-reference type设置为figure</li>
+<li>title设置该文献名字</li>
+<li>caption设置批注</li>
+<li>figure选择图片</li>
+</ul>
+<h1 id="将文献导入endnote"><a href="#将文献导入endnote" class="headerlink" title="将文献导入endnote"></a>将文献导入endnote</h1><h2 id="1、直接检索"><a href="#1、直接检索" class="headerlink" title="1、直接检索"></a>1、直接检索</h2><p>在endnote中在不同数据库中进行在线搜索，需注意几点</p>
+<ul>
+<li>web of science的年份搜索可通过20xx-20xx进行区间搜索；Pub为20xx:20xx</li>
+<li>可以点击➕选择更多数据库</li>
+</ul>
+<h2 id="2、网站输出"><a href="#2、网站输出" class="headerlink" title="2、网站输出"></a>2、网站输出</h2><ul>
+<li><p>web of science</p>
+<p>通过网站的save to endnote desktop（需根据网站具体情况） </p>
+<p>web of science可先将选中文献Add to Marked List，再导出至endnote</p>
+</li>
+<li><p>Scopus</p>
+<p>export-输出为RIS格式</p>
+</li>
+<li><p>知网</p>
+<p><em>导出的txt在endnote中进行导入，导入选项为endnote import</em>（现在知网可以直接导出endnote可识别的数据库格式）</p>
+</li>
+</ul>
+<h2 id="3、PDF导入"><a href="#3、PDF导入" class="headerlink" title="3、PDF导入"></a>3、PDF导入</h2><p>需在有网络时使用</p>
+<p>如果没有成功识别pdf信息可能是文献无doi号，可以尝试改名+右键 查找文献更新</p>
+<p>可在endnote首选项（preference）中设置pdf自动导入文件夹</p>
+<h2 id="4、手动输入和软件之间的交互"><a href="#4、手动输入和软件之间的交互" class="headerlink" title="4、手动输入和软件之间的交互"></a>4、手动输入和软件之间的交互</h2><ul>
+<li><p>手动输入</p>
+<p>ctrl+N（引用按钮旁边的按钮） </p>
+</li>
+<li><p>endnote数据库导出到其他软件，格式一般为RIS</p>
+<p>一点就闪退捏😋，这盗版用不了一点</p>
+</li>
+</ul>
+<h1 id="endnote的一些功能"><a href="#endnote的一些功能" class="headerlink" title="endnote的一些功能"></a>endnote的一些功能</h1><ul>
+<li><p><strong>查找重复文献</strong></p>
+<p>endnote21：数据库-查找重复项</p>
+</li>
+<li><p><strong>分组&#x2F;Tags&#x2F;Label</strong></p>
+<ul>
+<li><p>分组：手动拖动；创建可筛选的智能组；根据已有组再次筛选新组；组集下可以再创组</p>
+<p>可以通过组集(group set)+组(group)的方式对文献进行<strong>分级管理</strong></p>
+</li>
+<li><p>tag：创建后可在每篇文献的summary下管理tag，主要作为分组的补充</p>
+<p>可以将某文献的具体类型、期刊等元素通过tag进行标记，<strong>tag的颜色有限</strong></p>
+</li>
+<li><p>Label:编辑文献中可在Label中添加对改文献的一些<strong>标注</strong></p>
+</li>
+</ul>
+</li>
+<li><p><strong>分享</strong></p>
+<p>用格式化复制；邮件发送（用的office）；可导出为txt、网页格式</p>
+</li>
+<li><p><strong>文献分析</strong></p>
+<p>工具-学科文献，按照作者、年份、期刊进行数量分析</p>
+</li>
+</ul>
+<h1 id="高效阅读文献"><a href="#高效阅读文献" class="headerlink" title="高效阅读文献"></a>高效阅读文献</h1><ul>
+<li>先阅读标题，通过rating先大概筛选一遍</li>
+<li>浏览摘要，再通过rating筛选一遍</li>
+</ul>
+<h1 id="文献检索技巧"><a href="#文献检索技巧" class="headerlink" title="文献检索技巧"></a>文献检索技巧</h1><ul>
+<li>先通过各网站找到相关专业名词，一种东西可能对应了<strong>多个词组</strong><a target="_blank" rel="noopener" href="https://dict.cnki.net/index">CNKI翻译助手</a></li>
+<li>可通过单词加*检索该单词所有形式（复数、大小写…）</li>
+<li>可以从标题-&gt;主题进行检索</li>
+</ul>
+
+    </div>
+
+    
+    
+    <div class="post-widgets">
+      <div id="needsharebutton-postbottom">
+        <span class="btn">
+          <i class="fa fa-share-alt" aria-hidden="true"></i>
+        </span>
+      </div>
+    </div>
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E8%BD%AF%E4%BB%B6-%E5%B7%A5%E5%85%B7%E7%9A%84%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" rel="tag"><i class="fa fa-tag"></i># 软件&工具的学习笔记</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2024/06/30/%E9%9F%B3%E8%89%B2%E9%93%BE%E5%AD%A6%E4%B9%A0/" rel="prev" title="音色链学习">
+      <i class="fa fa-chevron-left"></i> 音色链学习
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2024/07/11/origin/" rel="next" title="绘图工具">
+      绘图工具 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8"><span class="nav-number">1.</span> <span class="nav-text">基本使用</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9C%A8word%E4%B8%AD%E4%BD%BF%E7%94%A8"><span class="nav-number">2.</span> <span class="nav-text">在word中使用</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#endnote%E5%85%B3%E8%81%94word"><span class="nav-number">2.1.</span> <span class="nav-text">endnote关联word</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9C%A8word%E4%B8%AD%E6%8F%92%E5%85%A5%E5%8F%82%E8%80%83%E6%96%87%E7%8C%AE"><span class="nav-number">2.2.</span> <span class="nav-text">在word中插入参考文献</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BF%AE%E6%94%B9%E5%BC%95%E6%96%87%E6%A0%B7%E5%BC%8F"><span class="nav-number">2.3.</span> <span class="nav-text">修改引文样式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E8%AE%BA%E6%96%87%E6%A8%A1%E6%9D%BF"><span class="nav-number">2.4.</span> <span class="nav-text">使用论文模板</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8F%92%E5%9B%BE"><span class="nav-number">2.5.</span> <span class="nav-text">插图</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%B0%86%E6%96%87%E7%8C%AE%E5%AF%BC%E5%85%A5endnote"><span class="nav-number">3.</span> <span class="nav-text">将文献导入endnote</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1%E3%80%81%E7%9B%B4%E6%8E%A5%E6%A3%80%E7%B4%A2"><span class="nav-number">3.1.</span> <span class="nav-text">1、直接检索</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2%E3%80%81%E7%BD%91%E7%AB%99%E8%BE%93%E5%87%BA"><span class="nav-number">3.2.</span> <span class="nav-text">2、网站输出</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3%E3%80%81PDF%E5%AF%BC%E5%85%A5"><span class="nav-number">3.3.</span> <span class="nav-text">3、PDF导入</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4%E3%80%81%E6%89%8B%E5%8A%A8%E8%BE%93%E5%85%A5%E5%92%8C%E8%BD%AF%E4%BB%B6%E4%B9%8B%E9%97%B4%E7%9A%84%E4%BA%A4%E4%BA%92"><span class="nav-number">3.4.</span> <span class="nav-text">4、手动输入和软件之间的交互</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#endnote%E7%9A%84%E4%B8%80%E4%BA%9B%E5%8A%9F%E8%83%BD"><span class="nav-number">4.</span> <span class="nav-text">endnote的一些功能</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%AB%98%E6%95%88%E9%98%85%E8%AF%BB%E6%96%87%E7%8C%AE"><span class="nav-number">5.</span> <span class="nav-text">高效阅读文献</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%96%87%E7%8C%AE%E6%A3%80%E7%B4%A2%E6%8A%80%E5%B7%A7"><span class="nav-number">6.</span> <span class="nav-text">文献检索技巧</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="dhk"
+      src="/images/zoe.gif">
+  <p class="site-author-name" itemprop="name">dhk</p>
+  <div class="site-description" itemprop="description">记录一些学习日常</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">58</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/dhkkkkkk" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;dhkkkkkk" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/1154012965@qq.com" title="QQ email → 1154012965@qq.com"><i class="fa fa-envelope fa-fw"></i>QQ email</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"> </div>
+
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">dhk</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/xxw/anime.min.js"></script>
+  <script src="/xxw/velocity/velocity.min.js"></script>
+  <script src="/xxw/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  <script src="//cdn.jsdelivr.net/gh/theme-next/theme-next-needmoreshare2@1/needsharebutton.min.js"></script>
+  <script>
+      pbOptions = {};
+        pbOptions.iconStyle = "box";
+        pbOptions.boxForm = "horizontal";
+        pbOptions.position = "bottomCenter";
+        pbOptions.networks = "Wechat,QQZone,Weibo,Douban,Twitter,Facebook";
+      new needShareButton('#needsharebutton-postbottom', pbOptions);
+  </script>
+<script>
+            window.imageLazyLoadSetting = {
+                isSPA: false,
+                preloadRatio: 1,
+                processImages: null,
+            };
+        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(e.href.match(t)||e.href.match(r))&&(e.href=a.dataset.original)})});</script><script>!function(n){n.imageLazyLoadSetting.processImages=o;var e=n.imageLazyLoadSetting.isSPA,i=n.imageLazyLoadSetting.preloadRatio||1,r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]"));function o(){e&&(r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")));for(var t,a=0;a<r.length;a++)0<=(t=(t=r[a]).getBoundingClientRect()).bottom&&0<=t.left&&t.top<=(n.innerHeight*i||document.documentElement.clientHeight*i)&&function(){var t,e,n,i,o=r[a];t=o,e=function(){r=r.filter(function(t){return o!==t})},n=new Image,i=t.getAttribute("data-original"),n.onload=function(){t.src=i,e&&e()},t.src!==i&&(n.src=i)}()}o(),n.addEventListener("scroll",function(){var t,e;t=o,e=n,clearTimeout(t.tId),t.tId=setTimeout(function(){t.call(e)},500)})}(this);</script><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script></body>
+</html>

@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/xxw/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="/xxw/pace/pace-theme-minimal.min.css">
+  <script src="/xxw/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"dhkkkkkk.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="1.launch启动文件基本元素启动文件Launch File是ROS中一种同时启动多个节点的途径。可以自动启动ROS Master并实现多个节点的各种配置，为多个节点的操作提供了很大便利。 先来看一个简单的.launch文件： 123456789101112131415&lt;launch&gt;   &lt;!-- Turtlesim Node，注意注释的格式--&gt;   &lt;node">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ROS中的常用组件">
+<meta property="og:url" content="https://dhkkkkkk.github.io/2024/04/18/ROS-3/index.html">
+<meta property="og:site_name" content="小董的BLOG">
+<meta property="og:description" content="1.launch启动文件基本元素启动文件Launch File是ROS中一种同时启动多个节点的途径。可以自动启动ROS Master并实现多个节点的各种配置，为多个节点的操作提供了很大便利。 先来看一个简单的.launch文件： 123456789101112131415&lt;launch&gt;   &lt;!-- Turtlesim Node，注意注释的格式--&gt;   &lt;node">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-04-18T07:50:30.000Z">
+<meta property="article:modified_time" content="2024-04-21T14:46:14.599Z">
+<meta property="article:author" content="dhk">
+<meta property="article:tag" content="ROS">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://dhkkkkkk.github.io/2024/04/18/ROS-3/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+<link rel="stylesheet" href="//cdn.jsdelivr.net/gh/theme-next/theme-next-needmoreshare2@1/needsharebutton.min.css"><style>
+#needsharebutton-postbottom {
+  cursor: pointer;
+  height: 26px;
+  margin-top: 10px;
+  position: relative;
+}
+#needsharebutton-postbottom .btn {
+  border: 1px solid $btn-default-border-color;
+  border-radius: 3px;
+  display: initial;
+  padding: 1px 4px;
+}
+</style>
+  <title>ROS中的常用组件 | 小董的BLOG</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">小董的BLOG</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-目录">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tag fa-fw"></i>目录</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2024/04/18/ROS-3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/zoe.gif">
+      <meta itemprop="name" content="dhk">
+      <meta itemprop="description" content="记录一些学习日常">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小董的BLOG">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          ROS中的常用组件
+        </h1>
+
+        <div class="post-meta">
+		  
+		  
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2024-04-18 15:50:30" itemprop="dateCreated datePublished" datetime="2024-04-18T15:50:30+08:00">2024-04-18</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2024-04-21 22:46:14" itemprop="dateModified" datetime="2024-04-21T22:46:14+08:00">2024-04-21</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="1-launch启动文件"><a href="#1-launch启动文件" class="headerlink" title="1.launch启动文件"></a>1.launch启动文件</h1><h2 id="基本元素"><a href="#基本元素" class="headerlink" title="基本元素"></a>基本元素</h2><p>启动文件Launch File是ROS中一种同时启动多个节点的途径。可以自动启动ROS Master并实现多个节点的各种配置，为多个节点的操作提供了很大便利。</p>
+<p>先来看一个简单的.launch文件：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">launch</span>&gt;</span></span><br><span class="line">   <span class="comment">&lt;!-- Turtlesim Node，注意注释的格式--&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">node</span> <span class="attr">pkg</span>=<span class="string">&quot;turtlesim&quot;</span> <span class="attr">type</span>=<span class="string">&quot;turtlesim_node&quot;</span> <span class="attr">name</span>=<span class="string">&quot;sim&quot;</span>/&gt;</span></span><br><span class="line"></span><br><span class="line">   <span class="tag">&lt;<span class="name">node</span> <span class="attr">pkg</span>=<span class="string">&quot;turtlesim&quot;</span> <span class="attr">type</span>=<span class="string">&quot;turtle_teleop_key&quot;</span> <span class="attr">name</span>=<span class="string">&quot;teleop&quot;</span> <span class="attr">output</span>=<span class="string">&quot;screen&quot;</span>/&gt;</span></span><br><span class="line">   <span class="comment">&lt;!-- Axes --&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;scale_linear&quot;</span> <span class="attr">value</span>=<span class="string">&quot;2&quot;</span> <span class="attr">type</span>=<span class="string">&quot;double&quot;</span>/&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;scale_angular&quot;</span> <span class="attr">value</span>=<span class="string">&quot;2&quot;</span> <span class="attr">type</span>=<span class="string">&quot;double&quot;</span>/&gt;</span></span><br><span class="line"></span><br><span class="line">   <span class="tag">&lt;<span class="name">node</span> <span class="attr">pkg</span>=<span class="string">&quot;learning_tf&quot;</span> <span class="attr">type</span>=<span class="string">&quot;turtle_tf_broadcaster&quot;</span></span></span><br><span class="line"><span class="tag">         <span class="attr">args</span>=<span class="string">&quot;/turtle1&quot;</span> <span class="attr">name</span>=<span class="string">&quot;turtle1_tf_broadcaster&quot;</span> /&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">node</span> <span class="attr">pkg</span>=<span class="string">&quot;learning_tf&quot;</span> <span class="attr">type</span>=<span class="string">&quot;turtle_tf_broadcaster&quot;</span></span></span><br><span class="line"><span class="tag">         <span class="attr">args</span>=<span class="string">&quot;/turtle2&quot;</span> <span class="attr">name</span>=<span class="string">&quot;turtle2_tf_broadcaster&quot;</span> /&gt;</span></span><br><span class="line"></span><br><span class="line"> <span class="tag">&lt;/<span class="name">launch</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>其中：</p>
+<ul>
+<li><p><code>&lt;launch&gt;...&lt;/launch&gt;</code>为XML语法中的根元素，XML语法要求每个文件必须包含一个根元素，文件中其他内容都必须包含在该标签内。</p>
+</li>
+<li><p><code>&lt;node.../&gt;</code>为启动ROS节点的标签元素，由上述定义规则可知，在launch文件中启动一个节点需要三个属性：</p>
+<ul>
+<li>pkg：该节点所在<strong>功能包</strong>的名字</li>
+<li>type：该节点的<strong>可执行文件</strong>名字，可执行文件是在为CMake_Lists中通过add_executable定义的</li>
+<li>name：用于定义节点运行中的名字，<strong>会覆盖掉init()中定义的节点名字</strong></li>
+</ul>
+<p>此外，还有可能用到：</p>
+<ul>
+<li>output&#x3D;”screen”：将节点的标准输出打印到终端屏幕</li>
+<li>respawn&#x3D;”ture”：当节点停止时会自动重启，默认false</li>
+<li>require&#x3D;”ture”：必要节点，当该节点终止时launch中的其他节点也终止</li>
+<li>ns&#x3D;”namespace”：为节点内的相对名称添加命名空间前缀</li>
+<li>args&#x3D;”arguments”：节点需要的输入参数</li>
+</ul>
+</li>
+</ul>
+<h2 id="参数设置"><a href="#参数设置" class="headerlink" title="参数设置"></a>参数设置</h2><p>变量声明，由param和arg两种标签元素，它们的作用是不同的</p>
+<ul>
+<li><p><code>&lt;param.../&gt;</code>：设置ros中运行的参数：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;scale_linear&quot;</span> <span class="attr">value</span>=<span class="string">&quot;2&quot;</span> <span class="attr">type</span>=<span class="string">&quot;double&quot;</span>/&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>作用显而易见：名为scale_linear的参数（parameter）的值被设置为了2，类型为double</p>
+</li>
+<li><p><code>&lt;arg.../&gt;</code>设置仅限于launch内部使用的局部变量</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">arg</span> <span class="attr">name</span>=<span class="string">&quot;aca&quot;</span> <span class="attr">default</span>=<span class="string">&quot;value&quot;</span>/&gt;</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="重映射机制（重要）"><a href="#重映射机制（重要）" class="headerlink" title="重映射机制（重要）"></a>重映射机制（重要）</h2><p>ROS提供一种重映射机制，便于将社区中其他人的功能包提供的接口进行重映射，而不是直接修改。</p>
+<p>例如乌龟控制节点发布的控制话题可能是&#x2F;turtlebot&#x2F;cmd_vel，但是我们机器人订阅的话题是&#x2F;cmd_vel，此时只需要重映射，我们的机器人就能收到话题消息了</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">remap</span> <span class="attr">from</span>=<span class="string">&quot;/turtlebot/cmd_vel&quot;</span> <span class="attr">to</span>=<span class="string">&quot;/com_vel&quot;</span>/&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="2-TF变换"><a href="#2-TF变换" class="headerlink" title="2.TF变换"></a>2.TF变换</h1><p>TF功能包使用树形数据结构，可以让用户跟踪多个坐标系，以时间为轴跟踪这些坐标系（默认10s内），并允许开发者请求如下数据：</p>
+<ul>
+<li>5s前，机器人头部坐标系相对于全局坐标系是怎样的？</li>
+<li>机器人夹取的物体相对于机器人中心坐标系的位置在哪？</li>
+<li>机器人中心坐标系相对于全局坐标系的位置在哪？</li>
+</ul>
+<p>想要使用TF功能包，总体来说要以下两个步骤：</p>
+<ul>
+<li>监听TF变换，接收并缓存系统中发布的所有坐标数据，并查询需要的坐标变换关系</li>
+<li>广播TF变换，向系统广播坐标变换关系</li>
+</ul>
+<h2 id="乌龟例程中的TF"><a href="#乌龟例程中的TF" class="headerlink" title="乌龟例程中的TF"></a>乌龟例程中的TF</h2><p>该环境若出现问题可看<a target="_blank" rel="noopener" href="https://dhkkk.gitee.io/2024/02/19/linux%E6%9D%82/">linux、ROS杂 | 小董的BLOG</a></p>
+<ul>
+<li>准备库环境：<code>sudo apt-get install ros-noetic-turtle-tf</code></li>
+<li>启动launch文件进行实验：<code>roslaunch turtle_tf turtle_tf_dmeo.launch</code></li>
+<li>开启键盘控制：<code>rosrun turtlesim turtle_teleop_key</code></li>
+</ul>
+<p>可得到两只乌龟，一只会跟踪另一只</p>
+<ul>
+<li><code>rosrun tf view_frames</code>后可在用户根目录下找到frames.pdf。可得当前系统中存在三个坐标系：world、turtle1、turtle2，其中world为TF树的根节点。</li>
+<li><code>rosrun tf tf_echo turtle1 turtle2</code>可实时查看当前turtle2跟随turtle1所需的坐标变换</li>
+</ul>
+<p>得到坐标变换后，便可以计算两乌龟间的距离和角度。</p>
+<h2 id="创建TF广播器"><a href="#创建TF广播器" class="headerlink" title="创建TF广播器"></a>创建TF广播器</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;ros/ros.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;tf/transform_broadcaster.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;turtlesim/Pose.h&gt;</span></span></span><br><span class="line"></span><br><span class="line">std::string turtle_name;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">poseCallback</span><span class="params">(<span class="type">const</span> turtlesim::PoseConstPtr&amp; msg)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">// tf广播器</span></span><br><span class="line">    <span class="type">static</span> tf::TransformBroadcaster br;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 根据乌龟当前的位姿，设置相对于世界坐标系的坐标变换</span></span><br><span class="line">    tf::Transform transform;</span><br><span class="line">    transform.<span class="built_in">setOrigin</span>( tf::<span class="built_in">Vector3</span>(msg-&gt;x, msg-&gt;y, <span class="number">0.0</span>) );<span class="comment">//平移矩阵，因为为平面移动，第三项z为0</span></span><br><span class="line">    tf::Quaternion q;</span><br><span class="line">    q.<span class="built_in">setRPY</span>(<span class="number">0</span>, <span class="number">0</span>, msg-&gt;theta);<span class="comment">//旋转矩阵，平面上只有yaw有值</span></span><br><span class="line">    transform.<span class="built_in">setRotation</span>(q);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 发布坐标变换</span></span><br><span class="line">    br.<span class="built_in">sendTransform</span>(tf::<span class="built_in">StampedTransform</span>(transform, ros::Time::<span class="built_in">now</span>(), <span class="string">&quot;world&quot;</span>, turtle_name));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span>** argv)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">// 初始化节点</span></span><br><span class="line">    ros::<span class="built_in">init</span>(argc, argv, <span class="string">&quot;my_tf_broadcaster&quot;</span>);</span><br><span class="line">    <span class="keyword">if</span> (argc != <span class="number">2</span>)<span class="comment">//argc为输入字符串个数</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">ROS_ERROR</span>(<span class="string">&quot;need turtle name as argument&quot;</span>); </span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">    &#125;;</span><br><span class="line">    turtle_name = argv[<span class="number">1</span>];<span class="comment">//输入的参数从argv[1]开始存放</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 订阅乌龟的pose信息</span></span><br><span class="line">    ros::NodeHandle node;</span><br><span class="line">    ros::Subscriber sub = node.<span class="built_in">subscribe</span>(turtle_name+<span class="string">&quot;/pose&quot;</span>, <span class="number">10</span>, &amp;poseCallback);</span><br><span class="line"></span><br><span class="line">    ros::<span class="built_in">spin</span>();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="创建TF监听器"><a href="#创建TF监听器" class="headerlink" title="创建TF监听器"></a>创建TF监听器</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;ros/ros.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;tf/transform_listener.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;geometry_msgs/Twist.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;turtlesim/Spawn.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span>** argv)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">// 初始化节点</span></span><br><span class="line">    ros::<span class="built_in">init</span>(argc, argv, <span class="string">&quot;my_tf_listener&quot;</span>);</span><br><span class="line"></span><br><span class="line">    ros::NodeHandle node;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 通过服务调用，产生第二只乌龟turtle2</span></span><br><span class="line">    ros::service::<span class="built_in">waitForService</span>(<span class="string">&quot;spawn&quot;</span>);</span><br><span class="line">    ros::ServiceClient add_turtle =</span><br><span class="line">    node.<span class="built_in">serviceClient</span>&lt;turtlesim::Spawn&gt;(<span class="string">&quot;spawn&quot;</span>);</span><br><span class="line">    turtlesim::Spawn srv;</span><br><span class="line">    add_turtle.<span class="built_in">call</span>(srv);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 定义turtle2的速度控制发布器</span></span><br><span class="line">    ros::Publisher turtle_vel =</span><br><span class="line">    node.<span class="built_in">advertise</span>&lt;geometry_msgs::Twist&gt;(<span class="string">&quot;turtle2/cmd_vel&quot;</span>, <span class="number">10</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// tf监听器,创建后自动接收TF树的消息并缓存10s</span></span><br><span class="line">    tf::TransformListener listener;</span><br><span class="line"></span><br><span class="line">    <span class="function">ros::Rate <span class="title">rate</span><span class="params">(<span class="number">10.0</span>)</span></span>;</span><br><span class="line">    <span class="keyword">while</span> (node.<span class="built_in">ok</span>())</span><br><span class="line">    &#123;</span><br><span class="line">        tf::StampedTransform transform;</span><br><span class="line">        <span class="keyword">try</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">// 查找turtle2与turtle1的坐标变换</span></span><br><span class="line">            listener.<span class="built_in">waitForTransform</span>(<span class="string">&quot;/turtle2&quot;</span>, <span class="string">&quot;/turtle1&quot;</span>, ros::<span class="built_in">Time</span>(<span class="number">0</span>), ros::<span class="built_in">Duration</span>(<span class="number">3.0</span>));<span class="comment">//给定目标坐标系和源坐标系，等待两个坐标系之间一定周期下的变换关系，第四个参数为超时时间（该函数会产生堵塞）</span></span><br><span class="line">            listener.<span class="built_in">lookupTransform</span>(<span class="string">&quot;/turtle2&quot;</span>, <span class="string">&quot;/turtle1&quot;</span>, ros::<span class="built_in">Time</span>(<span class="number">0</span>), transform);<span class="comment">//给定目标坐标系和源坐标系，得到两个坐标系之间一定周期下的坐标变换（存入第四个参数中），ros::Time(0)表示想要的是最新的一次坐标变换</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">catch</span> (tf::TransformException &amp;ex) </span><br><span class="line">        &#123;</span><br><span class="line">            <span class="built_in">ROS_ERROR</span>(<span class="string">&quot;%s&quot;</span>,ex.<span class="built_in">what</span>());</span><br><span class="line">            ros::<span class="built_in">Duration</span>(<span class="number">1.0</span>).<span class="built_in">sleep</span>();</span><br><span class="line">            <span class="keyword">continue</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 根据turtle1和turtle2之间的坐标变换，计算turtle2需要运动的线速度和角速度</span></span><br><span class="line">        <span class="comment">// 并发布速度控制指令，使turtle2向turtle1移动</span></span><br><span class="line">        geometry_msgs::Twist vel_msg;</span><br><span class="line">        vel_msg.angular.z = <span class="number">4.0</span> * <span class="built_in">atan2</span>(transform.<span class="built_in">getOrigin</span>().<span class="built_in">y</span>(),</span><br><span class="line">                                        transform.<span class="built_in">getOrigin</span>().<span class="built_in">x</span>());</span><br><span class="line">        vel_msg.linear.x = <span class="number">0.5</span> * <span class="built_in">sqrt</span>(<span class="built_in">pow</span>(transform.<span class="built_in">getOrigin</span>().<span class="built_in">x</span>(), <span class="number">2</span>) +</span><br><span class="line">                                      <span class="built_in">pow</span>(transform.<span class="built_in">getOrigin</span>().<span class="built_in">y</span>(), <span class="number">2</span>));</span><br><span class="line">        turtle_vel.<span class="built_in">publish</span>(vel_msg);</span><br><span class="line"></span><br><span class="line">        rate.<span class="built_in">sleep</span>();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h2 id="通过launch文件运行这些节点"><a href="#通过launch文件运行这些节点" class="headerlink" title="通过launch文件运行这些节点"></a>通过launch文件运行这些节点</h2><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">launch</span>&gt;</span></span><br><span class="line">   <span class="comment">&lt;!-- 海龟仿真器 --&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">node</span> <span class="attr">pkg</span>=<span class="string">&quot;turtlesim&quot;</span> <span class="attr">type</span>=<span class="string">&quot;turtlesim_node&quot;</span> <span class="attr">name</span>=<span class="string">&quot;sim&quot;</span>/&gt;</span></span><br><span class="line"></span><br><span class="line">   <span class="comment">&lt;!-- 键盘控制 --&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">node</span> <span class="attr">pkg</span>=<span class="string">&quot;turtlesim&quot;</span> <span class="attr">type</span>=<span class="string">&quot;turtle_teleop_key&quot;</span> <span class="attr">name</span>=<span class="string">&quot;teleop&quot;</span> <span class="attr">output</span>=<span class="string">&quot;screen&quot;</span>/&gt;</span></span><br><span class="line"></span><br><span class="line">   <span class="comment">&lt;!-- 两只海龟的tf广播,用同一可执行文件创建两个广播节点 --&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">node</span> <span class="attr">pkg</span>=<span class="string">&quot;learning_tf&quot;</span> <span class="attr">type</span>=<span class="string">&quot;turtle_tf_broadcaster&quot;</span></span></span><br><span class="line"><span class="tag">         <span class="attr">args</span>=<span class="string">&quot;/turtle1&quot;</span> <span class="attr">name</span>=<span class="string">&quot;turtle1_tf_broadcaster&quot;</span> /&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">node</span> <span class="attr">pkg</span>=<span class="string">&quot;learning_tf&quot;</span> <span class="attr">type</span>=<span class="string">&quot;turtle_tf_broadcaster&quot;</span></span></span><br><span class="line"><span class="tag">         <span class="attr">args</span>=<span class="string">&quot;/turtle2&quot;</span> <span class="attr">name</span>=<span class="string">&quot;turtle2_tf_broadcaster&quot;</span> /&gt;</span></span><br><span class="line"></span><br><span class="line">   <span class="comment">&lt;!-- 监听tf广播，并且控制turtle2移动 --&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">node</span> <span class="attr">pkg</span>=<span class="string">&quot;learning_tf&quot;</span> <span class="attr">type</span>=<span class="string">&quot;turtle_tf_listener&quot;</span></span></span><br><span class="line"><span class="tag">         <span class="attr">name</span>=<span class="string">&quot;listener&quot;</span> /&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">launch</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+    </div>
+
+    
+    
+    <div class="post-widgets">
+      <div id="needsharebutton-postbottom">
+        <span class="btn">
+          <i class="fa fa-share-alt" aria-hidden="true"></i>
+        </span>
+      </div>
+    </div>
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/ROS/" rel="tag"><i class="fa fa-tag"></i># ROS</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2024/04/15/ROS-2/" rel="prev" title="ROS的话题与服务">
+      <i class="fa fa-chevron-left"></i> ROS的话题与服务
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2024/06/30/%E9%9F%B3%E8%89%B2%E9%93%BE%E5%AD%A6%E4%B9%A0/" rel="next" title="音色链学习">
+      音色链学习 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-launch%E5%90%AF%E5%8A%A8%E6%96%87%E4%BB%B6"><span class="nav-number">1.</span> <span class="nav-text">1.launch启动文件</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E5%85%83%E7%B4%A0"><span class="nav-number">1.1.</span> <span class="nav-text">基本元素</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E6%95%B0%E8%AE%BE%E7%BD%AE"><span class="nav-number">1.2.</span> <span class="nav-text">参数设置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%87%8D%E6%98%A0%E5%B0%84%E6%9C%BA%E5%88%B6%EF%BC%88%E9%87%8D%E8%A6%81%EF%BC%89"><span class="nav-number">1.3.</span> <span class="nav-text">重映射机制（重要）</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-TF%E5%8F%98%E6%8D%A2"><span class="nav-number">2.</span> <span class="nav-text">2.TF变换</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B9%8C%E9%BE%9F%E4%BE%8B%E7%A8%8B%E4%B8%AD%E7%9A%84TF"><span class="nav-number">2.1.</span> <span class="nav-text">乌龟例程中的TF</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%9B%E5%BB%BATF%E5%B9%BF%E6%92%AD%E5%99%A8"><span class="nav-number">2.2.</span> <span class="nav-text">创建TF广播器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%9B%E5%BB%BATF%E7%9B%91%E5%90%AC%E5%99%A8"><span class="nav-number">2.3.</span> <span class="nav-text">创建TF监听器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%80%9A%E8%BF%87launch%E6%96%87%E4%BB%B6%E8%BF%90%E8%A1%8C%E8%BF%99%E4%BA%9B%E8%8A%82%E7%82%B9"><span class="nav-number">2.4.</span> <span class="nav-text">通过launch文件运行这些节点</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="dhk"
+      src="/images/zoe.gif">
+  <p class="site-author-name" itemprop="name">dhk</p>
+  <div class="site-description" itemprop="description">记录一些学习日常</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">58</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/dhkkkkkk" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;dhkkkkkk" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/1154012965@qq.com" title="QQ email → 1154012965@qq.com"><i class="fa fa-envelope fa-fw"></i>QQ email</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"> </div>
+
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">dhk</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/xxw/anime.min.js"></script>
+  <script src="/xxw/velocity/velocity.min.js"></script>
+  <script src="/xxw/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  <script src="//cdn.jsdelivr.net/gh/theme-next/theme-next-needmoreshare2@1/needsharebutton.min.js"></script>
+  <script>
+      pbOptions = {};
+        pbOptions.iconStyle = "box";
+        pbOptions.boxForm = "horizontal";
+        pbOptions.position = "bottomCenter";
+        pbOptions.networks = "Wechat,QQZone,Weibo,Douban,Twitter,Facebook";
+      new needShareButton('#needsharebutton-postbottom', pbOptions);
+  </script>
+<script>
+            window.imageLazyLoadSetting = {
+                isSPA: false,
+                preloadRatio: 1,
+                processImages: null,
+            };
+        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(e.href.match(t)||e.href.match(r))&&(e.href=a.dataset.original)})});</script><script>!function(n){n.imageLazyLoadSetting.processImages=o;var e=n.imageLazyLoadSetting.isSPA,i=n.imageLazyLoadSetting.preloadRatio||1,r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]"));function o(){e&&(r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")));for(var t,a=0;a<r.length;a++)0<=(t=(t=r[a]).getBoundingClientRect()).bottom&&0<=t.left&&t.top<=(n.innerHeight*i||document.documentElement.clientHeight*i)&&function(){var t,e,n,i,o=r[a];t=o,e=function(){r=r.filter(function(t){return o!==t})},n=new Image,i=t.getAttribute("data-original"),n.onload=function(){t.src=i,e&&e()},t.src!==i&&(n.src=i)}()}o(),n.addEventListener("scroll",function(){var t,e;t=o,e=n,clearTimeout(t.tId),t.tId=setTimeout(function(){t.call(e)},500)})}(this);</script><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script></body>
+</html>

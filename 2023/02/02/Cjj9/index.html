@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/xxw/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="/xxw/pace/pace-theme-minimal.min.css">
+  <script src="/xxw/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"dhkkkkkk.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="内存相关博客截止到目前的C++部分都只使用了静态内存和栈内存。 静态内存用于保存局部static对象、类的static数据成员和任何定义在函数之外的变量。 栈内存用于保存定义在函数内的非静态变量。 分配在静态内存和栈内存中的对象都由编译器控制它们的创建和销毁：C++中静态对象在该对象被首次用到时分配内存（C中是在编译期间初始化）；栈内存在其定义的程序块运行时分配内存。 除了以上两个内存区，每个程序">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C++-动态内存">
+<meta property="og:url" content="https://dhkkkkkk.github.io/2023/02/02/Cjj9/index.html">
+<meta property="og:site_name" content="小董的BLOG">
+<meta property="og:description" content="内存相关博客截止到目前的C++部分都只使用了静态内存和栈内存。 静态内存用于保存局部static对象、类的static数据成员和任何定义在函数之外的变量。 栈内存用于保存定义在函数内的非静态变量。 分配在静态内存和栈内存中的对象都由编译器控制它们的创建和销毁：C++中静态对象在该对象被首次用到时分配内存（C中是在编译期间初始化）；栈内存在其定义的程序块运行时分配内存。 除了以上两个内存区，每个程序">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-02-01T16:12:03.000Z">
+<meta property="article:modified_time" content="2023-02-01T16:15:25.445Z">
+<meta property="article:author" content="dhk">
+<meta property="article:tag" content="C++学习">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://dhkkkkkk.github.io/2023/02/02/Cjj9/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+<link rel="stylesheet" href="//cdn.jsdelivr.net/gh/theme-next/theme-next-needmoreshare2@1/needsharebutton.min.css"><style>
+#needsharebutton-postbottom {
+  cursor: pointer;
+  height: 26px;
+  margin-top: 10px;
+  position: relative;
+}
+#needsharebutton-postbottom .btn {
+  border: 1px solid $btn-default-border-color;
+  border-radius: 3px;
+  display: initial;
+  padding: 1px 4px;
+}
+</style>
+  <title>C++-动态内存 | 小董的BLOG</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">小董的BLOG</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-目录">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tag fa-fw"></i>目录</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2023/02/02/Cjj9/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/zoe.gif">
+      <meta itemprop="name" content="dhk">
+      <meta itemprop="description" content="记录一些学习日常">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小董的BLOG">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          C++-动态内存
+        </h1>
+
+        <div class="post-meta">
+		  
+		  
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2023-02-02 00:12:03 / 修改时间：00:15:25" itemprop="dateCreated datePublished" datetime="2023-02-02T00:12:03+08:00">2023-02-02</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="内存相关"><a href="#内存相关" class="headerlink" title="内存相关"></a>内存相关</h1><p>博客截止到目前的C++部分都只使用了静态内存和栈内存。</p>
+<p>静态内存用于保存局部static对象、类的static数据成员和任何定义在函数之外的变量。</p>
+<p>栈内存用于保存定义在函数内的非静态变量。</p>
+<p>分配在静态内存和栈内存中的对象都由编译器控制它们的创建和销毁：C++中静态对象在<strong>该对象被首次用到</strong>时分配内存（C中是在编译期间初始化）；栈内存在其定义的程序块运行时分配内存。</p>
+<p>除了以上两个内存区，每个程序还拥有一个内存池，这部分被称作自由空间或<strong>堆</strong>。堆用于存储动态分配的对象，即由程序本身来控制生存期的对象。</p>
+<h1 id="动态内存与智能指针"><a href="#动态内存与智能指针" class="headerlink" title="动态内存与智能指针"></a>动态内存与智能指针</h1><p>由于动态内存对象是由程序控制，因此其内存的使用很容易出问题。为了更安全、方便地使用动态内存，标准库提供了两种智能指针，该指针与常规指针的重要区别是<strong>智能指针负责自动释放所指向的对象</strong>，并且智能指针是模板。两种智能制造的区别在于管理底层指针的方式：</p>
+<ul>
+<li>shared_ptr类型允许多个指针指向同一个对象</li>
+<li>unique_ptr则只允许存在一个指针指向一个对象</li>
+</ul>
+<p>它们被定义在头文件memory中</p>
+<h2 id="1、shared-ptr类"><a href="#1、shared-ptr类" class="headerlink" title="1、shared_ptr类"></a>1、shared_ptr类</h2><p>智能指针也是一个模板，类似于vector等类型，对智能指针的初始化也要提供指针指向的类型这一信息。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">shared_ptr&lt;string&gt; p1;</span><br><span class="line">shared_ptr&lt;vector&lt;<span class="type">int</span>&gt;&gt; p2;</span><br></pre></td></tr></table></figure>
+
+<p>智能指针的操作基本于常规指针相同，当然其作为一个模板也有自己特有的操作：</p>
+<p>shared_ptr和unique_ptr均支持的操作</p>
+<table>
+<thead>
+<tr>
+<th align="center">p</th>
+<th align="center">可用作一个条件判断，若p指向了一个对象则返回true</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">*p</td>
+<td align="center">~</td>
+</tr>
+<tr>
+<td align="center">p.get()</td>
+<td align="center">返回p中保存的指针</td>
+</tr>
+<tr>
+<td align="center">swap(p1,p2)&#x2F;p1.swap(q)</td>
+<td align="center">交换p和q中的指针</td>
+</tr>
+</tbody></table>
+<h3 id="make-shared函数"><a href="#make-shared函数" class="headerlink" title="make_shared函数"></a>make_shared函数</h3><p>make_shared函数被定义在标准库中，该函数可以在动态内存中分配一个对象并初始化，并返回指向该对象的shared_ptr。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">shared_ptr&lt;string&gt; sp=<span class="built_in">make_shared</span>&lt;string&gt;(<span class="string">&quot;dhk&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>因为该函数会返回一个对应指向类型的shared_prt，因此也可以直接使用auto来保存函数make_shared的结果：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">auto</span> sp=<span class="built_in">make_shared</span>&lt;string&gt;(<span class="string">&quot;dhk&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>另外，make_shared函数支持参数用作构造，其用法于顺序容器的成员emplace相似，参数顺序等需严格遵守构造函数内容，详见<a target="_blank" rel="noopener" href="https://dhkkk.gitee.io/2023/01/12/C++-8/">C++-顺序容器 | 小董的BLOG (gitee.io)</a></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">auto</span> sp=<span class="built_in">make_shared</span>&lt;string&gt;(<span class="number">10</span>,<span class="string">&#x27;d&#x27;</span>);<span class="comment">//使用构造</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="shared-ptr的拷贝和赋值"><a href="#shared-ptr的拷贝和赋值" class="headerlink" title="shared_ptr的拷贝和赋值"></a>shared_ptr的拷贝和赋值</h3><p>当在进行拷贝和赋值时，每个shared_ptr都会实时地记录当前有多少个shared_ptr指向相同的对象，称之为<strong>引用计数</strong>，一但一个shared_ptr的计数器变为0，则会自动释放自己所管理的对象。</p>
+<p><strong>当指向一个对象的最后一个shared_ptr被销毁时，shared_ptr类会自动销毁这个对象。</strong>该操作通过类的一个成员函数——析构函数完成。</p>
+<p>如果该shared_ptr是作为局部变量导致被自动销毁，析构函数同样会对引用计数进行递减操作</p>
+<h2 id="2、直接管理内存"><a href="#2、直接管理内存" class="headerlink" title="2、直接管理内存"></a>2、直接管理内存</h2><p>C++定义了两个运算符来直接分配和释放内存：new用于分配内存，delete用于释放内存</p>
+<h3 id="使用new分配动态内存"><a href="#使用new分配动态内存" class="headerlink" title="使用new分配动态内存"></a>使用new分配动态内存</h3><p>在堆中的分配的内存是无名的，因此无论是make_shared还是new都无法为分配空间的对象命名，取而代之的是返回一个指向该内存的指针。</p>
+<p>几种初始化方式：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> *p= <span class="keyword">new</span> <span class="type">int</span>;</span><br><span class="line"><span class="keyword">auto</span> p= <span class="keyword">new</span> <span class="type">int</span>;<span class="comment">//不定义值</span></span><br><span class="line"><span class="type">int</span> *p= <span class="keyword">new</span> <span class="built_in">int</span>();<span class="comment">//进行值默认初始化</span></span><br><span class="line"><span class="type">int</span> *p= <span class="keyword">new</span> <span class="built_in">int</span>(<span class="number">100</span>);</span><br><span class="line"><span class="keyword">auto</span> p= <span class="keyword">new</span> vector&lt;<span class="type">int</span>&gt;&#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>也可以使用new分配const对象：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">auto</span> p = <span class="keyword">new</span> <span class="type">const</span> <span class="built_in">int</span>(<span class="number">100</span>);</span><br></pre></td></tr></table></figure>
+
+<p>需要注意的是，new和delete<strong>都是运算符，而不是关键字！</strong>因此<code>const new int()</code>是不合法的</p>
+<p>如果堆内存耗尽，无法再分配新的内存，则new表达式会失败，抛出一个bad_alloc，如果不想其抛出异常，可以使用<strong>定位new</strong>的方式阻止其抛出异常：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">auto</span> p = <span class="built_in">new</span>(nothrow) <span class="type">int</span>;<span class="comment">//此时如果分配失败，则只会返回一个空指针</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>使用定位new需要包含头文件new</strong></p>
+<h3 id="使用delete释放内存"><a href="#使用delete释放内存" class="headerlink" title="使用delete释放内存"></a>使用delete释放内存</h3><p>通过delete表达式可以将指定的动态内存释放，使用时需注意：</p>
+<ul>
+<li>delete的对象必须是一个指针</li>
+<li><strong>该指针只能指向一块动态内存或为空</strong>，不能指向静态内存或栈内存</li>
+<li>动态内存中的const对象可以被正常释放</li>
+<li>不能多次释放同一块内存</li>
+</ul>
+<h3 id="内置指针的缺陷"><a href="#内置指针的缺陷" class="headerlink" title="内置指针的缺陷"></a>内置指针的缺陷</h3><p>上一节中讲到，对于shared_ptr管理的内存，是会根据引用计数自动释放内存的。而通过常规指针保存动态内存的方式无法像智能指针一样自动释放，<strong>也就是通过new表达式创建的动态内存空间必须显式地手动释放</strong></p>
+<p>因此，使用者必须记得在不使用时删除这块内存，如果指向该内存的常规指针指向改变，这块内存就无法被释放了（因为已经找不到了），所以最好的办法是将该指针定义为常量指针，虽然这样也仅仅能避免地址丢失的发生</p>
+<h3 id="混合使用shared-ptr和new"><a href="#混合使用shared-ptr和new" class="headerlink" title="混合使用shared_ptr和new"></a>混合使用shared_ptr和new</h3><p>可以使用一个指向动态内存的内置指针来初始化一个智能指针：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">shared_ptr&lt;<span class="type">int</span>&gt; <span class="title">p1</span><span class="params">(<span class="keyword">new</span> <span class="type">int</span>(<span class="number">100</span>))</span></span>;</span><br></pre></td></tr></table></figure>
+
+<p>使用时需注意：</p>
+<ul>
+<li><p>用于初始化智能指针的参数<strong>必须是一个指向动态内存的指针</strong></p>
+</li>
+<li><p><strong>必须用直接初始化的方式初始化智能指针，而不是赋值初始化，因为接受指针为参数的构造函数是explicit的</strong></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">shared_ptr&lt;<span class="type">int</span>&gt; p1= <span class="keyword">new</span> <span class="built_in">int</span>(<span class="number">100</span>);<span class="comment">//错误！必须直接初始化</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>内置指针不能实现隐式转化为智能指针，这也是不能通过赋值初始化的原因👆</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">shared_ptr&lt;<span class="type">int</span>&gt; <span class="title">test</span><span class="params">(<span class="type">int</span> a)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">return</span> (<span class="keyword">new</span> <span class="built_in">int</span>(a));<span class="comment">//错误，不能隐式转化</span></span><br><span class="line">	<span class="keyword">return</span> <span class="built_in">shared_ptr</span>&lt;<span class="type">int</span>&gt; (<span class="keyword">new</span> <span class="built_in">int</span>(a));<span class="comment">//正确</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>通过这个方法构造的shared_ptr默认使用delete来释放内存，而不是之前讲到的析构函数。因此如果要将该shared_ptr指向其他的动态内存，但是这样做就必须提供自己的操作来代替delete，这个操作后面会讲到。</p>
+</li>
+</ul>
+
+    </div>
+
+    
+    
+    <div class="post-widgets">
+      <div id="needsharebutton-postbottom">
+        <span class="btn">
+          <i class="fa fa-share-alt" aria-hidden="true"></i>
+        </span>
+      </div>
+    </div>
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/C-%E5%AD%A6%E4%B9%A0/" rel="tag"><i class="fa fa-tag"></i># C++学习</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2023/01/12/C++-8/" rel="prev" title="C++-顺序容器">
+      <i class="fa fa-chevron-left"></i> C++-顺序容器
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2023/02/09/%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE/" rel="next" title="常用的数据通信协议">
+      常用的数据通信协议 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%86%85%E5%AD%98%E7%9B%B8%E5%85%B3"><span class="nav-number">1.</span> <span class="nav-text">内存相关</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8A%A8%E6%80%81%E5%86%85%E5%AD%98%E4%B8%8E%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88"><span class="nav-number">2.</span> <span class="nav-text">动态内存与智能指针</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1%E3%80%81shared-ptr%E7%B1%BB"><span class="nav-number">2.1.</span> <span class="nav-text">1、shared_ptr类</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#make-shared%E5%87%BD%E6%95%B0"><span class="nav-number">2.1.1.</span> <span class="nav-text">make_shared函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#shared-ptr%E7%9A%84%E6%8B%B7%E8%B4%9D%E5%92%8C%E8%B5%8B%E5%80%BC"><span class="nav-number">2.1.2.</span> <span class="nav-text">shared_ptr的拷贝和赋值</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2%E3%80%81%E7%9B%B4%E6%8E%A5%E7%AE%A1%E7%90%86%E5%86%85%E5%AD%98"><span class="nav-number">2.2.</span> <span class="nav-text">2、直接管理内存</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8new%E5%88%86%E9%85%8D%E5%8A%A8%E6%80%81%E5%86%85%E5%AD%98"><span class="nav-number">2.2.1.</span> <span class="nav-text">使用new分配动态内存</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8delete%E9%87%8A%E6%94%BE%E5%86%85%E5%AD%98"><span class="nav-number">2.2.2.</span> <span class="nav-text">使用delete释放内存</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%86%85%E7%BD%AE%E6%8C%87%E9%92%88%E7%9A%84%E7%BC%BA%E9%99%B7"><span class="nav-number">2.2.3.</span> <span class="nav-text">内置指针的缺陷</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B7%B7%E5%90%88%E4%BD%BF%E7%94%A8shared-ptr%E5%92%8Cnew"><span class="nav-number">2.2.4.</span> <span class="nav-text">混合使用shared_ptr和new</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="dhk"
+      src="/images/zoe.gif">
+  <p class="site-author-name" itemprop="name">dhk</p>
+  <div class="site-description" itemprop="description">记录一些学习日常</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">58</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/dhkkkkkk" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;dhkkkkkk" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/1154012965@qq.com" title="QQ email → 1154012965@qq.com"><i class="fa fa-envelope fa-fw"></i>QQ email</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"> </div>
+
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">dhk</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/xxw/anime.min.js"></script>
+  <script src="/xxw/velocity/velocity.min.js"></script>
+  <script src="/xxw/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  <script src="//cdn.jsdelivr.net/gh/theme-next/theme-next-needmoreshare2@1/needsharebutton.min.js"></script>
+  <script>
+      pbOptions = {};
+        pbOptions.iconStyle = "box";
+        pbOptions.boxForm = "horizontal";
+        pbOptions.position = "bottomCenter";
+        pbOptions.networks = "Wechat,QQZone,Weibo,Douban,Twitter,Facebook";
+      new needShareButton('#needsharebutton-postbottom', pbOptions);
+  </script>
+<script>
+            window.imageLazyLoadSetting = {
+                isSPA: false,
+                preloadRatio: 1,
+                processImages: null,
+            };
+        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(e.href.match(t)||e.href.match(r))&&(e.href=a.dataset.original)})});</script><script>!function(n){n.imageLazyLoadSetting.processImages=o;var e=n.imageLazyLoadSetting.isSPA,i=n.imageLazyLoadSetting.preloadRatio||1,r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]"));function o(){e&&(r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")));for(var t,a=0;a<r.length;a++)0<=(t=(t=r[a]).getBoundingClientRect()).bottom&&0<=t.left&&t.top<=(n.innerHeight*i||document.documentElement.clientHeight*i)&&function(){var t,e,n,i,o=r[a];t=o,e=function(){r=r.filter(function(t){return o!==t})},n=new Image,i=t.getAttribute("data-original"),n.onload=function(){t.src=i,e&&e()},t.src!==i&&(n.src=i)}()}o(),n.addEventListener("scroll",function(){var t,e;t=o,e=n,clearTimeout(t.tId),t.tId=setTimeout(function(){t.call(e)},500)})}(this);</script><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script></body>
+</html>

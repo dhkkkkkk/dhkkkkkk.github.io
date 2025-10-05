@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/xxw/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="/xxw/pace/pace-theme-minimal.min.css">
+  <script src="/xxw/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"dhkkkkkk.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="前几章中都有涉及FreeRTOS的列表相关内容，在学习过程中，我们也能看出来列表与任务的状态（就绪、延时、堵塞）与任务调度息息相关，本文就针对任务延时进行列表运行机制的进一步学习 参考：FreeRTOS高级篇9—FreeRTOS系统延时分析_研究是为了理解的博客-CSDN博客_pdms_to_ticks 相对延时   函数名 参数 返回值    vTaskDelay( const TickType">
+<meta property="og:type" content="article">
+<meta property="og:title" content="FreeRTOS任务延时分析">
+<meta property="og:url" content="https://dhkkkkkk.github.io/2022/12/14/FreeRTOS%E4%BB%BB%E5%8A%A1%E5%BB%B6%E6%97%B6%E5%88%86%E6%9E%90/index.html">
+<meta property="og:site_name" content="小董的BLOG">
+<meta property="og:description" content="前几章中都有涉及FreeRTOS的列表相关内容，在学习过程中，我们也能看出来列表与任务的状态（就绪、延时、堵塞）与任务调度息息相关，本文就针对任务延时进行列表运行机制的进一步学习 参考：FreeRTOS高级篇9—FreeRTOS系统延时分析_研究是为了理解的博客-CSDN博客_pdms_to_ticks 相对延时   函数名 参数 返回值    vTaskDelay( const TickType">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-12-14T02:49:06.000Z">
+<meta property="article:modified_time" content="2022-12-17T08:34:06.030Z">
+<meta property="article:author" content="dhk">
+<meta property="article:tag" content="嵌入式学习">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://dhkkkkkk.github.io/2022/12/14/FreeRTOS%E4%BB%BB%E5%8A%A1%E5%BB%B6%E6%97%B6%E5%88%86%E6%9E%90/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+<link rel="stylesheet" href="//cdn.jsdelivr.net/gh/theme-next/theme-next-needmoreshare2@1/needsharebutton.min.css"><style>
+#needsharebutton-postbottom {
+  cursor: pointer;
+  height: 26px;
+  margin-top: 10px;
+  position: relative;
+}
+#needsharebutton-postbottom .btn {
+  border: 1px solid $btn-default-border-color;
+  border-radius: 3px;
+  display: initial;
+  padding: 1px 4px;
+}
+</style>
+  <title>FreeRTOS任务延时分析 | 小董的BLOG</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">小董的BLOG</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-目录">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tag fa-fw"></i>目录</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2022/12/14/FreeRTOS%E4%BB%BB%E5%8A%A1%E5%BB%B6%E6%97%B6%E5%88%86%E6%9E%90/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/zoe.gif">
+      <meta itemprop="name" content="dhk">
+      <meta itemprop="description" content="记录一些学习日常">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小董的BLOG">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          FreeRTOS任务延时分析
+        </h1>
+
+        <div class="post-meta">
+		  
+		  
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-12-14 10:49:06" itemprop="dateCreated datePublished" datetime="2022-12-14T10:49:06+08:00">2022-12-14</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-12-17 16:34:06" itemprop="dateModified" datetime="2022-12-17T16:34:06+08:00">2022-12-17</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>前几章中都有涉及FreeRTOS的列表相关内容，在学习过程中，我们也能看出来列表与任务的状态（就绪、延时、堵塞）与任务调度息息相关，本文就针对任务延时进行<strong>列表运行机制</strong>的进一步学习</p>
+<p>参考：<a target="_blank" rel="noopener" href="https://freertos.blog.csdn.net/article/details/51705148">FreeRTOS高级篇9—FreeRTOS系统延时分析_研究是为了理解的博客-CSDN博客_pdms_to_ticks</a></p>
+<h1 id="相对延时"><a href="#相对延时" class="headerlink" title="相对延时"></a>相对延时</h1><table>
+<thead>
+<tr>
+<th align="center">函数名</th>
+<th align="center">参数</th>
+<th align="center">返回值</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">vTaskDelay( const TickType_t xTicksToDelay )</td>
+<td align="center">系统节拍个数</td>
+<td align="center">无</td>
+</tr>
+</tbody></table>
+<p>再次提醒一下，FreeRTOS中的延时参数都是以FreeRTOS<strong>自身的系统节拍</strong>为单位，系统节拍可以在在配置文件FreeRTOSConfig.h，改变宏configTICK_RATE_HZ的值；cubemx中的配置项也有相关的配置处，单位为Hz</p>
+<h2 id="函数体"><a href="#函数体" class="headerlink" title="函数体"></a>函数体</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">vTaskDelay</span><span class="params">( <span class="type">const</span> TickType_t xTicksToDelay )</span></span><br><span class="line">&#123;</span><br><span class="line">BaseType_t xAlreadyYielded = pdFALSE;</span><br><span class="line"> </span><br><span class="line">    <span class="comment">/* 如果延时时间为0,则不会将当前任务加入延时列表 */</span></span><br><span class="line">    <span class="keyword">if</span>( xTicksToDelay &gt; ( TickType_t ) <span class="number">0U</span> )</span><br><span class="line">    &#123;</span><br><span class="line">        configASSERT( uxSchedulerSuspended == <span class="number">0</span> );<span class="comment">//禁用中断</span></span><br><span class="line">        vTaskSuspendAll();<span class="comment">//将调度器挂起</span></span><br><span class="line">        &#123;</span><br><span class="line">        <span class="comment">/* 将当前任务从就绪列表中移除,并根据当前系统节拍计数器值计算唤醒时间,然后将任务加入延时列表 */</span></span><br><span class="line">            prvAddCurrentTaskToDelayedList( xTicksToDelay, pdFALSE );</span><br><span class="line">        &#125;</span><br><span class="line">        xAlreadyYielded = xTaskResumeAll();<span class="comment">//恢复调度器运行</span></span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    <span class="comment">/* 强制执行一次上下文切换*/</span></span><br><span class="line">    <span class="keyword">if</span>( xAlreadyYielded == pdFALSE )</span><br><span class="line">    &#123;</span><br><span class="line">        portYIELD_WITHIN_API();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>其中，关键函数为prvAddCurrentTaskToDelayedList()：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">static</span> <span class="type">void</span> <span class="title function_">prvAddCurrentTaskToDelayedList</span><span class="params">( TickType_t xTicksToWait, <span class="type">const</span> BaseType_t xCanBlockIndefinitely )</span></span><br><span class="line">&#123;</span><br><span class="line">TickType_t xTimeToWake;</span><br><span class="line"><span class="type">const</span> TickType_t xConstTickCount = xTickCount;</span><br><span class="line"></span><br><span class="line">	<span class="meta">#<span class="keyword">if</span>( INCLUDE_xTaskAbortDelay == 1 )</span></span><br><span class="line">	&#123;</span><br><span class="line">		<span class="comment">/* 延时相关标志位清零 */</span></span><br><span class="line">		pxCurrentTCB-&gt;ucDelayAborted = pdFALSE;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line"></span><br><span class="line">	<span class="comment">/* 将列表项移出当前列表（就绪列表），pxCurrentTCB作为全局变量指向当前任务TCB，uxListRemove()返回列表的成员个数 */</span></span><br><span class="line">	<span class="keyword">if</span>( uxListRemove( &amp;( pxCurrentTCB-&gt;xStateListItem ) ) == ( UBaseType_t ) <span class="number">0</span> )</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="comment">/* The current task must be in a ready list, so there is no need to</span></span><br><span class="line"><span class="comment">		check, and the port reset macro can be called directly. */</span></span><br><span class="line">		portRESET_READY_PRIORITY( pxCurrentTCB-&gt;uxPriority, uxTopReadyPriority );</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">	&#123;</span><br><span class="line">		mtCOVERAGE_TEST_MARKER();</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="meta">#<span class="keyword">if</span> ( INCLUDE_vTaskSuspend == 1 )</span></span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">if</span>( ( xTicksToWait == portMAX_DELAY ) &amp;&amp; ( xCanBlockIndefinitely != pdFALSE ) )</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="comment">/*如果设置的延时参数等于portMAX_DELAY(0xffffffff)，则视为堵塞而不是延时 */</span></span><br><span class="line">			vListInsertEnd( &amp;xSuspendedTaskList, &amp;( pxCurrentTCB-&gt;xStateListItem ) );</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span></span><br><span class="line">		&#123;</span><br><span class="line">			<span class="comment">/* 计算唤醒时间 */</span></span><br><span class="line">			xTimeToWake = xConstTickCount + xTicksToWait;</span><br><span class="line"></span><br><span class="line">			<span class="comment">/* 将当前任务TCB的状态列表项值设置为唤醒时间 */</span></span><br><span class="line">			listSET_LIST_ITEM_VALUE( &amp;( pxCurrentTCB-&gt;xStateListItem ), xTimeToWake );</span><br><span class="line"></span><br><span class="line">			<span class="keyword">if</span>( xTimeToWake &lt; xConstTickCount )</span><br><span class="line">			&#123;</span><br><span class="line">				<span class="comment">/* Wake time has overflowed.  Place this item in the overflow</span></span><br><span class="line"><span class="comment">				list. */</span></span><br><span class="line">				vListInsert( pxOverflowDelayedTaskList, &amp;( pxCurrentTCB-&gt;xStateListItem ) );</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">else</span></span><br><span class="line">			&#123;</span><br><span class="line">				<span class="comment">/* 使用的是插入函数，因此延时列表中列表项会根据唤醒时间的大小进行排序 */</span></span><br><span class="line">				vListInsert( pxDelayedTaskList, &amp;( pxCurrentTCB-&gt;xStateListItem ) );</span><br><span class="line"></span><br><span class="line">				<span class="comment">/* If the task entering the blocked state was placed at the</span></span><br><span class="line"><span class="comment">				head of the list of blocked tasks then xNextTaskUnblockTime</span></span><br><span class="line"><span class="comment">				needs to be updated too. */</span></span><br><span class="line">				<span class="keyword">if</span>( xTimeToWake &lt; xNextTaskUnblockTime )</span><br><span class="line">				&#123;</span><br><span class="line">					xNextTaskUnblockTime = xTimeToWake;</span><br><span class="line">				&#125;</span><br><span class="line">				<span class="keyword">else</span></span><br><span class="line">				&#123;</span><br><span class="line">					mtCOVERAGE_TEST_MARKER();</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">   </span><br><span class="line">   </span><br><span class="line">		<span class="comment">/* Avoid compiler warning when INCLUDE_vTaskSuspend is not 1. */</span></span><br><span class="line">		( <span class="type">void</span> ) xCanBlockIndefinitely;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="meta">#<span class="keyword">endif</span> <span class="comment">/* INCLUDE_vTaskSuspend */</span></span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>通过对上述代码解释了列表的具体使用方法：</p>
+<ul>
+<li><p>若要将当前任务延时或挂起，可以通过全局变量pxCurrentTCB找到该任务TCB，再操作该TCB的<strong>状态</strong>列表项</p>
+</li>
+<li><p>当任务延时或挂起时，状态列表项的列表项值xItemValue会用于存放唤醒（延时结束）的时间，由于列表插入函数会自动根据xItemValue的值进行排序，<strong>所以唤醒时间越短的列表项会越排在列表前面</strong></p>
+</li>
+<li><p>FreeRTOS使用了两个延时列表：xDelayedTaskList1和xDelayedTaskList2，并使用两个列表指针类型变量pxDelayedTaskList和pxOverflowDelayedTaskList分别指向上面的延时列表1和延时列表2</p>
+<p>pxOverflowDelayedTaskList用于解决计时溢出的问题：</p>
+<p>tasks.c中定义了很多局部静态变量，其中有一个变量xTickCount用于记录系统节拍中断次数（可以理解为记录当前时间），当xTicksToDelay达到4294967295后再增加，就会溢出变成0。 如果内核判断出xTickCount+ xTicksToDelay溢出，就将当前任务挂接到列表指针pxOverflowDelayedTaskList指向的列表中</p>
+</li>
+</ul>
+<h2 id="相对延时的缺点"><a href="#相对延时的缺点" class="headerlink" title="相对延时的缺点"></a>相对延时的缺点</h2><p>由于相对延时是在每次调用vTaskDelay之后才开启延时，如果调用延时的任务在运行过程中发生中断，那通过相对延时进行的周期任务就会因为该中断而被影响导致不能发生中断。</p>
+<p>因此，为了能最大程度的使相对延时达到精准的效果，最好将使用相对延时的任务优先级设置为最高</p>
+<h1 id="绝对延时"><a href="#绝对延时" class="headerlink" title="绝对延时"></a>绝对延时</h1><table>
+<thead>
+<tr>
+<th align="center">函数名</th>
+<th align="center">参数</th>
+<th align="center">返回值</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">vTaskDelayUntil( TickType_t * const pxPreviousWakeTime, <br>                   const TickType_t xTimeIncrement )</td>
+<td align="center">上一次记录的时间；<br>周期循环时间</td>
+<td align="center">无</td>
+</tr>
+</tbody></table>
+<h2 id="函数体-1"><a href="#函数体-1" class="headerlink" title="函数体"></a>函数体</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">vTaskDelayUntil</span><span class="params">( TickType_t * <span class="type">const</span> pxPreviousWakeTime, <span class="type">const</span> TickType_t xTimeIncrement )</span></span><br><span class="line">&#123;</span><br><span class="line">TickType_t xTimeToWake;</span><br><span class="line">BaseType_t xAlreadyYielded, xShouldDelay = pdFALSE;</span><br><span class="line"> </span><br><span class="line">    vTaskSuspendAll();</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">/* 保存系统节拍中断次数计数器 */</span></span><br><span class="line">        <span class="type">const</span> TickType_t xConstTickCount = xTickCount;</span><br><span class="line"> </span><br><span class="line">        <span class="comment">/* 计算任务下次唤醒时间(以系统节拍中断次数表示)   */</span></span><br><span class="line">        xTimeToWake = *pxPreviousWakeTime + xTimeIncrement;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">/* *pxPreviousWakeTime中保存的是上次唤醒时间,唤醒后需要一定时间执行任务主体代码,如果上次唤醒时间大于当前时间,说明节拍计数器溢出了 */</span></span><br><span class="line">        <span class="keyword">if</span>( xConstTickCount &lt; *pxPreviousWakeTime )</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">/*只有当周期性延时时间大于任务主体代码执行时间,才会将任务挂接到延时列表.*/</span></span><br><span class="line">            <span class="keyword">if</span>( ( xTimeToWake &lt; *pxPreviousWakeTime ) &amp;&amp; ( xTimeToWake &gt; xConstTickCount ) )</span><br><span class="line">            &#123;</span><br><span class="line">                xShouldDelay = pdTRUE;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">/* 也都是保证周期性延时时间大于任务主体代码执行时间 */</span></span><br><span class="line">            <span class="keyword">if</span>( ( xTimeToWake &lt; *pxPreviousWakeTime ) || ( xTimeToWake &gt; xConstTickCount ) )</span><br><span class="line">            &#123;</span><br><span class="line">                xShouldDelay = pdTRUE;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"> </span><br><span class="line">        <span class="comment">/* 更新唤醒时间,为下一次调用本函数做准备. */</span></span><br><span class="line">        *pxPreviousWakeTime = xTimeToWake;</span><br><span class="line"> </span><br><span class="line">        <span class="keyword">if</span>( xShouldDelay != pdFALSE )</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">/* 将本任务加入延时列表,注意阻塞时间并不是以当前时间为参考,因此减去了当前系统节拍中断计数器值*/</span></span><br><span class="line">            prvAddCurrentTaskToDelayedList( xTimeToWake - xConstTickCount, pdFALSE );</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    xAlreadyYielded = xTaskResumeAll();</span><br><span class="line"> </span><br><span class="line">    <span class="comment">/* 强制执行一次上下文切换 */</span></span><br><span class="line">    <span class="keyword">if</span>( xAlreadyYielded == pdFALSE )</span><br><span class="line">    &#123;</span><br><span class="line">        portYIELD_WITHIN_API();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>写法和基本思路和相对延时区别不大，唯一需要注意的是。绝对延时之所以叫绝对延时，<strong>是因为其第一个参数pxPreviousWakeTime除开第一次使用时需获取当前系统时间外，每次调用绝对延时函数时pxPreviousWakeTime内保存的值为上一次调用时计算出的唤醒时间</strong></p>
+<p>也就是说，绝对延时的<strong>每一次延时的起点都是上一次延时的终点</strong>，这也就保证了任务主体即使被中断也不会影响到下一次执行任务主体（前提是任务主体+中断执行的时间小于延时长度，如果超过延时时间，需要重新获取pxPreviousWakeTime为当前系统的最新时间）</p>
+
+    </div>
+
+    
+    
+    <div class="post-widgets">
+      <div id="needsharebutton-postbottom">
+        <span class="btn">
+          <i class="fa fa-share-alt" aria-hidden="true"></i>
+        </span>
+      </div>
+    </div>
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E5%B5%8C%E5%85%A5%E5%BC%8F%E5%AD%A6%E4%B9%A0/" rel="tag"><i class="fa fa-tag"></i># 嵌入式学习</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/12/12/FreeRTOS%E7%9A%84%E4%BB%BB%E5%8A%A1%E5%88%9B%E5%BB%BA%E5%88%86%E6%9E%90/" rel="prev" title="FreeRTOS的任务创建分析">
+      <i class="fa fa-chevron-left"></i> FreeRTOS的任务创建分析
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2023/01/12/C++-8/" rel="next" title="C++-顺序容器">
+      C++-顺序容器 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%9B%B8%E5%AF%B9%E5%BB%B6%E6%97%B6"><span class="nav-number">1.</span> <span class="nav-text">相对延时</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%87%BD%E6%95%B0%E4%BD%93"><span class="nav-number">1.1.</span> <span class="nav-text">函数体</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9B%B8%E5%AF%B9%E5%BB%B6%E6%97%B6%E7%9A%84%E7%BC%BA%E7%82%B9"><span class="nav-number">1.2.</span> <span class="nav-text">相对延时的缺点</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BB%9D%E5%AF%B9%E5%BB%B6%E6%97%B6"><span class="nav-number">2.</span> <span class="nav-text">绝对延时</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%87%BD%E6%95%B0%E4%BD%93-1"><span class="nav-number">2.1.</span> <span class="nav-text">函数体</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="dhk"
+      src="/images/zoe.gif">
+  <p class="site-author-name" itemprop="name">dhk</p>
+  <div class="site-description" itemprop="description">记录一些学习日常</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">58</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/dhkkkkkk" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;dhkkkkkk" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/1154012965@qq.com" title="QQ email → 1154012965@qq.com"><i class="fa fa-envelope fa-fw"></i>QQ email</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"> </div>
+
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">dhk</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/xxw/anime.min.js"></script>
+  <script src="/xxw/velocity/velocity.min.js"></script>
+  <script src="/xxw/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  <script src="//cdn.jsdelivr.net/gh/theme-next/theme-next-needmoreshare2@1/needsharebutton.min.js"></script>
+  <script>
+      pbOptions = {};
+        pbOptions.iconStyle = "box";
+        pbOptions.boxForm = "horizontal";
+        pbOptions.position = "bottomCenter";
+        pbOptions.networks = "Wechat,QQZone,Weibo,Douban,Twitter,Facebook";
+      new needShareButton('#needsharebutton-postbottom', pbOptions);
+  </script>
+<script>
+            window.imageLazyLoadSetting = {
+                isSPA: false,
+                preloadRatio: 1,
+                processImages: null,
+            };
+        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(e.href.match(t)||e.href.match(r))&&(e.href=a.dataset.original)})});</script><script>!function(n){n.imageLazyLoadSetting.processImages=o;var e=n.imageLazyLoadSetting.isSPA,i=n.imageLazyLoadSetting.preloadRatio||1,r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]"));function o(){e&&(r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")));for(var t,a=0;a<r.length;a++)0<=(t=(t=r[a]).getBoundingClientRect()).bottom&&0<=t.left&&t.top<=(n.innerHeight*i||document.documentElement.clientHeight*i)&&function(){var t,e,n,i,o=r[a];t=o,e=function(){r=r.filter(function(t){return o!==t})},n=new Image,i=t.getAttribute("data-original"),n.onload=function(){t.src=i,e&&e()},t.src!==i&&(n.src=i)}()}o(),n.addEventListener("scroll",function(){var t,e;t=o,e=n,clearTimeout(t.tId),t.tId=setTimeout(function(){t.call(e)},500)})}(this);</script><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script></body>
+</html>

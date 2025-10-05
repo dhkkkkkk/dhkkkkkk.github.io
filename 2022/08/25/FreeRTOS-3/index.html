@@ -1,0 +1,1097 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/xxw/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="/xxw/pace/pace-theme-minimal.min.css">
+  <script src="/xxw/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"dhkkkkkk.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="说在前面此篇所有有关函数均为CubeMX 提供的os函数（特殊地方会专门说明），freertos相关用户调用函数也分类似标准库和hal库的区别！但大体用法也与FreeRTOS的任务相关 | 小董的BLOG (gitee.io)中介绍的相似，可以参考 2022.8.26： 阅读了os函数内容并验证后，发现os函数与vtask函数兼容，（其实os函数也是调用的vtask函数）所以理论来说两边的函数可以">
+<meta property="og:type" content="article">
+<meta property="og:title" content="FreeRTOS在CubeMX中的使用">
+<meta property="og:url" content="https://dhkkkkkk.github.io/2022/08/25/FreeRTOS-3/index.html">
+<meta property="og:site_name" content="小董的BLOG">
+<meta property="og:description" content="说在前面此篇所有有关函数均为CubeMX 提供的os函数（特殊地方会专门说明），freertos相关用户调用函数也分类似标准库和hal库的区别！但大体用法也与FreeRTOS的任务相关 | 小董的BLOG (gitee.io)中介绍的相似，可以参考 2022.8.26： 阅读了os函数内容并验证后，发现os函数与vtask函数兼容，（其实os函数也是调用的vtask函数）所以理论来说两边的函数可以">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://dhkkkkkk.github.io/images/loading.png">
+<meta property="og:image" content="https://dhkkkkkk.github.io/images/loading.png">
+<meta property="og:image" content="https://dhkkkkkk.github.io/images/loading.png">
+<meta property="article:published_time" content="2022-08-25T11:08:45.000Z">
+<meta property="article:modified_time" content="2022-09-08T12:18:11.887Z">
+<meta property="article:author" content="dhk">
+<meta property="article:tag" content="嵌入式学习">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://dhkkkkkk.github.io/images/loading.png">
+
+<link rel="canonical" href="https://dhkkkkkk.github.io/2022/08/25/FreeRTOS-3/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+<link rel="stylesheet" href="//cdn.jsdelivr.net/gh/theme-next/theme-next-needmoreshare2@1/needsharebutton.min.css"><style>
+#needsharebutton-postbottom {
+  cursor: pointer;
+  height: 26px;
+  margin-top: 10px;
+  position: relative;
+}
+#needsharebutton-postbottom .btn {
+  border: 1px solid $btn-default-border-color;
+  border-radius: 3px;
+  display: initial;
+  padding: 1px 4px;
+}
+</style>
+  <title>FreeRTOS在CubeMX中的使用 | 小董的BLOG</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">小董的BLOG</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-目录">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tag fa-fw"></i>目录</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2022/08/25/FreeRTOS-3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/zoe.gif">
+      <meta itemprop="name" content="dhk">
+      <meta itemprop="description" content="记录一些学习日常">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小董的BLOG">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          FreeRTOS在CubeMX中的使用
+        </h1>
+
+        <div class="post-meta">
+		  
+		  
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-08-25 19:08:45" itemprop="dateCreated datePublished" datetime="2022-08-25T19:08:45+08:00">2022-08-25</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-09-08 20:18:11" itemprop="dateModified" datetime="2022-09-08T20:18:11+08:00">2022-09-08</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="说在前面"><a href="#说在前面" class="headerlink" title="说在前面"></a>说在前面</h1><p><strong>此篇所有有关函数均为CubeMX 提供的os函数（特殊地方会专门说明），freertos相关用户调用函数也分类似标准库和hal库的区别！但大体用法也与</strong><a target="_blank" rel="noopener" href="https://dhkkk.gitee.io/2022/08/23/FreeRTOS-2/">FreeRTOS的任务相关 | 小董的BLOG (gitee.io)</a><strong>中介绍的相似，可以参考</strong></p>
+<p><strong>2022.8.26： 阅读了os函数内容并验证后，发现os函数与vtask函数兼容，（其实os函数也是调用的vtask函数）所以理论来说两边的函数可以混用，但是为了可读性等方面尽量还是不要混用</strong></p>
+<p><strong>2022.8.28：在自己用了很多功能后，越发觉得库函数比os函数好用，大家自己取舍吧，反正二者是可以混用的，先用cubemx配置，再用库函数编写具体内容也是完全🆗的。</strong></p>
+<h1 id="1、配置界面"><a href="#1、配置界面" class="headerlink" title="1、配置界面"></a>1、配置界面</h1><table>
+<thead>
+<tr>
+<th align="center">配置项</th>
+<th align="center">功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><strong>Tasks and Queues</strong></td>
+<td align="center">任务与队列，用于配置任务体以及消息队列</td>
+</tr>
+<tr>
+<td align="center"><strong>Timers and Semaphores</strong></td>
+<td align="center">软件定时器与信号量，用于配置内核对象 （软件定时器和信号量）</td>
+</tr>
+<tr>
+<td align="center"><strong>Mutexes</strong></td>
+<td align="center">互斥量，用于配置内核对象（互斥量）</td>
+</tr>
+<tr>
+<td align="center"><strong>Events</strong></td>
+<td align="center">事件，配置内核对象（事件）</td>
+</tr>
+<tr>
+<td align="center"><strong>FreeRTOS Heap Usage</strong></td>
+<td align="center">查看用户任务和系统任务的堆占用</td>
+</tr>
+<tr>
+<td align="center"><strong>Config Parameters</strong></td>
+<td align="center">系统的参数配置</td>
+</tr>
+<tr>
+<td align="center"><strong>Include Parameters</strong></td>
+<td align="center">系统的功能裁剪</td>
+</tr>
+<tr>
+<td align="center"><strong>Advanced Settings</strong></td>
+<td align="center">CubeMX 生成代码预配置项</td>
+</tr>
+<tr>
+<td align="center"><strong>User Constants</strong></td>
+<td align="center">用户常量定义</td>
+</tr>
+</tbody></table>
+<h2 id="版本选择"><a href="#版本选择" class="headerlink" title="版本选择"></a>版本选择</h2><img src="/images/loading.png" data-original="/2022/08/25/FreeRTOS-3/%E7%89%88%E6%9C%AC.jpg" class title="This is an image"> 
+
+<p>CMSIS是一种接口标准，目的是屏蔽软硬件差异以提高软件的兼容性。RTOS v1使得软件能够在不同的实时操作系统下运行（屏蔽不同RTOS提供的API的差别），而RTOS v2则是拓展了RTOS v1，兼容更多的CPU架构和实时操作系统。因此我们在使用时可以根据实际情况选择，如果学习过程中使用STM32F1、F4等单片机时没必要选择RTOS v2，更高的兼容性背后时更加冗余的代码，理解起来比较困难。</p>
+<h1 id="2、各配置详细设置"><a href="#2、各配置详细设置" class="headerlink" title="2、各配置详细设置"></a>2、各配置详细设置</h1><h2 id="一、Config-Parameters——系统的参数配置"><a href="#一、Config-Parameters——系统的参数配置" class="headerlink" title="一、Config Parameters——系统的参数配置"></a><strong>一、Config Parameters——系统的参数配置</strong></h2><h3 id="1-Kernel-Setting——FreeRTOS-调度内核设置"><a href="#1-Kernel-Setting——FreeRTOS-调度内核设置" class="headerlink" title="1.Kernel Setting——FreeRTOS 调度内核设置"></a>1.Kernel Setting——FreeRTOS 调度内核设置</h3><p>由于一些重要配置已在<a target="_blank" rel="noopener" href="https://dhkkk.gitee.io/2022/08/18/FreeRTOS-1/">FreeRTOS_基本框架 | 小董的BLOG (gitee.io)</a>中讲到，因此本文只会记录一些容易搞混的地方</p>
+<ul>
+<li><p><strong>USE_PREEMPTION</strong></p>
+<p>USE_PREEMPTION 是 RTOS 的调度方式选择，为 1 时使用抢占式调度器，为 0 时使用协程。</p>
+<p>当使用协程的话会在如下地方进行任务切换：</p>
+<ol>
+<li>一个任务调用了函数 taskYIELD()。</li>
+<li>一个任务调用了可以使任务进入阻塞态的 API 函数。</li>
+<li>应用程序明确定义了在中断中执行上下文切换。</li>
+</ol>
+</li>
+</ul>
+<ul>
+<li><p><strong>USE_MUTEXES、USE_RECURSIVE_MUTEXES、USE_COUNTING_SEMAPHORES</strong></p>
+<p>为 1 则开启系统构建过程中的互斥量、递归互斥量和信号量,默认开启就可。</p>
+</li>
+<li><p><strong>QUEUE_REGISTRY_SIZE</strong></p>
+<p>队列注册表的大小，可以用于管理队列名称和队列实体，方便运行中进行查看与管理，默认为8</p>
+</li>
+<li><p><strong>ENABLE_BACKWARD_COMPATIBILITY</strong></p>
+<p>一个兼容性使能，使能后， FreeRTOS 8.0.0 之后的版本可以通过宏定义使用 8.0.0 版本之前的函数接口，默认使能</p>
+</li>
+<li><p><strong>USE_TASK_NOTIFICATIONS</strong></p>
+<p>任务通知使能，每个RTOS任务都有一个32位的通知值，RTOS任务通知是一个直接发送给任务的事件，它可以解除接收任务的阻塞，并可选地更新接收任务的通知值，为1开启，为0关闭，关闭可以为每个任务节省8个字节的内存空间</p>
+</li>
+<li><p><strong>RECORD_STACK_HIGH_ADDRESS</strong></p>
+<p>记录任务的堆栈入口地址到TCB，为1使能，为0关闭</p>
+</li>
+</ul>
+<h3 id="2-Memory-management-setting——内存管理设置"><a href="#2-Memory-management-setting——内存管理设置" class="headerlink" title="2.Memory management setting——内存管理设置"></a><strong>2.Memory management setting</strong>——内存管理设置</h3><p>视情况调整即可，内存分配方式默认heap_4，方便完善。</p>
+<h3 id="3-Hook-function-relateed-difinitions——钩子函数配置"><a href="#3-Hook-function-relateed-difinitions——钩子函数配置" class="headerlink" title="3.Hook function relateed difinitions——钩子函数配置"></a>3.Hook function relateed difinitions——钩子函数配置</h3><p><strong>钩子函数是一种回调函数，用于在任务执行一次之后或者某些事件发生后执行的函数</strong>，该配置项里面有五个选项，控制5种不同功能的钩子函数开启，当然用户也可以在代码中自己定义</p>
+<ul>
+<li><p><strong>USE_IDLE_HOOK</strong></p>
+<p>每当空闲任务执行一次，钩子函数都会被执行一次</p>
+</li>
+</ul>
+<ul>
+<li><p><strong>USE_TICK_HOOK</strong></p>
+<p>每个TICK周期，钩子函数都会执行一次</p>
+</li>
+<li><p><strong>USE_MALLOC_FAILED_HOOK</strong></p>
+<p>当申请动态内存失败时，钩子函数会执行一次(需要额外配置申请动态内存失败的相关事项)</p>
+</li>
+</ul>
+<ul>
+<li><p><strong>USE_DAEMON_TASK_STARTUP_HOOK</strong></p>
+<p>任务刚启动时，钩子函数会执行一次</p>
+</li>
+<li><p><strong>CHECK_FOR_STACK_OVERFLOW</strong></p>
+<p>任务栈溢出时，钩子函数会执行一次，传入任务 TCB 和任务名称（也需要额外配置）</p>
+</li>
+</ul>
+<h3 id="4-Run-time-and-task-stats…-——任务运行追踪配置"><a href="#4-Run-time-and-task-stats…-——任务运行追踪配置" class="headerlink" title="4.Run time and task stats… ——任务运行追踪配置"></a>4.Run time and task stats… ——任务运行追踪配置</h3><ul>
+<li><p><strong>GENERATE_RUN_TIME_STATS</strong></p>
+<p>开启时间统计功能，在调用 vTaskGetRunTimeStats() 函数时，<strong>将任务运行时间信息保存到可读列表中</strong></p>
+</li>
+<li><p><strong>USE_TRACE_FACILITY</strong></p>
+<p>使能后会包含额外的结构成员和函数以帮助执行可视化和跟踪，<strong>默认开启，方便 MDK 软件工具调试使用</strong></p>
+</li>
+<li><p><strong>USE_STATS_FORMATTING_FUNCTIONS</strong></p>
+<p>使能后会<strong>生成 vTaskList() 和 vTaskGetRunTimeStats() 函数用于获取任务运行状态</strong></p>
+</li>
+</ul>
+<h3 id="5-Co-routine-ralated-definitions——协程配置"><a href="#5-Co-routine-ralated-definitions——协程配置" class="headerlink" title="5.Co-routine ralated definitions——协程配置"></a>5.Co-routine ralated definitions——协程配置</h3><p>默认不开启，协程现在几乎很少使用且FreeRTOS不再更新和维护协程。</p>
+<h3 id="6-Software-timer-definitions——软件定时器配置"><a href="#6-Software-timer-definitions——软件定时器配置" class="headerlink" title="6.Software timer definitions——软件定时器配置"></a>6.Software timer definitions——软件定时器配置</h3><p>默认即可。</p>
+<h3 id="7-Interrupt-nesting-behavior-configuration——优先级配置"><a href="#7-Interrupt-nesting-behavior-configuration——优先级配置" class="headerlink" title="7.Interrupt nesting behavior configuration——优先级配置"></a>7.Interrupt nesting behavior configuration——优先级配置</h3><p>具体参数在<a target="_blank" rel="noopener" href="https://dhkkk.gitee.io/2022/08/18/FreeRTOS-1/">FreeRTOS_基本框架 | 小董的BLOG (gitee.io)</a>已有详细描述，不再赘述。</p>
+<h2 id="二、Include-Parameters——系统的功能裁剪"><a href="#二、Include-Parameters——系统的功能裁剪" class="headerlink" title="二、Include Parameters——系统的功能裁剪"></a><strong>二、Include Parameters</strong>——系统的功能裁剪</h2><p>Include Parameters 下的选项应用于内核裁剪，裁剪不必要的功能，精简系统功能，减少资源占用</p>
+<table>
+<thead>
+<tr>
+<th align="center"><strong>选项</strong></th>
+<th align="center"><strong>功能</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">vTaskPrioritySet</td>
+<td align="center">改变某个任务的任务优先级</td>
+</tr>
+<tr>
+<td align="center">uxTaskPriorityGet</td>
+<td align="center">查询某个任务的优先级</td>
+</tr>
+<tr>
+<td align="center">vTaskDelete</td>
+<td align="center">删除任务</td>
+</tr>
+<tr>
+<td align="center">vTaskCleanUpResources</td>
+<td align="center">回收任务删除后的资源如RAM等等</td>
+</tr>
+<tr>
+<td align="center">vTaskSuspend</td>
+<td align="center">挂起任务</td>
+</tr>
+<tr>
+<td align="center">vTaskDelayUntil</td>
+<td align="center">阻塞延时一段绝对时间</td>
+</tr>
+<tr>
+<td align="center">vTaskDelay</td>
+<td align="center">阻塞延时一段相对时间</td>
+</tr>
+<tr>
+<td align="center">xTaskGetSchedulerState</td>
+<td align="center">获取任务调度器的状态，开启或未开启</td>
+</tr>
+<tr>
+<td align="center">xTaskResumeFromISR</td>
+<td align="center">在中断服务函数中恢复一个任务的运行</td>
+</tr>
+<tr>
+<td align="center">xQueueGetMutexHolder</td>
+<td align="center">获取信号量的队列拥有者，返回拥有此信号量的队列</td>
+</tr>
+<tr>
+<td align="center">xSemaphoreGetMutexHolder</td>
+<td align="center">查询拥有互斥锁的任务，返回任务控制块</td>
+</tr>
+<tr>
+<td align="center">pcTaskGetTaskName</td>
+<td align="center">获取任务名称</td>
+</tr>
+<tr>
+<td align="center">uxTaskGetStackHighWaterMark</td>
+<td align="center">获取任务的堆栈的历史剩余最小值</td>
+</tr>
+<tr>
+<td align="center">xTaskGetCurrentTaskHandle</td>
+<td align="center">此函数用于获取当前任务的任务句柄</td>
+</tr>
+<tr>
+<td align="center">eTaskGetState</td>
+<td align="center">此函数用于查询某个任务的运行壮态</td>
+</tr>
+<tr>
+<td align="center">xEventGroupSetBitFromISR</td>
+<td align="center">在中断服务函数中将指定的事件位清零</td>
+</tr>
+<tr>
+<td align="center">xTimerPendFunctionCall</td>
+<td align="center">定时器守护任务的回调函数（定时器守护任务使用到一个命令队列，只要向队列发送信号就可以执行相应代码，可以实现“中断推迟处理”功能）</td>
+</tr>
+<tr>
+<td align="center">xTaskAbortDelay</td>
+<td align="center">中止延时函数，该函数能立即解除任务的阻塞状态，将任务插入就绪列表中</td>
+</tr>
+<tr>
+<td align="center">xTaskGetHandle</td>
+<td align="center">此函数根据任务名字获取的任务句柄</td>
+</tr>
+</tbody></table>
+<h2 id="三、Tasks-and-Queues——创建任务与队列"><a href="#三、Tasks-and-Queues——创建任务与队列" class="headerlink" title="三、Tasks and Queues——创建任务与队列"></a><strong>三、Tasks and Queues</strong>——创建任务与队列</h2><h3 id="1-任务创建"><a href="#1-任务创建" class="headerlink" title="1.任务创建"></a>1.任务创建</h3><img src="/images/loading.png" data-original="/2022/08/25/FreeRTOS-3/freertos_taskadd.jpg" class title="This is an image"> 
+
+<p>具体内容已在<a target="_blank" rel="noopener" href="https://dhkkk.gitee.io/2022/08/23/FreeRTOS-2/">FreeRTOS的任务相关 | 小董的BLOG (gitee.io)</a>中讲到，需要注意的是：</p>
+<ul>
+<li><p>Task Name为任务<strong>名称</strong>，Entry Function才是任务实体，即运行的<strong>任务函数入口</strong>（函数名）</p>
+</li>
+<li><p>任务的优先级细分有各等级优先级，详见文章最后对于优先级问题的理解</p>
+</li>
+<li><p>Code Generation为代码生成模式，细分为</p>
+<ul>
+<li>As weak： 产生一个用 __weak 修饰的弱定义任务函数，用户可自己再进行定义</li>
+<li>As external： 产生一个外部引用的任务函数，用户需要自己定义该函数</li>
+<li>Default： 产生一个默认格式的任务函数，用户需要在该函数内实现自己的功能</li>
+</ul>
+<p>一般使用默认格式即可</p>
+</li>
+<li><p>Allocation为定义内存分配方式，分为静态与动态，与c语言中static用法类似</p>
+</li>
+</ul>
+<h4 id="CubeMX-提供的一些用户调用函数"><a href="#CubeMX-提供的一些用户调用函数" class="headerlink" title="CubeMX 提供的一些用户调用函数"></a>CubeMX 提供的一些用户调用函数</h4><table>
+<thead>
+<tr>
+<th align="center"><strong>函数</strong></th>
+<th align="center"><strong>功能</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">osThreadNew</td>
+<td align="center">创建新任务</td>
+</tr>
+<tr>
+<td align="center">osThreadGetName</td>
+<td align="center">获取任务名称</td>
+</tr>
+<tr>
+<td align="center">osThreadGetId</td>
+<td align="center">获取当前任务的控制块（TCB）</td>
+</tr>
+<tr>
+<td align="center">osThreadGetState</td>
+<td align="center">获取当前任务的运行状态</td>
+</tr>
+<tr>
+<td align="center">osThreadGetStackSize</td>
+<td align="center">获取任务的堆栈大小</td>
+</tr>
+<tr>
+<td align="center">osThreadGetStackSpace</td>
+<td align="center">获取任务剩余的堆栈大小</td>
+</tr>
+<tr>
+<td align="center">osThreadSetPriority</td>
+<td align="center">设定任务优先级</td>
+</tr>
+<tr>
+<td align="center">osThreadGetPriority</td>
+<td align="center">获取任务优先级</td>
+</tr>
+<tr>
+<td align="center">osThreadYield</td>
+<td align="center">切换控制权给下一个任务</td>
+</tr>
+<tr>
+<td align="center">osThreadSuspend</td>
+<td align="center">挂起任务</td>
+</tr>
+<tr>
+<td align="center">osThreadResume</td>
+<td align="center">恢复任务（挂起多少次恢复多少次）</td>
+</tr>
+<tr>
+<td align="center">osThreadDetach</td>
+<td align="center">分离任务，方便任务结束进行回收</td>
+</tr>
+<tr>
+<td align="center">osThreadJoin</td>
+<td align="center">等待指定的任务停止</td>
+</tr>
+<tr>
+<td align="center">osThreadExit</td>
+<td align="center">停止当前任务</td>
+</tr>
+<tr>
+<td align="center">osThreadTerminate</td>
+<td align="center">停止指定任务</td>
+</tr>
+<tr>
+<td align="center">osThreadGetCount</td>
+<td align="center">获取激活的任务数量</td>
+</tr>
+<tr>
+<td align="center">osThreadEnumerate</td>
+<td align="center">列举激活的任务</td>
+</tr>
+</tbody></table>
+<h3 id="2-队列创建"><a href="#2-队列创建" class="headerlink" title="2.队列创建"></a>2.队列创建</h3><p>FreeRTOS中的队列是一种用于实现【任务与任务】，【任务与中断】以及【中断与任务】之间的通信机制。此外，任务从队列读数据或者写入数据到队列时，都可能被阻塞。这个特性使得任务可以被设计成基于事件驱动的运行模式，大大提高了CPU的执行效率。队列是实现FreeRTOS中其他特性的基础组件，像软件定时器，信号量，互斥锁都是基于队列而实现的。</p>
+<p>在操作系统里面，直接使用全局变量传输数据十分危险，看似正常运行，但不知道啥时候就会因为寄存器或者内存等等原因引起崩溃，所以引入消息，队列的概念。</p>
+<h4 id="队列的基本特性"><a href="#队列的基本特性" class="headerlink" title="队列的基本特性"></a>队列的基本特性</h4><p>队列是一种FIFO操作的数据结构，入队操作就是把一个新的元素放进队尾(tail)，出队操作就是从队头(front)取出一个元素。FreeRTOS中也支持把一个元素放到队头的操作，这个操作会<strong>覆盖</strong>之前队头的元素。</p>
+<h4 id="入队策略"><a href="#入队策略" class="headerlink" title="入队策略"></a>入队策略</h4><p>队列在设计的时候，主要有两种元素入队存储策略：Queue by copy 和 Queue by reference。FreeRTOS的队列使用的是Queue by copy存储策略，考虑到这种策略实现起来更加简单，灵活，且安全。</p>
+<ul>
+<li>Queue by copy：数据入队的时候，队列中存储的是此数据的一份拷贝</li>
+<li>Queue by reference：数据队列的时候，队列中存储的是数据的指针，而非数据本身</li>
+</ul>
+<h4 id="入队堵塞"><a href="#入队堵塞" class="headerlink" title="入队堵塞"></a>入队堵塞</h4><p>一个任务在尝试写入数据到队列时，可以指定一个阻塞时间，即任务在<strong>等待队列有空余空间（非满）可写前最长等待阻塞时间</strong>。当队列中有空间可写入时，任务会自动从阻塞态转换为就绪态。如果在等待时间内队列一直是满的，则等待时间到期后，任务也会自动从阻塞态转换为就绪态，但是它会返回一个写入失败的结果。</p>
+<p>队列可能有多个writerTask，所以在等待队列有空闲空间时，可能会有多个任务阻塞。<strong>当队列有空闲空间可写时，调度器会从所有阻塞的任务中选取优先级最高的那个任务让其进入到就绪态</strong>。<strong>如果最高优先级的不止一个，则让等待最久的那个进入到就绪态。</strong></p>
+<h4 id="出队堵塞"><a href="#出队堵塞" class="headerlink" title="出队堵塞"></a><strong>出队堵塞</strong></h4><p>一个任务在尝试从队列中读取数据时，可以指定一个阻塞时间，即任务在等待队列有元素可读前最长等待阻塞时间。当队列中有元素可读时，任务会自动从阻塞态转换为就绪态。如果在等待时间内队列一直没有数据可读，则等待时间到期后，任务也会自动从阻塞态转换为就绪态，但是它会返回一个读取失败的结果。</p>
+<p>队列可能有多个reader Task，所以在等待队列有数据可读时，可能会有多个任务阻塞。<strong>当队列有数据可读时，调度器会从所有阻塞的任务中选取优先级最高的那个任务让其进入到就绪态。如果最高优先级的不止一个，则让等待最久的那个进入到就绪态。</strong></p>
+<h4 id="相关API函数（非os函数，原博客中提供的os函数不适用于v1版本）（已测试，可用）"><a href="#相关API函数（非os函数，原博客中提供的os函数不适用于v1版本）（已测试，可用）" class="headerlink" title="相关API函数（非os函数，原博客中提供的os函数不适用于v1版本）（已测试，可用）"></a>相关API函数（非os函数，原博客中提供的os函数不适用于v1版本）（已测试，可用）</h4><ul>
+<li><p>队列创建</p>
+<p>使用xQueueCreate()内核函数来创建一个队列。队列的1存储空间从FreeRTOS heap中分配。在使用xQueueCreate()创建队列时，如果FreeRTOS heap中没有足够的存储空间分配给当前队列，则函数返回NULL。如果创建成功，则返回队列的句柄(QueueHandle_t类型)</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th align="center">函数</th>
+<th align="center">QueueHandle_t xQueueCreate( UBaseType_t uxQueueLength, UBaseType_t uxItemSize );</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">参数</td>
+<td align="center"><strong>uxQueueLength</strong>：指定队列的长度，即最多可以存放的元素个数<br><strong>uxItemSize</strong>：队列中存储的元素的大小（占用的字节数）</td>
+</tr>
+<tr>
+<td align="center">返回值</td>
+<td align="center">返回NULL代表创建失败，没有足够的堆空间来创建当前队列；创建成功则返回队列的句柄</td>
+</tr>
+</tbody></table>
+<ul>
+<li><p>元素入队</p>
+<p>使用xQueueSendToBack()函数来向队尾存放一个元素，使用xQueueSend()函数来向队首存放一个元素，两个函数用法一样</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th align="center">函数</th>
+<th align="center">BaseType_t xQueueSendToBack( QueueHandle_t xQueue,<br>                                                                        const void * pvItemToQueue,<br>                                                       TickType_t xTicksToWait );</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">参数</td>
+<td align="center"><strong>xQueue</strong>：目标队列的句柄<br><strong>pvItemToQueue</strong>：入队元素的指针。队列将存储此指针指向的数据的备份<br><strong>xTicksToWait</strong>：指定等待队列有空间可以容纳新元素入队的最长等待（阻塞）时间</td>
+</tr>
+<tr>
+<td align="center">返回值</td>
+<td align="center">当元素成功入队时返回pdPASS，因为队列满而无法入队时返回errQUEUE_FULL（超时后）</td>
+</tr>
+</tbody></table>
+<ul>
+<li><p>元素出队</p>
+<p>使用xQueueReceive()内核函数来从队列中读取队头元素，<strong>读取成功后队列将删除这个元素</strong>，实现元素出队操作。</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th align="center">函数</th>
+<th align="center">BaseType_t xQueueReceive( QueueHandle_t xQueue,<br>                                                  void * const pvBuffer,<br>                                              TickType_t xTicksToWait );</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">参数</td>
+<td align="center"><strong>xQueue</strong>：目标队列的句柄<br><strong>pvBuffer</strong>：用于存放读取到的队列元素的缓冲区，队列将把出队的元素拷贝到此缓冲区中<br><strong>xTicksToWait</strong>：指定等待队列有数据可读的最长等待（阻塞）时间</td>
+</tr>
+<tr>
+<td align="center">返回值</td>
+<td align="center">当成功从队列读取到元素时返回pdPASS，因为队列空而无法出队时返回errQUEUE_EMPTY</td>
+</tr>
+</tbody></table>
+<ul>
+<li><p>查询队列元素个数</p>
+<p>使用内核函数uxQueueMessagesWaiting()来获取队列中有多少个元素</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th align="center">函数</th>
+<th align="center">UBaseType_t uxQueueMessagesWaiting( QueueHandle_t xQueue );</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">参数</td>
+<td align="center"><strong>xQueue</strong>：队列的句柄</td>
+</tr>
+<tr>
+<td align="center">返回值</td>
+<td align="center">队列中的元素个数，返回0代表队列为空</td>
+</tr>
+</tbody></table>
+<p>老规矩，来个按键例程（可以正常运行）：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">task1</span><span class="params">(<span class="type">void</span> <span class="type">const</span> * argument)</span> <span class="comment">//低优先级任务</span></span><br><span class="line">&#123;</span><br><span class="line">  BaseType_t result; </span><br><span class="line">  <span class="type">uint8_t</span> dat[]=<span class="string">&quot;666\r\n&quot;</span>;</span><br><span class="line">  <span class="comment">/* Infinite loop */</span></span><br><span class="line">  <span class="keyword">for</span>(;;)</span><br><span class="line">  &#123;</span><br><span class="line">	<span class="keyword">if</span>(HAL_GPIO_ReadPin(key_1_GPIO_Port,key_1_Pin == GPIO_PIN_SET))</span><br><span class="line">	&#123;</span><br><span class="line">		result= xQueueSendToBack(myQueue01Handle,dat,portMAX_DELAY);</span><br><span class="line">		<span class="keyword">if</span>(result==pdPASS)</span><br><span class="line">		&#123;</span><br><span class="line">			HAL_GPIO_WritePin(led_g_GPIO_Port,led_g_Pin,GPIO_PIN_RESET);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">   	osDelay(<span class="number">5</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125; </span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">task2</span><span class="params">(<span class="type">void</span> <span class="type">const</span> * argument)</span> <span class="comment">//高优先级任务</span></span><br><span class="line">&#123;</span><br><span class="line">  BaseType_t result;</span><br><span class="line">  <span class="type">uint8_t</span> datbuf[<span class="number">10</span>]; <span class="comment">//随便定义个缓冲区就可以</span></span><br><span class="line">  <span class="comment">/* Infinite loop */</span></span><br><span class="line">  <span class="keyword">for</span>(;;)</span><br><span class="line">  &#123;</span><br><span class="line">	result=xQueueReceive(myQueue01Handle,datbuf,portMAX_DELAY);</span><br><span class="line">	<span class="keyword">if</span>(result==pdPASS)</span><br><span class="line">	&#123;</span><br><span class="line">		HAL_GPIO_WritePin(led_r_GPIO_Port,led_r_Pin,GPIO_PIN_RESET);</span><br><span class="line">	&#125;</span><br><span class="line">	osDelay(<span class="number">10</span>);</span><br><span class="line">  &#125;    </span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>懒得去找os函数了，库函数挺好用的是吧😋</p>
+<h2 id="四、事件-组"><a href="#四、事件-组" class="headerlink" title="四、事件(组)"></a>四、事件(组)</h2><h3 id="写在前面2022-8-27"><a href="#写在前面2022-8-27" class="headerlink" title="写在前面2022.8.27"></a>写在前面2022.8.27</h3><p><strong>目前网上对于os函数的使用教程很少，而且大部分都有问题，本小节讲到的os函数使用方法感觉BUG是真的多，搞了整整两天也无法完全实现想要的功能，而且总是一些莫名其妙的问题，感觉是与任务调度有关，但是始终没找到真正原因，人都麻了QAQ。所以本小节（事件）仅提供思路，无法保证能正常运行。（新手建议直接跳过，高手可以找找原因）</strong></p>
+<p><strong>在尝试两天发现效果极差后，果断换任务通知的方法，使用起来可以说很丝滑了，第一次用就可以正常实现功能（从未如此美妙的开局！！）也基本能代替事件通知的功能，建议直接使用任务通知（见下文）</strong></p>
+<p><strong>没有试过库函数，因为发现任务通知够用了，感兴趣的同学可以试一下</strong></p>
+<p><em><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong>分割线</strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></em>***********************</p>
+<ul>
+<li>先列出cubemx提供的事件组函数：</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th align="center"><strong>函数</strong></th>
+<th align="center"><strong>功能</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">osEventFlagsNew</td>
+<td align="center">创建事件标志组</td>
+</tr>
+<tr>
+<td align="center">*osEventFlagsGetName</td>
+<td align="center">获取事件标志组名称</td>
+</tr>
+<tr>
+<td align="center">osEventFlagsSet</td>
+<td align="center">设置事件标志组</td>
+</tr>
+<tr>
+<td align="center">osEventFlagsClear</td>
+<td align="center">清除事件标志组</td>
+</tr>
+<tr>
+<td align="center">osEventFlagsGet</td>
+<td align="center">获取当前事件组标志信息</td>
+</tr>
+<tr>
+<td align="center">osEventFlagsWait</td>
+<td align="center">等待事件标志组触发</td>
+</tr>
+<tr>
+<td align="center">osEventFlagsDelete</td>
+<td align="center">删除事件标志组</td>
+</tr>
+</tbody></table>
+<h3 id="具体配置"><a href="#具体配置" class="headerlink" title="具体配置"></a>具体配置</h3><p><em>对于网络上的解释感觉有点晦涩难懂，自己总结了容易理解的方法，仅供参考</em></p>
+<p>事件的作用主要是实现任务间通信的机制，主要用于实现多任务间的同步，但是事件类型通信只能是<strong>事件类型的通信</strong>，<strong>没有数据传输</strong></p>
+<p>使用流程：</p>
+<ul>
+<li>在cubemx中配置相关事件句柄等</li>
+<li>在程序中定义触发事件位</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> event1 1&lt;&lt;1 	<span class="comment">//事件1</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> event2 1&lt;&lt;2 	<span class="comment">//事件2</span></span></span><br></pre></td></tr></table></figure>
+
+<p>事件标志组中的所有事件位都存储在一个无符号的 EventBits_t 类型的变量（<strong>事件组</strong>）中（例如下文中的result），当 configUSE_16_BIT_TICKS 为 1 的时候事件标志组可以存储 8 个事件位，当 configUSE_16_BIT_TICKS 为 0 的时候事件标志组存储 24个事件位，每个事件位其实就是一个0或者1数字</p>
+<ul>
+<li>定义事件组（在触发任务和使用到等待事件函数的任务中均需定义，定义成局部变量感觉方便点）</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">osStatus_t result;<span class="comment">//也可以用 EventBits_t 不过过程会麻烦一点</span></span><br></pre></td></tr></table></figure>
+
+<p>以下是对osStatus_t的定义，方便查阅</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">enum</span> &#123;</span></span><br><span class="line">  osOK                      =  <span class="number">0</span>,         <span class="comment">///&lt; Operation completed successfully.</span></span><br><span class="line">  osError                   = <span class="number">-1</span>,         <span class="comment">///&lt; Unspecified RTOS error: run-time error but no other error message fits.</span></span><br><span class="line">  osErrorTimeout            = <span class="number">-2</span>,         <span class="comment">///&lt; Operation not completed within the timeout period.</span></span><br><span class="line">  osErrorResource           = <span class="number">-3</span>,         <span class="comment">///&lt; Resource not available.</span></span><br><span class="line">  osErrorParameter          = <span class="number">-4</span>,         <span class="comment">///&lt; Parameter error.</span></span><br><span class="line">  osErrorNoMemory           = <span class="number">-5</span>,         <span class="comment">///&lt; System is out of memory: it was impossible to allocate or reserve memory for the operation.</span></span><br><span class="line">  osErrorISR                = <span class="number">-6</span>,         <span class="comment">///&lt; Not allowed in ISR context: the function cannot be called from interrupt service routines.</span></span><br><span class="line">  osStatusReserved          = <span class="number">0x7FFFFFFF</span>  <span class="comment">///&lt; Prevents enum down-size compiler optimization.</span></span><br><span class="line">&#125; osStatus_t;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>设置事件标志（触发条件）</p>
+<p>以按键触发为例：（可以正常运行）</p>
+</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">event</span><span class="params">(<span class="type">void</span> *argument)</span></span><br><span class="line">&#123;</span><br><span class="line">	osStatus_t result;</span><br><span class="line">    <span class="keyword">for</span>(;;)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span>(HAL_GPIO_ReadPin(key_1_GPIO_Port,key_1_Pin)!=<span class="number">0</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            result = osEventFlagsSet(key_pHandle,event1);</span><br><span class="line">            <span class="keyword">if</span>(result == osOK)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="built_in">printf</span>(<span class="string">&quot;事件1触发成功&quot;</span>);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">            &#123;</span><br><span class="line">                <span class="built_in">printf</span>(<span class="string">&quot;事件1触发失败&quot;</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(HAL_GPIO_ReadPin(key_2_GPIO_Port,key_2_Pin)!=<span class="number">0</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            result = osEventFlagsSet(key_pHandle,event2);</span><br><span class="line">            <span class="keyword">if</span>(result == osOK)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="built_in">printf</span>(<span class="string">&quot;事件2触发成功&quot;</span>);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">            &#123;</span><br><span class="line">                <span class="built_in">printf</span>(<span class="string">&quot;事件2触发失败&quot;</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>等待事件标志</li>
+</ul>
+<p>等待函数参数介绍：</p>
+<p><code>uint32_t osEventFlagsWait (osEventFlagsId_t ef_id, uint32_t flags, uint32_t options, uint32_t timeout);</code></p>
+<table>
+<thead>
+<tr>
+<th align="center"><strong>参数</strong></th>
+<th align="center"><strong>功能</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">ef_id</td>
+<td align="center">事件标志组控制句柄</td>
+</tr>
+<tr>
+<td align="center">flags</td>
+<td align="center">等待的事件位</td>
+</tr>
+<tr>
+<td align="center">options</td>
+<td align="center">等待事件位的操作<br>osFlagsWaitAny ：等待的事件位有任意一个等到就恢复任务<br>osFlagsWaitAll：等待的事件位全部等到才恢复任务<br>osFlagsNoClear：等待成功后不清楚所等待的标志位（默认清除）</td>
+</tr>
+<tr>
+<td align="center">timeout</td>
+<td align="center">等待事件组的等待时间（等待期间任务挂起在内核对象的挂起队列）</td>
+</tr>
+</tbody></table>
+<p>使用例子：同时等待事件1和事件2，且等待到不清除</p>
+<p><strong>（该任务由于未知原因不能正常运行，仅提供思路）</strong></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">wait_task</span><span class="params">(<span class="type">void</span> *argument)</span></span><br><span class="line">&#123;</span><br><span class="line">	osStatus_t result;</span><br><span class="line">	<span class="keyword">for</span>(;;)</span><br><span class="line">	&#123;</span><br><span class="line">		result = osEventFlagsWait(myEvent01Handle,</span><br><span class="line">								  event1|event2,</span><br><span class="line">								  osFlagsWaitAll,</span><br><span class="line">								  <span class="number">10</span>);</span><br><span class="line">		<span class="keyword">if</span>(result == osOK)</span><br><span class="line">		&#123;</span><br><span class="line">		<span class="comment">//可使用阻塞、挂起等方式进入其他任务或直接在此处进行其他操作</span></span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span></span><br><span class="line">		&#123;</span><br><span class="line">		<span class="comment">//未触发等待</span></span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="五、任务通知"><a href="#五、任务通知" class="headerlink" title="五、任务通知"></a>五、任务通知</h2><h3 id="写在前面-2022-8-27"><a href="#写在前面-2022-8-27" class="headerlink" title="写在前面 2022.8.27"></a>写在前面 2022.8.27</h3><p><strong>本文最开始参考的是<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_45396672/article/details/120877303?ops_request_misc=%7B%22request_id%22:%22166155998716782395375007%22,%22scm%22:%2220140713.130102334..%22%7D&request_id=166155998716782395375007&biz_id=0&utm_medium=distribute.pc_search_result.none-task-blog-2~all~sobaiduend~default-1-120877303-null-null.142%5Ev42%5Econtrol,185%5Ev2%5Etag_show&utm_term=freertos"> CubeMX使用FreeRTOS编程指南_Top嵌入式的博客-CSDN博客_cubemx freertos</a>但是在实际使用的过程中可以说有很多漏洞甚至错误，本小节在参考博客中所提供的flag函数好像根本不是任务通知的函数（？）并且其所说的使用方法中连函数的入口参数都写错了，（不晓得他自己跑过自己写的程序没有😅）所以关于flag相关函数在这里仅提供函数内容，用法就不探索了，后面会讲到我实际跑过并可以使用的任务通知函数。</strong></p>
+<h3 id="flag相关函数介绍"><a href="#flag相关函数介绍" class="headerlink" title="flag相关函数介绍"></a>flag相关函数介绍</h3><p>FreeRTOS 的每个任务都有一个 32 位的通知值，任务控制块中的成员变量 ulNotifiedValue 就是这个通知值。任务通知是一个事件，假如某个任务通知的接收任务因为等待任务通知而阻塞的话，向这个接收任务发送任务通知以后就会解除这个任务的阻塞状态，CubeMX内没有提供相关的配置项，但在其生成的 FreeRTOS 接口里面有相关函数进行配置。</p>
+<table>
+<thead>
+<tr>
+<th align="center"><strong>函数</strong></th>
+<th align="center"><strong>功能</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">osThreadFlagsSet</td>
+<td align="center">设置任务的通知标志</td>
+</tr>
+<tr>
+<td align="center">osThreadFlagsClear</td>
+<td align="center">清除任务通知</td>
+</tr>
+<tr>
+<td align="center">osThreadFlagsGet</td>
+<td align="center">获取任务标志</td>
+</tr>
+<tr>
+<td align="center">osThreadFlagsWait</td>
+<td align="center">等待特定的任务标志</td>
+</tr>
+</tbody></table>
+<p><strong>常用osThreadFlagsSet，osThreadFlagsWait，使用方式与事件触发相同</strong>，不再细说，仅介绍一下函数参数</p>
+<p><code>uint32_t osThreadFlagsWait (uint32_t flags, uint32_t options, uint32_t timeout);</code></p>
+<p>其中options的参数：</p>
+<table>
+<thead>
+<tr>
+<th><strong>参数</strong></th>
+<th><strong>功能</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>osFlagsWaitAny</td>
+<td>等待32位通知值任意一位触发后恢复任务（默认）</td>
+</tr>
+<tr>
+<td>osFlagsWaitAll</td>
+<td>等待指定的任务通知值全部触发后再恢复任务</td>
+</tr>
+<tr>
+<td>osFlagsNoClear</td>
+<td>恢复任务后不清除任务标志（默认清除）</td>
+</tr>
+</tbody></table>
+<p><strong>任务通知其实个任务事件标志组使用上没有多大的区别，但他们两个的实现原理不同，同时任务通知对资源的占用更少</strong></p>
+<p><strong>根据 FreeRTOS 官方的统计，使用任务通知替代二值信号量的时候任务解除阻 塞的时间要快 45%，并且需要的 RAM 也更少</strong></p>
+<h3 id="可以实际使用的任务通知"><a href="#可以实际使用的任务通知" class="headerlink" title="可以实际使用的任务通知"></a>可以实际使用的任务通知</h3><p>使用前记得在cubemx配置中开启<code>USE_TASK_NOTIFICATIONS</code>和在include parameters里开启<code>eTaskGetState</code></p>
+<p>FreeRTOS 提供以下几种方式发送通知给任务 ：</p>
+<ul>
+<li>发送通知给任务， 如果有通知未读，不覆盖通知值。</li>
+<li>发送通知给任务，直接覆盖通知值。</li>
+<li>发送通知给任务，设置通知值的一个或者多个位 ，可以当做事件组来使用。</li>
+<li>发送通知给任务，递增通知值，可以当做计数信号量使用。</li>
+</ul>
+<p>通过对以上任务通知方式的合理使用，可以在一定场合下替代 FreeRTOS 的信号量，队列、事件组等。</p>
+<h4 id="相关api函数："><a href="#相关api函数：" class="headerlink" title="相关api函数："></a>相关api函数：</h4><ul>
+<li>向指定任务发送任务通知</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th align="center"><strong>函数</strong></th>
+<th align="center"><strong>int32_t osSignalSet (osThreadId thread_id, int32_t signal)</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">参数</td>
+<td align="center"><strong>thread_id：</strong> 接收通知的任务ID<br><strong>signal：</strong>任务通知值（按位操作数字）</td>
+</tr>
+<tr>
+<td align="center">返回值</td>
+<td align="center">错误码</td>
+</tr>
+</tbody></table>
+<ul>
+<li>等待任务通知</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th align="center"><strong>函数</strong></th>
+<th align="center"><strong>osEvent osSignalWait (int32_t signals, uint32_t millisec)</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">参数</td>
+<td align="center">signals： 接收完成后等待被清零的数据位(0x0001|0x0002&#x3D;0x003)<br><strong>millisec：</strong> 等待超时时间，单位为系统节拍周期</td>
+</tr>
+<tr>
+<td align="center">返回值</td>
+<td align="center">错误码</td>
+</tr>
+</tbody></table>
+<h4 id="实例（按键触发任务通知，已经过验证）"><a href="#实例（按键触发任务通知，已经过验证）" class="headerlink" title="实例（按键触发任务通知，已经过验证）"></a>实例（按键触发任务通知，已经过验证）</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> event1 0x0001</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">task1</span><span class="params">(<span class="type">void</span> <span class="type">const</span> * argument)</span> <span class="comment">//低优先级任务</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="comment">/* USER CODE BEGIN led_G */</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">/* Infinite loop */</span></span><br><span class="line">  <span class="keyword">for</span>(;;)</span><br><span class="line">  &#123;</span><br><span class="line">		<span class="keyword">if</span>(HAL_GPIO_ReadPin(key_1_GPIO_Port,key_1_Pin == GPIO_PIN_SET))</span><br><span class="line">		&#123;</span><br><span class="line">			osSignalSet(task2Handle,event1);</span><br><span class="line">		&#125;	</span><br><span class="line">		osDelay(<span class="number">10</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">/* USER CODE END led_G */</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">task2</span><span class="params">(<span class="type">void</span> <span class="type">const</span> * argument)</span> <span class="comment">//高优先级任务</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="comment">/* USER CODE BEGIN led_B */</span></span><br><span class="line">	osEvent event;	</span><br><span class="line">  <span class="comment">/* Infinite loop */</span></span><br><span class="line">  <span class="keyword">for</span>(;;)</span><br><span class="line">  &#123;</span><br><span class="line">	event = osSignalWait(event1,osWaitForever);  </span><br><span class="line">	<span class="keyword">if</span>(event.status == osEventSignal)  </span><br><span class="line">	&#123;</span><br><span class="line">		HAL_GPIO_WritePin(led_g_GPIO_Port,led_g_Pin,GPIO_PIN_RESET);</span><br><span class="line">	&#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里task2可以不用额外在循环中添加堵塞，因为wait函数本身自带堵塞，<strong>其堵塞的解除是在osSignalSet函数的作用之后的瞬间，也就是说在执行完osSignalSet(task2Handle,event1)后task2会直接抢占task1</strong></p>
+<p><strong>而xTask函数则是在task1执行完后才会进入task2，这点请务必记住，二者通知原理不同，使用方法因此也不同</strong></p>
+<h2 id="其他的内容以后再来探索吧（指还没学到）XD"><a href="#其他的内容以后再来探索吧（指还没学到）XD" class="headerlink" title="其他的内容以后再来探索吧（指还没学到）XD"></a>其他的内容以后再来探索吧（指还没学到）XD</h2><h1 id="遇见的一些问题"><a href="#遇见的一些问题" class="headerlink" title="遇见的一些问题"></a>遇见的一些问题</h1><h2 id="一、FreeRTOS的时钟源配置"><a href="#一、FreeRTOS的时钟源配置" class="headerlink" title="一、FreeRTOS的时钟源配置"></a>一、FreeRTOS的时钟源配置</h2><p>当使用了FreeRtos的时候，建议HAL库使用除了Systick以外的时钟源。也就是说当不使用FreeRtos的时候，HAL使用的是systick作为时钟源，现在使用了rtos，不建议hal库和rtos一起使用systick作为时钟源</p>
+<h2 id="二、优先级问题"><a href="#二、优先级问题" class="headerlink" title="二、优先级问题"></a>二、优先级问题</h2><img src="/images/loading.png" data-original="/2022/08/25/FreeRTOS-3/2.jpg" class title="This is an image"> 
+
+<p>这里我自己也没太搞懂，姑且谈谈自己的理解：</p>
+<p>按道理来说cortex内核对于优先级数值是越小其逻辑上的优先度就越高，其在cubemx上的大部分配置也同样符合这一原则，但是在对于任务优先级的分配上cubemx采用了上图这种low、normal等的分配方式，并且在程序中的定义数值则是优先级数值越大，逻辑优先度越高；这可能是cubemx为了方便理解做出的优化(？)</p>
+<h2 id="三、阻塞问题"><a href="#三、阻塞问题" class="headerlink" title="三、阻塞问题"></a>三、阻塞问题</h2><p><strong>在程序中的阻塞函数≠正常的延时函数</strong>！！！</p>
+<p>当程序执行到vTaskDelay或osdelay后会将当前任务添加到延时任务列表里，并强行切换任务。<strong>也就是说，在这段阻塞期内，只要有任务处于就绪态，就会进入该任务，若多个任务就绪，则按照优先级进行抢占。当堵塞态的任务延时到期过后会重新进入就绪态等待。</strong>并且在重新进入就绪态后任务会从阻塞之后的位置开始。</p>
+<ul>
+<li>任务函数内可以正常调用延时函数</li>
+<li>挂起规律与阻塞规律基本一致</li>
+</ul>
+<h2 id="四、任务抢占问题"><a href="#四、任务抢占问题" class="headerlink" title="四、任务抢占问题"></a>四、任务抢占问题</h2><p>原先一直以为抢占式工作流程为：先运行优先级最高的任务，直至其被阻塞、挂起等；这期间运行优先级第二高的任务，直到其被阻塞、挂起等；若最高优先级此时已处于就绪态，则会在第二优先级任务进入阻塞等非运行态时进入运行态，<strong>但其实这是不对的</strong></p>
+<p>例如：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">task1</span><span class="params">(<span class="type">void</span> *argument)</span><span class="comment">//低优先级</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="comment">/* USER CODE BEGIN led_R */</span></span><br><span class="line">	HAL_GPIO_WritePin(led_r_GPIO_Port,led_r_Pin,GPIO_PIN_SET);</span><br><span class="line">  <span class="comment">/* Infinite loop */</span></span><br><span class="line">  <span class="keyword">for</span>(;;)</span><br><span class="line">  &#123;</span><br><span class="line">	HAL_GPIO_TogglePin(led_b_GPIO_Port,led_b_Pin);</span><br><span class="line">	HAL_Delay(<span class="number">5000</span>);</span><br><span class="line">    osDelay(<span class="number">1</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">/* USER CODE END led_R */</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">task2</span><span class="params">(<span class="type">void</span> *argument)</span><span class="comment">//高优先级</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="comment">/* USER CODE BEGIN led_B */</span></span><br><span class="line">	osStatus_t result;</span><br><span class="line">	</span><br><span class="line">  <span class="comment">/* Infinite loop */</span></span><br><span class="line">  <span class="keyword">for</span>(;;)</span><br><span class="line">  &#123;</span><br><span class="line">		result=osEventFlagsSet(key1_pHandle,event1);</span><br><span class="line">		<span class="keyword">if</span>(result == osOK)</span><br><span class="line">		&#123;</span><br><span class="line">			HAL_GPIO_WritePin(led_r_GPIO_Port,led_r_Pin,GPIO_PIN_RESET);</span><br><span class="line">			HAL_GPIO_WritePin(led_b_GPIO_Port,led_b_Pin,GPIO_PIN_SET);</span><br><span class="line">			HAL_GPIO_WritePin(led_g_GPIO_Port,led_g_Pin,GPIO_PIN_SET);</span><br><span class="line"></span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span></span><br><span class="line">		&#123;</span><br><span class="line">			HAL_GPIO_WritePin(led_b_GPIO_Port,led_b_Pin,GPIO_PIN_RESET);</span><br><span class="line">			HAL_GPIO_WritePin(led_g_GPIO_Port,led_g_Pin,GPIO_PIN_RESET);</span><br><span class="line">		&#125;</span><br><span class="line">		osDelay(<span class="number">5</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>按照原先的思路，程序开始，task2会优先运行，若事件设定正常，此时红灯会亮起；然后task2进入阻塞态5ms，task1进入运行态，此时按道理红灯会熄灭，蓝灯亮起5秒后，task1进入阻塞态，task2重新运行，此时红灯再亮，蓝灯灭。</p>
+<p><strong>但是现实是：红灯亮起后，蓝灯只会极快地闪烁一下后红灯继续亮起，并且蓝灯闪烁的频率大概为5s左右。</strong></p>
+<p>所以，真正的抢占流程应该是：程序开始，task2会优先运行，若事件设定正常，此时红灯会亮起；然后task2进入阻塞态5ms，<strong>task1进入运行态，当task1运行5ms后，task2的阻塞结束，进入就绪态，此时task1刚刚开始运行HAL_Delay(5000)，由于task2优先级更高且已经就绪，task2直接抢占并运行（此时蓝灯就会熄灭，因此蓝灯一次只亮了5ms），而不是等到task1运行osDelay(10)才会抢占</strong>；当task2再一次进入堵塞时，task1从上次被抢占的位置继续运行5ms然后被task2抢占，这样一直循环，直到HAL_Delay(5000)结束，蓝灯才会再次闪烁一次。</p>
+<p>总结：高优先级的任务<strong>一旦就绪后会立刻抢占</strong>优先级低的任务,哪怕当前低优先级正在运行，而不是等到优先级低的任务进入非运行态时才抢占。</p>
+
+    </div>
+
+    
+    
+    <div class="post-widgets">
+      <div id="needsharebutton-postbottom">
+        <span class="btn">
+          <i class="fa fa-share-alt" aria-hidden="true"></i>
+        </span>
+      </div>
+    </div>
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E5%B5%8C%E5%85%A5%E5%BC%8F%E5%AD%A6%E4%B9%A0/" rel="tag"><i class="fa fa-tag"></i># 嵌入式学习</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/08/23/FreeRTOS-2/" rel="prev" title="FreeRTOS的任务相关">
+      <i class="fa fa-chevron-left"></i> FreeRTOS的任务相关
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2022/08/28/C%E8%AF%AD%E8%A8%80%E4%BA%8C%E7%BA%A7%E7%9F%A5%E8%AF%86%E7%82%B9/" rel="next" title="C语言二级查漏补缺（自用）">
+      C语言二级查漏补缺（自用） <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%AF%B4%E5%9C%A8%E5%89%8D%E9%9D%A2"><span class="nav-number">1.</span> <span class="nav-text">说在前面</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#1%E3%80%81%E9%85%8D%E7%BD%AE%E7%95%8C%E9%9D%A2"><span class="nav-number">2.</span> <span class="nav-text">1、配置界面</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%89%88%E6%9C%AC%E9%80%89%E6%8B%A9"><span class="nav-number">2.1.</span> <span class="nav-text">版本选择</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2%E3%80%81%E5%90%84%E9%85%8D%E7%BD%AE%E8%AF%A6%E7%BB%86%E8%AE%BE%E7%BD%AE"><span class="nav-number">3.</span> <span class="nav-text">2、各配置详细设置</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E3%80%81Config-Parameters%E2%80%94%E2%80%94%E7%B3%BB%E7%BB%9F%E7%9A%84%E5%8F%82%E6%95%B0%E9%85%8D%E7%BD%AE"><span class="nav-number">3.1.</span> <span class="nav-text">一、Config Parameters——系统的参数配置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-Kernel-Setting%E2%80%94%E2%80%94FreeRTOS-%E8%B0%83%E5%BA%A6%E5%86%85%E6%A0%B8%E8%AE%BE%E7%BD%AE"><span class="nav-number">3.1.1.</span> <span class="nav-text">1.Kernel Setting——FreeRTOS 调度内核设置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-Memory-management-setting%E2%80%94%E2%80%94%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86%E8%AE%BE%E7%BD%AE"><span class="nav-number">3.1.2.</span> <span class="nav-text">2.Memory management setting——内存管理设置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-Hook-function-relateed-difinitions%E2%80%94%E2%80%94%E9%92%A9%E5%AD%90%E5%87%BD%E6%95%B0%E9%85%8D%E7%BD%AE"><span class="nav-number">3.1.3.</span> <span class="nav-text">3.Hook function relateed difinitions——钩子函数配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-Run-time-and-task-stats%E2%80%A6-%E2%80%94%E2%80%94%E4%BB%BB%E5%8A%A1%E8%BF%90%E8%A1%8C%E8%BF%BD%E8%B8%AA%E9%85%8D%E7%BD%AE"><span class="nav-number">3.1.4.</span> <span class="nav-text">4.Run time and task stats… ——任务运行追踪配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-Co-routine-ralated-definitions%E2%80%94%E2%80%94%E5%8D%8F%E7%A8%8B%E9%85%8D%E7%BD%AE"><span class="nav-number">3.1.5.</span> <span class="nav-text">5.Co-routine ralated definitions——协程配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-Software-timer-definitions%E2%80%94%E2%80%94%E8%BD%AF%E4%BB%B6%E5%AE%9A%E6%97%B6%E5%99%A8%E9%85%8D%E7%BD%AE"><span class="nav-number">3.1.6.</span> <span class="nav-text">6.Software timer definitions——软件定时器配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-Interrupt-nesting-behavior-configuration%E2%80%94%E2%80%94%E4%BC%98%E5%85%88%E7%BA%A7%E9%85%8D%E7%BD%AE"><span class="nav-number">3.1.7.</span> <span class="nav-text">7.Interrupt nesting behavior configuration——优先级配置</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E3%80%81Include-Parameters%E2%80%94%E2%80%94%E7%B3%BB%E7%BB%9F%E7%9A%84%E5%8A%9F%E8%83%BD%E8%A3%81%E5%89%AA"><span class="nav-number">3.2.</span> <span class="nav-text">二、Include Parameters——系统的功能裁剪</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E3%80%81Tasks-and-Queues%E2%80%94%E2%80%94%E5%88%9B%E5%BB%BA%E4%BB%BB%E5%8A%A1%E4%B8%8E%E9%98%9F%E5%88%97"><span class="nav-number">3.3.</span> <span class="nav-text">三、Tasks and Queues——创建任务与队列</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E4%BB%BB%E5%8A%A1%E5%88%9B%E5%BB%BA"><span class="nav-number">3.3.1.</span> <span class="nav-text">1.任务创建</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#CubeMX-%E6%8F%90%E4%BE%9B%E7%9A%84%E4%B8%80%E4%BA%9B%E7%94%A8%E6%88%B7%E8%B0%83%E7%94%A8%E5%87%BD%E6%95%B0"><span class="nav-number">3.3.1.1.</span> <span class="nav-text">CubeMX 提供的一些用户调用函数</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E9%98%9F%E5%88%97%E5%88%9B%E5%BB%BA"><span class="nav-number">3.3.2.</span> <span class="nav-text">2.队列创建</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%98%9F%E5%88%97%E7%9A%84%E5%9F%BA%E6%9C%AC%E7%89%B9%E6%80%A7"><span class="nav-number">3.3.2.1.</span> <span class="nav-text">队列的基本特性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%85%A5%E9%98%9F%E7%AD%96%E7%95%A5"><span class="nav-number">3.3.2.2.</span> <span class="nav-text">入队策略</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%85%A5%E9%98%9F%E5%A0%B5%E5%A1%9E"><span class="nav-number">3.3.2.3.</span> <span class="nav-text">入队堵塞</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%87%BA%E9%98%9F%E5%A0%B5%E5%A1%9E"><span class="nav-number">3.3.2.4.</span> <span class="nav-text">出队堵塞</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%9B%B8%E5%85%B3API%E5%87%BD%E6%95%B0%EF%BC%88%E9%9D%9Eos%E5%87%BD%E6%95%B0%EF%BC%8C%E5%8E%9F%E5%8D%9A%E5%AE%A2%E4%B8%AD%E6%8F%90%E4%BE%9B%E7%9A%84os%E5%87%BD%E6%95%B0%E4%B8%8D%E9%80%82%E7%94%A8%E4%BA%8Ev1%E7%89%88%E6%9C%AC%EF%BC%89%EF%BC%88%E5%B7%B2%E6%B5%8B%E8%AF%95%EF%BC%8C%E5%8F%AF%E7%94%A8%EF%BC%89"><span class="nav-number">3.3.2.5.</span> <span class="nav-text">相关API函数（非os函数，原博客中提供的os函数不适用于v1版本）（已测试，可用）</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%9B%E3%80%81%E4%BA%8B%E4%BB%B6-%E7%BB%84"><span class="nav-number">3.4.</span> <span class="nav-text">四、事件(组)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%86%99%E5%9C%A8%E5%89%8D%E9%9D%A22022-8-27"><span class="nav-number">3.4.1.</span> <span class="nav-text">写在前面2022.8.27</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B7%E4%BD%93%E9%85%8D%E7%BD%AE"><span class="nav-number">3.4.2.</span> <span class="nav-text">具体配置</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%94%E3%80%81%E4%BB%BB%E5%8A%A1%E9%80%9A%E7%9F%A5"><span class="nav-number">3.5.</span> <span class="nav-text">五、任务通知</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%86%99%E5%9C%A8%E5%89%8D%E9%9D%A2-2022-8-27"><span class="nav-number">3.5.1.</span> <span class="nav-text">写在前面 2022.8.27</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#flag%E7%9B%B8%E5%85%B3%E5%87%BD%E6%95%B0%E4%BB%8B%E7%BB%8D"><span class="nav-number">3.5.2.</span> <span class="nav-text">flag相关函数介绍</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%AF%E4%BB%A5%E5%AE%9E%E9%99%85%E4%BD%BF%E7%94%A8%E7%9A%84%E4%BB%BB%E5%8A%A1%E9%80%9A%E7%9F%A5"><span class="nav-number">3.5.3.</span> <span class="nav-text">可以实际使用的任务通知</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%9B%B8%E5%85%B3api%E5%87%BD%E6%95%B0%EF%BC%9A"><span class="nav-number">3.5.3.1.</span> <span class="nav-text">相关api函数：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%9E%E4%BE%8B%EF%BC%88%E6%8C%89%E9%94%AE%E8%A7%A6%E5%8F%91%E4%BB%BB%E5%8A%A1%E9%80%9A%E7%9F%A5%EF%BC%8C%E5%B7%B2%E7%BB%8F%E8%BF%87%E9%AA%8C%E8%AF%81%EF%BC%89"><span class="nav-number">3.5.3.2.</span> <span class="nav-text">实例（按键触发任务通知，已经过验证）</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B6%E4%BB%96%E7%9A%84%E5%86%85%E5%AE%B9%E4%BB%A5%E5%90%8E%E5%86%8D%E6%9D%A5%E6%8E%A2%E7%B4%A2%E5%90%A7%EF%BC%88%E6%8C%87%E8%BF%98%E6%B2%A1%E5%AD%A6%E5%88%B0%EF%BC%89XD"><span class="nav-number">3.6.</span> <span class="nav-text">其他的内容以后再来探索吧（指还没学到）XD</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%81%87%E8%A7%81%E7%9A%84%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98"><span class="nav-number">4.</span> <span class="nav-text">遇见的一些问题</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E3%80%81FreeRTOS%E7%9A%84%E6%97%B6%E9%92%9F%E6%BA%90%E9%85%8D%E7%BD%AE"><span class="nav-number">4.1.</span> <span class="nav-text">一、FreeRTOS的时钟源配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E4%BC%98%E5%85%88%E7%BA%A7%E9%97%AE%E9%A2%98"><span class="nav-number">4.2.</span> <span class="nav-text">二、优先级问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E9%98%BB%E5%A1%9E%E9%97%AE%E9%A2%98"><span class="nav-number">4.3.</span> <span class="nav-text">三、阻塞问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%9B%E3%80%81%E4%BB%BB%E5%8A%A1%E6%8A%A2%E5%8D%A0%E9%97%AE%E9%A2%98"><span class="nav-number">4.4.</span> <span class="nav-text">四、任务抢占问题</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="dhk"
+      src="/images/zoe.gif">
+  <p class="site-author-name" itemprop="name">dhk</p>
+  <div class="site-description" itemprop="description">记录一些学习日常</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">58</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/dhkkkkkk" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;dhkkkkkk" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/1154012965@qq.com" title="QQ email → 1154012965@qq.com"><i class="fa fa-envelope fa-fw"></i>QQ email</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"> </div>
+
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">dhk</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/xxw/anime.min.js"></script>
+  <script src="/xxw/velocity/velocity.min.js"></script>
+  <script src="/xxw/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  <script src="//cdn.jsdelivr.net/gh/theme-next/theme-next-needmoreshare2@1/needsharebutton.min.js"></script>
+  <script>
+      pbOptions = {};
+        pbOptions.iconStyle = "box";
+        pbOptions.boxForm = "horizontal";
+        pbOptions.position = "bottomCenter";
+        pbOptions.networks = "Wechat,QQZone,Weibo,Douban,Twitter,Facebook";
+      new needShareButton('#needsharebutton-postbottom', pbOptions);
+  </script>
+<script>
+            window.imageLazyLoadSetting = {
+                isSPA: false,
+                preloadRatio: 1,
+                processImages: null,
+            };
+        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(e.href.match(t)||e.href.match(r))&&(e.href=a.dataset.original)})});</script><script>!function(n){n.imageLazyLoadSetting.processImages=o;var e=n.imageLazyLoadSetting.isSPA,i=n.imageLazyLoadSetting.preloadRatio||1,r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]"));function o(){e&&(r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")));for(var t,a=0;a<r.length;a++)0<=(t=(t=r[a]).getBoundingClientRect()).bottom&&0<=t.left&&t.top<=(n.innerHeight*i||document.documentElement.clientHeight*i)&&function(){var t,e,n,i,o=r[a];t=o,e=function(){r=r.filter(function(t){return o!==t})},n=new Image,i=t.getAttribute("data-original"),n.onload=function(){t.src=i,e&&e()},t.src!==i&&(n.src=i)}()}o(),n.addEventListener("scroll",function(){var t,e;t=o,e=n,clearTimeout(t.tId),t.tId=setTimeout(function(){t.call(e)},500)})}(this);</script><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script></body>
+</html>
