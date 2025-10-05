@@ -195,7 +195,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2022/11/09/matlab/">
+    <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2022/12/12/FreeRTOS%E7%9A%84%E4%BB%BB%E5%8A%A1%E5%88%9B%E5%BB%BA%E5%88%86%E6%9E%90/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/zoe.gif">
@@ -209,7 +209,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2022/11/09/matlab/" class="post-title-link" itemprop="url">matlab</a>
+            <a href="/2022/12/12/FreeRTOS%E7%9A%84%E4%BB%BB%E5%8A%A1%E5%88%9B%E5%BB%BA%E5%88%86%E6%9E%90/" class="post-title-link" itemprop="url">FreeRTOS的任务创建分析</a>
         </h2>
 
         <div class="post-meta">
@@ -221,14 +221,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2022-11-09 21:25:36" itemprop="dateCreated datePublished" datetime="2022-11-09T21:25:36+08:00">2022-11-09</time>
+              <time title="创建时间：2022-12-12 15:33:00" itemprop="dateCreated datePublished" datetime="2022-12-12T15:33:00+08:00">2022-12-12</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-07-11 23:47:52" itemprop="dateModified" datetime="2024-07-11T23:47:52+08:00">2024-07-11</time>
+                <time title="修改时间：2022-12-13 16:42:20" itemprop="dateModified" datetime="2022-12-13T16:42:20+08:00">2022-12-13</time>
               </span>
 
           
@@ -242,777 +242,96 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p><strong>内容大部分来自<a target="_blank" rel="noopener" href="https://www.w3cschool.cn/matlab/matlab-5use28gb.html">MATLAB介绍_w3cschool</a>只是cv一下方便自己查阅</strong></p>
-<h1 id="基础内容"><a href="#基础内容" class="headerlink" title="基础内容"></a>基础内容</h1><h2 id="常用运算符和特殊字符"><a href="#常用运算符和特殊字符" class="headerlink" title="常用运算符和特殊字符"></a>常用运算符和特殊字符</h2><table>
-<thead>
-<tr>
-<th align="center">运算符</th>
-<th align="center">目的</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center"><strong>+</strong></td>
-<td align="center">加；加法运算符</td>
-</tr>
-<tr>
-<td align="center"><strong>-</strong></td>
-<td align="center">减；减法运算符</td>
-</tr>
-<tr>
-<td align="center">*****</td>
-<td align="center">标量和矩阵乘法运算符</td>
-</tr>
-<tr>
-<td align="center"><strong>.*</strong></td>
-<td align="center">数组乘法运算符</td>
-</tr>
-<tr>
-<td align="center"><strong>^</strong></td>
-<td align="center">标量和矩阵求幂运算符</td>
-</tr>
-<tr>
-<td align="center"><strong>.^</strong></td>
-<td align="center">数组求幂运算符</td>
-</tr>
-<tr>
-<td align="center">*<em>*</em></td>
-<td align="center">矩阵左除</td>
-</tr>
-<tr>
-<td align="center"><strong>&#x2F;</strong></td>
-<td align="center">矩阵右除</td>
-</tr>
-<tr>
-<td align="center">**.**</td>
-<td align="center">阵列左除</td>
-</tr>
-<tr>
-<td align="center"><strong>.&#x2F;</strong></td>
-<td align="center">阵列右除</td>
-</tr>
-<tr>
-<td align="center"><strong>:</strong></td>
-<td align="center">向量生成；子阵提取</td>
-</tr>
-<tr>
-<td align="center"><strong>( )</strong></td>
-<td align="center">下标运算；参数定义</td>
-</tr>
-<tr>
-<td align="center"><strong>[ ]</strong></td>
-<td align="center">矩阵生成</td>
-</tr>
-<tr>
-<td align="center"><strong>.</strong></td>
-<td align="center">点乘运算，常与其他运算符联合使用</td>
-</tr>
-<tr>
-<td align="center"><strong>…</strong></td>
-<td align="center">续行标志；行连续运算符</td>
-</tr>
-<tr>
-<td align="center"><strong>,</strong></td>
-<td align="center">分行符（该行结果不显示）</td>
-</tr>
-<tr>
-<td align="center"><strong>;</strong></td>
-<td align="center"><strong>语句结束；分行符（该行结果显示）</strong></td>
-</tr>
-<tr>
-<td align="center"><strong>%</strong></td>
-<td align="center"><strong>注释标志</strong></td>
-</tr>
-<tr>
-<td align="center"><strong>_</strong></td>
-<td align="center">引用符号和转置运算符</td>
-</tr>
-<tr>
-<td align="center"><strong>._</strong></td>
-<td align="center">非共轭转置运算符</td>
-</tr>
-<tr>
-<td align="center"><strong>&#x3D;</strong></td>
-<td align="center">赋值运算符</td>
-</tr>
-</tbody></table>
-<h2 id="特殊变量和常量"><a href="#特殊变量和常量" class="headerlink" title="特殊变量和常量"></a>特殊变量和常量</h2><table>
-<thead>
-<tr>
-<th align="center">Name</th>
-<th align="center">Meaning</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center"><strong>ans</strong></td>
-<td align="center">默认的变量名，以应答最近依次操作运算结果</td>
-</tr>
-<tr>
-<td align="center"><strong>eps</strong></td>
-<td align="center">浮点数的相对误差</td>
-</tr>
-<tr>
-<td align="center"><strong>i,j</strong></td>
-<td align="center">虚数单位，定义为 i2 &#x3D; j2 &#x3D; -1</td>
-</tr>
-<tr>
-<td align="center"><strong>Inf</strong></td>
-<td align="center">代表无穷大</td>
-</tr>
-<tr>
-<td align="center"><strong>NaN</strong></td>
-<td align="center">代表不定值（不是数字）</td>
-</tr>
-<tr>
-<td align="center"><strong>pi</strong></td>
-<td align="center">圆周率</td>
-</tr>
-</tbody></table>
-<h2 id="matlab命名变量"><a href="#matlab命名变量" class="headerlink" title="matlab命名变量"></a>matlab命名变量</h2><ul>
-<li>名称为字母开头，后可接任意数量的下划线、字母、数字</li>
-<li>区分大小写</li>
-</ul>
-<h2 id="保存工作进度"><a href="#保存工作进度" class="headerlink" title="保存工作进度"></a>保存工作进度</h2><p>MATLAB使用save命令保存工作区中的所有变量，然后作为一个扩展名为.mat的文件，在当前目录中。</p>
-<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">save myfile</span><br><span class="line">load myfile</span><br></pre></td></tr></table></figure>
+          <p>本文的学习参考了<a target="_blank" rel="noopener" href="https://freertos.blog.csdn.net/article/details/51303639">FreeRTOS高级篇2—FreeRTOS任务创建分析_研究是为了理解的博客-CSDN博客_</a></p>
+<h1 id="任务TCB分析"><a href="#任务TCB分析" class="headerlink" title="任务TCB分析"></a>任务TCB分析</h1><p>在<a target="_blank" rel="noopener" href="https://dhkkk.gitee.io/2022/12/09/%E5%9F%BA%E4%BA%8EFreeRTOS%E7%9A%84%E5%88%97%E8%A1%A8%E5%AD%A6%E4%B9%A0/">基于FreeRTOS的列表学习 | 小董的BLOG (gitee.io)</a>中对列表项分析时，在列表项的结构中有一个无类型指针：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> * pvOwner;                                     <span class="comment">/*指向一个任务TCB*/</span></span><br></pre></td></tr></table></figure>
 
-<h1 id="变量"><a href="#变量" class="headerlink" title="变量"></a>变量</h1><h2 id="显示已使用的变量"><a href="#显示已使用的变量" class="headerlink" title="显示已使用的变量"></a>显示已使用的变量</h2><figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">who</span><br><span class="line">whos</span><br><span class="line">clear <span class="comment">%删除所有（或指定）的变量%</span></span><br></pre></td></tr></table></figure>
+<p>该指针用于指向任务的TCB（Task Control Block）。顾名思义，该结构作为一个用于控制任务的集合。它用于存储任务的状态信息，包括任务运行时的环境。<strong>每个任务都有自己的任务TCB。</strong></p>
+<h2 id="结构解读"><a href="#结构解读" class="headerlink" title="结构解读"></a>结构解读</h2><p>可以在task.c中找到定义TCB的结构体：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">tskTaskControlBlock</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">	<span class="keyword">volatile</span> StackType_t	*pxTopOfStack;		<span class="comment">//栈顶指针</span></span><br><span class="line"></span><br><span class="line">	<span class="meta">#<span class="keyword">if</span> ( portUSING_MPU_WRAPPERS == 1 )		<span class="comment">//是否使用MPU</span></span></span><br><span class="line">		xMPU_SETTINGS	xMPUSettings;		</span><br><span class="line">	<span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line"></span><br><span class="line">	ListItem_t			xStateListItem;	<span class="comment">//状态列表项</span></span><br><span class="line">	ListItem_t			xEventListItem;	<span class="comment">//事件列表项	</span></span><br><span class="line">	UBaseType_t			uxPriority;			<span class="comment">//优先级</span></span><br><span class="line">	StackType_t			*pxStack;			<span class="comment">//指向堆栈起始位置</span></span><br><span class="line">	<span class="type">char</span>				pcTaskName[ configMAX_TASK_NAME_LEN ];		<span class="comment">//任务名字最大长度</span></span><br><span class="line"></span><br><span class="line">	<span class="meta">#<span class="keyword">if</span> ( portSTACK_GROWTH &gt; 0 )		<span class="comment">//判断堆栈生长方向,&gt;0为向上生长</span></span></span><br><span class="line">		StackType_t		*pxEndOfStack;		 <span class="comment">//需要额外的一个指针来判断堆栈是否溢出</span></span><br><span class="line">	<span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line"></span><br><span class="line">	<span class="meta">#<span class="keyword">if</span> ( portCRITICAL_NESTING_IN_TCB == 1 )</span></span><br><span class="line">		UBaseType_t		uxCriticalNesting;	</span><br><span class="line">	<span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line"></span><br><span class="line">	<span class="meta">#<span class="keyword">if</span> ( configUSE_TRACE_FACILITY == 1 )</span></span><br><span class="line">		UBaseType_t		uxTCBNumber;		<span class="comment">//一个数值，每个任务都有一个唯一的值</span></span><br><span class="line">		UBaseType_t		uxTaskNumber;		<span class="comment">//存储一个特定数值</span></span><br><span class="line">	<span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line"></span><br><span class="line">	<span class="meta">#<span class="keyword">if</span> ( configUSE_MUTEXES == 1 )	<span class="comment">//是否使用互斥量</span></span></span><br><span class="line">		UBaseType_t		uxBasePriority;		<span class="comment">//用于保存任务的基础的基础优先级</span></span><br><span class="line">		UBaseType_t		uxMutexesHeld;</span><br><span class="line">	<span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line"></span><br><span class="line">	<span class="meta">#<span class="keyword">if</span> ( configUSE_APPLICATION_TASK_TAG == 1 )</span></span><br><span class="line">		TaskHookFunction_t pxTaskTag;</span><br><span class="line">	<span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line"></span><br><span class="line">	<span class="meta">#<span class="keyword">if</span>( configNUM_THREAD_LOCAL_STORAGE_POINTERS &gt; 0 )</span></span><br><span class="line">		<span class="type">void</span> *pvThreadLocalStoragePointers[ configNUM_THREAD_LOCAL_STORAGE_POINTERS ];</span><br><span class="line">	<span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line"></span><br><span class="line">	<span class="meta">#<span class="keyword">if</span>( configGENERATE_RUN_TIME_STATS == 1 )</span></span><br><span class="line">		<span class="type">uint32_t</span>		ulRunTimeCounter;		<span class="comment">//记录任务在运行状态下执行的总时间</span></span><br><span class="line">	<span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line"></span><br><span class="line">	<span class="meta">#<span class="keyword">if</span> ( configUSE_NEWLIB_REENTRANT == 1 )</span></span><br><span class="line">    <span class="comment">/* 为任务分配一个Newlibreent结构体变量。Newlib是一个C库函数，并非FreeRTOS维护，FreeRTOS也不对使用结果负责。如果用户使用Newlib，必须熟知Newlib的细节*/</span></span><br><span class="line">		<span class="class"><span class="keyword">struct</span>	_<span class="title">reent</span> <span class="title">xNewLib_reent</span>;</span></span><br><span class="line">	<span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line"></span><br><span class="line">	<span class="meta">#<span class="keyword">if</span>( configUSE_TASK_NOTIFICATIONS == 1 ) 		<span class="comment">//与任务通知相关</span></span></span><br><span class="line">		<span class="keyword">volatile</span> <span class="type">uint32_t</span> ulNotifiedValue;</span><br><span class="line">		<span class="keyword">volatile</span> <span class="type">uint8_t</span> ucNotifyState;</span><br><span class="line">	<span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line"></span><br><span class="line">	<span class="meta">#<span class="keyword">if</span>( tskSTATIC_AND_DYNAMIC_ALLOCATION_POSSIBLE != 0 )</span></span><br><span class="line">		<span class="type">uint8_t</span>	ucStaticallyAllocated; 		</span><br><span class="line">	<span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line"></span><br><span class="line">	<span class="meta">#<span class="keyword">if</span>( INCLUDE_xTaskAbortDelay == 1 )</span></span><br><span class="line">		<span class="type">uint8_t</span> ucDelayAborted;</span><br><span class="line">	<span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line"></span><br><span class="line">&#125; tskTCB;</span><br><span class="line"><span class="keyword">typedef</span> tskTCB TCB_t;</span><br></pre></td></tr></table></figure>
 
-<h2 id="延伸行"><a href="#延伸行" class="headerlink" title="延伸行"></a>延伸行</h2><ul>
-<li>使用<code>...</code>将当前行延伸至下一行</li>
-</ul>
-<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">initial_velocity = <span class="number">0</span>;</span><br><span class="line">acceleration = <span class="number">9.8</span>;</span><br><span class="line">time = <span class="number">20</span>;</span><br><span class="line">final_velocity = initial_velocity ...</span><br><span class="line">    + acceleration * time</span><br></pre></td></tr></table></figure>
+<h3 id="状态列表项与事件列表项"><a href="#状态列表项与事件列表项" class="headerlink" title="状态列表项与事件列表项"></a>状态列表项与事件列表项</h3><p>从TCB的结构中可以发现两个定义的列表项，分别是<strong>状态列表项和事件列表项</strong>，在上一章也略微提到过，列表与列表项用于调度任务、跟踪任务状态。例如：在task.c中，定义了一些静态列表变量，其中有就绪、阻塞、挂起列表，例如当某个任务处于就绪态时，调度器就将这个任务TCB的<strong>状态列表项</strong>挂接到就绪列表。事件列表项也与之类似，当队列满的情况下，任务因入队操作而阻塞时，就会将<strong>事件列表项</strong>挂接到队列的等待入队列表上。具体实现方法和规则会在之后学习任务调度时讲到。</p>
+<h3 id="uxTCBNumber与uxTaskNumber"><a href="#uxTCBNumber与uxTaskNumber" class="headerlink" title="uxTCBNumber与uxTaskNumber"></a>uxTCBNumber与uxTaskNumber</h3><p>这两个变量主要用于调试与可视化追踪。仅当宏configUSE_TRACE_FACILITY（位于FreeRTOSConfig.h中）为1时有效。变量uxTCBNumber在创建任务时<strong>由内核自动分配</strong>，每个任务对应一个值，<strong>后续不再改变</strong>。变量uxTaskNumber由<strong>API函数vTaskSetTaskNumber()来设置的</strong>，数值由函数参数指定。</p>
+<p>其定义在task.c中如下，参数为对应任务的引用句柄和要设置的数值</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">vTaskSetTaskNumber</span><span class="params">( TaskHandle_t xTask, <span class="type">const</span> UBaseType_t uxHandle )</span></span><br><span class="line">&#123;</span><br><span class="line">	TCB_t *pxTCB;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">if</span>( xTask != <span class="literal">NULL</span> )</span><br><span class="line">		&#123;</span><br><span class="line">			pxTCB = ( TCB_t * ) xTask;</span><br><span class="line">			pxTCB-&gt;uxTaskNumber = uxHandle;</span><br><span class="line">		&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<h2 id="格式命令"><a href="#格式命令" class="headerlink" title="格式命令"></a>格式命令</h2><table>
-<thead>
-<tr>
-<th align="center">命令</th>
-<th align="center">作用</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">format short</td>
-<td align="center">显示4位小数</td>
-</tr>
-<tr>
-<td align="center">format long</td>
-<td align="center">显示16位小数</td>
-</tr>
-<tr>
-<td align="center">format bank</td>
-<td align="center">显示两位小数</td>
-</tr>
-<tr>
-<td align="center">format rat</td>
-<td align="center">显示有理表达式</td>
-</tr>
-<tr>
-<td align="center">format +</td>
-<td align="center">正数</td>
-</tr>
-</tbody></table>
-<ul>
-<li>在命令后加<code>e</code>则会显示对应的指数形式</li>
-</ul>
-<h2 id="创建矩阵"><a href="#创建矩阵" class="headerlink" title="创建矩阵"></a>创建矩阵</h2><figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">m = [<span class="number">1</span> <span class="number">2</span> <span class="number">3</span>; <span class="number">4</span> <span class="number">5</span> <span class="number">6</span>; <span class="number">7</span> <span class="number">8</span> <span class="number">9</span>]</span><br></pre></td></tr></table></figure>
+<h1 id="任务创建的内部流程"><a href="#任务创建的内部流程" class="headerlink" title="任务创建的内部流程"></a>任务创建的内部流程</h1><p>假设当前创建了一个任务如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">static</span> TaskHandle_t xHandle；</span><br><span class="line">xTaskCreate(vTask_A,”Task A”,<span class="number">120</span>,<span class="literal">NULL</span>,<span class="number">1</span>,&amp;xHandle);</span><br></pre></td></tr></table></figure>
 
-<p>结果：</p>
-<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">m =</span><br><span class="line"></span><br><span class="line">     <span class="number">1</span>     <span class="number">2</span>     <span class="number">3</span></span><br><span class="line">     <span class="number">4</span>     <span class="number">5</span>     <span class="number">6</span></span><br><span class="line">     <span class="number">7</span>     <span class="number">8</span>     <span class="number">9</span></span><br></pre></td></tr></table></figure>
+<p>当这个语句执行后，任务A被创建并加入就绪任务列表，我们这章的主要目的，就是看看这个语句在执行过程中，发生了什么事情。</p>
+<h2 id="1、创建任务堆栈和TCB所用空间"><a href="#1、创建任务堆栈和TCB所用空间" class="headerlink" title="1、创建任务堆栈和TCB所用空间"></a>1、创建任务堆栈和TCB所用空间</h2><p>注：原博客中也就是接下来讲到的函数在我使用的基于STM32的FreeRTOS中并不存在，但是可以在对xTaskCreate的定义下找到基本类似的操作（可能是版本原因）<strong>，不过其并不是用函数封装的，但是功能基本一致</strong>。为了方便学习就使用原博客中的函数来理解。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">static</span> TCB_t *<span class="title function_">prvAllocateTCBAndStack</span><span class="params">( <span class="type">const</span> <span class="type">uint16_t</span> usStackDepth, StackType_t * <span class="type">const</span> puxStackBuffer, TCB_t * <span class="type">const</span> pxTaskBuffer )</span></span><br><span class="line">&#123;</span><br><span class="line">TCB_t *pxNewTCB;</span><br><span class="line">StackType_t *pxStack;</span><br><span class="line"> </span><br><span class="line">    <span class="comment">/* 分配堆栈空间*/</span></span><br><span class="line">    pxStack = ( StackType_t * ) pvPortMallocAligned( ( ( ( <span class="type">size_t</span> ) usStackDepth ) * <span class="keyword">sizeof</span>( StackType_t ) ), puxStackBuffer );</span><br><span class="line">    <span class="keyword">if</span>( pxStack != <span class="literal">NULL</span> )</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">/* 分配TCB空间 */</span></span><br><span class="line">        pxNewTCB = ( TCB_t * ) pvPortMallocAligned( <span class="keyword">sizeof</span>( TCB_t ), pxTaskBuffer );</span><br><span class="line"> </span><br><span class="line">        <span class="keyword">if</span>( pxNewTCB != <span class="literal">NULL</span> )</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">/* 将堆栈起始位置存入TCB*/</span></span><br><span class="line">            pxNewTCB-&gt;pxStack = pxStack;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">/* 如果TCB分配失败，释放之前申请的堆栈空间 */</span></span><br><span class="line">            <span class="keyword">if</span>( puxStackBuffer == <span class="literal">NULL</span> )</span><br><span class="line">            &#123;</span><br><span class="line">                vPortFree( pxStack );</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        pxNewTCB = <span class="literal">NULL</span>;</span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    <span class="keyword">if</span>( pxNewTCB != <span class="literal">NULL</span> )</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">/* 如果需要，使用固定值填充堆栈 */</span></span><br><span class="line">        <span class="meta">#<span class="keyword">if</span>( ( configCHECK_FOR_STACK_OVERFLOW&gt; 1 ) || ( configUSE_TRACE_FACILITY == 1 ) || ( INCLUDE_uxTaskGetStackHighWaterMark== 1 ) )</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">/* 仅用于调试 */</span></span><br><span class="line">            ( <span class="type">void</span> ) <span class="built_in">memset</span>( pxNewTCB-&gt;pxStack, ( <span class="type">int</span> ) tskSTACK_FILL_BYTE, ( <span class="type">size_t</span> ) usStackDepth * <span class="keyword">sizeof</span>( StackType_t ) );</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    <span class="keyword">return</span> pxNewTCB;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p>同理可创建行、列向量。</p>
-<h1 id="相关命令"><a href="#相关命令" class="headerlink" title="相关命令"></a>相关命令</h1><h2 id="向量、矩阵相关"><a href="#向量、矩阵相关" class="headerlink" title="向量、矩阵相关"></a>向量、矩阵相关</h2><table>
-<thead>
-<tr>
-<th align="center">命令</th>
-<th align="center">作用&#x2F;目的</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">cat</td>
-<td align="center">连接数组</td>
-</tr>
-<tr>
-<td align="center">find</td>
-<td align="center">查找非零元素的索引</td>
-</tr>
-<tr>
-<td align="center">length</td>
-<td align="center">计算元素数量</td>
-</tr>
-<tr>
-<td align="center">linspace</td>
-<td align="center">创建间隔向量</td>
-</tr>
-<tr>
-<td align="center">logspace</td>
-<td align="center">创建对数间隔向量</td>
-</tr>
-<tr>
-<td align="center">max</td>
-<td align="center">返回最大元素</td>
-</tr>
-<tr>
-<td align="center">min</td>
-<td align="center">返回最小元素</td>
-</tr>
-<tr>
-<td align="center">prod</td>
-<td align="center">计算数组元素的连乘积</td>
-</tr>
-<tr>
-<td align="center">reshape</td>
-<td align="center">重新调整矩阵的行数、列数、维数</td>
-</tr>
-<tr>
-<td align="center">size</td>
-<td align="center">计算数组大小</td>
-</tr>
-<tr>
-<td align="center">sort</td>
-<td align="center">排序每个列</td>
-</tr>
-<tr>
-<td align="center">sum</td>
-<td align="center">每列相加</td>
-</tr>
-<tr>
-<td align="center">eye</td>
-<td align="center">创建一个单位矩阵</td>
-</tr>
-<tr>
-<td align="center">ones</td>
-<td align="center">生成全1矩阵</td>
-</tr>
-<tr>
-<td align="center">zeros</td>
-<td align="center">生成零矩阵</td>
-</tr>
-<tr>
-<td align="center">cross</td>
-<td align="center">计算矩阵交叉乘积</td>
-</tr>
-<tr>
-<td align="center">dot</td>
-<td align="center">计算矩阵点积</td>
-</tr>
-<tr>
-<td align="center">det</td>
-<td align="center">计算数组的行列式</td>
-</tr>
-<tr>
-<td align="center">inv</td>
-<td align="center">计算矩阵的逆</td>
-</tr>
-<tr>
-<td align="center">pinv</td>
-<td align="center">计算矩阵的伪逆</td>
-</tr>
-<tr>
-<td align="center">rank</td>
-<td align="center">计算矩阵的秩</td>
-</tr>
-<tr>
-<td align="center">rref</td>
-<td align="center">将矩阵化成行最简形</td>
-</tr>
-<tr>
-<td align="center">cell</td>
-<td align="center">创建单元数组</td>
-</tr>
-<tr>
-<td align="center">celldisp</td>
-<td align="center">显示单元数组</td>
-</tr>
-<tr>
-<td align="center">cellplot</td>
-<td align="center">显示单元数组的图形表示</td>
-</tr>
-<tr>
-<td align="center">num2cell</td>
-<td align="center">将数值阵列转化为异质阵列</td>
-</tr>
-<tr>
-<td align="center">deal</td>
-<td align="center">匹配输入和输出列表</td>
-</tr>
-<tr>
-<td align="center">iscell</td>
-<td align="center">判断是否为元胞类型</td>
-</tr>
-</tbody></table>
-<h2 id="绘图"><a href="#绘图" class="headerlink" title="绘图"></a>绘图</h2><table>
-<thead>
-<tr>
-<th align="center">命令</th>
-<th align="center">作用&#x2F;目的</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">axis</td>
-<td align="center">人工选择坐标轴尺寸</td>
-</tr>
-<tr>
-<td align="center">fplot</td>
-<td align="center">智能绘图功能</td>
-</tr>
-<tr>
-<td align="center">grid</td>
-<td align="center">显示网格线</td>
-</tr>
-<tr>
-<td align="center">plot</td>
-<td align="center">生成XY图</td>
-</tr>
-<tr>
-<td align="center">print</td>
-<td align="center">打印或绘图到文件</td>
-</tr>
-<tr>
-<td align="center">title</td>
-<td align="center">把文字置于顶部</td>
-</tr>
-<tr>
-<td align="center">xlabel</td>
-<td align="center">将文本标签添加到x轴</td>
-</tr>
-<tr>
-<td align="center">ylabel</td>
-<td align="center">将文本标签添加到y轴</td>
-</tr>
-<tr>
-<td align="center">axes</td>
-<td align="center">创建轴对象</td>
-</tr>
-<tr>
-<td align="center">close</td>
-<td align="center">关闭当前的绘图</td>
-</tr>
-<tr>
-<td align="center">close all</td>
-<td align="center">关闭所有绘图</td>
-</tr>
-<tr>
-<td align="center">figure</td>
-<td align="center">打开一个新的图形窗口</td>
-</tr>
-<tr>
-<td align="center">gtext</td>
-<td align="center">通过鼠标在指定位置放注文</td>
-</tr>
-<tr>
-<td align="center">hold</td>
-<td align="center">保持当前图形</td>
-</tr>
-<tr>
-<td align="center">legend</td>
-<td align="center">鼠标放置图例</td>
-</tr>
-<tr>
-<td align="center">refresh</td>
-<td align="center">重新绘制当前图形窗口</td>
-</tr>
-<tr>
-<td align="center">set</td>
-<td align="center">指定对象的属性，如轴</td>
-</tr>
-<tr>
-<td align="center">subplot</td>
-<td align="center">在子窗口中创建图</td>
-</tr>
-<tr>
-<td align="center">text</td>
-<td align="center">在图上做标记</td>
-</tr>
-<tr>
-<td align="center">bar</td>
-<td align="center">创建条形图</td>
-</tr>
-<tr>
-<td align="center">loglog</td>
-<td align="center">创建双对数图</td>
-</tr>
-<tr>
-<td align="center">polar</td>
-<td align="center">创建极坐标图像</td>
-</tr>
-<tr>
-<td align="center">semilogx</td>
-<td align="center">创建半对数图（对数横坐标）</td>
-</tr>
-<tr>
-<td align="center">semilogy</td>
-<td align="center">创建半对数图（对数纵坐标）</td>
-</tr>
-<tr>
-<td align="center">stairs</td>
-<td align="center">创建阶梯图</td>
-</tr>
-<tr>
-<td align="center">stem</td>
-<td align="center">创建针状图</td>
-</tr>
-</tbody></table>
-<h1 id="数据类型"><a href="#数据类型" class="headerlink" title="数据类型"></a>数据类型</h1><h2 id="常用的数据类型"><a href="#常用的数据类型" class="headerlink" title="常用的数据类型"></a>常用的数据类型</h2><table>
-<thead>
-<tr>
-<th align="center">数据类型</th>
-<th align="center">描述</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center"><code>int8</code></td>
-<td align="center"><code>8</code>位有符号整数</td>
-</tr>
-<tr>
-<td align="center"><code>uint8</code></td>
-<td align="center"><code>8</code>位无符号整数</td>
-</tr>
-<tr>
-<td align="center"><code>int16</code></td>
-<td align="center"><code>16</code>位有符号整数</td>
-</tr>
-<tr>
-<td align="center"><code>uint16</code></td>
-<td align="center"><code>16</code>位无符号整数</td>
-</tr>
-<tr>
-<td align="center"><code>int32</code></td>
-<td align="center"><code>32</code>位有符号整数</td>
-</tr>
-<tr>
-<td align="center"><code>uint32</code></td>
-<td align="center"><code>32</code>位无符号整数</td>
-</tr>
-<tr>
-<td align="center"><code>int64</code></td>
-<td align="center"><code>64</code>位有符号整数</td>
-</tr>
-<tr>
-<td align="center"><code>uint64</code></td>
-<td align="center"><code>64</code>位无符号整数</td>
-</tr>
-<tr>
-<td align="center"><code>single</code></td>
-<td align="center">单精度数值数据</td>
-</tr>
-<tr>
-<td align="center"><code>double</code></td>
-<td align="center">双精度数值数据</td>
-</tr>
-<tr>
-<td align="center"><code>logical</code></td>
-<td align="center">逻辑值为<code>1</code>或<code>0</code>，分别代表<code>true</code>和<code>false</code></td>
-</tr>
-<tr>
-<td align="center"><code>char</code></td>
-<td align="center">字符数据(字符串作为字符向量存储)</td>
-</tr>
-</tbody></table>
-<ul>
-<li><p>但是用法和C不同，matlab中用法类似于函数（matlab的变量不用任何定义语句）</p>
-<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">str = <span class="string">&#x27;Hello World!&#x27;</span></span><br><span class="line">n = <span class="number">2345</span></span><br><span class="line">d = double(n)</span><br><span class="line">un = uint32(<span class="number">789.50</span>)</span><br><span class="line">rn = <span class="number">5678.92347</span></span><br><span class="line">c = int32(rn)</span><br></pre></td></tr></table></figure></li>
-</ul>
-<h2 id="数据类型确认函数"><a href="#数据类型确认函数" class="headerlink" title="数据类型确认函数"></a>数据类型确认函数</h2><table>
-<thead>
-<tr>
-<th align="center">函数</th>
-<th align="center">描述说明</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center"><code>is</code></td>
-<td align="center">检测状态</td>
-</tr>
-<tr>
-<td align="center"><code>isa</code></td>
-<td align="center">确定输入是否是指定类的对象</td>
-</tr>
-<tr>
-<td align="center"><code>iscell</code></td>
-<td align="center">确定输入是单元格数组</td>
-</tr>
-<tr>
-<td align="center"><code>iscellstr</code></td>
-<td align="center">确定输入是字符串的单元格数组</td>
-</tr>
-<tr>
-<td align="center"><code>ischar</code></td>
-<td align="center">确定项目是否是字符数组</td>
-</tr>
-<tr>
-<td align="center"><code>isfield</code></td>
-<td align="center">确定输入是否是结构数组字段</td>
-</tr>
-<tr>
-<td align="center"><code>isfloat</code></td>
-<td align="center">确定输入是否为浮点数组</td>
-</tr>
-<tr>
-<td align="center"><code>ishghandle</code></td>
-<td align="center">确定是否用于处理图形对象句柄</td>
-</tr>
-<tr>
-<td align="center"><code>isinteger</code></td>
-<td align="center">确定输入是否为整数数组</td>
-</tr>
-<tr>
-<td align="center"><code>isjava</code></td>
-<td align="center">确定输入是否为Java对象</td>
-</tr>
-<tr>
-<td align="center"><code>islogical</code></td>
-<td align="center">确定输入是否为逻辑数组</td>
-</tr>
-<tr>
-<td align="center"><code>isnumeric</code></td>
-<td align="center">确定输入是否是数字数组</td>
-</tr>
-<tr>
-<td align="center"><code>isobject</code></td>
-<td align="center">确定输入是否为MATLAB对象</td>
-</tr>
-<tr>
-<td align="center"><code>isreal</code></td>
-<td align="center">检查输入是否为实数数组</td>
-</tr>
-<tr>
-<td align="center"><code>isscalar</code></td>
-<td align="center">确定输入是否为标量</td>
-</tr>
-<tr>
-<td align="center"><code>isstr</code></td>
-<td align="center">确定输入是否是字符数组</td>
-</tr>
-<tr>
-<td align="center"><code>isstruct</code></td>
-<td align="center">确定输入是否是结构数组</td>
-</tr>
-<tr>
-<td align="center"><code>isvector</code></td>
-<td align="center">确定输入是否为向量</td>
-</tr>
-<tr>
-<td align="center"><code>class</code></td>
-<td align="center">确定对象的类</td>
-</tr>
-<tr>
-<td align="center"><code>validateattributes</code></td>
-<td align="center">检查数组的有效性</td>
-</tr>
-<tr>
-<td align="center"><code>whos</code></td>
-<td align="center">在工作区中列出变量，其大小和类型</td>
-</tr>
-</tbody></table>
-<h1 id="运算符"><a href="#运算符" class="headerlink" title="运算符"></a>运算符</h1><h2 id="位运算"><a href="#位运算" class="headerlink" title="位运算"></a>位运算</h2><table>
-<thead>
-<tr>
-<th align="left">函数</th>
-<th align="left">目的&#x2F;作用</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="left">bitand(a, b)</td>
-<td align="left">当a、b是一个或数个无符号整数或无符号整数数组，返回参数a和b位和，</td>
-</tr>
-<tr>
-<td align="left">bitcmp(a)</td>
-<td align="left">a的补码</td>
-</tr>
-<tr>
-<td align="left">bitget(a,pos)</td>
-<td align="left">在指定位置pos中获取位，在整数数组a中</td>
-</tr>
-<tr>
-<td align="left">bitor(a, b)</td>
-<td align="left">对数a和b按位或</td>
-</tr>
-<tr>
-<td align="left">bitset(a, pos)</td>
-<td align="left">a的集合点在一个特定的位置pos</td>
-</tr>
-<tr>
-<td align="left">bitshift(a, k)</td>
-<td align="left">返回一个移到左K位，相当于乘以2K。K负值对应的位权转移或除以2|K|向负无穷舍入到最近的整数。任何溢出位都被截断。</td>
-</tr>
-<tr>
-<td align="left">bitxor(a, b)</td>
-<td align="left">对数a和b按位异或</td>
-</tr>
-<tr>
-<td align="left">swapbytes</td>
-<td align="left">交换字节顺序</td>
-</tr>
-</tbody></table>
-<h2 id="集合运算"><a href="#集合运算" class="headerlink" title="集合运算"></a>集合运算</h2><table>
-<thead>
-<tr>
-<th align="left">函数</th>
-<th align="left">描述</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="left">intersect(A,B)</td>
-<td align="left">设置两个数组的交集；返回A和B所共有的值。返回的值按排序顺序排列。</td>
-</tr>
-<tr>
-<td align="left">intersect(A,B,’rows’)</td>
-<td align="left">将A和B的每一行作为单个实体处理，并返回A和B的公共行。返回的矩阵的行按排序顺序排列。</td>
-</tr>
-<tr>
-<td align="left">ismember(A,B)</td>
-<td align="left">返回与A大小相同的数组，包含1（true），其中A的元素在其他地方的B中找到，它返回0（false）。</td>
-</tr>
-<tr>
-<td align="left">ismember(A,B,’rows’)</td>
-<td align="left">将A和B的每一行作为单个实体处理，并返回一个包含1（true）的向量，其中矩阵A的行也是B的行；否则，它返回0（false）。</td>
-</tr>
-<tr>
-<td align="left">issorted(A)</td>
-<td align="left">如果A的元素按排序顺序返回逻辑1（true），否则返回逻辑0（false）。输入A可以是向量，也可以是N-by-1或1-by-N的字符串数组。如果A和sort（A）的输出相等，则A被认为是排序的。</td>
-</tr>
-<tr>
-<td align="left">issorted(A, ‘rows’)</td>
-<td align="left">如果二维矩阵A的行按排序顺序返回逻辑1（真），否则返回逻辑0（假）。 如果A和排序（A）的输出相等，则认为矩阵A被排序。</td>
-</tr>
-<tr>
-<td align="left">setdiff(A,B)</td>
-<td align="left">设置两个数组的差值；返回不在B中的值。返回数组中的值按排序顺序排列。</td>
-</tr>
-<tr>
-<td align="left">setdiff(A,B,’rows’)</td>
-<td align="left">将每一行A和B行作为单个实体处理，并返回一个不在B中的行。返回的矩阵的行按排序顺序排列。“行”选项不支持单元格数组。</td>
-</tr>
-<tr>
-<td align="left">setxor</td>
-<td align="left">设置两个数组的异或</td>
-</tr>
-<tr>
-<td align="left">union</td>
-<td align="left">设置两个数组的并集</td>
-</tr>
-<tr>
-<td align="left">unique</td>
-<td align="left">数组中唯一的值</td>
-</tr>
-</tbody></table>
-<h1 id="语句"><a href="#语句" class="headerlink" title="语句"></a>语句</h1><h2 id="条件判断"><a href="#条件判断" class="headerlink" title="条件判断"></a>条件判断</h2><figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (...)</span><br><span class="line">	.....;</span><br><span class="line">	.....;</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<p>基本就是一些分配内存的逻辑与操作，还是比较好理解的。</p>
+<h2 id="2、初始化TCB必要的字段"><a href="#2、初始化TCB必要的字段" class="headerlink" title="2、初始化TCB必要的字段"></a>2、初始化TCB必要的字段</h2><p>这些操作在我的版本中都是用预编译判断执行的，没有使用函数封装，要找到对应操作实在是有点眼花，姑且看到大部分操作都是在task.c中对xTaskCreate的定义的后面，这里为了<strong>方便理解</strong>还是使用原博主的函数：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">static</span> <span class="type">void</span> <span class="title function_">prvInitialiseTCBVariables</span><span class="params">( </span></span><br><span class="line"><span class="params">TCB_t * <span class="type">const</span> pxTCB,</span></span><br><span class="line"><span class="params"><span class="type">const</span> <span class="type">char</span> * <span class="type">const</span> pcName, </span></span><br><span class="line"><span class="params">UBaseType_t uxPriority,   </span></span><br><span class="line"><span class="params"><span class="type">const</span> MemoryRegion_t * <span class="type">const</span> xRegions, </span></span><br><span class="line"><span class="params"><span class="type">const</span> <span class="type">uint16_t</span> usStackDepth </span></span><br><span class="line"><span class="params">)</span></span><br><span class="line">&#123;</span><br><span class="line">	UBaseType_t x;</span><br><span class="line"> </span><br><span class="line">    <span class="comment">/* 将任务描述存入TCB */</span></span><br><span class="line">    <span class="keyword">for</span>( x = ( UBaseType_t ) <span class="number">0</span>; x &lt; ( UBaseType_t ) configMAX_TASK_NAME_LEN; x++ )</span><br><span class="line">    &#123;</span><br><span class="line">        pxTCB-&gt;pcTaskName[ x ] = pcName[ x ];</span><br><span class="line">        <span class="keyword">if</span>( pcName[ x ] == <span class="number">0x00</span> )</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">/* 确保字符串有结束 */</span></span><br><span class="line">    pxTCB-&gt;pcTaskName[ configMAX_TASK_NAME_LEN - <span class="number">1</span> ] = <span class="string">&#x27;\0&#x27;</span>;</span><br><span class="line"> </span><br><span class="line">    <span class="comment">/* 调整优先级，宏configMAX_PRIORITIES的值在FreeRTOSConfig.h中设置 */</span></span><br><span class="line">    <span class="keyword">if</span>( uxPriority &gt;= ( UBaseType_t ) configMAX_PRIORITIES )</span><br><span class="line">    &#123;</span><br><span class="line">        uxPriority = ( UBaseType_t ) configMAX_PRIORITIES - ( UBaseType_t ) <span class="number">1U</span>;</span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    pxTCB-&gt;uxPriority = uxPriority;</span><br><span class="line">    <span class="meta">#<span class="keyword">if</span> ( configUSE_MUTEXES == 1 )              <span class="comment">/*使用互斥量*/</span></span></span><br><span class="line">    &#123;  </span><br><span class="line">        pxTCB-&gt;uxBasePriority = uxPriority;</span><br><span class="line">        pxTCB-&gt;uxMutexesHeld = <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">#<span class="keyword">endif</span> <span class="comment">/* configUSE_MUTEXES */</span></span></span><br><span class="line">   </span><br><span class="line">    <span class="comment">/*初始化列表项*/</span></span><br><span class="line">    vListInitialiseItem( &amp;( pxTCB-&gt;xStateListItem ) );</span><br><span class="line">    vListInitialiseItem( &amp;( pxTCB-&gt;xEventListItem ) );</span><br><span class="line"> </span><br><span class="line">    <span class="comment">/* 设置列表项xStateListItem的成员pvOwner指向当前任务控制块 */</span></span><br><span class="line">    listSET_LIST_ITEM_OWNER( &amp;( pxTCB-&gt;xStateListItem ), pxTCB );</span><br><span class="line"> </span><br><span class="line">    <span class="comment">/* 设置列表项xEventListItem的成员xItemValue*/</span></span><br><span class="line">    listSET_LIST_ITEM_VALUE( &amp;( pxTCB-&gt;xEventListItem ), ( TickType_t ) configMAX_PRIORITIES - ( TickType_t ) uxPriority );</span><br><span class="line">    <span class="comment">/* 设置列表项xEventListItem的成员pvOwner指向当前任务控制块 */</span></span><br><span class="line">    listSET_LIST_ITEM_OWNER( &amp;( pxTCB-&gt;xEventListItem ), pxTCB );</span><br><span class="line"> </span><br><span class="line">    <span class="meta">#<span class="keyword">if</span> ( portCRITICAL_NESTING_IN_TCB ==1 )    <span class="comment">/*使能临界区嵌套功能*/</span></span></span><br><span class="line">    &#123;  </span><br><span class="line">        pxTCB-&gt;uxCriticalNesting = ( UBaseType_t ) <span class="number">0U</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">#<span class="keyword">endif</span> <span class="comment">/* portCRITICAL_NESTING_IN_TCB */</span></span></span><br><span class="line"> </span><br><span class="line">    <span class="meta">#<span class="keyword">if</span> ( configUSE_APPLICATION_TASK_TAG == 1 ) <span class="comment">/*使能任务标签功能*/</span></span></span><br><span class="line">    &#123;  </span><br><span class="line">        pxTCB-&gt;pxTaskTag = <span class="literal">NULL</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">#<span class="keyword">endif</span> <span class="comment">/* configUSE_APPLICATION_TASK_TAG */</span></span></span><br><span class="line"> </span><br><span class="line">    <span class="meta">#<span class="keyword">if</span> ( configGENERATE_RUN_TIME_STATS == 1 )  <span class="comment">/*使能事件统计功能*/</span></span></span><br><span class="line">    &#123;</span><br><span class="line">        pxTCB-&gt;ulRunTimeCounter = <span class="number">0UL</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">#<span class="keyword">endif</span> <span class="comment">/* configGENERATE_RUN_TIME_STATS */</span></span></span><br><span class="line"> </span><br><span class="line">    <span class="meta">#<span class="keyword">if</span> ( portUSING_MPU_WRAPPERS == 1 )         <span class="comment">/*使用MPU功能*/</span></span></span><br><span class="line">    &#123;</span><br><span class="line">        vPortStoreTaskMPUSettings( &amp;( pxTCB-&gt;xMPUSettings ), xRegions, pxTCB-&gt;pxStack, usStackDepth );</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">#<span class="keyword">else</span> <span class="comment">/* portUSING_MPU_WRAPPERS */</span></span></span><br><span class="line">    &#123;</span><br><span class="line">        ( <span class="type">void</span> ) xRegions;</span><br><span class="line">        ( <span class="type">void</span> ) usStackDepth;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">#<span class="keyword">endif</span> <span class="comment">/* portUSING_MPU_WRAPPERS */</span></span></span><br><span class="line"> </span><br><span class="line">    <span class="meta">#<span class="keyword">if</span>( configNUM_THREAD_LOCAL_STORAGE_POINTERS != 0 )<span class="comment">/*使能线程本地存储指针*/</span></span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">for</span>( x = <span class="number">0</span>; x &lt; ( UBaseType_t )configNUM_THREAD_LOCAL_STORAGE_POINTERS; x++ )</span><br><span class="line">        &#123;</span><br><span class="line">            pxTCB-&gt;pvThreadLocalStoragePointers[ x ] = <span class="literal">NULL</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line"> </span><br><span class="line">    <span class="meta">#<span class="keyword">if</span> ( configUSE_TASK_NOTIFICATIONS == 1 )   <span class="comment">/*使能任务通知功能*/</span></span></span><br><span class="line">    &#123;</span><br><span class="line">        pxTCB-&gt;ulNotifiedValue = <span class="number">0</span>;</span><br><span class="line">        pxTCB-&gt;ucNotifyState = taskNOT_WAITING_NOTIFICATION;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line"> </span><br><span class="line">    <span class="meta">#<span class="keyword">if</span> ( configUSE_NEWLIB_REENTRANT == 1 )     <span class="comment">/*使用Newlib*/</span></span></span><br><span class="line">    &#123;</span><br><span class="line">        _REENT_INIT_PTR( ( &amp;( pxTCB-&gt;xNewLib_reent ) ) );</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line"> </span><br><span class="line">    <span class="meta">#<span class="keyword">if</span>( INCLUDE_xTaskAbortDelay == 1 )</span></span><br><span class="line">    &#123;</span><br><span class="line">        pxTCB-&gt;ucDelayAborted = pdFALSE;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">switch</span>(...)</span><br><span class="line">	<span class="keyword">case</span> .. 	<span class="comment">%无冒号</span></span><br><span class="line">		....;</span><br><span class="line">		....;</span><br><span class="line">	<span class="keyword">case</span> ..</span><br><span class="line">		....	<span class="comment">%单行可以不加分号</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>其他用法与C基本相同</li>
-<li>end后不须跟分号（即使后面还有语句）</li>
-</ul>
-<h2 id="循环"><a href="#循环" class="headerlink" title="循环"></a>循环</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">while()</span><br><span class="line">	...;</span><br><span class="line">	...;</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
-
-<h3 id="for循环"><a href="#for循环" class="headerlink" title="for循环"></a>for循环</h3><p>for循环有三种用法：</p>
-<ul>
-<li><p>initval:endval  默认步长为+1，递增</p>
-<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> a = <span class="number">10</span>:<span class="number">20</span> </span><br><span class="line">	...;</span><br><span class="line">	...;</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<p>其实大部分也就是对应TCB结构体中各个成员的初始化，其中有几点需要着重讲一下：</p>
+<h3 id="对两个列表项的初始化："><a href="#对两个列表项的初始化：" class="headerlink" title="对两个列表项的初始化："></a>对两个列表项的初始化：</h3><ul>
+<li><p>对状态列表项的初始化</p>
+<p>使成员pvOwner指向对应的任务TCB，其余成员不对其操作</p>
 </li>
-<li><p>initval:step:endval  step可自定义步长</p>
-<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> a = <span class="number">1.0</span>: <span class="number">-0.1</span>: <span class="number">0.0</span></span><br><span class="line">	...;</span><br><span class="line">	...;</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<li><p><strong>对事件列表项的初始化</strong></p>
+<p>之前讲到过事件列表项值会存储任务的优先级相关信息，其存储方式比较特别：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* 设置列表项xEventListItem的成员xItemValue*/</span></span><br><span class="line">listSET_LIST_ITEM_VALUE( </span><br><span class="line">&amp;( pxTCB-&gt;xEventListItem ), </span><br><span class="line">( TickType_t ) configMAX_PRIORITIES - ( TickType_t ) uxPriority );</span><br></pre></td></tr></table></figure>
+
+<p>可以看出，事件列表项的xItemValue中存储的值为**<u>用户设置的最大优先级-当前任务的优先级</u><strong>，也就是说，ItemValue的值越小，当前任务的优先级</strong>越高**</p>
+<p>再回想一下列表项插入列表的函数vListInsert()：</p>
+<img src="/images/loading.png" data-original="/2022/12/12/FreeRTOS%E7%9A%84%E4%BB%BB%E5%8A%A1%E5%88%9B%E5%BB%BA%E5%88%86%E6%9E%90/15.jpg" class title="This is an image"> 
+
+<p>可以发现xItemValue越小的值越是排在列表的前面，这也就解释了这样做的原因，<strong>其实也就是优先级越高的任务越在列表前面</strong></p>
 </li>
-<li><p>索引数组</p>
-<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> a = [<span class="number">24</span>,<span class="number">18</span>,<span class="number">17</span>,<span class="number">23</span>,<span class="number">28</span>]</span><br><span class="line">	...;</span><br><span class="line">	...;</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure></li>
 </ul>
-<h1 id="向量"><a href="#向量" class="headerlink" title="向量"></a>向量</h1><h2 id="元素索引"><a href="#元素索引" class="headerlink" title="元素索引"></a>元素索引</h2><figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">rv = [<span class="number">1</span> <span class="number">2</span> <span class="number">3</span> <span class="number">4</span> <span class="number">5</span> <span class="number">6</span> <span class="number">7</span> <span class="number">8</span> <span class="number">9</span>];</span><br><span class="line">sub_rv = rv(<span class="number">3</span>:<span class="number">7</span>)</span><br><span class="line">rv(<span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+<h3 id="任务通知"><a href="#任务通知" class="headerlink" title="任务通知"></a>任务通知</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">if</span> ( configUSE_TASK_NOTIFICATIONS == 1 )   <span class="comment">/*使能任务通知功能*/</span></span></span><br><span class="line">&#123;</span><br><span class="line">    pxTCB-&gt;ulNotifiedValue = <span class="number">0</span>;</span><br><span class="line">    pxTCB-&gt;ucNotifyState = taskNOT_WAITING_NOTIFICATION;</span><br></pre></td></tr></table></figure>
 
-<h2 id="向量转置"><a href="#向量转置" class="headerlink" title="向量转置"></a>向量转置</h2><figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">r = [ <span class="number">1</span> <span class="number">2</span> <span class="number">3</span> <span class="number">4</span> ];</span><br><span class="line">tr = r&#x27;;</span><br></pre></td></tr></table></figure>
+<p>在<a target="_blank" rel="noopener" href="https://dhkkk.gitee.io/2022/08/30/freertos%E4%BB%BB%E5%8A%A1%E9%80%9A%E7%9F%A5%E4%B8%8E%E4%BF%A1%E5%8F%B7%E9%87%8F/">FreeRTOS任务间的交互方法 | 小董的BLOG (gitee.io)</a>中将任务通知的流程时也使用到了使用该值的函数：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">BaseType_t <span class="title function_">xTaskNotifyWait</span><span class="params">( uint32_tulBits ToClearOnEntry,</span></span><br><span class="line"><span class="params">									 uint32_tulBits ToClearOnExit,</span></span><br><span class="line"><span class="params">									 <span class="type">uint32_t</span>* pulNotificationValue,</span></span><br><span class="line"><span class="params">									 TickType_t xTicksToWait )</span>;</span><br></pre></td></tr></table></figure>
 
-<h2 id="求向量的模"><a href="#求向量的模" class="headerlink" title="求向量的模"></a>求向量的模</h2><figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">v = [<span class="number">1</span>: <span class="number">2</span>: <span class="number">20</span>];</span><br><span class="line">sv = v.* v;    </span><br><span class="line">dp = sum(sv);    </span><br><span class="line">mag = <span class="built_in">sqrt</span>(dp);  </span><br></pre></td></tr></table></figure>
+<p>其实pulNotificationValue就是拷贝自TCB中的ulNotifiedValue值，该值在任务通知发送函数将ulValue的值拷贝进ulNotifiedValue，在接收时用户可以通过pulNotificationValue判断任务通知发送的值。在初始化时，其为0，因此发送的任务值不能为0</p>
+<h2 id="3、初始化任务堆栈"><a href="#3、初始化任务堆栈" class="headerlink" title="3、初始化任务堆栈"></a>3、初始化任务堆栈</h2><p>调用函数pxPortInitialiseStack()初始化任务堆栈，并将最新的栈顶指针赋值给任务TCB的pxTopOfStack字段。</p>
+<p>具体与寄存器的调用有关，目前不深读。</p>
+<h2 id="4、进入临界区"><a href="#4、进入临界区" class="headerlink" title="4、进入临界区"></a>4、进入临界区</h2><p> 调用taskENTER_CRITICAL()进入临界区，进入临界区后的代码段将不能被打断，比如有的外设的初始化需要严格的时序，初始化过程中不能被打断。FreeRTOS 在进入临界区代码的时候需要关闭中断，当处理完临界区代码以后再打开中断。</p>
+<p>FreeRTOS 与 临界区代 码 保 护 有 关 的 函 数 有 4 个 ： taskENTER_CRITICAL() 、taskEXIT_CRITICAL() 、taskENTER_CRITICAL_FROM_ISR() 和taskEXIT_CRITICAL_FROM_ISR()，这四个函数其实是宏定义，在 task.h 文件中有定义。 这四个函数的区别是<strong>前两个是任务级的</strong>临界段代码保护，<strong>后两个是中断级</strong>的临界段代码保护。</p>
+<h2 id="5、改变跟踪任务的变量"><a href="#5、改变跟踪任务的变量" class="headerlink" title="5、改变跟踪任务的变量"></a>5、改变跟踪任务的变量</h2><p>在task.c中定义了一些静态私有变量用于跟踪任务的数量、状态等信息，每当有任务发生变化时这些对应的变量也会发生变化。</p>
+<p>其中变量uxCurrentNumberOfTasks表示当前任务的总数量，每创建一个任务，这个变量都会增加1。</p>
+<h2 id="6、第一次运行的必要初始化"><a href="#6、第一次运行的必要初始化" class="headerlink" title="6、第一次运行的必要初始化"></a>6、第一次运行的必要初始化</h2><p>如果当前创建的任务为第一个任务，则会调用函数prvInitialiseTaskLists()对列表进行<strong>初始化</strong>，在这之前，task.c中定义了这些静态类型的列表变量：(List_t类型变量在上一章已经讲过)</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">PRIVILEGED_DATAstatic List_t pxReadyTasksLists[ configMAX_PRIORITIES ];<span class="comment">/*按照优先级排序的就绪态任务*/</span></span><br><span class="line">PRIVILEGED_DATAstatic List_t xDelayedTaskList1;                    <span class="comment">/*延时的任务 */</span></span><br><span class="line">PRIVILEGED_DATAstatic List_t xDelayedTaskList2;                    <span class="comment">/*延时的任务 */</span></span><br><span class="line">PRIVILEGED_DATAstatic List_t xPendingReadyList;             <span class="comment">/*任务已就绪,但调度器被挂起 */</span></span><br><span class="line"> </span><br><span class="line"><span class="meta">#<span class="keyword">if</span> (INCLUDE_vTaskDelete == 1 )</span></span><br><span class="line">    PRIVILEGED_DATA <span class="type">static</span> List_t xTasksWaitingTermination;<span class="comment">/*任务已经被删除,但内存尚未释放*/</span></span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line"> </span><br><span class="line"><span class="meta">#<span class="keyword">if</span> (INCLUDE_vTaskSuspend == 1 )</span></span><br><span class="line">    PRIVILEGED_DATA <span class="type">static</span> List_t xSuspendedTaskList;            <span class="comment">/*当前挂起的任务*/</span></span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br></pre></td></tr></table></figure>
 
-<h2 id="向量点积"><a href="#向量点积" class="headerlink" title="向量点积"></a>向量点积</h2><p>若要求取向量的点积，不能直接使用运算符求得，需使用函数dot(a,b)</p>
-<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">v1 = [<span class="number">2</span> <span class="number">3</span> <span class="number">4</span>];</span><br><span class="line">v2 = [<span class="number">1</span> <span class="number">2</span> <span class="number">3</span>];</span><br><span class="line">dp = <span class="built_in">dot</span>(v1, v2);</span><br></pre></td></tr></table></figure>
+<p>初始化：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">static</span> <span class="type">void</span> <span class="title function_">prvInitialiseTaskLists</span><span class="params">( <span class="type">void</span> )</span></span><br><span class="line">&#123;</span><br><span class="line">UBaseType_tuxPriority;</span><br><span class="line"> </span><br><span class="line">    <span class="keyword">for</span>( uxPriority = ( UBaseType_t ) <span class="number">0U</span>; uxPriority &lt; ( UBaseType_t ) configMAX_PRIORITIES; uxPriority++ )</span><br><span class="line">    &#123;</span><br><span class="line">        vListInitialise( &amp;( pxReadyTasksLists[ uxPriority ] ) );</span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    vListInitialise( &amp;xDelayedTaskList1 );</span><br><span class="line">    vListInitialise( &amp;xDelayedTaskList2 );</span><br><span class="line">    vListInitialise( &amp;xPendingReadyList );</span><br><span class="line"> </span><br><span class="line">    <span class="meta">#<span class="keyword">if</span> ( INCLUDE_vTaskDelete == 1 )</span></span><br><span class="line">    &#123;</span><br><span class="line">        vListInitialise( &amp;xTasksWaitingTermination );</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">#<span class="keyword">endif</span> <span class="comment">/* INCLUDE_vTaskDelete */</span></span></span><br><span class="line"> </span><br><span class="line">    <span class="meta">#<span class="keyword">if</span> ( INCLUDE_vTaskSuspend == 1 )</span></span><br><span class="line">    &#123;</span><br><span class="line">        vListInitialise( &amp;xSuspendedTaskList );</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">#<span class="keyword">endif</span> <span class="comment">/* INCLUDE_vTaskSuspend */</span></span></span><br><span class="line"> </span><br><span class="line">    <span class="comment">/* Start with pxDelayedTaskList using list1 and the pxOverflowDelayedTaskListusing list2. */</span></span><br><span class="line">    pxDelayedTaskList = &amp;xDelayedTaskList1;</span><br><span class="line">    pxOverflowDelayedTaskList = &amp;xDelayedTaskList2;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
+<p>其中主要调用的函数vListInitialise()在讲列表时已经讲过，其作用就是初始化列表成员的一些指针的初始指向，为后续接入列表项做准备。</p>
+<h2 id="7、更新任务TCB指针"><a href="#7、更新任务TCB指针" class="headerlink" title="7、更新任务TCB指针"></a>7、更新任务TCB指针</h2><p>tasks.c中定义了一个任务TCB指针型变量：</p>
 <ul>
-<li><code>*</code>号用于运算矩阵乘法，而<code>.*</code>用于数组的乘法（数组的乘法有一套自己的算法）</li>
+<li>PRIVILEGED_DATA TCB_t * volatile pxCurrentTCB&#x3D; NULL;</li>
 </ul>
-<h1 id="矩阵"><a href="#矩阵" class="headerlink" title="矩阵"></a>矩阵</h1><h2 id="矩阵索引"><a href="#矩阵索引" class="headerlink" title="矩阵索引"></a>矩阵索引</h2><ul>
-<li><p>第m行，第n列的一个元素</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mx(m,n);</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>第m列的所有元素</p>
-<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">a = [ <span class="number">1</span> <span class="number">2</span> <span class="number">3</span> <span class="number">4</span> <span class="number">5</span>; <span class="number">2</span> <span class="number">3</span> <span class="number">4</span> <span class="number">5</span> <span class="number">6</span>; <span class="number">3</span> <span class="number">4</span> <span class="number">5</span> <span class="number">6</span> <span class="number">7</span>; <span class="number">4</span> <span class="number">5</span> <span class="number">6</span> <span class="number">7</span> <span class="number">8</span>];</span><br><span class="line">v = a(:,<span class="number">4</span>) <span class="comment">%第4列的所有元素，并返回一个列向量</span></span><br></pre></td></tr></table></figure>
+<p> 这是一个全局变量，在tasks.c中只定义了这一个全局变量。这个变量用来指向当前正在运行的任务TCB。</p>
+<p>当调度器还没有开启时（程序刚开始运行时，可能会先创建几个任务，之后才会启动调度器），如果新创建的任务优先级大于pxCurrentTCB指向的任务优先级，则设置pxCurrentTCB指向当前新创建的任务TCB。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>( xSchedulerRunning == pdFALSE )</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span>( pxCurrentTCB-&gt;uxPriority &lt;= uxPriority )</span><br><span class="line">    &#123;</span><br><span class="line">        pxCurrentTCB = pxNewTCB;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        mtCOVERAGE_TEST_MARKER();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">a = [ <span class="number">1</span> <span class="number">2</span> <span class="number">3</span> <span class="number">4</span> <span class="number">5</span>; <span class="number">2</span> <span class="number">3</span> <span class="number">4</span> <span class="number">5</span> <span class="number">6</span>; <span class="number">3</span> <span class="number">4</span> <span class="number">5</span> <span class="number">6</span> <span class="number">7</span>; <span class="number">4</span> <span class="number">5</span> <span class="number">6</span> <span class="number">7</span> <span class="number">8</span>];</span><br><span class="line">a(:, <span class="number">2</span>:<span class="number">3</span>) <span class="comment">%第2-3列的所有元素</span></span><br></pre></td></tr></table></figure></li>
+<p>这项操作可以<strong>确保pxCurrentTCB始终指向优先级最高的就绪任务。</strong></p>
+<h2 id="8、将新创建的任务加入就绪列表数组"><a href="#8、将新创建的任务加入就绪列表数组" class="headerlink" title="8、将新创建的任务加入就绪列表数组"></a>8、将新创建的任务加入就绪列表数组</h2><p>新创建的任务会被直接加入到就绪列表中，因为它不会一被创建就被阻塞或挂起。观察在task.c中定义的几个静态类型的列表可以发现就绪列表是一个结构体数组：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">PRIVILEGED_DATAstatic List_t pxReadyTasksLists[ configMAX_PRIORITIES ];</span><br><span class="line"><span class="comment">/*按照优先级排序的就绪态任务*/</span></span><br></pre></td></tr></table></figure>
+
+<p>因此当前新创建的任务会根据该任务TCB中存储的优先级<strong>决定存入的列表下标</strong>。比如我们新创建的任务优先级为1，则这个任务被加入到列表pxReadyTasksLists[1]中。</p>
+<p>并且由于同一个列表中任务的优先级是相同的，因此每次加入列表时会直接将当前任务放入列表尾：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> prvAddTaskToReadyList( pxTCB )                        </span></span><br><span class="line">    taskRECORD_READY_PRIORITY( ( pxTCB)-&gt;uxPriority );       </span><br><span class="line">    vListInsertEnd( &amp;( pxReadyTasksLists[ (pxTCB )-&gt;uxPriority ] ), </span><br><span class="line">                    &amp;( ( pxTCB )-&gt;xStateListItem ) );</span><br></pre></td></tr></table></figure>
+
+<p>调用一个宏将任务放入列表。可以看到，加入列表的为任务的<strong>状态列表项</strong>，但最终调用宏的<strong>参数直接是任务TCB</strong>，因此可能用户不用关心何时操作状态列表项，何时操作事件列表项？（我的猜测，因为目前还不太清楚二者的明显区别）</p>
+<h2 id="9、退出临界区"><a href="#9、退出临界区" class="headerlink" title="9、退出临界区"></a>9、退出临界区</h2><p>到此，一个任务的创建基本结束，也就可以退出临界区了（本身进入临界区的原因就是让任务的创建过程不被打断）</p>
+<h2 id="10、新任务进入调度"><a href="#10、新任务进入调度" class="headerlink" title="10、新任务进入调度"></a>10、新任务进入调度</h2><p>如果调度器已开启，新任务便会根据其优先级由调度器进行相关调度。</p>
+<h1 id="任务创建过程总结"><a href="#任务创建过程总结" class="headerlink" title="任务创建过程总结"></a>任务创建过程总结</h1><ul>
+<li>为当前任务<strong>分配内存</strong>创建堆栈，为任务TCB创建空间</li>
+<li><strong>初始化TCB</strong>，主要是使TCB成员中的两个列表项指向当前TCB和改变<strong>事件列表项的列表项值</strong></li>
+<li><strong>初始化</strong>任务的<strong>堆栈</strong></li>
+<li><em><strong>进入临界区，之后的进程不能被打断</strong></em></li>
+<li>改变一些存储任务信息的<strong>变量</strong>（主要是全局的信息，并不是指某一个任务的信息。比如任务的总数量等）</li>
+<li>如果当前为第一个任务，则<strong>初始化各列表</strong></li>
+<li><strong>更新</strong>当前的任务TCB指针（该指针专用于指向当前TCB）</li>
+<li>将新任务加入就绪列表数组中，<strong>根据优先级决定加入的数组下标</strong></li>
+<li><em><strong>退出临界区</strong></em></li>
+<li>新任务也加入调度过程中</li>
 </ul>
-<p><strong>注：索引从1开始，而不是0</strong></p>
-<h2 id="删除行或列"><a href="#删除行或列" class="headerlink" title="删除行或列"></a>删除行或列</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">a = [ 1 2 3 4 5; 2 3 4 5 6; 3 4 5 6 7; 4 5 6 7 8];</span><br><span class="line">a( 4 , : ) = []</span><br></pre></td></tr></table></figure>
-
-<h2 id="除法"><a href="#除法" class="headerlink" title="除法"></a>除法</h2><figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">a = [ <span class="number">1</span> <span class="number">2</span> <span class="number">3</span> ; <span class="number">4</span> <span class="number">5</span> <span class="number">6</span>; <span class="number">7</span> <span class="number">8</span> <span class="number">9</span>];</span><br><span class="line">b = [ <span class="number">7</span> <span class="number">5</span> <span class="number">6</span> ; <span class="number">2</span> <span class="number">0</span> <span class="number">8</span>; <span class="number">5</span> <span class="number">7</span> <span class="number">1</span>];</span><br><span class="line">c = a / b	<span class="comment">%a右乘b的逆矩阵(inv(b))</span></span><br><span class="line">d = a \ b	<span class="comment">%b左乘a的逆矩阵</span></span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>必须为方阵，因为只有方阵才有逆矩阵</li>
-</ul>
-<h2 id="行列式"><a href="#行列式" class="headerlink" title="行列式"></a>行列式</h2><figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">a = [ <span class="number">1</span> <span class="number">2</span> <span class="number">3</span>; <span class="number">2</span> <span class="number">3</span> <span class="number">4</span>; <span class="number">1</span> <span class="number">2</span> <span class="number">5</span>]</span><br><span class="line">det(a)</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>行列式一定为方阵</li>
-<li>转置不改变行列式的值</li>
-</ul>
-<h2 id="多维数组"><a href="#多维数组" class="headerlink" title="多维数组"></a>多维数组</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">a = [7 9 5; 6 1 9; 4 3 2];</span><br><span class="line">a(:, :, 2)= [ 1 2 3; 4 5 6; 7 8 9];</span><br><span class="line"></span><br><span class="line">结果：</span><br><span class="line">a(:,:,1) =</span><br><span class="line">     7     9     5</span><br><span class="line">     6     1     9</span><br><span class="line">     4     3     2</span><br><span class="line"></span><br><span class="line">a(:,:,2) =</span><br><span class="line">     1     2     3</span><br><span class="line">     4     5     6</span><br><span class="line">     7     8     9</span><br></pre></td></tr></table></figure>
-
-<p>或使用cat函数：</p>
-<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">b = <span class="built_in">cat</span>(<span class="number">3</span>,a,[ <span class="number">1</span> <span class="number">2</span> <span class="number">3</span>; <span class="number">4</span> <span class="number">5</span> <span class="number">6</span>; <span class="number">7</span> <span class="number">8</span> <span class="number">9</span>]); <span class="comment">%维度+要串联的阵列</span></span><br></pre></td></tr></table></figure>
-
-<h1 id="单元阵列"><a href="#单元阵列" class="headerlink" title="单元阵列"></a>单元阵列</h1><p>单元阵列的阵列中每个单元格可以存储不同的维度和数据类型的数组的索引单元格</p>
-<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">C = cell(dim1,...,dimN) <span class="comment">%dim 是一个标量整数或整数向量，指定单元格阵列C的尺寸</span></span><br></pre></td></tr></table></figure>
-
-<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">c = cell(<span class="number">2</span>, <span class="number">5</span>);</span><br><span class="line">c = &#123;<span class="string">&#x27;Red&#x27;</span>, <span class="string">&#x27;Blue&#x27;</span>, <span class="string">&#x27;Green&#x27;</span>, <span class="string">&#x27;Yellow&#x27;</span>, <span class="string">&#x27;White&#x27;</span>; <span class="number">1</span> <span class="number">2</span> <span class="number">3</span> <span class="number">4</span> <span class="number">5</span>&#125;;</span><br><span class="line"></span><br><span class="line">结果：</span><br><span class="line">c = </span><br><span class="line">    <span class="string">&#x27;Red&#x27;</span>    <span class="string">&#x27;Blue&#x27;</span>    <span class="string">&#x27;Green&#x27;</span>    <span class="string">&#x27;Yellow&#x27;</span>    <span class="string">&#x27;White&#x27;</span></span><br><span class="line">    [  <span class="number">1</span>]    [   <span class="number">2</span>]    [    <span class="number">3</span>]    [     <span class="number">4</span>]    [    <span class="number">5</span>]</span><br></pre></td></tr></table></figure>
-
-<h2 id="单元阵列索引"><a href="#单元阵列索引" class="headerlink" title="单元阵列索引"></a>单元阵列索引</h2><p>可以使用大括号或小括号索引，索引方法与前相同</p>
-<h1 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h1><h2 id="一般函数格式"><a href="#一般函数格式" class="headerlink" title="一般函数格式"></a>一般函数格式</h2><figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="params">[out1,out2,...]</span> = <span class="title">fun_name</span><span class="params">(in1,in2,...)</span></span></span><br><span class="line"><span class="comment">%帮助文本</span></span><br><span class="line">...</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="匿名函数"><a href="#匿名函数" class="headerlink" title="匿名函数"></a>匿名函数</h2><figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">power = @(x, n) x.^n;</span><br><span class="line">result1 = power(<span class="number">7</span>, <span class="number">3</span>)</span><br></pre></td></tr></table></figure>
-
-<h1 id="绘图-1"><a href="#绘图-1" class="headerlink" title="绘图"></a>绘图</h1><figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">plot</span>(x, y), xlabel(<span class="string">&#x27;x&#x27;</span>), ylabel(<span class="string">&#x27;Sin(x)&#x27;</span>), title(<span class="string">&#x27;Sin(x) Graph&#x27;</span>),</span><br></pre></td></tr></table></figure>
-
-<h2 id="绘制多条曲线"><a href="#绘制多条曲线" class="headerlink" title="绘制多条曲线"></a>绘制多条曲线</h2><figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">x = [<span class="number">-10</span> : <span class="number">0.01</span>: <span class="number">10</span>];</span><br><span class="line">y = <span class="number">3</span>*x.^<span class="number">4</span> + <span class="number">2</span> * x.^<span class="number">3</span> + <span class="number">7</span> * x.^<span class="number">2</span> + <span class="number">2</span> * x + <span class="number">9</span>;</span><br><span class="line">g = <span class="number">5</span> * x.^<span class="number">3</span> + <span class="number">9</span> * x + <span class="number">2</span>;</span><br><span class="line"><span class="built_in">plot</span>(x, y, <span class="string">&#x27;r&#x27;</span>, x, g, <span class="string">&#x27;g&#x27;</span>) <span class="comment">% &#x27;r&#x27;,&#x27;g&#x27;代表曲线颜色</span></span><br><span class="line"><span class="built_in">legend</span>(<span class="string">&#x27;y(x)&#x27;</span>,<span class="string">&#x27;g(x)&#x27;</span>);</span><br></pre></td></tr></table></figure>
-
-<img src="/images/loading.png" data-original="/2022/11/09/matlab/p1.jpg" class title="This is an image"> 
-
-<h2 id="设置轴刻度"><a href="#设置轴刻度" class="headerlink" title="设置轴刻度"></a>设置轴刻度</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">axis ( [xmin xmax ymin ymax] )</span><br></pre></td></tr></table></figure>
-
-<h2 id="绘制多个图像"><a href="#绘制多个图像" class="headerlink" title="绘制多个图像"></a>绘制多个图像</h2><figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">subplot(a,b,c);</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>a：总行</li>
-<li>b：总列</li>
-<li>c：第几图</li>
-</ul>
-<p>例如生成2*2个图像，第二行第一个图则为<code>subplot(2,2,3);</code></p>
-<h1 id="代数"><a href="#代数" class="headerlink" title="代数"></a>代数</h1><h2 id="声明一个代数"><a href="#声明一个代数" class="headerlink" title="声明一个代数"></a>声明一个代数</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">syms x </span><br></pre></td></tr></table></figure>
-
-<h2 id="解代数方程"><a href="#解代数方程" class="headerlink" title="解代数方程"></a>解代数方程</h2><figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">solve(x^<span class="number">2</span> <span class="number">-7</span>*x + <span class="number">12</span> == <span class="number">0</span>);</span><br></pre></td></tr></table></figure>
-
-<p>或：</p>
-<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">eq=<span class="string">&#x27;x^2 -7*x + 12 == 0&#x27;</span>;</span><br><span class="line">result=solve(eq);</span><br></pre></td></tr></table></figure>
-
-<p>若要单独显示各个根：</p>
-<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">disp</span>(result(<span class="number">1</span>));</span><br><span class="line"><span class="built_in">disp</span>(result(<span class="number">2</span>));</span><br><span class="line"><span class="built_in">disp</span>(result(<span class="number">3</span>));</span><br><span class="line"><span class="built_in">disp</span>(result(<span class="number">4</span>));</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><strong>我的matlab必须手动打印结果，不知道为什么</strong></li>
-</ul>
-<h1 id="多项式"><a href="#多项式" class="headerlink" title="多项式"></a>多项式</h1><p>当计算一个一元多次项时，可以使用行向量表示，例如：</p>
-<p>方程 P(x) &#x3D; x^4 + 7x^3 - 5x + 9 可以表示为:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">p = [1 7 0 -5 9]；</span><br></pre></td></tr></table></figure>
-
-<p>求解：</p>
-<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">polyval(p,<span class="number">4</span>) <span class="comment">%计算当x=4时多项式的值</span></span><br></pre></td></tr></table></figure>
-
-<p>还可以通过输入矩阵的方式计算多个值：</p>
-<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">p = [<span class="number">1</span> <span class="number">7</span> <span class="number">0</span>  <span class="number">-5</span> <span class="number">9</span>];</span><br><span class="line">X = [<span class="number">1</span> <span class="number">2</span> <span class="number">-3</span> <span class="number">4</span>; <span class="number">2</span> <span class="number">-5</span> <span class="number">6</span> <span class="number">3</span>; <span class="number">3</span> <span class="number">1</span> <span class="number">0</span> <span class="number">2</span>; <span class="number">5</span> <span class="number">-7</span> <span class="number">3</span> <span class="number">8</span>];</span><br><span class="line">polyval(p, X);</span><br><span class="line"></span><br><span class="line"><span class="comment">%结果：</span></span><br><span class="line"><span class="built_in">ans</span> =</span><br><span class="line">        <span class="number">2307</span>       <span class="number">-1769</span>        <span class="number">-939</span>        <span class="number">4499</span></span><br><span class="line">        <span class="number">2314</span>       <span class="number">-2376</span>        <span class="number">-249</span>        <span class="number">4695</span></span><br><span class="line">        <span class="number">2256</span>       <span class="number">-1892</span>        <span class="number">-549</span>        <span class="number">4310</span></span><br><span class="line">        <span class="number">4570</span>       <span class="number">-4532</span>       <span class="number">-1062</span>        <span class="number">9269</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="使用多项式的曲线拟合"><a href="#使用多项式的曲线拟合" class="headerlink" title="使用多项式的曲线拟合"></a>使用多项式的曲线拟合</h2><p>当我们要对离散点拟合一条曲线时，可以使用polyfit函数，该函数的作用是通过最小二乘法的方式<strong>拟合出一条曲线的多项式</strong>。</p>
-<ul>
-<li>polyfit(x,y,n)	n为需要拟合的最高次幂，具体求法可参考[MATLAB polyfit曲线拟合及拟合最高次幂的选择](<a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_39796363/article/details/116188595?ops_request_misc=%7B%22request_id%22:%22166808186016782425129618%22,%22scm%22:%2220140713.130102334.pc_all.%22%7D&amp;request_id=166808186016782425129618&amp;biz_id=0&amp;utm_medium=distribute.pc_search_result.none-task-blog-2~all~first_rank_ecpm_v1~rank_v31_ecpm-6-116188595-null-null.142%5Ev63%5Epc_rank_34_queryrelevant25,201%5Ev3%5Eadd_ask,213%5Ev2%5Et3_esquery_v3&amp;utm_term=matlab">https://blog.csdn.net/weixin_39796363/article/details/116188595?ops_request_misc=%7B%22request%5Fid%22%3A%22166808186016782425129618%22%2C%22scm%22%3A%2220140713.130102334.pc%5Fall.%22%7D&amp;request_id=166808186016782425129618&amp;biz_id=0&amp;utm_medium=distribute.pc_search_result.none-task-blog-2~all~first_rank_ecpm_v1~rank_v31_ecpm-6-116188595-null-null.142^v63^pc_rank_34_queryrelevant25,201^v3^add_ask,213^v2^t3_esquery_v3&amp;utm_term=matlab</a> polyfit&amp;spm&#x3D;1018.2226.3001.4187)</li>
-</ul>
-<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">x = [<span class="number">1</span> <span class="number">2</span> <span class="number">3</span> <span class="number">4</span> <span class="number">5</span> <span class="number">6</span>]; y = [<span class="number">5.5</span> <span class="number">43.1</span> <span class="number">128</span> <span class="number">290.7</span> <span class="number">498.4</span> <span class="number">978.67</span>]; </span><br><span class="line">p = polyfit(x,y,<span class="number">5</span>)   </span><br></pre></td></tr></table></figure>
-
-<p>此时p为一个多项式，可以使用polyval在坐标集上拟合出该曲线</p>
-<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">x2 = <span class="number">1</span>:<span class="number">0.1</span>:<span class="number">6</span>;          </span><br><span class="line">y2 = polyval(p,x2);</span><br><span class="line"><span class="built_in">plot</span>(x,y,<span class="string">&#x27;o&#x27;</span>,x2,y2)</span><br></pre></td></tr></table></figure>
-
 
       
     </div>
@@ -1032,7 +351,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2022/10/31/C++-7/">
+    <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2022/12/09/%E5%9F%BA%E4%BA%8EFreeRTOS%E7%9A%84%E5%88%97%E8%A1%A8%E5%AD%A6%E4%B9%A0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/zoe.gif">
@@ -1046,7 +365,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2022/10/31/C++-7/" class="post-title-link" itemprop="url">C++_IO库</a>
+            <a href="/2022/12/09/%E5%9F%BA%E4%BA%8EFreeRTOS%E7%9A%84%E5%88%97%E8%A1%A8%E5%AD%A6%E4%B9%A0/" class="post-title-link" itemprop="url">基于FreeRTOS的列表学习</a>
         </h2>
 
         <div class="post-meta">
@@ -1058,14 +377,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2022-10-31 19:05:26" itemprop="dateCreated datePublished" datetime="2022-10-31T19:05:26+08:00">2022-10-31</time>
+              <time title="创建时间：2022-12-09 20:03:34" itemprop="dateCreated datePublished" datetime="2022-12-09T20:03:34+08:00">2022-12-09</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2023-01-11 19:27:55" itemprop="dateModified" datetime="2023-01-11T19:27:55+08:00">2023-01-11</time>
+                <time title="修改时间：2022-12-13 11:56:38" itemprop="dateModified" datetime="2022-12-13T11:56:38+08:00">2022-12-13</time>
               </span>
 
           
@@ -1079,272 +398,198 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="IO类"><a href="#IO类" class="headerlink" title="IO类"></a>IO类</h1><p>在之前的一些用到输入与输出的程序都是用户对流的读写，也就是使用的iostream类，但是C++中的IO处理并不止通过流进行读写，为了支持不同的IO操作，标准库中还定义了其他的一些IO类，他们被包含在不同的头文件中：</p>
-<table>
-<thead>
-<tr>
-<th align="center">头文件</th>
-<th align="center">类</th>
-<th align="center">作用</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">iostream</td>
-<td align="center">(w)istream<br>(w)ostream<br>(w)iostream</td>
-<td align="center">从<strong>普通流</strong>中读写数据</td>
-</tr>
-<tr>
-<td align="center">fstream</td>
-<td align="center">(w)ifstream<br>(w)ofstream<br>(w)fstream</td>
-<td align="center">从<strong>文件流</strong>中读写数据</td>
-</tr>
-<tr>
-<td align="center">sstream</td>
-<td align="center">(w)istringstream<br>(w)ostringstream<br>(w)stringstream</td>
-<td align="center">从<strong>字符串流</strong>中读写数据</td>
-</tr>
-</tbody></table>
-<ul>
-<li>在类和其函数前添加w则为正常类对象、函数等（例如wcin，wcout）的宽字符版。</li>
-</ul>
-<h2 id="IO类型间的关系"><a href="#IO类型间的关系" class="headerlink" title="IO类型间的关系"></a>IO类型间的关系</h2><p>类型ifstream和istringstream都<strong>继承</strong>自istream，因此，我们如何使用istream，就如何使用其他IO类型。在之后介绍的标准库的流特性<strong>均可以无差别地使用于各个IO类型</strong>。</p>
-<h1 id="IO类型的特性"><a href="#IO类型的特性" class="headerlink" title="IO类型的特性"></a>IO类型的特性</h1><h2 id="IO对象不能拷贝"><a href="#IO对象不能拷贝" class="headerlink" title="IO对象不能拷贝"></a>IO对象不能拷贝</h2><p>当我们定义了一些IO对象时（通常是用于IO操作的一些函数），之前也使用过，是不能对这些对象进行拷贝或赋值的操作的，<strong>因此当我们操作流时，通常都是使用引用的方式传递和返回流</strong>，这也意味着这些IO操作函数的返回类型要定义为IO类的引用，参数中的流也需定义为IO类的引用。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">istream &amp;<span class="title">read</span><span class="params">(istream &amp;in, person &amp;item)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    in&gt;&gt;item.name&gt;&gt;item.addr;</span><br><span class="line">    <span class="keyword">return</span> in;</span><br><span class="line">&#125;<span class="comment">//上一章讲到的read函数就是一个IO操作函数</span></span><br></pre></td></tr></table></figure>
+          <p><em>本文参考了<a target="_blank" rel="noopener" href="https://freertos.blog.csdn.net/article/details/51190095">FreeRTOS高级篇1—FreeRTOS列表和列表项研究是为了理解的博客-CSDN博客freertos list</a>进行学习</em></p>
+<h1 id="列表与列表项"><a href="#列表与列表项" class="headerlink" title="列表与列表项"></a>列表与列表项</h1><p>FreeRTOS内核为了调度任务之间的关系，大量地使用了列表和列表项的数据结果来跟踪任务当前的状态。例如，处于挂起、延时、就绪的任务都会被挂接<strong>到各自的列表中</strong></p>
+<p>FreeRTOS中使用指针实现列表的功能，类似于链式列表。<strong>一个列表下有多个列表项</strong>，且每个列表项中都有一个指针指向列表。</p>
+<img src="/images/loading.png" data-original="/2022/12/09/%E5%9F%BA%E4%BA%8EFreeRTOS%E7%9A%84%E5%88%97%E8%A1%A8%E5%AD%A6%E4%B9%A0/1.jpg" class title="This is an image"> 
 
-<h2 id="条件状态"><a href="#条件状态" class="headerlink" title="条件状态"></a>条件状态</h2><p>当使用IO操作流时可能会发生多种错误，为了查询这些错误，标准库中定义了相关函数和标准以访问当前流的条件状态。</p>
-<p>流分为以下几个状态：（这些状态为IO类中定义）</p>
-<table>
-<thead>
-<tr>
-<th align="center">badbit</th>
-<th align="center">当前流已崩溃</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">failbit</td>
-<td align="center">当前IO操作失败了</td>
-</tr>
-<tr>
-<td align="center">eofbit</td>
-<td align="center">当前流到达了文件结束</td>
-</tr>
-<tr>
-<td align="center">goodbit</td>
-<td align="center">为0代表流正常</td>
-</tr>
-</tbody></table>
-<ul>
-<li>可以对这些状态位进行位运算</li>
-<li>badbit表示系统级错误，是不可恢复的错误。通常一旦被置位，流就无法再使用了。</li>
-<li>failbit表示可恢复的错误，修正后流可以机械使用。<strong>badbit被置位后failbit也会被置位</strong>。</li>
-<li>如果文件结束，failbit和eofbit<strong>都会被置位</strong>。</li>
-<li>上面三位<strong>任意一位有置位情况goodbit都会被置位</strong>。</li>
-</ul>
-<p>以下是IO类的一些查询函数：</p>
-<table>
-<thead>
-<tr>
-<th align="center">类的子函数</th>
-<th align="center">作用</th>
-<th align="center">返回值</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">eof()</td>
-<td align="center">查询eofbit状态</td>
-<td align="center">若对应状态位<strong>置位</strong>则返回ture</td>
-</tr>
-<tr>
-<td align="center">fail()</td>
-<td align="center">查询failbit状态</td>
-<td align="center">若对应状态位<strong>置位</strong>则返回ture</td>
-</tr>
-<tr>
-<td align="center">bad()</td>
-<td align="center">查询badbit状态</td>
-<td align="center">若对应状态位<strong>置位</strong>则返回ture</td>
-</tr>
-<tr>
-<td align="center">good()</td>
-<td align="center">查询goodbit状态</td>
-<td align="center">若对应状态位<strong>置位</strong>则返回ture</td>
-</tr>
-<tr>
-<td align="center">clear()</td>
-<td align="center">将流中所有条件状态位复位</td>
-<td align="center">void</td>
-</tr>
-<tr>
-<td align="center">rdstate()</td>
-<td align="center">返回当前流的状态</td>
-<td align="center">一种包含所有状态位信息的类，但类型同状态位</td>
-</tr>
-<tr>
-<td align="center">clear(flag)</td>
-<td align="center">复位指定状态位</td>
-<td align="center">void</td>
-</tr>
-<tr>
-<td align="center">setstate(flag)</td>
-<td align="center">置位指定状态位</td>
-<td align="center">void</td>
-</tr>
-</tbody></table>
-<h3 id="管理条件状态"><a href="#管理条件状态" class="headerlink" title="管理条件状态"></a>管理条件状态</h3><p>每进行一次流操作后恢复上一次的条件状态：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">auto</span> oldstate = cin.<span class="built_in">rdstate</span>();</span><br><span class="line">cin.<span class="built_in">clear</span>();</span><br><span class="line">cin&gt;&gt;....<span class="comment">//一次输入流操作</span></span><br><span class="line">cin.<span class="built_in">setstate</span>(oldstate);</span><br></pre></td></tr></table></figure>
-
-<p>通过位操作一次操作多个状态位：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//假设当前所有状态置位</span></span><br><span class="line">cin.<span class="built_in">clear</span>(cin.<span class="built_in">rdstate</span>() &amp; ~cin.failbit &amp; ~cin.badbit)<span class="comment">//只复位failbit，badbit</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="输出流的缓冲"><a href="#输出流的缓冲" class="headerlink" title="输出流的缓冲"></a>输出流的缓冲</h2><h3 id="刷新缓冲区"><a href="#刷新缓冲区" class="headerlink" title="刷新缓冲区"></a>刷新缓冲区</h3><p>之前讲到过输出endl可以刷新缓冲区，还有以下操作也可以刷新</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cout&lt;&lt;endl; <span class="comment">//换行</span></span><br><span class="line">cout&lt;&lt;flush; <span class="comment">//不添加任何额外字符</span></span><br><span class="line">cout&lt;&lt;ends; <span class="comment">//添加一个空字符</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="刷新缓冲区的作用"><a href="#刷新缓冲区的作用" class="headerlink" title="刷新缓冲区的作用"></a>刷新缓冲区的作用</h3><p>我其实也不是特别理解，姑且谈一下我的理解，这是网上的一个例程</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="built_in">setvbuf</span>( stdout, <span class="literal">NULL</span>, _IOLBF, <span class="number">1024</span> );  <span class="comment">//设置控制台输出为行缓存模式，把缓冲区与流相关 </span></span><br><span class="line">	cout &lt;&lt;<span class="string">&quot;hello world\n&quot;</span>&lt;&lt;endl;                </span><br><span class="line">	<span class="built_in">Sleep</span>(<span class="number">5000</span>);                            </span><br><span class="line">	cout &lt;&lt;<span class="string">&quot;leeboy&quot;</span> &lt;&lt;endl;                 </span><br><span class="line">	<span class="built_in">system</span>(<span class="string">&quot;pause&quot;</span>);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>如果第四行不刷新缓冲区，则4行内容会和7行在5s后一起输出，所以刷新缓冲区的作用应该是立即输出当前内容？而按照网上说法，如果不刷新缓冲区，输出是由系统每隔一段时间检测输出流是否有内容。</p>
-<h3 id="unitbuf操作符"><a href="#unitbuf操作符" class="headerlink" title="unitbuf操作符"></a>unitbuf操作符</h3><p>如果想设置每一次输出后自动刷新缓冲区，可以：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cout&lt;&lt;std::unitbuf;</span><br><span class="line">cout&lt;&lt;std::nounitbuf;<span class="comment">//恢复正常缓冲模式</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="关联输入和输出流"><a href="#关联输入和输出流" class="headerlink" title="关联输入和输出流"></a>关联输入和输出流</h3><p>关联后任何试图从输入流读取数据的操作都会先刷新关联的输出流</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cin&gt;&gt;std::ival;<span class="comment">//默认情况下cin和cerr都关联到了cout</span></span><br></pre></td></tr></table></figure>
-
-<h1 id="文件的输入与输出"><a href="#文件的输入与输出" class="headerlink" title="文件的输入与输出"></a>文件的输入与输出</h1><p>头文件fstream中定义了三个类来支持关于文件的IO操作：</p>
-<ul>
-<li>ifstream：用于文件读操作，从给定文件读取内容</li>
-<li>ofstream：用于文件写操作</li>
-<li>fstream：读写操作，可以通过不同配置实现上两类的功能</li>
-</ul>
-<p>这些类都继承了iostream的相关操作，同时还定义了一些新的成员来管理与流相关的文件，以下列出了部分特有操作，<strong>这些操作都适用于上三个类</strong>，但不能对其他IO类调用</p>
-<table>
-<thead>
-<tr>
-<th align="center">操作</th>
-<th align="center">功能</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">fstream a;</td>
-<td align="center">创建一个未绑定的文件流</td>
-</tr>
-<tr>
-<td align="center">fstream a(s);</td>
-<td align="center">创建一个文件流，并打开名为s的文件，s为string类型或C风格字符串指针</td>
-</tr>
-<tr>
-<td align="center">a.open()</td>
-<td align="center">打开一个文件，并绑定至流a</td>
-</tr>
-<tr>
-<td align="center">a.close()</td>
-<td align="center">关闭绑定的文件</td>
-</tr>
-<tr>
-<td align="center">a.is_open()</td>
-<td align="center">返回一个bool值，指出文件是否成功打开</td>
-</tr>
-</tbody></table>
-<h2 id="文件的打开"><a href="#文件的打开" class="headerlink" title="文件的打开"></a>文件的打开</h2><p>刚刚讲到了有两种方式打开一个文件，分别是</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">fstream <span class="title">a</span><span class="params">(<span class="string">&quot;dhk.txt&quot;</span>)</span></span>;</span><br><span class="line"><span class="comment">///////////////////////</span></span><br><span class="line">fstream b;</span><br><span class="line">b.<span class="built_in">open</span>(<span class="string">&quot;dhk.txt&quot;</span>);</span><br></pre></td></tr></table></figure>
-
-<p>我们先详解一下open函数：</p>
-<h3 id="open-函数"><a href="#open-函数" class="headerlink" title="open()函数"></a>open()函数</h3><p>根据输入的参数数量，该函数有以下几个定义</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">public</span> member function</span></span><br><span class="line"><span class="function"> </span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">open</span> <span class="params">( <span class="type">const</span> <span class="type">char</span> * filename,</span></span></span><br><span class="line"><span class="params"><span class="function">            ios_base::openmode mode = ios_base::in | ios_base::out )</span></span>;</span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">open</span><span class="params">(<span class="type">const</span> <span class="type">wchar_t</span> *_Filename,</span></span></span><br><span class="line"><span class="params"><span class="function">        ios_base::openmode mode= ios_base::in | ios_base::out,</span></span></span><br><span class="line"><span class="params"><span class="function">        <span class="type">int</span> prot = ios_base::_Openprot)</span>；</span></span><br><span class="line"><span class="function"> </span></span><br></pre></td></tr></table></figure>
-
-<p>参数：</p>
-<ul>
-<li>filename：文件名</li>
-<li>open mode：打开方式</li>
-<li>prot：打开文件的属性，一般很少用到</li>
-</ul>
-<p>这里重点讲一下打开方式，刚刚我们讲过：头文件fstream中的fstream类可以实现读和写的操作，也就是可以通过不同的配置实现ifstream和ofstream的操作，也就是通过这里的打开方式配置。</p>
-<p>打开方式在ios类中定义：</p>
-<table>
-<thead>
-<tr>
-<th align="center">ios::in</th>
-<th align="center">为输入(读)而打开文件</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">ios::out</td>
-<td align="center">为输出(写)而打开文件</td>
-</tr>
-<tr>
-<td align="center">ios::ate</td>
-<td align="center">初始位置：文件尾</td>
-</tr>
-<tr>
-<td align="center">ios::app</td>
-<td align="center">所有输出附加在文件末尾</td>
-</tr>
-<tr>
-<td align="center">ios::trunc</td>
-<td align="center">如果文件已存在则先删除该文件</td>
-</tr>
-<tr>
-<td align="center">ios::binary</td>
-<td align="center">二进制方式</td>
-</tr>
-</tbody></table>
-<p><strong>这些方式可以通过或运算|组合使用</strong></p>
-<ul>
-<li>ate和binary通常用于打开任何类型的文件流对象</li>
-</ul>
-<h3 id="默认打开方式"><a href="#默认打开方式" class="headerlink" title="默认打开方式"></a>默认打开方式</h3><p>对于第二种方式<code>fstream a(&quot;dhk.txt&quot;);</code>其实是隐式地调用了open()函数，直接使用了默认打开方式：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">ofstream <span class="title">out</span><span class="params">(<span class="string">&quot;...&quot;</span>, ios::out)</span></span>;</span><br><span class="line"><span class="function">ifstream <span class="title">in</span><span class="params">(<span class="string">&quot;...&quot;</span>, ios::in)</span></span>;</span><br><span class="line"><span class="function">fstream <span class="title">foi</span><span class="params">(<span class="string">&quot;...&quot;</span>, ios::in|ios::out)</span></span>;</span><br></pre></td></tr></table></figure>
-
-<h3 id="以写模式打开一个文件会丢弃已有数据"><a href="#以写模式打开一个文件会丢弃已有数据" class="headerlink" title="以写模式打开一个文件会丢弃已有数据"></a>以写模式打开一个文件会丢弃已有数据</h3><p>默认情况下，当打开一个ofstream对象时，若没有指定模式，默认是隐含的使用截断(ios::trunc)，即每次打开该文件时会清空之前的内容，若要阻止清空，<strong>需显式地设置为ios::app模式</strong>，同时，使用app模式则隐式地包含了ios::out。</p>
-<h2 id="使用fstream对象代替iostream-amp"><a href="#使用fstream对象代替iostream-amp" class="headerlink" title="使用fstream对象代替iostream&amp;"></a>使用fstream对象代替iostream&amp;</h2><p>由于fstream类继承自iostream，因此，接受一个iostream类型引用参数的函数也可以接收fstream类型：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"> <span class="keyword">struct</span> <span class="title class_">person</span></span><br><span class="line"> &#123;</span><br><span class="line">    string name;</span><br><span class="line">    string addr;</span><br><span class="line"> &#125;;</span><br><span class="line"></span><br><span class="line"><span class="function">istream &amp;<span class="title">read</span><span class="params">(istream &amp;in, person &amp;item)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    in&gt;&gt;item.name&gt;&gt;item.addr;</span><br><span class="line">    <span class="keyword">return</span> in;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">ostream &amp;<span class="title">print</span><span class="params">(ostream &amp;out, person &amp;item)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    out&lt;&lt;<span class="string">&quot;NAME: &quot;</span>&lt;&lt;item.name&lt;&lt;endl;</span><br><span class="line">    out&lt;&lt;<span class="string">&quot;ADDR: &quot;</span>&lt;&lt;item.addr&lt;&lt;endl;</span><br><span class="line">    <span class="keyword">return</span> out;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"> <span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"> </span>&#123;</span><br><span class="line">    person man;</span><br><span class="line">    <span class="function">ifstream <span class="title">in</span><span class="params">(<span class="string">&quot;D.txt&quot;</span>)</span></span>;</span><br><span class="line">    <span class="function">ofstream <span class="title">out</span><span class="params">(<span class="string">&quot;dhk.txt&quot;</span>)</span></span>;</span><br><span class="line">    <span class="built_in">read</span>(in,man);	<span class="comment">//使用ifstream代替istream</span></span><br><span class="line">    <span class="built_in">print</span>(out,man); 	<span class="comment">//使用ofstream代替ostream</span></span><br><span class="line">    out.<span class="built_in">close</span>();</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h2><p>对一个已经打开的文件流再调用open函数会导致该流的failbit置位，后续操作都会失败</p>
-<ul>
-<li>查看文件是否成功打开的快捷方式：if(a);</li>
-</ul>
-<h2 id="文件打开路径的问题"><a href="#文件打开路径的问题" class="headerlink" title="文件打开路径的问题"></a>文件打开路径的问题</h2><p>文件的默认打开路径我也没搞懂，最好使用相对路径打开相关文件</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">ifstream <span class="title">in</span><span class="params">(<span class="string">&quot;.vscode\\fstream\\D.txt&quot;</span>)</span></span>;</span><br></pre></td></tr></table></figure>
-
-<p><u><strong>并且这里要使用双斜杠！！！</strong></u></p>
-<h1 id="字符串流"><a href="#字符串流" class="headerlink" title="字符串流"></a>字符串流</h1><p>在头文件sstream中定义了三个类来支持操作字符串IO，分别是：</p>
-<ul>
-<li>istringstream</li>
-<li>ostirngstream</li>
-<li>stringstream</li>
-</ul>
-<p>这些类同样继承自iostream，用法同文件流，类特有操作有：</p>
-<table>
-<thead>
-<tr>
-<th align="center">stringstream a;</th>
-<th align="center">创建一个未绑定string的流</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">stringstream a(s);</td>
-<td align="center">与string对象s绑定的一个字符串流</td>
-</tr>
-<tr>
-<td align="center">a.str();</td>
-<td align="center">返回a中所保存的所有字符串</td>
-</tr>
-<tr>
-<td align="center">a.str();</td>
-<td align="center">将s拷贝至a中，返回void</td>
-</tr>
-<tr>
-<td align="center">a.clear();</td>
-<td align="center">清空流</td>
-</tr>
-</tbody></table>
-<h2 id="读取string"><a href="#读取string" class="headerlink" title="读取string"></a>读取string</h2><p>与文件流相同，stringstream也可以实现读取和输入的功能</p>
-<p>下面以一个例程说明string流的用法 </p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;fstream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;string&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;windows.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;sstream&gt;</span></span></span><br><span class="line"> <span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"> <span class="keyword">struct</span> <span class="title class_">person</span></span><br><span class="line"> &#123;</span><br><span class="line">    string name;</span><br><span class="line">    string addr;</span><br><span class="line"> &#125;;</span><br><span class="line"><span class="function">istream &amp;<span class="title">read</span><span class="params">(istream &amp;in, person &amp;item)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    in&gt;&gt;item.name&gt;&gt;item.addr;</span><br><span class="line">    <span class="keyword">return</span> in;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function">ostream &amp;<span class="title">print</span><span class="params">(ostream &amp;out, person &amp;item)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    out&lt;&lt;<span class="string">&quot;NAME: &quot;</span>&lt;&lt;item.name&lt;&lt;endl;</span><br><span class="line">    out&lt;&lt;<span class="string">&quot;ADDR: &quot;</span>&lt;&lt;item.addr&lt;&lt;endl;</span><br><span class="line">    <span class="keyword">return</span> out;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    person man;</span><br><span class="line">    string line;</span><br><span class="line">    <span class="function">ifstream <span class="title">in</span><span class="params">(<span class="string">&quot;sstream\\D.txt&quot;</span>)</span></span>;	<span class="comment">//打开一个txt文件并绑定一个输入文件流in</span></span><br><span class="line">   <span class="comment">/*D.txt的内容：</span></span><br><span class="line"><span class="comment">   dhk 12</span></span><br><span class="line"><span class="comment">   aca 34</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">    <span class="keyword">while</span>(<span class="built_in">getline</span>(in,line))	<span class="comment">//分别处理文件中每一行的数据</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="function">stringstream <span class="title">s</span><span class="params">(line)</span></span>;<span class="comment">//将该行内容与字符串流s绑定，s的寿命为当次循环，当次循环结束s自动销毁</span></span><br><span class="line">        s&gt;&gt;man.name;<span class="comment">//将该行第一个词输入进类成员</span></span><br><span class="line">        s&gt;&gt;man.addr;<span class="comment">//该行第二个词输入进类成员</span></span><br><span class="line">        <span class="built_in">print</span>(cout,man);<span class="comment">//通过iostream输出类成员</span></span><br><span class="line">    &#125;</span><br><span class="line">    in.<span class="built_in">close</span>();<span class="comment">//关闭打开的文件</span></span><br><span class="line">    <span class="built_in">system</span>(<span class="string">&quot;pause&quot;</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>需要注意的是，<u>列表</u>和之前讲到任务交互时使用的<u>队列</u>是两个东西！</strong></p>
+<h1 id="FreeRTOS列表项的构成"><a href="#FreeRTOS列表项的构成" class="headerlink" title="FreeRTOS列表项的构成"></a>FreeRTOS列表项的构成</h1><h2 id="全功能版列表项"><a href="#全功能版列表项" class="headerlink" title="全功能版列表项"></a>全功能版列表项</h2><p>我们可以在list.h中找到freertos对列表项的定义</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">xLIST_ITEM</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">     listFIRST_LIST_ITEM_INTEGRITY_CHECK_VALUE           <span class="comment">/*用于检测列表项数据是否完整*/</span></span><br><span class="line">     configLIST_VOLATILE TickType_t xItemValue;           <span class="comment">/*列表项值*/</span></span><br><span class="line">     <span class="class"><span class="keyword">struct</span> <span class="title">xLIST_ITEM</span> * <span class="title">configLIST_VOLATILE</span> <span class="title">pxNext</span>;</span>      <span class="comment">/*指向列表中下一个列表项*/</span></span><br><span class="line">     <span class="class"><span class="keyword">struct</span> <span class="title">xLIST_ITEM</span> * <span class="title">configLIST_VOLATILE</span> <span class="title">pxPrevious</span>;</span>  <span class="comment">/*指向列表中上一个列表项*/</span></span><br><span class="line">     <span class="type">void</span> * pvOwner;                                     <span class="comment">/*指向一个任务TCB*/</span></span><br><span class="line">     <span class="type">void</span> * configLIST_VOLATILE pvContainer;             <span class="comment">/*指向包含该列表项的列表 */</span></span><br><span class="line">     listSECOND_LIST_ITEM_INTEGRITY_CHECK_VALUE          <span class="comment">/*用于检测列表项数据是否完整*/</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">xLIST_ITEM</span> <span class="title">ListItem_t</span>;</span></span><br></pre></td></tr></table></figure>
 
 <ul>
-<li>可以看出，流每次输出（入）的内容为一个“词”，也就是说空格和换行都会结束该次输出（入）的内容</li>
+<li><p>listFIRST_LIST_ITEM_INTEGRITY_CHECK_VALUE 和listSECOND_LIST_ITEM_INTEGRITY_CHECK_VALUE 这两个宏定义用于<strong>检查列表项的数据是否完整</strong>。</p>
+<p>当使能projdefs.h中的宏configUSE_LIST_DATA_INTEGRITY_CHECK_BYTES时，这两个宏会被替换成两个已知的数值用于检测完整性。</p>
+</li>
+<li><p>xItemValue为<strong>列表项值</strong>，通常是一个被跟踪的任务优先级或是一个调度事件的计数器值。</p>
+<p>例如在队列的使用中，如果一个任务因为在等待从队列中读取数据而进入阻塞态，则该任务的<strong>事件列表项中的列表项值</strong>会用于保存该任务的优先级有关信息；该任务的<strong>状态列表项的列表项值</strong>会用于保存阻塞时间的有关信息（之前讲过，当有多个任务等待读取队列时，读取顺序与优先级和阻塞时间相关）。至于什么是事件列表项和状态列表项，之后的文章会讲到。</p>
+<p>由于列表项值应是随时都可能更新的，因此该变量被configLIST_VOLATILE修饰，<strong>该宏被映射为C的关键字volatile</strong>。</p>
+</li>
+<li><p>pxNext和pxPrevious为两个结构体指针，用于指向上下列表项，实现类似于双向链表的结构，对结构体指针还不太懂的话可以参考<a target="_blank" rel="noopener" href="https://dhkkk.gitee.io/2022/11/18/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E7%BA%BF%E6%80%A7%E8%A1%A8/">数据结构_链表 | 小董的BLOG (gitee.io)</a>中的一些解释。</p>
+</li>
+<li><p>pvOwner用于指向一个任务的TCB（Task Control Block），之后的文章会讲到。</p>
+</li>
+<li><p>pvContainer用于指向<strong>包含该列表项的列表</strong>。</p>
+</li>
 </ul>
-<h2 id="输出到字符串流"><a href="#输出到字符串流" class="headerlink" title="输出到字符串流"></a>输出到字符串流</h2><p>当我们想逐步构造想要输出的内容，最后一口气打印时，就可以使用字符串的输出流，将构造好的内容分布写入到ostingstream（或stringstream的输出流）中，最后通过函数.str()输出到cout或者你想要的其他流中</p>
+<h2 id="迷你版列表项"><a href="#迷你版列表项" class="headerlink" title="迷你版列表项"></a>迷你版列表项</h2><p>list.h中还有一个迷你版列表项的定义：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">xMINI_LIST_ITEM</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">	listFIRST_LIST_ITEM_INTEGRITY_CHECK_VALUE			<span class="comment">//检测完整性</span></span><br><span class="line">	configLIST_VOLATILE TickType_t xItemValue;	<span class="comment">//列表项值</span></span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">xLIST_ITEM</span> * <span class="title">configLIST_VOLATILE</span> <span class="title">pxNext</span>;</span>		<span class="comment">//指向下一列表项</span></span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">xLIST_ITEM</span> * <span class="title">configLIST_VOLATILE</span> <span class="title">pxPrevious</span>;</span>	<span class="comment">//指向前一列表项</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">xMINI_LIST_ITEM</span> <span class="title">MiniListItem_t</span>;</span></span><br></pre></td></tr></table></figure>
+
+<p>迷你版列表项的作用下一节讲列表时会讲到。</p>
+<h2 id="初始化列表项"><a href="#初始化列表项" class="headerlink" title="初始化列表项"></a>初始化列表项</h2><p>  列表项的初始比较简单，只要确保列表项不在任何列表中即可。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">vListInitialiseItem</span><span class="params">( ListItem_t * <span class="type">const</span> pxItem )</span></span><br><span class="line">&#123;</span><br><span class="line">     pxItem-&gt;pvContainer = <span class="literal">NULL</span>;</span><br><span class="line"> </span><br><span class="line">     <span class="comment">/*设置为已知值，用于检测列表项数据是否完整*/</span></span><br><span class="line">     listSET_FIRST_LIST_ITEM_INTEGRITY_CHECK_VALUE(pxItem );</span><br><span class="line">     listSET_SECOND_LIST_ITEM_INTEGRITY_CHECK_VALUE(pxItem );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="FreeRTOS的列表构成"><a href="#FreeRTOS的列表构成" class="headerlink" title="FreeRTOS的列表构成"></a>FreeRTOS的列表构成</h1><h2 id="列表的定义"><a href="#列表的定义" class="headerlink" title="列表的定义"></a>列表的定义</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">xLIST</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">	listFIRST_LIST_INTEGRITY_CHECK_VALUE				<span class="comment">//检测完整性</span></span><br><span class="line">	configLIST_VOLATILE UBaseType_t uxNumberOfItems;</span><br><span class="line">	ListItem_t * configLIST_VOLATILE pxIndex;			</span><br><span class="line">	MiniListItem_t xListEnd;							</span><br><span class="line">	listSECOND_LIST_INTEGRITY_CHECK_VALUE				<span class="comment">//检测完整性</span></span><br><span class="line">&#125; List_t;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>uxNumberOfItems用于表示该列表中挂接的列表项数目，0表示列表为空。</p>
+</li>
+<li><p>pxIndex为一个类型为完全体列表项的结构体指针，用于<strong>遍历列表项。</strong></p>
+</li>
+<li><p>列表项xListEnd用于标记列表结束，<strong>因为该列表项只用于标记列表的结束，因此不需要完全体列表项的所有功能</strong>，因此使用了迷你版列表项的类型。</p>
+<p>xListEnd.xItemValue被<strong>初始化为一个常数</strong>，其值与硬件架构相关，为0xFFFF（16位架构）或0xFFFFFFFF（32位架构）。</p>
+</li>
+</ul>
+<h2 id="列表的初始化"><a href="#列表的初始化" class="headerlink" title="列表的初始化"></a>列表的初始化</h2><p>可以在list.c中找到初始化函数vListInitialise()</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">vListInitialise</span><span class="params">( List_t * <span class="type">const</span> pxList )</span></span><br><span class="line">&#123;</span><br><span class="line">     <span class="comment">/*列表索引指向列表项xListEnd*/</span></span><br><span class="line">     pxList-&gt;pxIndex = ( ListItem_t * )&amp;( pxList-&gt;xListEnd );                  </span><br><span class="line">     <span class="comment">/* 设置为最大可能值为0xffff */</span></span><br><span class="line">     pxList-&gt;xListEnd.xItemValue =portMAX_DELAY;</span><br><span class="line"> </span><br><span class="line">     <span class="comment">/* 列表项xListEnd的pxNext和pxPrevious指针指向了它自己 */</span></span><br><span class="line">     pxList-&gt;xListEnd.pxNext = (ListItem_t * ) &amp;( pxList-&gt;xListEnd );</span><br><span class="line">     pxList-&gt;xListEnd.pxPrevious= ( ListItem_t * ) &amp;( pxList-&gt;xListEnd );</span><br><span class="line">     pxList-&gt;uxNumberOfItems = ( UBaseType_t) <span class="number">0U</span>;</span><br><span class="line"> </span><br><span class="line">     <span class="comment">/* 设置为已知值，用于检测列表数据是否完整*/</span></span><br><span class="line">     listSET_LIST_INTEGRITY_CHECK_1_VALUE(pxList );</span><br><span class="line">     listSET_LIST_INTEGRITY_CHECK_2_VALUE(pxList );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>如果宏configUSE_LIST_DATA_INTEGRITY_CHECK_BYTES设置为1，则使能列表项数据完整性检查，则宏listSET_LIST_INTEGRITY_CHECK_1_VALUE()和listSET_LIST_INTEGRITY_CHECK_2_VALUE被一个已知值代替，默认为0x5a5a（16位架构）或者0x5a5a5a5a（32位架构）。</p>
+</li>
+<li><p>按照上述初始化后就应该是下图的情况：</p>
+<img src="/images/loading.png" data-original="/2022/12/09/%E5%9F%BA%E4%BA%8EFreeRTOS%E7%9A%84%E5%88%97%E8%A1%A8%E5%AD%A6%E4%B9%A0/2.jpg" class title="This is an image"> 
+
+<p>此时pxIndex、pxList-&gt;xListEnd.pxNext、pxList-&gt;xListEnd.pxPrevious都指向了 pxList-&gt;xListEnd（也可以说是xListEnd这个结构体的首元素）</p>
+</li>
+</ul>
+<h1 id="将列表项插入列表中"><a href="#将列表项插入列表中" class="headerlink" title="将列表项插入列表中"></a>将列表项插入列表中</h1><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">vListInsert</span><span class="params">( List_t * <span class="type">const</span> pxList, ListItem_t * <span class="type">const</span> pxNewListItem )</span></span><br><span class="line">&#123;</span><br><span class="line">ListItem_t *pxIterator;		<span class="comment">//函数内定义一个列表项指针，通过列表项值的比较，找到当前输入列表项需插入的位置</span></span><br><span class="line"><span class="type">const</span> TickType_t xValueOfInsertion = pxNewListItem-&gt;xItemValue;	<span class="comment">//定义一个变量存放当前输入列表项的列表项值</span></span><br><span class="line"></span><br><span class="line">	listTEST_LIST_INTEGRITY( pxList );		<span class="comment">//检测完整性</span></span><br><span class="line">	listTEST_LIST_ITEM_INTEGRITY( pxNewListItem );		<span class="comment">//检测完整性</span></span><br><span class="line"></span><br><span class="line">   <span class="comment">/*开始为输入列表项寻找合适的插入位置*/</span></span><br><span class="line">	<span class="keyword">if</span>( xValueOfInsertion == portMAX_DELAY )</span><br><span class="line">	&#123;</span><br><span class="line">		pxIterator = pxList-&gt;xListEnd.pxPrevious;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">for</span>( pxIterator = ( ListItem_t * ) &amp;( pxList-&gt;xListEnd ); </span><br><span class="line">								  pxIterator-&gt;pxNext-&gt;xItemValue &lt;= xValueOfInsertion; </span><br><span class="line">								  pxIterator = pxIterator-&gt;pxNext ) </span><br><span class="line">		&#123;</span><br><span class="line">			<span class="comment">/* There is nothing to do here, just iterating to the wanted</span></span><br><span class="line"><span class="comment">			insertion position. */</span></span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">   <span class="comment">/******************************/</span></span><br><span class="line">   </span><br><span class="line">   <span class="comment">/*此时pxIterator为当前pxNewListItem要插入的位置*/</span></span><br><span class="line">	pxNewListItem-&gt;pxNext = pxIterator-&gt;pxNext;</span><br><span class="line">	pxNewListItem-&gt;pxNext-&gt;pxPrevious = pxNewListItem;</span><br><span class="line">	pxNewListItem-&gt;pxPrevious = pxIterator;</span><br><span class="line">	pxIterator-&gt;pxNext = pxNewListItem;</span><br><span class="line">   </span><br><span class="line">	<span class="comment">/*将列表项接入列表，列表项数目+1*/</span></span><br><span class="line">	pxNewListItem-&gt;pvContainer = ( <span class="type">void</span> * ) pxList;</span><br><span class="line">	( pxList-&gt;uxNumberOfItems )++;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这个函数中比较难以理解的地方就是关于寻找列表项插入位置的判断和循环部分，接下来将一步一步讲解：</p>
+<h2 id="当列表内无列表项时（当前插入的列表项为第一个列表项）"><a href="#当列表内无列表项时（当前插入的列表项为第一个列表项）" class="headerlink" title="当列表内无列表项时（当前插入的列表项为第一个列表项）"></a>当列表内无列表项时（当前插入的列表项为第一个列表项）</h2><p>假设该列表项值为50</p>
+<h3 id="if判断"><a href="#if判断" class="headerlink" title="if判断"></a>if判断</h3><p>不满足条件，跳过</p>
+<h3 id="for循环"><a href="#for循环" class="headerlink" title="for循环"></a>for循环</h3><ul>
+<li><p>初始化<code>pxIterator = ( ListItem_t * ) &amp;( pxList-&gt;xListEnd );</code>后，此时情况为：</p>
+<img src="/images/loading.png" data-original="/2022/12/09/%E5%9F%BA%E4%BA%8EFreeRTOS%E7%9A%84%E5%88%97%E8%A1%A8%E5%AD%A6%E4%B9%A0/3.jpg" class title="This is an image"> 
+
+<p>此时pxIterator成员与pxList-&gt;xListEnd的成员一一对应</p>
+</li>
+<li><p>条件判断<code>pxIterator-&gt;pxNext-&gt;xItemValue &lt;= xValueOfInsertion;</code></p>
+<p>这里需要注意：<strong>列表初始化时，xListEnd的成员pxNext，pxPrevious是指向xListEnd的</strong></p>
+<p>因此pxIterator-&gt;pxNext-&gt;xItemValue的值就是0xFFFF，是大于50的，因此不满足条件，跳出循环</p>
+</li>
+</ul>
+<h3 id="赋值"><a href="#赋值" class="headerlink" title="赋值"></a>赋值</h3><ul>
+<li><p><strong>pxNewListItem-&gt;pxNext &#x3D; pxIterator-&gt;pxNext;</strong></p>
+<p>pxIterator-&gt;pxNext指向pxList-&gt;xListEnd.pxnext，而pxList-&gt;xListEnd.pxnext又指向本身xListEnd；因此，<u><strong>最终pxNewListItem-&gt;pxNext指向了pxList-&gt;xListEnd</strong></u></p>
+<img src="/images/loading.png" data-original="/2022/12/09/%E5%9F%BA%E4%BA%8EFreeRTOS%E7%9A%84%E5%88%97%E8%A1%A8%E5%AD%A6%E4%B9%A0/4.jpg" class title="cysgbj"> 
+</li>
+<li><p><strong>pxNewListItem-&gt;pxNext-&gt;pxPrevious &#x3D; pxNewListItem;</strong></p>
+<p>上一步中pxNewListItem-&gt;pxNext指向了pxList-&gt;xListEnd，因此pxNewListItem-&gt;pxNext-&gt;pxPrevious等同于pxList-&gt;xListEnd.pxPrevious，而pxList-&gt;xListEnd.pxPrevious之前是指向pxList-&gt;xListEnd本身的，因此<u><strong>这一步最终的结果相当于将pxList-&gt;xListEnd.pxPrevious改变指向，指向pxNewListItem</strong></u></p>
+<img src="/images/loading.png" data-original="/2022/12/09/%E5%9F%BA%E4%BA%8EFreeRTOS%E7%9A%84%E5%88%97%E8%A1%A8%E5%AD%A6%E4%B9%A0/5.jpg" class title="cysgbj"> 
+</li>
+<li><p><strong>pxNewListItem-&gt;pxPrevious &#x3D; pxIterator;</strong></p>
+<p>由于pxIterator本身就是指向pxList-&gt;xListEnd的，因此这一步相当于：</p>
+<p><u><strong>pxNewListItem-&gt;pxPrevious &#x3D; pxList-&gt;xListEnd</strong></u></p>
+<img src="/images/loading.png" data-original="/2022/12/09/%E5%9F%BA%E4%BA%8EFreeRTOS%E7%9A%84%E5%88%97%E8%A1%A8%E5%AD%A6%E4%B9%A0/6.jpg" class title="cysgbj"> 
+</li>
+<li><p><strong>pxIterator-&gt;pxNext &#x3D; pxNewListItem;</strong></p>
+<p>pxIterator-&gt;pxNext指向pxList-&gt;xListEnd.pxnext，此时pxList-&gt;xListEnd.pxnext本来是指向自己（pxList-&gt;xListEnd）的，因此这一步最终是：</p>
+<p><strong><u>将pxList-&gt;xListEnd.pxnext改变指向，指向pxNewListItem</u></strong></p>
+<img src="/images/loading.png" data-original="/2022/12/09/%E5%9F%BA%E4%BA%8EFreeRTOS%E7%9A%84%E5%88%97%E8%A1%A8%E5%AD%A6%E4%B9%A0/7.jpg" class title="cysgbj"> 
+</li>
+<li><p>综上，最终的结果为：</p>
+<img src="/images/loading.png" data-original="/2022/12/09/%E5%9F%BA%E4%BA%8EFreeRTOS%E7%9A%84%E5%88%97%E8%A1%A8%E5%AD%A6%E4%B9%A0/8.jpg" class title="cysgbj"> 
+
+<p><em>上图省略了pvContainer和pxIndex的指向和uxNumberOfItems的变化</em></p>
+</li>
+</ul>
+<h2 id="第二次，当列表中已有列表项时，且该列表项值大于上一个"><a href="#第二次，当列表中已有列表项时，且该列表项值大于上一个" class="headerlink" title="第二次，当列表中已有列表项时，且该列表项值大于上一个"></a>第二次，当列表中已有列表项时，且该列表项值大于上一个</h2><p>假设第二个列表项值为60（第一个为50）</p>
+<h3 id="if判断-1"><a href="#if判断-1" class="headerlink" title="if判断"></a>if判断</h3><p>不满足条件，跳过</p>
+<h3 id="for循环-1"><a href="#for循环-1" class="headerlink" title="for循环"></a>for循环</h3><ul>
+<li><p>初始化<code>pxIterator = ( ListItem_t * ) &amp;( pxList-&gt;xListEnd );</code>后，由于在上一个列表项插入后，pxList.xListEnd中的pxNext和pxPrevious已经改变了指向，因此当前情况为：</p>
+<img src="/images/loading.png" data-original="/2022/12/09/%E5%9F%BA%E4%BA%8EFreeRTOS%E7%9A%84%E5%88%97%E8%A1%A8%E5%AD%A6%E4%B9%A0/9.jpg" class title="cysgbj"> 
+</li>
+<li><p>条件判断<code>pxIterator-&gt;pxNext-&gt;xItemValue &lt;= xValueOfInsertion;</code></p>
+<p>由上图可得知，此时pxIterator-&gt;pxNext-&gt;xItemValue为50，小于60，条件成立</p>
+</li>
+<li><p>执行<code>pxIterator = pxIterator-&gt;pxNext</code></p>
+<p>由于pxIterator-&gt;pxNext指向pxNewListItem(1)，因此当前情况如下：</p>
+<img src="/images/loading.png" data-original="/2022/12/09/%E5%9F%BA%E4%BA%8EFreeRTOS%E7%9A%84%E5%88%97%E8%A1%A8%E5%AD%A6%E4%B9%A0/10.jpg" class title="cysgbj"> 
+</li>
+<li><p>再次进行条件判断<code>pxIterator-&gt;pxNext-&gt;xItemValue &lt;= xValueOfInsertion;</code></p>
+<p>此时pxIterator-&gt;pxNext-&gt;xItemValue为0xffff，不满足条件，循环结束。</p>
+</li>
+</ul>
+<p><strong>综上，通过该for循环，可以根据每个列表项值的大小进行列表中的位置排序</strong></p>
+<h3 id="赋值-1"><a href="#赋值-1" class="headerlink" title="赋值"></a>赋值</h3><p>这里的所有pxNewListItem在未特别说明的情况下都是指pxNewListItem(2）</p>
+<ul>
+<li><p><strong>pxNewListItem-&gt;pxNext &#x3D; pxIterator-&gt;pxNext;</strong></p>
+<p>同第一次插入列表，<u><strong>最终pxNewListItem-&gt;pxNext指向了pxList-&gt;xListEnd</strong></u></p>
+</li>
+<li><p><strong>pxNewListItem-&gt;pxNext-&gt;pxPrevious &#x3D; pxNewListItem;</strong></p>
+<p>同第一次插入列表，<u><strong>将pxList-&gt;xListEnd.pxPrevious改变指向，指向pxNewListItem</strong></u></p>
+</li>
+<li><p><strong>pxNewListItem-&gt;pxPrevious &#x3D; pxIterator;</strong></p>
+<p>pxIterator在for循环中已经指向了pxNewListItem(1)，因此这里：</p>
+<p><u><strong>pxNewListItem-&gt;pxPrevious指向pxNewListItem(1)</strong></u></p>
+</li>
+<li><p><strong>pxIterator-&gt;pxNext &#x3D; pxNewListItem;</strong></p>
+<p>pxIterator-&gt;pxNext指向pxNewListItem(1)-&gt;pxnext，而pxNewListItem(1)-&gt;next最终指向了pxlist.xListEnd，因此这里相当于:</p>
+<p><u><strong>改变pxNewListItem(1)-&gt;pxnext的指向，使其指向pxNewListItem(2)</strong></u></p>
+</li>
+</ul>
+<p>综上，当前结果为：</p>
+<img src="/images/loading.png" data-original="/2022/12/09/%E5%9F%BA%E4%BA%8EFreeRTOS%E7%9A%84%E5%88%97%E8%A1%A8%E5%AD%A6%E4%B9%A0/11.jpg" class title="cysgbj"> 
+
+<p>有点乱，也可以参考下图，一样的</p>
+<img src="/images/loading.png" data-original="/2022/12/09/%E5%9F%BA%E4%BA%8EFreeRTOS%E7%9A%84%E5%88%97%E8%A1%A8%E5%AD%A6%E4%B9%A0/12.jpg" class title="cysgbj">
+
+<p>不难看出，赋值的最后两步将各个列表项相互链接</p>
+<h2 id="第二次，当列表中已有列表项时，但该列表项值小于上一个"><a href="#第二次，当列表中已有列表项时，但该列表项值小于上一个" class="headerlink" title="第二次，当列表中已有列表项时，但该列表项值小于上一个"></a>第二次，当列表中已有列表项时，但该列表项值小于上一个</h2><p>假设第二个列表值为30，小于第一个列表值50</p>
+<h3 id="if判断-2"><a href="#if判断-2" class="headerlink" title="if判断"></a>if判断</h3><p>不满足条件，跳过</p>
+<h3 id="for循环-2"><a href="#for循环-2" class="headerlink" title="for循环"></a>for循环</h3><ul>
+<li><p>初始化<code>pxIterator = ( ListItem_t * ) &amp;( pxList-&gt;xListEnd );</code>后，由于在上一个列表项插入后，pxList.xListEnd中的pxNext和pxPrevious已经改变了指向，因此当前情况为：</p>
+<img src="/images/loading.png" data-original="/2022/12/09/%E5%9F%BA%E4%BA%8EFreeRTOS%E7%9A%84%E5%88%97%E8%A1%A8%E5%AD%A6%E4%B9%A0/9.jpg" class title="cysgbj"> 
+</li>
+<li><p>条件判断<code>pxIterator-&gt;pxNext-&gt;xItemValue &lt;= xValueOfInsertion;</code></p>
+<p>由上图可得知，此时pxIterator-&gt;pxNext-&gt;xItemValue为50，大于30，条件不成立，循环结束</p>
+</li>
+</ul>
+<h3 id="赋值-2"><a href="#赋值-2" class="headerlink" title="赋值"></a>赋值</h3><p>这里的所有pxNewListItem在未特别说明的情况下都是指pxNewListItem(2）</p>
+<ul>
+<li><p><strong>pxNewListItem-&gt;pxNext &#x3D; pxIterator-&gt;pxNext;</strong></p>
+<p><u><strong>不同第一次插入列表！此时pxNewListItem-&gt;pxNext最终指向了xNewListItem(1)</strong></u></p>
+</li>
+<li><p><strong>pxNewListItem-&gt;pxNext-&gt;pxPrevious &#x3D; pxNewListItem;</strong></p>
+<p><strong>不同第一次插入列表！</strong>此时pxNewListItem-&gt;pxNext-&gt;pxPrevious 即是：</p>
+<p><u><strong>pxNewListItem(1)-&gt;xPrevious指向了pxNewListItem(2)</strong></u></p>
+</li>
+<li><p><strong>pxNewListItem-&gt;pxPrevious &#x3D; pxIterator;</strong></p>
+<p>pxIterator是直接指向pxList-&gt;xListEnd的，因此：</p>
+<p><u><strong>pxNewListItem-&gt;pxPrevious 直接指向pxList-&gt;xListEnd</strong></u></p>
+</li>
+<li><p><strong>pxIterator-&gt;pxNext &#x3D; pxNewListItem;</strong></p>
+<p>在执行这一步之前，情况如下：</p>
+<img src="/images/loading.png" data-original="/2022/12/09/%E5%9F%BA%E4%BA%8EFreeRTOS%E7%9A%84%E5%88%97%E8%A1%A8%E5%AD%A6%E4%B9%A0/13.jpg" class title="cysgbj"> 
+
+<p>这里我产生了一个疑问，pxIterator-&gt;pxNext是指向pxNewListItem(1)，那让pxNewListItem(1)&#x3D;pxNewListItem是什么意思呢？让上一个列表项指向当前列表项？这明显是不符合列表逻辑的。</p>
+<p>后来在找寻问题的过程中，才发现自己又犯了老错误，pxNewListItem(1)其实也是一个指针变量，他是直接指向列表项1的内存单元的，<strong>因此pxIterator-&gt;pxNext是直接指向了列表项1的内存单元</strong>，因此改变pxIterator-&gt;pxNext是直接改变了这个指针的指向，也就是说结果是：</p>
+<p><strong><u>将pxList-&gt;xListEnd.pxNext改变指向，使其指向pxNewListItem(2)</u></strong></p>
+</li>
+</ul>
+<p>综上，最后结果为：</p>
+<img src="/images/loading.png" data-original="/2022/12/09/%E5%9F%BA%E4%BA%8EFreeRTOS%E7%9A%84%E5%88%97%E8%A1%A8%E5%AD%A6%E4%B9%A0/14.jpg" class title="cysgbj"> 
+
+<h2 id="对比两种情况"><a href="#对比两种情况" class="headerlink" title="对比两种情况"></a>对比两种情况</h2><p>第二个列表项值大于第一个的情况：</p>
+<img src="/images/loading.png" data-original="/2022/12/09/%E5%9F%BA%E4%BA%8EFreeRTOS%E7%9A%84%E5%88%97%E8%A1%A8%E5%AD%A6%E4%B9%A0/11.jpg" class title="cysgbj"> 
+
+<p>对比一下，可以看出：</p>
+<ul>
+<li><strong>pxList-&gt;xListEnd.pxNext总是指向列表项值最小的列表项</strong></li>
+<li><strong>pxList-&gt;xListEnd.pxPrevious总是指向列表项值最大的列表项</strong></li>
+<li><strong>列表项值小的列表项的pxNext总是指向列表项值大的列表项</strong></li>
+<li><strong>列表项值大的列表项的PxPrevious总是指向列表项值小的列表项</strong></li>
+<li><strong>首列表项的pxPrevious和尾列表项的pxNext都指向pxList-&gt;xListEnd</strong></li>
+</ul>
+<p>根据上述的规律，就可以清晰地明白FreeRTOS对列表的插入方式了：</p>
+<img src="/images/loading.png" data-original="/2022/12/09/%E5%9F%BA%E4%BA%8EFreeRTOS%E7%9A%84%E5%88%97%E8%A1%A8%E5%AD%A6%E4%B9%A0/15.jpg" class title="cysgbj"> 
+
+<p>因此，若要访问列表项，要通过pxList-&gt;xListEnd.pxNext访问手列表项，通过pxList-&gt;xListEnd.pxPrevious访问尾列表项。</p>
+<p>实现插入的方法看了之后感觉真的很巧妙，我感觉也只能停留在理解的阶段，要自己写出来感觉难度还是很大。。。<strong>但是规律还是很好记住的😋</strong></p>
+<h1 id="直接将列表项插入列表尾"><a href="#直接将列表项插入列表尾" class="headerlink" title="直接将列表项插入列表尾"></a>直接将列表项插入列表尾</h1><p>原理跟上面的是一样的，如果能理解插入的方法，相信这个理解起来就很ez了，就不多说了</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">vListInsertEnd</span><span class="params">( List_t * <span class="type">const</span> pxList, ListItem_t * <span class="type">const</span> pxNewListItem )</span></span><br><span class="line">&#123;</span><br><span class="line">ListItem_t* <span class="type">const</span> pxIndex = pxList-&gt;pxIndex;</span><br><span class="line"> </span><br><span class="line">         <span class="comment">/*检查列表和列表项数据的完整性，仅当configASSERT()定义时有效。*/</span></span><br><span class="line">         listTEST_LIST_INTEGRITY( pxList );</span><br><span class="line">         listTEST_LIST_ITEM_INTEGRITY(pxNewListItem );</span><br><span class="line"> </span><br><span class="line">         <span class="comment">/*向列表中插入新的列表项*/</span></span><br><span class="line">         pxNewListItem-&gt;pxNext = pxIndex;</span><br><span class="line">         pxNewListItem-&gt;pxPrevious =pxIndex-&gt;pxPrevious;</span><br><span class="line"> </span><br><span class="line">         mtCOVERAGE_TEST_DELAY();</span><br><span class="line"> </span><br><span class="line">         pxIndex-&gt;pxPrevious-&gt;pxNext =pxNewListItem;</span><br><span class="line">         pxIndex-&gt;pxPrevious = pxNewListItem;</span><br><span class="line"> </span><br><span class="line">         pxNewListItem-&gt;pvContainer = ( <span class="type">void</span>* ) pxList;</span><br><span class="line"> </span><br><span class="line">         ( pxList-&gt;uxNumberOfItems )++;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>在FreeRTOS中，任务的调度与列表息息相关，因此要想学好任务调度的原理，列表是第一大难关！</p>
 
       
     </div>
@@ -1364,7 +609,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2022/10/30/C-%E6%9D%82%E9%A1%B9/">
+    <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2022/11/28/%E5%8D%95%E7%89%87%E6%9C%BA%E5%A4%8D%E4%B9%A0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/zoe.gif">
@@ -1378,7 +623,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2022/10/30/C-%E6%9D%82%E9%A1%B9/" class="post-title-link" itemprop="url">C_杂项</a>
+            <a href="/2022/11/28/%E5%8D%95%E7%89%87%E6%9C%BA%E5%A4%8D%E4%B9%A0/" class="post-title-link" itemprop="url">单片机复习(考试复习自用)</a>
         </h2>
 
         <div class="post-meta">
@@ -1390,14 +635,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2022-10-30 19:41:19" itemprop="dateCreated datePublished" datetime="2022-10-30T19:41:19+08:00">2022-10-30</time>
+              <time title="创建时间：2022-11-28 22:13:02" itemprop="dateCreated datePublished" datetime="2022-11-28T22:13:02+08:00">2022-11-28</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2023-02-10 23:20:56" itemprop="dateModified" datetime="2023-02-10T23:20:56+08:00">2023-02-10</time>
+                <time title="修改时间：2024-02-25 15:32:22" itemprop="dateModified" datetime="2024-02-25T15:32:22+08:00">2024-02-25</time>
               </span>
 
           
@@ -1411,24 +656,433 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="位域结构体"><a href="#位域结构体" class="headerlink" title="位域结构体"></a>位域结构体</h1><p>有时候，信息存储的时候，并不需要一个完整的字节，而只需占几个或一个二进制位就能满足需求。例如存放一个bool类型的变量，只需要true或者false即可，这种情况下，只需要0或者1一位二进制位即可。为了节省存储空间，并使处理简便，C语言又提供了一种数据结构，称为“位域”或“位段”。<strong>所谓“位域”是把一个字节中的二进位划分为几个不同的区域，并说明每个区域的位数。</strong>每个域有一个域名，允许在程序中按域名进行操作。<strong>这样就可以把几个不同的对象用一个字节的二进制位域来表示。</strong></p>
-<p>格式：</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> _<span class="title">net_pro_cdu</span>  </span></span><br><span class="line"><span class="class">&#123;</span> </span><br><span class="line">    <span class="type">unsigned</span>  <span class="type">char</span> acs:<span class="number">4</span> </span><br><span class="line">    <span class="type">unsigned</span>  <span class="type">char</span> :<span class="number">0</span>  </span><br><span class="line">    <span class="type">unsigned</span>  <span class="type">char</span> ace:<span class="number">4</span>  </span><br><span class="line">    <span class="type">unsigned</span>  <span class="type">char</span> dve:<span class="number">4</span> </span><br><span class="line">&#125; Ncdu;</span><br></pre></td></tr></table></figure>
-
-<p>注意：</p>
+          <h1 id="计算机基础"><a href="#计算机基础" class="headerlink" title="计算机基础"></a>计算机基础</h1><ul>
+<li><p>原码、反码、补码</p>
+<p>正数的三者相同，负数反码为原码除符号位其余取反，补码为其反码+1</p>
+<p><u><strong>负数的机器码是其原码的补码</strong></u></p>
+</li>
+<li><p>微型计算机配置高速缓冲存储器是为了解决： CPU于内存储器速度不匹配</p>
+</li>
+<li><p>ROM和RAM</p>
 <ul>
-<li>无位域名的位域不能使用，仅用来填充、调整尾置（如第四行）</li>
-<li>位大小不能超过定义用的类型（如上述例子位数不能超过8）</li>
+<li>ROM：只读存储器，在单片机中用于存放程序，配有较大空间，<strong>掉电数据不丢失</strong></li>
+<li>RAM：随机存储器，存放临时数据，使单片机<strong>更适用于实时控制系统</strong>，<strong>掉电数据丢失</strong></li>
+<li><strong>计算机的内存容量主要指RAM</strong></li>
 </ul>
-<h1 id="volatile关键字"><a href="#volatile关键字" class="headerlink" title="volatile关键字"></a>volatile关键字</h1><p>声明一个变量是易变的，可以防止编译器对程序一些变量运算的过度优化。</p>
-<h1 id="for循环执行顺序"><a href="#for循环执行顺序" class="headerlink" title="for循环执行顺序"></a>for循环执行顺序</h1><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="type">int</span> i =<span class="number">0</span>; i&lt;<span class="number">5</span>;i++)&#123;</span><br><span class="line">     <span class="comment">// 循环体</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><u><strong>系统总线：地址总线 AB，控制总线 CB 和双向数据总线 DB。</strong></u></p>
+<ul>
+<li>数据总线（Data Bus―DB）双向、三态：数据总线的根数决定了一次可以传递二进制数的<strong>位数</strong>。 </li>
+<li>地址总线（Address Bus―AB）单向、三态：地址总线的位数决定了<strong>可以直接访问的存储单元(或 I&#x2F;O 口)的最大可能数 量（即容量）</strong>。 </li>
+<li>控制总线（Control Bus―CB）：控制总线用来<strong>传输控制信号</strong>，数据总线和每个元件的数据线相连，为了使 CPU 能够和 其中一个元件正确通信，必须使用三态逻辑元件（特别针对输入元件）。</li>
+</ul>
+</li>
+</ul>
+<h2 id="题"><a href="#题" class="headerlink" title="题"></a>题</h2><img src="/images/loading.png" data-original="/2022/11/28/%E5%8D%95%E7%89%87%E6%9C%BA%E5%A4%8D%E4%B9%A0/1_1.jpg" class title="This is an image"> 
 
-<p>执行顺序解抛<br>执行的顺序如下：<br>第一步 ： i&#x3D;0  初始化值<br>第二步 ： i&lt;5 进行条件判断，如果为真，则继续执行<br>第三步 ： 执行循环体的内容<br>第四步 ： i++ 变量i自增<br>第五步 ： 回到第二步，条件判断为真，则执行循环体内容，再到i++一直循环，<br>直到第二步的判断条件为假，则退出该循环</p>
-<p>原文链接：<a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_44080187/article/details/123429045">https://blog.csdn.net/weixin_44080187/article/details/123429045</a></p>
-<h1 id="union类型"><a href="#union类型" class="headerlink" title="union类型"></a>union类型</h1><h2 id="长度问题"><a href="#长度问题" class="headerlink" title="长度问题"></a>长度问题</h2><p>实例化为变量后，这个变量的长度是这个union中最长的数据类型的长度</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">union</span> <span class="title">DEMO</span>&#123;</span> </span><br><span class="line">     <span class="type">char</span> status;</span><br><span class="line">     <span class="type">int</span> a; </span><br><span class="line">     <span class="type">int</span> serial[<span class="number">4</span>]; </span><br><span class="line">&#125;demo；<span class="comment">//大小为16字节</span></span><br></pre></td></tr></table></figure>
+<h1 id="单片机硬件结构"><a href="#单片机硬件结构" class="headerlink" title="单片机硬件结构"></a>单片机硬件结构</h1><h2 id="CPU"><a href="#CPU" class="headerlink" title="CPU"></a>CPU</h2><p>分为运算器和控制器</p>
+<ul>
+<li><p>控制器：依次取出ROM中存储单元的指令</p>
+<ul>
+<li>程序计数器：PC，16位，指向下一条指令的<strong>地址</strong>，复位后为0000H</li>
+<li>指令寄存器</li>
+<li>指令译码器</li>
+<li>定时控制电路</li>
+</ul>
+</li>
+<li><p>运算器ALU：对数据进行算术、逻辑运算</p>
+<ul>
+<li>算术逻辑运算部件ALU，负责运算，结果传回ACC，结果的状态传回PSW</li>
+<li>累加器ACC</li>
+<li><strong>程序状态寄存器PSW</strong></li>
+</ul>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th align="center">位</th>
+<th align="center">7</th>
+<th align="center">6</th>
+<th align="center">5</th>
+<th align="center">4</th>
+<th align="center">3</th>
+<th align="center">2</th>
+<th align="center">1</th>
+<th align="center">0</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">位名</td>
+<td align="center">Cy</td>
+<td align="center">AC</td>
+<td align="center">F0</td>
+<td align="center">RS1</td>
+<td align="center">RS0</td>
+<td align="center">OV</td>
+<td align="center">F1</td>
+<td align="center">P</td>
+</tr>
+<tr>
+<td align="center">作用</td>
+<td align="center">进位&#x2F;借位</td>
+<td align="center">辅助进位</td>
+<td align="center">自定义</td>
+<td align="center">寄存器选择</td>
+<td align="center">寄存器选择</td>
+<td align="center">溢出</td>
+<td align="center">自定义</td>
+<td align="center">奇偶效验</td>
+</tr>
+</tbody></table>
+<ul>
+<li>Cy：运算结果最高位有无进位&#x2F;错位</li>
+<li>AC：运算结果低四位有无向高四位进位</li>
+<li>F0、F1：用户自定义</li>
+<li>RS1、RS0：一起决定当前寄存器组(00对应寄存器0组，依次增加)</li>
+<li>OV：数据是否溢出</li>
+<li>P：1的个数为奇&#x2F;偶</li>
+</ul>
+<h2 id="时钟电路"><a href="#时钟电路" class="headerlink" title="时钟电路"></a>时钟电路</h2><ul>
+<li>XTAL1:片内振荡电路输入端</li>
+<li>XTAL2：输出端</li>
+</ul>
+<p>当外部信号源为单片机提供时钟时，1接地，2接信号源</p>
+<h2 id="EA"><a href="#EA" class="headerlink" title="EA"></a>EA</h2><p><strong>EA（反）</strong>为1时CPU从片内读取指令，为0时访问外部</p>
+<h2 id="并行IO口"><a href="#并行IO口" class="headerlink" title="并行IO口"></a>并行IO口</h2><h3 id="P1"><a href="#P1" class="headerlink" title="P1"></a>P1</h3><p>通用输入、输出接口</p>
+<img src="/images/loading.png" data-original="/2022/11/28/%E5%8D%95%E7%89%87%E6%9C%BA%E5%A4%8D%E4%B9%A0/p1.jpg" class title="This is an image"> 
 
-<h2 id="数据访问"><a href="#数据访问" class="headerlink" title="数据访问"></a>数据访问</h2><p>对于union成员，地址相同，存储有点像并列一样的存储（？我是这么理解的），一个成员变化一定会影响其他成员</p>
+<h4 id="作输出时："><a href="#作输出时：" class="headerlink" title="作输出时："></a>作输出时：</h4><ul>
+<li><p><strong>输出的数据通过内部总线送入锁存器保存</strong></p>
+</li>
+<li><p>判断数据的每一位。</p>
+<p>为1时，Q&#x3D;1，Q（反）&#x3D;0，VT截止，Vcc向引脚输出高电平。</p>
+</li>
+</ul>
+<p><strong>上拉电阻的作用</strong>：当VT截止时，使输出强制为1，若没有上拉电阻，输出可能由于噪音上下浮动。</p>
+<h4 id="作输入时："><a href="#作输入时：" class="headerlink" title="作输入时："></a>作输入时：</h4><ul>
+<li><strong>先向锁存器写1（准双向），使VT一直为截止状态。</strong>否则VT导通会拉低输入信号。</li>
+<li>CPU执行读指令时，2导通，<strong>数据通过2直接进入</strong>内部总线，因此内部总线信号跟随引脚变化。</li>
+</ul>
+<h3 id="P2"><a href="#P2" class="headerlink" title="P2"></a>P2</h3><img src="/images/loading.png" data-original="/2022/11/28/%E5%8D%95%E7%89%87%E6%9C%BA%E5%A4%8D%E4%B9%A0/p2.jpg" class title="This is an image"> 
+
+<p>有两种用途，准双向IO和高8位地址总线</p>
+<p>当用作IO时，控制信号使开关接左侧，Q输出1使VT截止。</p>
+<h3 id="P3"><a href="#P3" class="headerlink" title="P3"></a>P3</h3><img src="/images/loading.png" data-original="/2022/11/28/%E5%8D%95%E7%89%87%E6%9C%BA%E5%A4%8D%E4%B9%A0/p3.jpg" class title="This is an image"> 
+
+<p><strong>用户可自行操作第二功能实现相关功能，P3默认为准双向IO</strong></p>
+<p>第二功能包括：串口收发、外部中断、定时器输出等</p>
+<h3 id="P0"><a href="#P0" class="headerlink" title="P0"></a>P0</h3><img src="/images/loading.png" data-original="/2022/11/28/%E5%8D%95%E7%89%87%E6%9C%BA%E5%A4%8D%E4%B9%A0/p0.jpg" class title="This is an image"> 
+
+<p>可作为准双向IO，<strong>IO时必须外接上拉电阻</strong>。第二功能时提供外部存储地址低8位<strong>和P2组成16位地址</strong>，之后用作数据总线（此时锁存器会保存低八位地址）。</p>
+<p>P0具有高阻态</p>
+<h3 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h3><ul>
+<li>四个IO均为准双向，<strong>在用作输入时都应向锁存器写“1”</strong></li>
+<li>除P1外，其余端口都有第二功能：<ul>
+<li>P0：低八位地址和数据总线</li>
+<li>P2：高八位地址</li>
+<li>P3：自定义功能</li>
+</ul>
+</li>
+<li><strong>P0作为通用IO时需要外接上拉电阻！</strong></li>
+<li><strong><u>P0、P2作地址时剩下引脚不能作为IO使用；但是P3各个口独立，未用作第二功能的可以作为IO使用</u></strong></li>
+</ul>
+<h2 id="存储结构"><a href="#存储结构" class="headerlink" title="存储结构"></a>存储结构</h2><p>51单片机存储器<strong>物理</strong>上分为四个空间：</p>
+<ul>
+<li>片内<strong>程序</strong>存储器</li>
+<li>片外<strong>程序</strong>存储器</li>
+<li>片内<strong>数据</strong>存储器</li>
+<li>片外<strong>数据</strong>存储器</li>
+</ul>
+<p>从用户使用的逻辑上分为三个区域：</p>
+<ul>
+<li>片内外统一编址的程序存储器	0000H-FFFFH(64KB)</li>
+<li>片内数据存储	00-FFH 128B </li>
+<li>片外数据存储    0000H-FFFFH</li>
+</ul>
+<h3 id="程序存储器"><a href="#程序存储器" class="headerlink" title="程序存储器"></a>程序存储器</h3><p>程序存储器由ROM和EPROM构成，掉电后数据不丢失</p>
+<p>用于存放程序和程序运行时所需的常数。<strong>51片内有4K ROM，但地址线为16位，因此做多可以扩展到64KB</strong>。当PC值超过内部ROM容量时会自动转向外部寻址。\EA&#x3D;1时为寻址内部ROM。</p>
+<p>MOVC指令用于访问程序存储器。</p>
+<h3 id="数据存储器"><a href="#数据存储器" class="headerlink" title="数据存储器"></a>数据存储器</h3><p>数据存储器由RAM和专用寄存器组成，掉电后数据丢失</p>
+<p>用于存放程序运算的中间结果、标志位、数据缓冲等。51片内有128+128B的数据存储器，可扩充至64KB</p>
+<p>内部数据存储器分为低128B和高128B</p>
+<img src="/images/loading.png" data-original="/2022/11/28/%E5%8D%95%E7%89%87%E6%9C%BA%E5%A4%8D%E4%B9%A0/ram.jpg" class title="This is an image"> 
+
+<h4 id="低128B：RAM区"><a href="#低128B：RAM区" class="headerlink" title="低128B：RAM区"></a>低128B：RAM区</h4><ul>
+<li><p><strong>通用寄存器区</strong>，供用户使用，用于临时存放8位数据</p>
+<p>通过修改程序状态寄存器PSW中的RS1和RS0实现选择，00H-1FH 128位</p>
+</li>
+<li><p><strong>位寻址区</strong>，提供地址读写数据 </p>
+<p>RAM中的20H-2FH，128位</p>
+</li>
+<li><p><strong>数据缓存区</strong></p>
+</li>
+</ul>
+<h4 id="特殊功能寄存器SFR"><a href="#特殊功能寄存器SFR" class="headerlink" title="特殊功能寄存器SFR"></a>特殊功能寄存器SFR</h4><p>包括51中有特殊功能的寄存器，如ACC、PSW、P0-P3等</p>
+<p><u><strong>不包括PC</strong></u></p>
+<h2 id="时序"><a href="#时序" class="headerlink" title="时序"></a>时序</h2><h3 id="时钟周期（振荡周期）"><a href="#时钟周期（振荡周期）" class="headerlink" title="时钟周期（振荡周期）"></a>时钟周期（振荡周期）</h3><p>也叫振荡周期，<strong>为振荡器频率的倒数</strong>，是时序中的<strong>最小单位</strong></p>
+<h3 id="状态周期"><a href="#状态周期" class="headerlink" title="状态周期"></a>状态周期</h3><p>两个振荡周期，一个完成运算，一个完成传送</p>
+<h3 id="机器周期"><a href="#机器周期" class="headerlink" title="机器周期"></a>机器周期</h3><p>执行一条指令的一个阶段的时间。<strong>是单片机的基本操作周期</strong>。1个机器周期&#x3D;6个状态周期&#x3D;12个振荡周期</p>
+<h3 id="指令周期"><a href="#指令周期" class="headerlink" title="指令周期"></a>指令周期</h3><p>执行一条指令的周期，通常含有1~4个机器周期。</p>
+<p>51单片机分为单周期指令、双周期指令、四周期指令，分别对应n个机器周期。<strong>只有乘法和除法是四周砌指令。</strong></p>
+<p>因此，晶振周期为12MHz时：</p>
+<ul>
+<li>振荡周期&#x3D;1&#x2F;12us</li>
+<li>机器周期&#x3D;1us</li>
+<li>指令周期：1、2、4us</li>
+</ul>
+<h2 id="工作方式"><a href="#工作方式" class="headerlink" title="工作方式"></a>工作方式</h2><h3 id="复位方式"><a href="#复位方式" class="headerlink" title="复位方式"></a>复位方式</h3><ul>
+<li>上电复位</li>
+<li>按键复位</li>
+</ul>
+<h3 id="复位后寄存器状态"><a href="#复位后寄存器状态" class="headerlink" title="复位后寄存器状态"></a>复位后寄存器状态</h3><ul>
+<li><strong>P0~P3：0FFH（全高电平）</strong></li>
+<li><strong>PC：0000H</strong></li>
+<li><strong>SP：07H</strong></li>
+<li><strong>PSW:  00H</strong></li>
+</ul>
+<p><strong>51单片机在电复位时RAM保持不变</strong></p>
+<h3 id="低功耗模式"><a href="#低功耗模式" class="headerlink" title="低功耗模式"></a>低功耗模式</h3><ul>
+<li>休眠模式：只有外部中断工作</li>
+<li>空闲模式（待机）：只有CPU停止工作</li>
+</ul>
+<h2 id="错题"><a href="#错题" class="headerlink" title="错题"></a>错题</h2><img src="/images/loading.png" data-original="/2022/11/28/%E5%8D%95%E7%89%87%E6%9C%BA%E5%A4%8D%E4%B9%A0/1.jpg" class title="This is an image"> 
+
+
+
+<img src="/images/loading.png" data-original="/2022/11/28/%E5%8D%95%E7%89%87%E6%9C%BA%E5%A4%8D%E4%B9%A0/2.jpg" class title="This is an image"> 
+
+
+
+<img src="/images/loading.png" data-original="/2022/11/28/%E5%8D%95%E7%89%87%E6%9C%BA%E5%A4%8D%E4%B9%A0/7.jpg" class title="This is an image"> 
+
+<p><strong><u>由于RAM片内外访问指令一个是MOV一个是MOVX，因此其地址可以重叠。外部地址总线16位对应64KB，而内部地址可以与其重合，因此RAM最大总量是大于64KB的</u></strong></p>
+<h1 id="51指令系统"><a href="#51指令系统" class="headerlink" title="51指令系统"></a>51指令系统</h1><p><a target="_blank" rel="noopener" href="https://dhkkk.gitee.io/2022/10/14/51%E5%8D%95%E7%89%87%E6%9C%BA%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80/">51单片机汇编指令查询 | 小董的BLOG (gitee.io)</a></p>
+<h2 id="题-1"><a href="#题-1" class="headerlink" title="题"></a>题</h2><img src="/images/loading.png" data-original="/2022/11/28/%E5%8D%95%E7%89%87%E6%9C%BA%E5%A4%8D%E4%B9%A0/3.jpg" class title="This is an image"> 
+
+
+
+<img src="/images/loading.png" data-original="/2022/11/28/%E5%8D%95%E7%89%87%E6%9C%BA%E5%A4%8D%E4%B9%A0/4.jpg" class title="This is an image"> 
+
+<p><strong>一般只有A能参与这些逻辑运算</strong></p>
+<img src="/images/loading.png" data-original="/2022/11/28/%E5%8D%95%E7%89%87%E6%9C%BA%E5%A4%8D%E4%B9%A0/5.jpg" class title="This is an image"> 
+
+<p><strong>经典</strong></p>
+<img src="/images/loading.png" data-original="/2022/11/28/%E5%8D%95%E7%89%87%E6%9C%BA%E5%A4%8D%E4%B9%A0/6.jpg" class title="This is an image"> 
+
+<p><strong>规定</strong></p>
+<h1 id="中断"><a href="#中断" class="headerlink" title="中断"></a>中断</h1><h2 id="中断请求标志寄存器"><a href="#中断请求标志寄存器" class="headerlink" title="中断请求标志寄存器"></a>中断请求标志寄存器</h2><h3 id="定时器-x2F-计数器控制寄存器TCON"><a href="#定时器-x2F-计数器控制寄存器TCON" class="headerlink" title="定时器&#x2F;计数器控制寄存器TCON"></a>定时器&#x2F;计数器控制寄存器TCON</h3><img src="/images/loading.png" data-original="/2022/11/28/%E5%8D%95%E7%89%87%E6%9C%BA%E5%A4%8D%E4%B9%A0/tcon.jpg" class title="This is an image"> 
+
+<ul>
+<li>IT 0&#x2F;1:外部中断触发方式，0低电平触发，1下降沿触发</li>
+<li>IE 0&#x2F;1:中断请求标志位，触发中断后硬件自动清零</li>
+<li>TF 0&#x2F;1:定时器&#x2F;计数器溢出中断标志位，触发中断后自动清零</li>
+<li>TR 0&#x2F;1:启停定时器</li>
+</ul>
+<p>一般就只需设置IT和TR</p>
+<h3 id="串行口控制寄存器SCON"><a href="#串行口控制寄存器SCON" class="headerlink" title="串行口控制寄存器SCON"></a>串行口控制寄存器SCON</h3><img src="/images/loading.png" data-original="/2022/11/28/%E5%8D%95%E7%89%87%E6%9C%BA%E5%A4%8D%E4%B9%A0/scon.jpg" class title="This is an image"> 
+
+<ul>
+<li>TI:发送中断标志位，每发送完一帧数据后硬件会对其置1，<strong>需用户自行软件清零！</strong></li>
+<li>RI:接收中断标志位，规则同上。</li>
+</ul>
+<h3 id="中断允许寄存器IE"><a href="#中断允许寄存器IE" class="headerlink" title="中断允许寄存器IE"></a>中断允许寄存器IE</h3><img src="/images/loading.png" data-original="/2022/11/28/%E5%8D%95%E7%89%87%E6%9C%BA%E5%A4%8D%E4%B9%A0/ie.jpg" class title="This is an image"> 
+
+<ul>
+<li>EA：总中断允许位</li>
+<li>ES：串口中断允许位</li>
+<li>ET：定时器中断允许位</li>
+<li>EX：外部中断允许位</li>
+</ul>
+<p>都是置1允许</p>
+<p>若要使用某个中断，必须先开启中断允许位，复位后清零</p>
+<h3 id="总结：-1"><a href="#总结：-1" class="headerlink" title="总结："></a>总结：</h3><ul>
+<li>I开头为TCON寄存器，控制<strong>定时器</strong>中断触发的方法和标志位</li>
+<li>RI和TI为SCON寄存器，控制<strong>串口</strong>相关</li>
+<li>E开头为中断允许寄存器IE</li>
+</ul>
+<h2 id="中断优先级"><a href="#中断优先级" class="headerlink" title="中断优先级"></a>中断优先级</h2><p>由中断优先级寄存器IP控制</p>
+<img src="/images/loading.png" data-original="/2022/11/28/%E5%8D%95%E7%89%87%E6%9C%BA%E5%A4%8D%E4%B9%A0/ip.jpg" class title="This is an image"> 
+
+<ul>
+<li>PX:外部中断优先级设置</li>
+<li>PT:定时器中断优先级设置</li>
+<li>PS:串口中断优先级设置</li>
+</ul>
+<h2 id="中断响应过程"><a href="#中断响应过程" class="headerlink" title="中断响应过程"></a>中断响应过程</h2><h3 id="中断请求"><a href="#中断请求" class="headerlink" title="中断请求"></a>中断请求</h3><p>硬件完成，请求完成后对应标志位置1</p>
+<h3 id="中断查询"><a href="#中断查询" class="headerlink" title="中断查询"></a>中断查询</h3><p>CPU检测TCON和SCON中各标志位状态，确定是哪个中断</p>
+<h3 id="中断响应"><a href="#中断响应" class="headerlink" title="中断响应"></a>中断响应</h3><p>响应条件：</p>
+<ul>
+<li><strong>EA使能</strong></li>
+<li><strong>该中断允许位也使能</strong></li>
+<li>有中断请求</li>
+<li>无同级或高级中断正在运行</li>
+</ul>
+<h3 id="中断处理"><a href="#中断处理" class="headerlink" title="中断处理"></a>中断处理</h3><p>中断服务程序</p>
+<h3 id="中断返回"><a href="#中断返回" class="headerlink" title="中断返回"></a>中断返回</h3><p>复位置位的标志位，重新执行原程序（PC被弹出堆栈）</p>
+<h2 id="操作流程"><a href="#操作流程" class="headerlink" title="操作流程"></a>操作流程</h2><ul>
+<li>打开对应中断允许位</li>
+<li>设置触发方式</li>
+<li>开启总中断允许</li>
+<li>编写服务函数</li>
+</ul>
+<h2 id="题-2"><a href="#题-2" class="headerlink" title="题"></a>题</h2><img src="/images/loading.png" data-original="/2022/11/28/%E5%8D%95%E7%89%87%E6%9C%BA%E5%A4%8D%E4%B9%A0/zd1.jpg" class title="This is an image"> 
+
+<h1 id="定时器-x2F-计数器"><a href="#定时器-x2F-计数器" class="headerlink" title="定时器&#x2F;计数器"></a>定时器&#x2F;计数器</h1><h2 id="基本结构"><a href="#基本结构" class="headerlink" title="基本结构"></a>基本结构</h2><p>T1、T2分别由两个8位特殊功能寄存器TH和TL组成。当它对外部事件进行计数时，作为计数器使用；当对内部固<strong>定频率的机器周期进行计数时</strong>，便可以达到定时的目的。</p>
+<h2 id="两种工作模式"><a href="#两种工作模式" class="headerlink" title="两种工作模式"></a>两种工作模式</h2><ul>
+<li><p>计数器工作模式</p>
+<p>对外部事件进行计数，计数脉冲来自P3中的对应引脚。</p>
+<p>下降沿触发</p>
+<p><strong>最高频率为振荡频率的1&#x2F;24，因为识别下降沿需要2个机器周期，即24个振荡周期</strong></p>
+</li>
+<li><p>定时器工作模式</p>
+<p>计数脉冲为内部时钟脉冲，也就是每个机器周期+1，<strong>因此计数频率为振荡频率的1&#x2F;12</strong>，得到的时间：定时器计数值*机器周期时间</p>
+</li>
+</ul>
+<p>当设置好定时器后，定时器就将独立工作，不再占用CPU，只有溢出时才会申请中断。</p>
+<h2 id="控制寄存器"><a href="#控制寄存器" class="headerlink" title="控制寄存器"></a>控制寄存器</h2><h3 id="工作模式寄存器TMOD"><a href="#工作模式寄存器TMOD" class="headerlink" title="工作模式寄存器TMOD"></a>工作模式寄存器TMOD</h3><img src="/images/loading.png" data-original="/2022/11/28/%E5%8D%95%E7%89%87%E6%9C%BA%E5%A4%8D%E4%B9%A0/tmod.jpg" class title="This is an image"> 
+
+<ul>
+<li>GATE：门控位，使用外部中断引脚的高电平来启动定时器（前提是该定时器已被置位运行）</li>
+<li>C&#x2F;(&#x2F;T)：1为计数器模式，0为定时器模式</li>
+<li>M1，M0：同时控制定时器的工作模式，同PSW中的RS用法</li>
+</ul>
+<h3 id="控制寄存器TCON"><a href="#控制寄存器TCON" class="headerlink" title="控制寄存器TCON"></a>控制寄存器TCON</h3><p>上一节中断中已讲过，控制定时器的开启。</p>
+<h2 id="定时器的工作方式"><a href="#定时器的工作方式" class="headerlink" title="定时器的工作方式"></a>定时器的工作方式</h2><h3 id="方式0"><a href="#方式0" class="headerlink" title="方式0"></a>方式0</h3><img src="/images/loading.png" data-original="/2022/11/28/%E5%8D%95%E7%89%87%E6%9C%BA%E5%A4%8D%E4%B9%A0/mod0.jpg" class title="This is an image"> 
+
+<p>易得其定时时间为：(2^13 - 初值)*机器周期</p>
+<p>计算后的值低5位赋给TL，高8位赋给TH</p>
+<h3 id="方式1"><a href="#方式1" class="headerlink" title="方式1"></a>方式1</h3><p>16位计数器，其余与方式0一样。</p>
+<h3 id="方式2"><a href="#方式2" class="headerlink" title="方式2"></a>方式2</h3><p>方式2为8位定时器</p>
+<ul>
+<li>TL用作定时，TH用于保存初值。当TL溢出后，中断标志置位，<strong>同时自动将TH中的值重新装载进TL</strong>，无需用户再手动重新装入初值。</li>
+</ul>
+<p>更加精准，但计时范围小。</p>
+<h3 id="方式3"><a href="#方式3" class="headerlink" title="方式3"></a>方式3</h3><ul>
+<li>只有T0能被设置为模式3，T1若为模式3，则停止计数，保存原样。</li>
+</ul>
+<h4 id="T0为模式3时"><a href="#T0为模式3时" class="headerlink" title="T0为模式3时"></a>T0为模式3时</h4><p>TH和TL分别单独工作</p>
+<ul>
+<li>TL：使用T0的状态控制位，同方式2，但是溢出后需用户手动装入初值</li>
+<li>TH：<strong>被固定为一个内部定时器</strong>，受T1控制位的TR1控制启停，同上占用T1的中断请求TF1</li>
+</ul>
+<h4 id="T0为模式3时，T1的设置"><a href="#T0为模式3时，T1的设置" class="headerlink" title="T0为模式3时，T1的设置"></a>T0为模式3时，T1的设置</h4><p>T1仍可设置为方式0、1、2，但由于中断被占用，只能将输出送往串口</p>
+<h2 id="使用流程"><a href="#使用流程" class="headerlink" title="使用流程"></a>使用流程</h2><ul>
+<li><p>设置模式TMOD</p>
+</li>
+<li><p>赋初值TL、TH</p>
+</li>
+<li><p>开启中断ET、EA</p>
+</li>
+<li><p>开启定时器TR</p>
+</li>
+</ul>
+<h1 id="串口通信"><a href="#串口通信" class="headerlink" title="串口通信"></a>串口通信</h1><p>串行通信：数据的各位在同一根数据线上逐位发送、接收。</p>
+<p>串行通信按同步方式分为异步通信和同步通信</p>
+<h2 id="同步通信"><a href="#同步通信" class="headerlink" title="同步通信"></a>同步通信</h2><p>数据传输速率高，但是要求发送时钟和接收时钟严格同步</p>
+<h2 id="异步通信"><a href="#异步通信" class="headerlink" title="异步通信"></a>异步通信</h2><p>数据组成数据帧方式，收、发端相互独立、互不同步，只需规定收发数据的帧格式即可相互识别。</p>
+<h3 id="数据帧格式"><a href="#数据帧格式" class="headerlink" title="数据帧格式"></a>数据帧格式</h3><ul>
+<li>起始位：低电平有效</li>
+<li>数据位：5~8位</li>
+<li>奇偶校验位</li>
+<li>停止位：高电平有效</li>
+</ul>
+<h3 id="波特率"><a href="#波特率" class="headerlink" title="波特率"></a>波特率</h3><p>每秒传输二进制数码的位数，每位的传输时间为1&#x2F;波特率</p>
+<h2 id="51单片机的串口通信"><a href="#51单片机的串口通信" class="headerlink" title="51单片机的串口通信"></a>51单片机的串口通信</h2><p>51内部有一个可编程全双工串口。</p>
+<h3 id="串口相关寄存器"><a href="#串口相关寄存器" class="headerlink" title="串口相关寄存器"></a>串口相关寄存器</h3><h4 id="串行数据缓冲器SBUF"><a href="#串行数据缓冲器SBUF" class="headerlink" title="串行数据缓冲器SBUF"></a>串行数据缓冲器SBUF</h4><p>包括发送和接收寄存器，但在逻辑上只有一个SBUF，在使用时可用作发送和接收。（物理上有两个完全独立的SBUF，但是他们地址是一样的）</p>
+<h4 id="串行控制寄存器SCON"><a href="#串行控制寄存器SCON" class="headerlink" title="串行控制寄存器SCON"></a>串行控制寄存器SCON</h4><img src="/images/loading.png" data-original="/2022/11/28/%E5%8D%95%E7%89%87%E6%9C%BA%E5%A4%8D%E4%B9%A0/scon2.jpg" class title="This is an image"> 
+
+<ul>
+<li><p>SM0、1工作方式选择位</p>
+<img src="/images/loading.png" data-original="/2022/11/28/%E5%8D%95%E7%89%87%E6%9C%BA%E5%A4%8D%E4%B9%A0/smod.jpg" class title="This is an image"> 
+</li>
+<li><p>SM2:多机通信控制位</p>
+</li>
+<li><p>REN：<strong>允许接收控制位</strong></p>
+</li>
+<li><p>TB8：方式2、3的<strong>发送</strong>第九位</p>
+</li>
+<li><p>RB8：方式2、3的接收第九位</p>
+</li>
+</ul>
+<h4 id="电源控制寄存器PCON"><a href="#电源控制寄存器PCON" class="headerlink" title="电源控制寄存器PCON"></a>电源控制寄存器PCON</h4><p>其中第七位SMOD为1波特率加倍</p>
+<h2 id="基础流程"><a href="#基础流程" class="headerlink" title="基础流程"></a>基础流程</h2><ul>
+<li><strong><u>配置SCON</u></strong></li>
+<li><strong><u>数据送往SBUF</u></strong></li>
+<li><strong><u>发送、接收数据</u></strong></li>
+<li><strong><u>中断置位</u></strong></li>
+</ul>
+<h2 id="题-3"><a href="#题-3" class="headerlink" title="题"></a>题</h2><img src="/images/loading.png" data-original="/2022/11/28/%E5%8D%95%E7%89%87%E6%9C%BA%E5%A4%8D%E4%B9%A0/8.jpg" class title="This is an image"> 
+
+<h1 id="常用的一些寄存器"><a href="#常用的一些寄存器" class="headerlink" title="常用的一些寄存器"></a>常用的一些寄存器</h1><h2 id="片内特殊功能寄存器SFR"><a href="#片内特殊功能寄存器SFR" class="headerlink" title="片内特殊功能寄存器SFR"></a>片内特殊功能寄存器SFR</h2><img src="/images/loading.png" data-original="/2022/11/28/%E5%8D%95%E7%89%87%E6%9C%BA%E5%A4%8D%E4%B9%A0/sfr.jpg" class title="This is an image"> 
+
+<p>大多数特殊寄存器都在这里，<strong>但不包括PC！！</strong></p>
+<h2 id="程序状态寄存器PSW"><a href="#程序状态寄存器PSW" class="headerlink" title="程序状态寄存器PSW"></a>程序状态寄存器PSW</h2><p>用于表示运算结果的状态</p>
+<table>
+<thead>
+<tr>
+<th align="center">位</th>
+<th align="center">7</th>
+<th align="center">6</th>
+<th align="center">5</th>
+<th align="center">4</th>
+<th align="center">3</th>
+<th align="center">2</th>
+<th align="center">1</th>
+<th align="center">0</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">位名</td>
+<td align="center">Cy</td>
+<td align="center">AC</td>
+<td align="center">F0</td>
+<td align="center">RS1</td>
+<td align="center">RS0</td>
+<td align="center">OV</td>
+<td align="center">F1</td>
+<td align="center">P</td>
+</tr>
+<tr>
+<td align="center">作用</td>
+<td align="center">进位&#x2F;借位</td>
+<td align="center">辅助进位</td>
+<td align="center">自定义</td>
+<td align="center">寄存器选择</td>
+<td align="center">寄存器选择</td>
+<td align="center">溢出</td>
+<td align="center">自定义</td>
+<td align="center">奇偶效验</td>
+</tr>
+</tbody></table>
+<h2 id="中断允许寄存器IE（管理中断允许）E开头"><a href="#中断允许寄存器IE（管理中断允许）E开头" class="headerlink" title="中断允许寄存器IE（管理中断允许）E开头"></a>中断允许寄存器IE（管理中断允许）E开头</h2><p>用于管理所有中断</p>
+<img src="/images/loading.png" data-original="/2022/11/28/%E5%8D%95%E7%89%87%E6%9C%BA%E5%A4%8D%E4%B9%A0/ie.jpg" class title="This is an image"> 
+
+<h2 id="中断优先级寄存器IP（管理中断优先级）P开头"><a href="#中断优先级寄存器IP（管理中断优先级）P开头" class="headerlink" title="中断优先级寄存器IP（管理中断优先级）P开头"></a>中断优先级寄存器IP（管理中断优先级）P开头</h2><img src="/images/loading.png" data-original="/2022/11/28/%E5%8D%95%E7%89%87%E6%9C%BA%E5%A4%8D%E4%B9%A0/ip.jpg" class title="This is an image"> 
+
+<p>外部中断2位，定时器2位，串口1位，共5位</p>
+<h2 id="定时器工作模式寄存器TMOD（管理定时器工作模式）"><a href="#定时器工作模式寄存器TMOD（管理定时器工作模式）" class="headerlink" title="定时器工作模式寄存器TMOD（管理定时器工作模式）"></a>定时器工作模式寄存器TMOD（管理定时器工作模式）</h2><p>8位，下4位控制T0，上4位控制T1</p>
+<h2 id="定时器中断控制寄存器TCON（管理定时器启动、定时器和外部中断的中断标志位）"><a href="#定时器中断控制寄存器TCON（管理定时器启动、定时器和外部中断的中断标志位）" class="headerlink" title="定时器中断控制寄存器TCON（管理定时器启动、定时器和外部中断的中断标志位）"></a>定时器中断控制寄存器TCON（管理定时器启动、定时器和外部中断的中断标志位）</h2><img src="/images/loading.png" data-original="/2022/11/28/%E5%8D%95%E7%89%87%E6%9C%BA%E5%A4%8D%E4%B9%A0/tcon.jpg" class title="This is an image"> 
+
+<p>其中IT和IE为控制外部中断的位</p>
+<p>需要操作的位只有IT和TR，其他都会自动复位</p>
+<h2 id="串行控制寄存器SCON（管理串口中断位和串口配置）"><a href="#串行控制寄存器SCON（管理串口中断位和串口配置）" class="headerlink" title="串行控制寄存器SCON（管理串口中断位和串口配置）"></a>串行控制寄存器SCON（管理串口中断位和串口配置）</h2><img src="/images/loading.png" data-original="/2022/11/28/%E5%8D%95%E7%89%87%E6%9C%BA%E5%A4%8D%E4%B9%A0/scon2.jpg" class title="This is an image"> 
+
+<h2 id="电源控制寄存器PCON（波特率翻倍）"><a href="#电源控制寄存器PCON（波特率翻倍）" class="headerlink" title="电源控制寄存器PCON（波特率翻倍）"></a>电源控制寄存器PCON（波特率翻倍）</h2><p>仅串口中需使用其第七位翻倍波特率</p>
+<h1 id="题-4"><a href="#题-4" class="headerlink" title="题"></a>题</h1><ul>
+<li><p>堆栈的作用：保护现场和断点</p>
+</li>
+<li><p>JB为判断当前位，为1则跳转</p>
+</li>
+</ul>
+<img src="/images/loading.png" data-original="/2022/11/28/%E5%8D%95%E7%89%87%E6%9C%BA%E5%A4%8D%E4%B9%A0/wxz.jpg" class title="This is an image"> 
+
+<p>如果是A，就是直接寻址，C则为位寻址，位寻址只能操作位</p>
+<img src="/images/loading.png" data-original="/2022/11/28/%E5%8D%95%E7%89%87%E6%9C%BA%E5%A4%8D%E4%B9%A0/ct.jpg" class title="This is an image"> 
+
+<ul>
+<li>C&#x2F;(&#x2F;T)：<strong>0为定时器模式</strong></li>
+</ul>
 
       
     </div>
@@ -1446,7 +1100,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/11/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><span class="page-number current">12</span><a class="page-number" href="/page/13/">13</a><span class="space">&hellip;</span><a class="page-number" href="/page/20/">20</a><a class="extend next" rel="next" href="/page/13/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/11/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><span class="page-number current">12</span><a class="page-number" href="/page/13/">13</a><span class="space">&hellip;</span><a class="page-number" href="/page/21/">21</a><a class="extend next" rel="next" href="/page/13/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1513,7 +1167,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">58</span>
+          <span class="site-state-item-count">62</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1628,11 +1282,11 @@
         pbOptions.networks = "Wechat,QQZone,Weibo,Douban,Twitter,Facebook";
       new needShareButton('#needsharebutton-postbottom', pbOptions);
   </script>
-<script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script><script>
             window.imageLazyLoadSetting = {
                 isSPA: false,
                 preloadRatio: 1,
                 processImages: null,
             };
-        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(e.href.match(t)||e.href.match(r))&&(e.href=a.dataset.original)})});</script><script>!function(n){n.imageLazyLoadSetting.processImages=o;var e=n.imageLazyLoadSetting.isSPA,i=n.imageLazyLoadSetting.preloadRatio||1,r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]"));function o(){e&&(r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")));for(var t,a=0;a<r.length;a++)0<=(t=(t=r[a]).getBoundingClientRect()).bottom&&0<=t.left&&t.top<=(n.innerHeight*i||document.documentElement.clientHeight*i)&&function(){var t,e,n,i,o=r[a];t=o,e=function(){r=r.filter(function(t){return o!==t})},n=new Image,i=t.getAttribute("data-original"),n.onload=function(){t.src=i,e&&e()},t.src!==i&&(n.src=i)}()}o(),n.addEventListener("scroll",function(){var t,e;t=o,e=n,clearTimeout(t.tId),t.tId=setTimeout(function(){t.call(e)},500)})}(this);</script><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script></body>
+        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(e.href.match(t)||e.href.match(r))&&(e.href=a.dataset.original)})});</script><script>!function(n){n.imageLazyLoadSetting.processImages=o;var e=n.imageLazyLoadSetting.isSPA,i=n.imageLazyLoadSetting.preloadRatio||1,r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]"));function o(){e&&(r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")));for(var t,a=0;a<r.length;a++)0<=(t=(t=r[a]).getBoundingClientRect()).bottom&&0<=t.left&&t.top<=(n.innerHeight*i||document.documentElement.clientHeight*i)&&function(){var t,e,n,i,o=r[a];t=o,e=function(){r=r.filter(function(t){return o!==t})},n=new Image,i=t.getAttribute("data-original"),n.onload=function(){t.src=i,e&&e()},t.src!==i&&(n.src=i)}()}o(),n.addEventListener("scroll",function(){var t,e;t=o,e=n,clearTimeout(t.tId),t.tId=setTimeout(function(){t.call(e)},500)})}(this);</script></body>
 </html>

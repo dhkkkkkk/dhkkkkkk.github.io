@@ -22,19 +22,22 @@
     var CONFIG = {"hostname":"dhkkkkkk.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
+  <meta name="description" content="导向矢量   选定参考阵元后，后面阵元接收到的信号比参考阵元晚：$$\Delta t &#x3D; \left[0,\ \frac{\delta \cos(\theta_d)}{c},\ \frac{2\delta \cos(\theta_d)}{c},\ \cdots,\ \frac{(M-1)\delta \cos(\theta_d)}{c}\right]$$其中c为声速，δ为后续阵元相对参考">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Hello World">
-<meta property="og:url" content="https://dhkkkkkk.github.io/2025/10/05/hello-world/index.html">
+<meta property="og:title" content="麦克风阵列与延迟求和波束形成">
+<meta property="og:url" content="https://dhkkkkkk.github.io/2025/10/05/beamform/index.html">
 <meta property="og:site_name" content="小董的BLOG">
-<meta property="og:description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
+<meta property="og:description" content="导向矢量   选定参考阵元后，后面阵元接收到的信号比参考阵元晚：$$\Delta t &#x3D; \left[0,\ \frac{\delta \cos(\theta_d)}{c},\ \frac{2\delta \cos(\theta_d)}{c},\ \cdots,\ \frac{(M-1)\delta \cos(\theta_d)}{c}\right]$$其中c为声速，δ为后续阵元相对参考">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2025-10-05T06:51:09.327Z">
-<meta property="article:modified_time" content="2022-07-26T16:12:07.837Z">
+<meta property="og:image" content="https://dhkkkkkk.github.io/images/loading.png">
+<meta property="article:published_time" content="2025-10-05T07:10:49.000Z">
+<meta property="article:modified_time" content="2025-10-05T07:13:39.461Z">
 <meta property="article:author" content="dhk">
+<meta property="article:tag" content="杂项">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://dhkkkkkk.github.io/images/loading.png">
 
-<link rel="canonical" href="https://dhkkkkkk.github.io/2025/10/05/hello-world/">
+<link rel="canonical" href="https://dhkkkkkk.github.io/2025/10/05/beamform/">
 
 
 <script id="page-configurations">
@@ -60,7 +63,7 @@
   padding: 1px 4px;
 }
 </style>
-  <title>Hello World | 小董的BLOG</title>
+  <title>麦克风阵列与延迟求和波束形成 | 小董的BLOG</title>
   
 
 
@@ -198,7 +201,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2025/10/05/hello-world/">
+    <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2025/10/05/beamform/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/zoe.gif">
@@ -211,7 +214,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          Hello World
+          麦克风阵列与延迟求和波束形成
         </h1>
 
         <div class="post-meta">
@@ -222,16 +225,10 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
+              
 
-              <time title="创建时间：2025-10-05 14:51:09" itemprop="dateCreated datePublished" datetime="2025-10-05T14:51:09+08:00">2025-10-05</time>
+              <time title="创建时间：2025-10-05 15:10:49 / 修改时间：15:13:39" itemprop="dateCreated datePublished" datetime="2025-10-05T15:10:49+08:00">2025-10-05</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-07-27 00:12:07" itemprop="dateModified" datetime="2022-07-27T00:12:07+08:00">2022-07-27</time>
-              </span>
 
           
 
@@ -244,19 +241,19 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+        <h1 id="导向矢量"><a href="#导向矢量" class="headerlink" title="导向矢量"></a>导向矢量</h1><img src="/images/loading.png" data-original="/2025/10/05/beamform/1.jpg" class title="This is an image"> 
 
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+<p>选定参考阵元后，后面阵元接收到的信号比参考阵元晚：<br>$$<br>\Delta t &#x3D; \left[0,\ \frac{\delta \cos(\theta_d)}{c},\ \frac{2\delta \cos(\theta_d)}{c},\ \cdots,\ \frac{(M-1)\delta \cos(\theta_d)}{c}\right]<br>$$<br>其中c为声速，δ为后续阵元相对参考阵元的间距（针对复杂阵元δ不为定值），θ为信号入射角度，将其反应到信号的相位变化上（假设输入为单频信号）：</p>
+<p><em>对于使用减法的理解：由于后续信号接收都晚于参考信号，对于参考信号的波形，在绝对时间轴上需要<u>右移（x轴减法）</u>才会露出更早部分的信号，而在同一时刻，后续麦克风受到的波形就是包含更早部分的参考波形（不包含更新、更晚的波形）</em><br>$$<br>y(n) &#x3D; \left[ x(n),\ x(n)e^{-j2\pi f_0\frac{\delta\cos(\theta_d)}{c}},\ x(n)e^{-j2\pi f_0\frac{2\delta\cos(\theta_d)}{c}},\ \cdots,\ x(n)e^{-j2\pi f_0\frac{(M-1)\delta\cos(\theta_d)}{c}} \right]  \ &#x3D; \left[ 1,\ e^{-j2\pi f_0\frac{\delta\cos(\theta_d)}{c}},\ e^{-j2\pi f_0\frac{2\delta\cos(\theta_d)}{c}},\ \cdots,\ e^{-j2\pi f_0\frac{(M-1)\delta\cos(\theta_d)}{c}} \right]x(n) \<br>&#x3D;a(\theta_d) \cdot x(n)<br>$$<br>其中a反应了不同a阵元的空间相位差，即导向矢量，受到以下变量影响：</p>
+<ul>
+<li>阵元布置结构，影响阵元间距</li>
+<li>来波方向，影响入射角</li>
+<li>参考阵元位置，影响其他阵元计算间距，不影响阵元间相对相位差</li>
+</ul>
+<p>若多个声源从不同角度入射，则导向矢量变为一个MxN的矩阵，M为阵元个数，N为信号数量</p>
+<h2 id="利用导向矢量估计声源入射方向"><a href="#利用导向矢量估计声源入射方向" class="headerlink" title="利用导向矢量估计声源入射方向"></a>利用导向矢量估计声源入射方向</h2><p>当入射角未知时，当阵元布置和参考阵元确定时，导向矢量的形式是确定的，且只受到入射角影响，因此可以构造一个方向为α的导向矢量形式的向量（共轭转置）与输入信号做<strong>内积</strong>计算：<br>$$<br>a^H(\alpha) \cdot a(\theta_d) \cdot x(n) \&#x3D; \left[ 1 + e^{-j2\pi f_0\delta \frac{[\cos(\alpha) - \cos(\theta_d)]}{c}} + e^{-j2\pi f_0\delta \frac{2[\cos(\alpha) - \cos(\theta_d)]}{c}} + \cdots + e^{-j2\pi f_0\delta \frac{(M-1)[\cos(\alpha) - \cos(\theta_d)]}{c}} \right] \\leq M \cdot x(n)<br>$$<br>当角度重合时，内积最大</p>
+<h1 id="延迟求和"><a href="#延迟求和" class="headerlink" title="延迟求和"></a>延迟求和</h1><p>由上一章得知麦克风信号为对参考信号相位分别进行了减法的信号，因此只要对麦克风信号的相位分别进行相反的加法（加权）即可得到原始的信号波形：<br>$$<br>z(n)&#x3D;\frac{1}{M}(1,e^{j2\pi f \tau_1},e^{j2\pi f \tau_2}…) \cdot y(n)^T<br>\&#x3D; \frac{1}{M}\omega(\theta) \cdot y(n)^T<br>$$<br>因此，在进行某个方向的波束求和时，频率f为变量（f依次变化计算出每个频率上的响应）</p>
+<p>（其实原理和上一小节的估计声源方向一样）</p>
 
     </div>
 
@@ -271,6 +268,9 @@
     </div>
 
       <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%9D%82%E9%A1%B9/" rel="tag"><i class="fa fa-tag"></i># 杂项</a>
+          </div>
 
         
 
@@ -281,7 +281,10 @@
     <a href="/2024/11/13/xLSTM%E7%BB%93%E6%9E%84%E6%A2%B3%E7%90%86/" rel="prev" title="xLSTM结构梳理">
       <i class="fa fa-chevron-left"></i> xLSTM结构梳理
     </a></div>
-      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/2025/10/05/DL-base/" rel="next" title="深度学习基础杂项">
+      深度学习基础杂项 <i class="fa fa-chevron-right"></i>
+    </a></div>
     </div>
       </footer>
     
@@ -340,7 +343,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Quick-Start"><span class="nav-number">1.</span> <span class="nav-text">Quick Start</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Create-a-new-post"><span class="nav-number">1.1.</span> <span class="nav-text">Create a new post</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Run-server"><span class="nav-number">1.2.</span> <span class="nav-text">Run server</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Generate-static-files"><span class="nav-number">1.3.</span> <span class="nav-text">Generate static files</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Deploy-to-remote-sites"><span class="nav-number">1.4.</span> <span class="nav-text">Deploy to remote sites</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AF%BC%E5%90%91%E7%9F%A2%E9%87%8F"><span class="nav-number">1.</span> <span class="nav-text">导向矢量</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%A9%E7%94%A8%E5%AF%BC%E5%90%91%E7%9F%A2%E9%87%8F%E4%BC%B0%E8%AE%A1%E5%A3%B0%E6%BA%90%E5%85%A5%E5%B0%84%E6%96%B9%E5%90%91"><span class="nav-number">1.1.</span> <span class="nav-text">利用导向矢量估计声源入射方向</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%BB%B6%E8%BF%9F%E6%B1%82%E5%92%8C"><span class="nav-number">2.</span> <span class="nav-text">延迟求和</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -356,7 +359,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">58</span>
+          <span class="site-state-item-count">62</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -471,11 +474,11 @@
         pbOptions.networks = "Wechat,QQZone,Weibo,Douban,Twitter,Facebook";
       new needShareButton('#needsharebutton-postbottom', pbOptions);
   </script>
-<script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script><script>
             window.imageLazyLoadSetting = {
                 isSPA: false,
                 preloadRatio: 1,
                 processImages: null,
             };
-        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(e.href.match(t)||e.href.match(r))&&(e.href=a.dataset.original)})});</script><script>!function(n){n.imageLazyLoadSetting.processImages=o;var e=n.imageLazyLoadSetting.isSPA,i=n.imageLazyLoadSetting.preloadRatio||1,r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]"));function o(){e&&(r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")));for(var t,a=0;a<r.length;a++)0<=(t=(t=r[a]).getBoundingClientRect()).bottom&&0<=t.left&&t.top<=(n.innerHeight*i||document.documentElement.clientHeight*i)&&function(){var t,e,n,i,o=r[a];t=o,e=function(){r=r.filter(function(t){return o!==t})},n=new Image,i=t.getAttribute("data-original"),n.onload=function(){t.src=i,e&&e()},t.src!==i&&(n.src=i)}()}o(),n.addEventListener("scroll",function(){var t,e;t=o,e=n,clearTimeout(t.tId),t.tId=setTimeout(function(){t.call(e)},500)})}(this);</script><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script></body>
+        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(e.href.match(t)||e.href.match(r))&&(e.href=a.dataset.original)})});</script><script>!function(n){n.imageLazyLoadSetting.processImages=o;var e=n.imageLazyLoadSetting.isSPA,i=n.imageLazyLoadSetting.preloadRatio||1,r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]"));function o(){e&&(r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")));for(var t,a=0;a<r.length;a++)0<=(t=(t=r[a]).getBoundingClientRect()).bottom&&0<=t.left&&t.top<=(n.innerHeight*i||document.documentElement.clientHeight*i)&&function(){var t,e,n,i,o=r[a];t=o,e=function(){r=r.filter(function(t){return o!==t})},n=new Image,i=t.getAttribute("data-original"),n.onload=function(){t.src=i,e&&e()},t.src!==i&&(n.src=i)}()}o(),n.addEventListener("scroll",function(){var t,e;t=o,e=n,clearTimeout(t.tId),t.tId=setTimeout(function(){t.call(e)},500)})}(this);</script></body>
 </html>
