@@ -318,7 +318,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2025-10-05 15:14:37 / 修改时间：15:31:00" itemprop="dateCreated datePublished" datetime="2025-10-05T15:14:37+08:00">2025-10-05</time>
+              <time title="创建时间：2025-10-05 15:14:37 / 修改时间：15:41:08" itemprop="dateCreated datePublished" datetime="2025-10-05T15:14:37+08:00">2025-10-05</time>
             </span>
 
           
@@ -359,10 +359,10 @@ out^{(l)}=f(\omega x)=in^{(l+1)}</script><p>其中，l上标指网络层数，f�
 <script type="math/tex; mode=display">
 \omega _{new}= \omega - \alpha \frac{\partial L}{\partial \omega}</script><p>由链式法则可知：</p>
 <script type="math/tex; mode=display">
-\frac{\partial L}{\partial \omega} = \frac{\part L}{\part f}
-\cdot \frac{\part f}{\part (\omega x)}
-\cdot \frac{\part (\omega x)}{\part \omega}=
-\frac{\part L}{\part out^{(l)}} \cdot f' \cdot out^{(l-1)}</script><p>一般称损失函数对l层该神经元输出的偏导为<strong>误差项</strong>δ，则损失函数对该权重的偏导则为：</p>
+\frac{\partial L}{\partial \omega} = \frac{\partial L}{\partial f}
+\cdot \frac{\partial f}{\partial (\omega x)}
+\cdot \frac{\partial (\omega x)}{\partial \omega}=
+\frac{\partial L}{\partial out^{(l)}} \cdot f' \cdot out^{(l-1)}</script><p>一般称损失函数对l层该神经元输出的偏导为<strong>误差项</strong>δ，则损失函数对该权重的偏导则为：</p>
 <p>误差项  x  <strong>该神经元</strong>激活函数的<strong>梯度</strong>  x  <strong>该权重对应上一神经元</strong>的输出</p>
 <p>而误差项的计算：</p>
 <script type="math/tex; mode=display">
