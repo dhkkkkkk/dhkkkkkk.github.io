@@ -22,12 +22,12 @@
     var CONFIG = {"hostname":"dhkkkkkk.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="1、伺服系统伺服系统定义以机械参数（位移、速度、加速度、力矩等）作为**被控制量**的一种自动控制系统 一般组成   分类按控制原理分 开环 半闭环（不检测工作台信息） 全闭环  驱动方式 电气伺服 气压伺服 液压伺服  被测控制量 速度控制 位置控制 扭矩控制 同步控制  执行元件开环大多用步进电机，半闭环与闭环多用直流伺服电机  步进伺服 直流伺服 交流伺服  要求 快速性 精确性 稳定性">
+  <meta name="description" content="1、伺服系统伺服系统定义以机械参数（位移、速度、加速度、力矩等）作为被控制量的一种自动控制系统 一般组成  分类按控制原理分 开环 半闭环（不检测工作台信息） 全闭环  驱动方式 电气伺服 气压伺服 液压伺服  被测控制量 速度控制 位置控制 扭矩控制 同步控制  执行元件开环大多用步进电机，半闭环与闭环多用直流伺服电机  步进伺服 直流伺服 交流伺服  要求 快速性 精确性 稳定性  2、执行元">
 <meta property="og:type" content="article">
 <meta property="og:title" content="lzz-第三章 伺服技术(考试复习自用)">
 <meta property="og:url" content="https://dhkkkkkk.github.io/2023/05/17/lzz-%E7%AC%AC%E4%B8%89%E7%AB%A0-%E4%BC%BA%E6%9C%8D%E6%8A%80%E6%9C%AF/index.html">
 <meta property="og:site_name" content="小董的BLOG">
-<meta property="og:description" content="1、伺服系统伺服系统定义以机械参数（位移、速度、加速度、力矩等）作为**被控制量**的一种自动控制系统 一般组成   分类按控制原理分 开环 半闭环（不检测工作台信息） 全闭环  驱动方式 电气伺服 气压伺服 液压伺服  被测控制量 速度控制 位置控制 扭矩控制 同步控制  执行元件开环大多用步进电机，半闭环与闭环多用直流伺服电机  步进伺服 直流伺服 交流伺服  要求 快速性 精确性 稳定性">
+<meta property="og:description" content="1、伺服系统伺服系统定义以机械参数（位移、速度、加速度、力矩等）作为被控制量的一种自动控制系统 一般组成  分类按控制原理分 开环 半闭环（不检测工作台信息） 全闭环  驱动方式 电气伺服 气压伺服 液压伺服  被测控制量 速度控制 位置控制 扭矩控制 同步控制  执行元件开环大多用步进电机，半闭环与闭环多用直流伺服电机  步进伺服 直流伺服 交流伺服  要求 快速性 精确性 稳定性  2、执行元">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://dhkkkkkk.github.io/images/loading.png">
 <meta property="article:published_time" content="2023-05-17T14:12:51.000Z">
@@ -94,7 +94,9 @@
   </style>
 </noscript>
 
-</head>
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --></head>
 
 <body itemscope itemtype="http://schema.org/WebPage">
   <div class="container use-motion">
@@ -247,9 +249,8 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="1、伺服系统"><a href="#1、伺服系统" class="headerlink" title="1、伺服系统"></a>1、伺服系统</h1><h2 id="伺服系统定义"><a href="#伺服系统定义" class="headerlink" title="伺服系统定义"></a>伺服系统定义</h2><p>以机械参数（位移、速度、加速度、力矩等）作为**<u>被控制量</u>**的一种<u><strong>自动控制系统</strong></u></p>
+        <h1 id="1、伺服系统"><a href="#1、伺服系统" class="headerlink" title="1、伺服系统"></a>1、伺服系统</h1><h2 id="伺服系统定义"><a href="#伺服系统定义" class="headerlink" title="伺服系统定义"></a>伺服系统定义</h2><p>以机械参数（位移、速度、加速度、力矩等）作为<strong><u>被控制量</u></strong>的一种<u><strong>自动控制系统</strong></u></p>
 <h2 id="一般组成"><a href="#一般组成" class="headerlink" title="一般组成"></a>一般组成</h2><img src="/images/loading.png" data-original="/2023/05/17/lzz-%E7%AC%AC%E4%B8%89%E7%AB%A0-%E4%BC%BA%E6%9C%8D%E6%8A%80%E6%9C%AF/1.jpg" class title="伺服系统组成"> 
-
 <h2 id="分类"><a href="#分类" class="headerlink" title="分类"></a><u>分类</u></h2><h3 id="按控制原理分"><a href="#按控制原理分" class="headerlink" title="按控制原理分"></a>按控制原理分</h3><ul>
 <li>开环</li>
 <li>半闭环（不检测工作台信息）</li>
@@ -324,7 +325,7 @@
 <li><strong>快速性能好，加减速扭矩大，频率性能好</strong></li>
 <li>可靠，寿命长</li>
 </ul>
-<h1 id="3、步进电机概述"><a href="#3、步进电机概述" class="headerlink" title="3、步进电机概述"></a>3、步进电机概述</h1><p>步进电机式一种将脉冲信号转化为直线位移或角位移的数字&#x2F;模拟变换器</p>
+<h1 id="3、步进电机概述"><a href="#3、步进电机概述" class="headerlink" title="3、步进电机概述"></a>3、步进电机概述</h1><p>步进电机式一种将脉冲信号转化为直线位移或角位移的数字/模拟变换器</p>
 <h2 id="特点"><a href="#特点" class="headerlink" title="特点"></a><u>特点</u></h2><ul>
 <li><strong>输出转角与输入脉冲严格成正比，且在<u>方向上同步</u></strong></li>
 <li><strong>输出转角精度高，有步距角误差，但无累计误差</strong></li>
@@ -351,7 +352,7 @@
 <p>一拍<strong>30°</strong></p>
 <h3 id="三相-单双-六拍"><a href="#三相-单双-六拍" class="headerlink" title="三相(单双)六拍"></a>三相(单双)六拍</h3><p>A——AB——B——BC——C——CA</p>
 <ul>
-<li>单双：每拍为一相&#x2F;两相绕组交替通电</li>
+<li>单双：每拍为一相/两相绕组交替通电</li>
 <li>六拍：一个循环周期六个脉冲</li>
 </ul>
 <p>一拍<strong>15°</strong></p>
@@ -370,14 +371,14 @@
 </ul>
 <h2 id="主要性能指标"><a href="#主要性能指标" class="headerlink" title="主要性能指标"></a><u>主要性能指标</u></h2><ul>
 <li><p><strong>步距角</strong></p>
-<p><strong>我国0.36°~90°，常用15、6、3.2、1.8、1.5、0.72（k&#x3D;1）</strong></p>
+<p><strong>我国0.36°~90°，常用15、6、3.2、1.8、1.5、0.72（k=1）</strong></p>
 </li>
 <li><p><strong>静态步距误差（步距角精度）</strong></p>
 <p>步距角越小，分辨力越高</p>
 </li>
 <li><p><strong>转速</strong></p>
 <p>频率越高，转速越大</p>
-<p>步距角越大（1&#x2F;KPZ 越大），转速越大</p>
+<p>步距角越大（1/KPZ 越大），转速越大</p>
 </li>
 </ul>
 <h2 id="静态特性"><a href="#静态特性" class="headerlink" title="静态特性"></a>静态特性</h2><ul>
@@ -689,6 +690,8 @@
 
 
 
+
+  
 
   
 

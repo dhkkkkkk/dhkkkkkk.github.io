@@ -22,12 +22,12 @@
     var CONFIG = {"hostname":"dhkkkkkk.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="1、传感器概述输出信号多为易处理电信号（电压、电流、频率） 由**敏感元件、传感元件及测量转换电路**组成    例：  敏感元件：对压力敏感（可变形）的弹性敏感元件 传感元件：弹性敏感元件上粘贴的电阻应变片，将敏感元件变形量转化为电参数（电阻值变化） 测量转换电路：将传感元件电阻值变化转化、放大、显示  分类命名： 被测量+测量原理 按被测量分 位移 力、力矩 振动 加速度 温度  按测量原理">
+  <meta name="description" content="1、传感器概述输出信号多为易处理电信号（电压、电流、频率） 由敏感元件、传感元件及测量转换电路组成   例：  敏感元件：对压力敏感（可变形）的弹性敏感元件 传感元件：弹性敏感元件上粘贴的电阻应变片，将敏感元件变形量转化为电参数（电阻值变化） 测量转换电路：将传感元件电阻值变化转化、放大、显示  分类命名： 被测量+测量原理 按被测量分 位移 力、力矩 振动 加速度 温度  按测量原理 电阻 电容">
 <meta property="og:type" content="article">
 <meta property="og:title" content="lzz-第四章 传感器技术(考试复习自用)">
 <meta property="og:url" content="https://dhkkkkkk.github.io/2023/05/18/lzz-%E7%AC%AC%E5%9B%9B%E7%AB%A0-%E4%BC%A0%E6%84%9F%E5%99%A8%E6%8A%80%E6%9C%AF/index.html">
 <meta property="og:site_name" content="小董的BLOG">
-<meta property="og:description" content="1、传感器概述输出信号多为易处理电信号（电压、电流、频率） 由**敏感元件、传感元件及测量转换电路**组成    例：  敏感元件：对压力敏感（可变形）的弹性敏感元件 传感元件：弹性敏感元件上粘贴的电阻应变片，将敏感元件变形量转化为电参数（电阻值变化） 测量转换电路：将传感元件电阻值变化转化、放大、显示  分类命名： 被测量+测量原理 按被测量分 位移 力、力矩 振动 加速度 温度  按测量原理">
+<meta property="og:description" content="1、传感器概述输出信号多为易处理电信号（电压、电流、频率） 由敏感元件、传感元件及测量转换电路组成   例：  敏感元件：对压力敏感（可变形）的弹性敏感元件 传感元件：弹性敏感元件上粘贴的电阻应变片，将敏感元件变形量转化为电参数（电阻值变化） 测量转换电路：将传感元件电阻值变化转化、放大、显示  分类命名： 被测量+测量原理 按被测量分 位移 力、力矩 振动 加速度 温度  按测量原理 电阻 电容">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://dhkkkkkk.github.io/images/loading.png">
 <meta property="og:image" content="https://dhkkkkkk.github.io/images/loading.png">
@@ -96,7 +96,9 @@
   </style>
 </noscript>
 
-</head>
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --></head>
 
 <body itemscope itemtype="http://schema.org/WebPage">
   <div class="container use-motion">
@@ -250,9 +252,8 @@
 
       
         <h1 id="1、传感器概述"><a href="#1、传感器概述" class="headerlink" title="1、传感器概述"></a>1、传感器概述</h1><p>输出信号多为易处理电信号（电压、电流、频率）</p>
-<p>由**<u>敏感元件、传感元件及测量转换电路</u>**组成</p>
+<p>由<strong><u>敏感元件、传感元件及测量转换电路</u></strong>组成</p>
 <img src="/images/loading.png" data-original="/2023/05/18/lzz-%E7%AC%AC%E5%9B%9B%E7%AB%A0-%E4%BC%A0%E6%84%9F%E5%99%A8%E6%8A%80%E6%9C%AF/1.jpg" class title="This is an image"> 
-
 <p>例：</p>
 <ul>
 <li>敏感元件：对<strong>压力敏感</strong>（可变形）的弹性敏感元件</li>
@@ -287,10 +288,11 @@
 <p>复位距离-检测距离</p>
 </li>
 <li><p>响应时间</p>
-<img src="/images/loading.png" data-original="/2023/05/18/lzz-%E7%AC%AC%E5%9B%9B%E7%AB%A0-%E4%BC%A0%E6%84%9F%E5%99%A8%E6%8A%80%E6%9C%AF/2.jpg" class title="This is an image"></li>
+<img src="/images/loading.png" data-original="/2023/05/18/lzz-%E7%AC%AC%E5%9B%9B%E7%AB%A0-%E4%BC%A0%E6%84%9F%E5%99%A8%E6%8A%80%E6%9C%AF/2.jpg" class title="This is an image"> 
+</li>
 </ul>
 <h2 id="涡流式接近开关"><a href="#涡流式接近开关" class="headerlink" title="涡流式接近开关"></a><u>涡流式接近开关</u></h2><p>由LC高频振荡器和放大处理电路组成</p>
-<h3 id="原理："><a href="#原理：" class="headerlink" title="原理："></a>原理：</h3><p>振荡感应头产生电磁场，<strong>作用于金属物体</strong>后在其内部产生涡流，涡流产生磁场反作用于振荡电路使振荡能力衰减，进而控制接近开关的**<u>关断和导通</u>**</p>
+<h3 id="原理："><a href="#原理：" class="headerlink" title="原理："></a>原理：</h3><p>振荡感应头产生电磁场，<strong>作用于金属物体</strong>后在其内部产生涡流，涡流产生磁场反作用于振荡电路使振荡能力衰减，进而控制接近开关的<strong><u>关断和导通</u></strong></p>
 <h3 id="特点："><a href="#特点：" class="headerlink" title="特点："></a>特点：</h3><p>不与被测物体接触，提高了检测的可靠性与使用寿命</p>
 <h2 id="电容式接近开关"><a href="#电容式接近开关" class="headerlink" title="电容式接近开关"></a><u>电容式接近开关</u></h2><p><strong>测量头与被测物形成电容，接入后级RC振荡器，当电容量增加时，振荡器开始振荡，后级电路将其转化为开关信号</strong>（不止可以检测金属）</p>
 <h2 id="霍尔接近开关"><a href="#霍尔接近开关" class="headerlink" title="霍尔接近开关"></a>霍尔接近开关</h2><p>检测磁性物体的靠近，灵敏度高，能感受到很小的磁场变化</p>
@@ -328,7 +330,6 @@
 <li>螺线管式</li>
 </ul>
 <img src="/images/loading.png" data-original="/2023/05/18/lzz-%E7%AC%AC%E5%9B%9B%E7%AB%A0-%E4%BC%A0%E6%84%9F%E5%99%A8%E6%8A%80%E6%9C%AF/3.jpg" class title="This is an image"> 
-
 <h3 id="应用"><a href="#应用" class="headerlink" title="应用"></a>应用</h3><ul>
 <li>位移、厚度、振动</li>
 <li>表面温度、电解质浓度、材质</li>
@@ -592,6 +593,8 @@
 
 
 
+
+  
 
   
 

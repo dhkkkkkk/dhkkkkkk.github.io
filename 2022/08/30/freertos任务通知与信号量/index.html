@@ -96,7 +96,9 @@
   </style>
 </noscript>
 
-</head>
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --></head>
 
 <body itemscope itemtype="http://schema.org/WebPage">
   <div class="container use-motion">
@@ -262,153 +264,179 @@
 <p>使用xQueueCreate()内核函数来创建一个队列。队列的1存储空间从FreeRTOS heap中分配。在使用xQueueCreate()创建队列时，如果FreeRTOS heap中没有足够的存储空间分配给当前队列，则函数返回NULL。如果创建成功，则返回队列的句柄(QueueHandle_t类型)</p>
 </li>
 </ul>
+<div class="table-container">
 <table>
 <thead>
 <tr>
-<th align="center">函数</th>
-<th align="center">QueueHandle_t xQueueCreate( UBaseType_t uxQueueLength, UBaseType_t uxItemSize );</th>
+<th style="text-align:center">函数</th>
+<th style="text-align:center">QueueHandle_t xQueueCreate( UBaseType_t uxQueueLength, UBaseType_t uxItemSize );</th>
 </tr>
 </thead>
-<tbody><tr>
-<td align="center">参数</td>
-<td align="center"><strong>uxQueueLength</strong>：指定队列的长度，即最多可以存放的元素个数<br><strong>uxItemSize</strong>：队列中存储的元素的大小（占用的字节数）</td>
+<tbody>
+<tr>
+<td style="text-align:center">参数</td>
+<td style="text-align:center"><strong>uxQueueLength</strong>：指定队列的长度，即最多可以存放的元素个数<br><strong>uxItemSize</strong>：队列中存储的元素的大小（占用的字节数）</td>
 </tr>
 <tr>
-<td align="center">返回值</td>
-<td align="center">返回NULL代表创建失败，没有足够的堆空间来创建当前队列；创建成功则返回队列的句柄</td>
+<td style="text-align:center">返回值</td>
+<td style="text-align:center">返回NULL代表创建失败，没有足够的堆空间来创建当前队列；创建成功则返回队列的句柄</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <ul>
 <li><p>元素入队</p>
 <p>使用xQueueSendToBack()函数来向队尾存放一个元素，使用xQueueSend()函数来向队首存放一个元素，两个函数用法一样</p>
 </li>
 </ul>
+<div class="table-container">
 <table>
 <thead>
 <tr>
-<th align="center">函数</th>
-<th align="center">BaseType_t xQueueSendToBack( QueueHandle_t xQueue,<br>                                                                        const void * pvItemToQueue,<br>                                                       TickType_t xTicksToWait );</th>
+<th style="text-align:center">函数</th>
+<th style="text-align:center">BaseType_t xQueueSendToBack( QueueHandle_t xQueue,<br>                                                                        const void * pvItemToQueue,<br>                                                       TickType_t xTicksToWait );</th>
 </tr>
 </thead>
-<tbody><tr>
-<td align="center">参数</td>
-<td align="center"><strong>xQueue</strong>：目标队列的句柄<br><strong>pvItemToQueue</strong>：入队元素的指针。队列将存储此指针指向的数据的备份<br><strong>xTicksToWait</strong>：指定等待队列有空间可以容纳新元素入队的最长等待（阻塞）时间</td>
+<tbody>
+<tr>
+<td style="text-align:center">参数</td>
+<td style="text-align:center"><strong>xQueue</strong>：目标队列的句柄<br><strong>pvItemToQueue</strong>：入队元素的指针。队列将存储此指针指向的数据的备份<br><strong>xTicksToWait</strong>：指定等待队列有空间可以容纳新元素入队的最长等待（阻塞）时间</td>
 </tr>
 <tr>
-<td align="center">返回值</td>
-<td align="center">当元素成功入队时返回pdPASS，因为队列满而无法入队时返回errQUEUE_FULL（超时后）</td>
+<td style="text-align:center">返回值</td>
+<td style="text-align:center">当元素成功入队时返回pdPASS，因为队列满而无法入队时返回errQUEUE_FULL（超时后）</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <ul>
 <li><p>查询队列元素个数</p>
 <p>使用内核函数uxQueueMessagesWaiting()来获取队列中有多少个元素</p>
 </li>
 </ul>
+<div class="table-container">
 <table>
 <thead>
 <tr>
-<th align="center">函数</th>
-<th align="center">UBaseType_t uxQueueMessagesWaiting( QueueHandle_t xQueue );</th>
+<th style="text-align:center">函数</th>
+<th style="text-align:center">UBaseType_t uxQueueMessagesWaiting( QueueHandle_t xQueue );</th>
 </tr>
 </thead>
-<tbody><tr>
-<td align="center">参数</td>
-<td align="center"><strong>xQueue</strong>：队列的句柄</td>
+<tbody>
+<tr>
+<td style="text-align:center">参数</td>
+<td style="text-align:center"><strong>xQueue</strong>：队列的句柄</td>
 </tr>
 <tr>
-<td align="center">返回值</td>
-<td align="center">队列中的元素个数，返回0代表队列为空</td>
+<td style="text-align:center">返回值</td>
+<td style="text-align:center">队列中的元素个数，返回0代表队列为空</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <p>按键例程：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">task1</span><span class="params">(<span class="type">void</span> <span class="type">const</span> * argument)</span> <span class="comment">//低优先级任务</span></span><br><span class="line">&#123;</span><br><span class="line">  BaseType_t result; </span><br><span class="line">  <span class="type">uint8_t</span> dat[]=<span class="string">&quot;666\r\n&quot;</span>;</span><br><span class="line">  <span class="comment">/* Infinite loop */</span></span><br><span class="line">  <span class="keyword">for</span>(;;)</span><br><span class="line">  &#123;</span><br><span class="line">	<span class="keyword">if</span>(HAL_GPIO_ReadPin(key_1_GPIO_Port,key_1_Pin == GPIO_PIN_SET)) <span class="comment">//检测按键</span></span><br><span class="line">	&#123;</span><br><span class="line">		result= xQueueSendToBack(myQueue01Handle,dat,portMAX_DELAY); <span class="comment">//将元素dat放至队尾</span></span><br><span class="line">		<span class="keyword">if</span>(result==pdPASS) <span class="comment">//放置成功返回pdPASS</span></span><br><span class="line">		&#123;</span><br><span class="line">			HAL_GPIO_WritePin(led_g_GPIO_Port,led_g_Pin,GPIO_PIN_RESET);<span class="comment">//点亮绿灯</span></span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">   	osDelay(<span class="number">5</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125; </span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">task2</span><span class="params">(<span class="type">void</span> <span class="type">const</span> * argument)</span> <span class="comment">//高优先级任务</span></span><br><span class="line">&#123;</span><br><span class="line">  BaseType_t result;</span><br><span class="line">  <span class="type">uint8_t</span> datbuf[<span class="number">10</span>]; <span class="comment">//随便定义个缓冲区就可以，用于存放取出的元素</span></span><br><span class="line">  <span class="comment">/* Infinite loop */</span></span><br><span class="line">  <span class="keyword">for</span>(;;)</span><br><span class="line">  &#123;</span><br><span class="line">	result=xQueueReceive(myQueue01Handle,datbuf,portMAX_DELAY);<span class="comment">//取出元素放入datbuf中</span></span><br><span class="line">	<span class="keyword">if</span>(result==pdPASS)<span class="comment">//读取成功返回pdPASS</span></span><br><span class="line">	&#123;</span><br><span class="line">		HAL_GPIO_WritePin(led_r_GPIO_Port,led_r_Pin,GPIO_PIN_RESET);<span class="comment">//点亮红灯</span></span><br><span class="line">	&#125;</span><br><span class="line">	osDelay(<span class="number">10</span>);</span><br><span class="line">  &#125;    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <h1 id="2、任务通知"><a href="#2、任务通知" class="headerlink" title="2、任务通知"></a>2、任务通知</h1><p><em>在网上找了很多博客对于任务通知介绍的函数都不一样，我自己也实验了很多，就把我试验过的可行的函数都总结一遍，可以根据具体的需要选择相关函数（其实函数功能基本差不多，但是原理不一样）</em></p>
 <p>每个RTOS任务都有一个32位的通知值，任务创建时，这个值被初始化为0。RTOS任务通知相当于直接向任务发送一个事件，接收到通知的任务可以解除阻塞状态，<strong>前提是这个阻塞事件是因等待通知而引起的</strong>。发送通知的同时，也可以可选的改变接收任务的通知值。</p>
 <p>相对于用前必须分别创建队列、二进制信号量、计数信号量或事件组的情况，使用任务通知显然更灵活。更好的是，相比于使用信号量解除任务阻塞，使用任务通知可以快45%、使用更少的RAM。</p>
 <p><strong>下面介绍的函数大类都可以实现任务通知的功能，可以根据需要选择</strong></p>
-<h2 id="一、xTask函数"><a href="#一、xTask函数" class="headerlink" title="一、xTask函数"></a>一、xTask函数</h2><h3 id="发送函数（1）"><a href="#发送函数（1）" class="headerlink" title="发送函数（1）"></a>发送函数（1）</h3><table>
-<thead>
-<tr>
-<th align="center">函数</th>
-<th align="center">BaseType_t xTaskNotify( TaskHandle_txTaskToNotify,<br>                          uint32_t ulValue,<br>                           eNotifyAction eAction);</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">参数</td>
-<td align="center">xTaskToNotify：被通知的任务句柄<br>ulValue： 通知更新值<br> eAction:枚举类型，指明更新通知值的方法</td>
-</tr>
-<tr>
-<td align="center">返回值</td>
-<td align="center">成功则返回pdPASS</td>
-</tr>
-</tbody></table>
-<p>eAction具体说明：</p>
+<h2 id="一、xTask函数"><a href="#一、xTask函数" class="headerlink" title="一、xTask函数"></a>一、xTask函数</h2><h3 id="发送函数（1）"><a href="#发送函数（1）" class="headerlink" title="发送函数（1）"></a>发送函数（1）</h3><div class="table-container">
 <table>
 <thead>
 <tr>
-<th align="center">枚举成员</th>
-<th align="center">作用</th>
+<th style="text-align:center">函数</th>
+<th style="text-align:center">BaseType_t xTaskNotify( TaskHandle_txTaskToNotify,<br>                          uint32_t ulValue,<br>                           eNotifyAction eAction);</th>
 </tr>
 </thead>
-<tbody><tr>
-<td align="center">eNoAction</td>
-<td align="center">发送通知但不更新通知值，意味着ulValue未使用</td>
+<tbody>
+<tr>
+<td style="text-align:center">参数</td>
+<td style="text-align:center">xTaskToNotify：被通知的任务句柄<br>ulValue： 通知更新值<br> eAction:枚举类型，指明更新通知值的方法</td>
 </tr>
 <tr>
-<td align="center">eSetBits</td>
-<td align="center">被通知任务值赋值按位或赋值ulValue</td>
+<td style="text-align:center">返回值</td>
+<td style="text-align:center">成功则返回pdPASS</td>
 </tr>
-<tr>
-<td align="center">elncrement</td>
-<td align="center">被通知任务的通知值++</td>
-</tr>
-<tr>
-<td align="center">eSetValueWithOverwrite</td>
-<td align="center">被通知任务值赋值为ulValue</td>
-</tr>
-<tr>
-<td align="center">eSetValueWithoutOverwrite</td>
-<td align="center">如果被通知的任务还没取走上一个通知的情况下，又向被通知任务发送一个新的通知，则新通知值被丢弃，且xTaskNotify()会返回pdFALSE</td>
-</tr>
-</tbody></table>
-<img src="/images/loading.png" data-original="/2022/08/30/freertos%E4%BB%BB%E5%8A%A1%E9%80%9A%E7%9F%A5%E4%B8%8E%E4%BF%A1%E5%8F%B7%E9%87%8F/eaction.jpg" class title="This is an image"> 
-
-<h3 id="发送函数（2）"><a href="#发送函数（2）" class="headerlink" title="发送函数（2）"></a>发送函数（2）</h3><table>
+</tbody>
+</table>
+</div>
+<p>eAction具体说明：</p>
+<div class="table-container">
+<table>
 <thead>
 <tr>
-<th align="center">函数</th>
-<th align="center">BaseType_t xTaskNotifyGive(TaskHandle_t xTaskToNotify );</th>
+<th style="text-align:center">枚举成员</th>
+<th style="text-align:center">作用</th>
 </tr>
 </thead>
-<tbody><tr>
-<td align="center">参数</td>
-<td align="center">xTaskToNotify：被通知的任务句柄</td>
+<tbody>
+<tr>
+<td style="text-align:center">eNoAction</td>
+<td style="text-align:center">发送通知但不更新通知值，意味着ulValue未使用</td>
 </tr>
 <tr>
-<td align="center">返回值</td>
-<td align="center">成功则返回pdPASS</td>
+<td style="text-align:center">eSetBits</td>
+<td style="text-align:center">被通知任务值赋值按位或赋值ulValue</td>
 </tr>
-</tbody></table>
+<tr>
+<td style="text-align:center">elncrement</td>
+<td style="text-align:center">被通知任务的通知值++</td>
+</tr>
+<tr>
+<td style="text-align:center">eSetValueWithOverwrite</td>
+<td style="text-align:center">被通知任务值赋值为ulValue</td>
+</tr>
+<tr>
+<td style="text-align:center">eSetValueWithoutOverwrite</td>
+<td style="text-align:center">如果被通知的任务还没取走上一个通知的情况下，又向被通知任务发送一个新的通知，则新通知值被丢弃，且xTaskNotify()会返回pdFALSE</td>
+</tr>
+</tbody>
+</table>
+</div>
+<img src="/images/loading.png" data-original="/2022/08/30/freertos%E4%BB%BB%E5%8A%A1%E9%80%9A%E7%9F%A5%E4%B8%8E%E4%BF%A1%E5%8F%B7%E9%87%8F/eaction.jpg" class title="This is an image"> 
+<h3 id="发送函数（2）"><a href="#发送函数（2）" class="headerlink" title="发送函数（2）"></a>发送函数（2）</h3><div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">函数</th>
+<th style="text-align:center">BaseType_t xTaskNotifyGive(TaskHandle_t xTaskToNotify );</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">参数</td>
+<td style="text-align:center">xTaskToNotify：被通知的任务句柄</td>
+</tr>
+<tr>
+<td style="text-align:center">返回值</td>
+<td style="text-align:center">成功则返回pdPASS</td>
+</tr>
+</tbody>
+</table>
+</div>
 <p>其实这是一个宏，本质上相当于xTaskNotify( ( xTaskToNotify ), ( 0 ), <strong>eIncrement</strong> )在这种情况下，应该使用API函数ulTaskNotifyTake()来等待通知，而不应该使用API函数xTaskNotifyWait()</p>
 <p>此函数不可以在中断服务例程中调用，中断保护等价函数为vTaskNotifyGiveFromISR()</p>
 <h3 id="接收函数（1）"><a href="#接收函数（1）" class="headerlink" title="接收函数（1）"></a>接收函数（1）</h3><p><u><strong>注意，此处讲到的接收函数应与上面讲到的发送函数配对，例如：使用发送函数（1），接收通知也要使用接收函数（1）</strong></u></p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
-<th align="center">函数</th>
-<th align="center">BaseType_t xTaskNotifyWait( uint32_tulBits  ToClearOnEntry,<br>                                                      uint32_tulBits  ToClearOnExit,<br>                                                          uint32_t*  pulNotificationValue,<br>                                    TickType_t  xTicksToWait );</th>
+<th style="text-align:center">函数</th>
+<th style="text-align:center">BaseType_t xTaskNotifyWait( uint32_tulBits  ToClearOnEntry,<br>                                                      uint32_tulBits  ToClearOnExit,<br>                                                          uint32_t*  pulNotificationValue,<br>                                    TickType_t  xTicksToWait );</th>
 </tr>
 </thead>
-<tbody><tr>
-<td align="center">参数</td>
-<td align="center">见下方</td>
+<tbody>
+<tr>
+<td style="text-align:center">参数</td>
+<td style="text-align:center">见下方</td>
 </tr>
 <tr>
-<td align="center">返回值</td>
-<td align="center">成功则返回pdPASS</td>
+<td style="text-align:center">返回值</td>
+<td style="text-align:center">成功则返回pdPASS</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <p>关于参数：</p>
 <ul>
 <li>ulBitsToClearOnEntry：在使用通知之前，先将任务的通知值与参数ulBitsToClearOnEntry的按位取反值按位与操作。设置参数ulBitsToClearOnEntry为0xFFFFFFFF(ULONG_MAX)，表示清零任务通知值。<ul>
@@ -417,7 +445,6 @@
 </li>
 </ul>
 <img src="/images/loading.png" data-original="/2022/08/30/freertos%E4%BB%BB%E5%8A%A1%E9%80%9A%E7%9F%A5%E4%B8%8E%E4%BF%A1%E5%8F%B7%E9%87%8F/qufan1.jpg" class title="This is an image"> 
-
 <ul>
 <li>*ulBitsToClearOnExit：在函数xTaskNotifyWait()退出前，将任务的通知值与参数ulBitsToClearOnExit的按位取反值按位与操作。设置参数ulBitsToClearOnExit为0xFFFFFFFF(ULONG_MAX)，表示清零任务通知值。<ul>
 <li><strong>使用同上，默认0xFFFFFFFF就可以</strong></li>
@@ -425,69 +452,79 @@
 </li>
 </ul>
 <img src="/images/loading.png" data-original="/2022/08/30/freertos%E4%BB%BB%E5%8A%A1%E9%80%9A%E7%9F%A5%E4%B8%8E%E4%BF%A1%E5%8F%B7%E9%87%8F/qufan2.jpg" class title="This is an image"> 
-
 <ul>
-<li>pulNotificationValue：用于向外回传任务的通知值。这个通知值在参数ulBitsToClearOnExit起作用前将通知值拷贝到*pulNotificationValue中（<strong>需额外定义一个缓冲区</strong>）。如果不需要返回任务的通知值，这里设置成NULL。</li>
+<li>pulNotificationValue：用于向外回传任务的通知值。这个通知值在参数ulBitsToClearOnExit起作用前将通知值拷贝到<em>pulNotificationValue中（<em>*需额外定义一个缓冲区</em></em>）。如果不需要返回任务的通知值，这里设置成NULL。</li>
 <li>xTicksToWait：因等待通知而进入阻塞状态的最大时间。时间单位为系统节拍周期。宏pdMS_TO_TICKS用于将指定的毫秒时间转化为相应的系统节拍数。</li>
 </ul>
-<h3 id="接收函数（2）"><a href="#接收函数（2）" class="headerlink" title="接收函数（2）"></a>接收函数（2）</h3><table>
+<h3 id="接收函数（2）"><a href="#接收函数（2）" class="headerlink" title="接收函数（2）"></a>接收函数（2）</h3><div class="table-container">
+<table>
 <thead>
 <tr>
-<th align="center">函数</th>
-<th align="center">uint32_t ulTaskNotifyTake( BaseType_t  xClearCountOnExit,<br>                                TickType_t   xTicksToWait );</th>
+<th style="text-align:center">函数</th>
+<th style="text-align:center">uint32_t ulTaskNotifyTake( BaseType_t  xClearCountOnExit,<br>                                TickType_t   xTicksToWait );</th>
 </tr>
 </thead>
-<tbody><tr>
-<td align="center">参数</td>
-<td align="center">xClearCountOnExit：如果该参数为pdFALSE，则API函数xTaskNotifyTake()退出前，将任务的通知值减1；如果该参数设置为pdTRUE，则API函数xTaskNotifyTake()退出前，将任务通知值清零。<br>xTicksToWait：因等待通知而进入阻塞状态的最大时间</td>
+<tbody>
+<tr>
+<td style="text-align:center">参数</td>
+<td style="text-align:center">xClearCountOnExit：如果该参数为pdFALSE，则API函数xTaskNotifyTake()退出前，将任务的通知值减1；如果该参数设置为pdTRUE，则API函数xTaskNotifyTake()退出前，将任务通知值清零。<br>xTicksToWait：因等待通知而进入阻塞状态的最大时间</td>
 </tr>
 <tr>
-<td align="center">返回值</td>
-<td align="center">成功则返回pdPASS</td>
+<td style="text-align:center">返回值</td>
+<td style="text-align:center">成功则返回pdPASS</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <h3 id="上例程！老规矩按键-led"><a href="#上例程！老规矩按键-led" class="headerlink" title="上例程！老规矩按键+led"></a>上例程！老规矩按键+led</h3><p>发送函数（1）+接收函数（1）</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> event1 0x0001&lt;&lt;1</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> event2 0x0001&lt;&lt;2</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">task1</span><span class="params">(<span class="type">void</span> <span class="type">const</span> * argument)</span> <span class="comment">//低优先级</span></span><br><span class="line">&#123;</span><br><span class="line">	BaseType_t result;</span><br><span class="line">  <span class="keyword">for</span>(;;)</span><br><span class="line">  &#123;</span><br><span class="line">		<span class="keyword">if</span>(HAL_GPIO_ReadPin(key_1_GPIO_Port,key_1_Pin) == GPIO_PIN_SET)<span class="comment">//按键检测</span></span><br><span class="line">		&#123;</span><br><span class="line">			result=  xTaskNotify(task2Handle,event1,<span class="number">4</span>);<span class="comment">//直接数字代替枚举成员</span></span><br><span class="line">			<span class="keyword">if</span>(result==pdPASS)</span><br><span class="line">			&#123;</span><br><span class="line">				HAL_GPIO_WritePin(led_g_GPIO_Port,led_g_Pin,GPIO_PIN_RESET);<span class="comment">//绿灯</span></span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">if</span>(HAL_GPIO_ReadPin(key_2_GPIO_Port,key_2_Pin) == GPIO_PIN_SET)<span class="comment">//按键检测</span></span><br><span class="line">		&#123;</span><br><span class="line">			result=  xTaskNotify(task2Handle,event2,<span class="number">4</span>);<span class="comment">//直接数字代替枚举成员</span></span><br><span class="line">			<span class="keyword">if</span>(result==pdPASS)</span><br><span class="line">			&#123;</span><br><span class="line">				HAL_GPIO_WritePin(led_b_GPIO_Port,led_b_Pin,GPIO_PIN_RESET);<span class="comment">//蓝灯</span></span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		osDelay(<span class="number">100</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">task2</span><span class="params">(<span class="type">void</span> <span class="type">const</span> * argument)</span><span class="comment">//高优先级</span></span><br><span class="line">&#123;</span><br><span class="line">	BaseType_t result;</span><br><span class="line">	<span class="type">uint32_t</span> ulNotifiedValue; <span class="comment">//存放任务通知值的缓冲区</span></span><br><span class="line">  <span class="keyword">for</span>(;;)</span><br><span class="line">  &#123;</span><br><span class="line">		result=xTaskNotifyWait(<span class="number">0xFFFFFFFF</span>, <span class="number">0xFFFFFFFF</span>,&amp;ulNotifiedValue, portMAX_DELAY);</span><br><span class="line">		<span class="keyword">if</span>(result==pdPASS)</span><br><span class="line">		&#123;</span><br><span class="line">			HAL_GPIO_WritePin(led_r_GPIO_Port,led_r_Pin,GPIO_PIN_RESET);<span class="comment">//红灯</span></span><br><span class="line">		&#125;</span><br><span class="line">      	<span class="keyword">if</span>(ulNotifiedValue&amp;event1)</span><br><span class="line">		&#123;</span><br><span class="line">			HAL_GPIO_WritePin(led_r_GPIO_Port,led_r_Pin,GPIO_PIN_SET);</span><br><span class="line">			HAL_GPIO_WritePin(led_b_GPIO_Port,led_b_Pin,GPIO_PIN_SET);</span><br><span class="line">			HAL_GPIO_WritePin(led_g_GPIO_Port,led_g_Pin,GPIO_PIN_SET);<span class="comment">//全灭</span></span><br><span class="line">		&#125;</span><br><span class="line">        <span class="keyword">if</span>(ulNotifiedValue&amp;event2)</span><br><span class="line">		&#123;</span><br><span class="line">			HAL_GPIO_WritePin(led_r_GPIO_Port,led_r_Pin,GPIO_PIN_RESET);</span><br><span class="line">			HAL_GPIO_WritePin(led_b_GPIO_Port,led_b_Pin,GPIO_PIN_RESET);</span><br><span class="line">			HAL_GPIO_WritePin(led_g_GPIO_Port,led_g_Pin,GPIO_PIN_RESET);<span class="comment">//全亮</span></span><br><span class="line">		&#125;</span><br><span class="line"> <span class="comment">/* </span></span><br><span class="line"><span class="comment"> 整体逻辑：</span></span><br><span class="line"><span class="comment"> 按键1按下-&gt;绿灯亮-&gt;红灯亮-&gt;全灭</span></span><br><span class="line"><span class="comment"> 按键2按下-&gt;蓝灯亮-&gt;红灯亮-&gt;全灭</span></span><br><span class="line"><span class="comment"> </span></span><br><span class="line"><span class="comment"> 这里对于通知值的判断可以让用户知道是哪个任务通知函数触发了这次任务接收，感觉非常好用！！！</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">		osDelay(<span class="number">10</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>总结：</p>
 <p>发送函数（2）+接收函数（2）就不单独写了，基本同理，只是接收函数（2）无法对通知值进行判断，但是整体更方便快捷</p>
-<h2 id="二、os函数"><a href="#二、os函数" class="headerlink" title="二、os函数"></a>二、os函数</h2><h3 id="向指定任务发送任务通知"><a href="#向指定任务发送任务通知" class="headerlink" title="向指定任务发送任务通知"></a>向指定任务发送任务通知</h3><table>
+<h2 id="二、os函数"><a href="#二、os函数" class="headerlink" title="二、os函数"></a>二、os函数</h2><h3 id="向指定任务发送任务通知"><a href="#向指定任务发送任务通知" class="headerlink" title="向指定任务发送任务通知"></a>向指定任务发送任务通知</h3><div class="table-container">
+<table>
 <thead>
 <tr>
-<th align="center"><strong>函数</strong></th>
-<th align="center"><strong>int32_t osSignalSet (osThreadId thread_id, int32_t signal)</strong></th>
+<th style="text-align:center"><strong>函数</strong></th>
+<th style="text-align:center"><strong>int32_t osSignalSet (osThreadId thread_id, int32_t signal)</strong></th>
 </tr>
 </thead>
-<tbody><tr>
-<td align="center">参数</td>
-<td align="center"><strong>thread_id：</strong> 接收通知的任务ID<br><strong>signal：</strong>任务通知值（按位操作数字）</td>
+<tbody>
+<tr>
+<td style="text-align:center">参数</td>
+<td style="text-align:center"><strong>thread_id：</strong> 接收通知的任务ID<br><strong>signal：</strong>任务通知值（按位操作数字）</td>
 </tr>
 <tr>
-<td align="center">返回值</td>
-<td align="center">错误码</td>
+<td style="text-align:center">返回值</td>
+<td style="text-align:center">错误码</td>
 </tr>
-</tbody></table>
-<h3 id="等待任务通知"><a href="#等待任务通知" class="headerlink" title="等待任务通知"></a>等待任务通知</h3><table>
+</tbody>
+</table>
+</div>
+<h3 id="等待任务通知"><a href="#等待任务通知" class="headerlink" title="等待任务通知"></a>等待任务通知</h3><div class="table-container">
+<table>
 <thead>
 <tr>
-<th align="center"><strong>函数</strong></th>
-<th align="center"><strong>osEvent osSignalWait (int32_t signals, uint32_t millisec)</strong></th>
+<th style="text-align:center"><strong>函数</strong></th>
+<th style="text-align:center"><strong>osEvent osSignalWait (int32_t signals, uint32_t millisec)</strong></th>
 </tr>
 </thead>
-<tbody><tr>
-<td align="center">参数</td>
-<td align="center">signals： 接收完成后等待被清零的数据位(0x0001|0x0002&#x3D;0x003)<br><strong>millisec：</strong> 等待超时时间，单位为系统节拍周期</td>
+<tbody>
+<tr>
+<td style="text-align:center">参数</td>
+<td style="text-align:center">signals： 接收完成后等待被清零的数据位(0x0001\</td>
+<td>0x0002=0x003)<br><strong>millisec：</strong> 等待超时时间，单位为系统节拍周期</td>
 </tr>
 <tr>
-<td align="center">返回值</td>
-<td align="center">错误码</td>
+<td style="text-align:center">返回值</td>
+<td style="text-align:center">错误码</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <h3 id="例程，按键-led"><a href="#例程，按键-led" class="headerlink" title="例程，按键+led"></a>例程，按键+led</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> event1 0x0001</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">task1</span><span class="params">(<span class="type">void</span> <span class="type">const</span> * argument)</span> <span class="comment">//低优先级任务</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="comment">/* USER CODE BEGIN led_G */</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">/* Infinite loop */</span></span><br><span class="line">  <span class="keyword">for</span>(;;)</span><br><span class="line">  &#123;</span><br><span class="line">		<span class="keyword">if</span>(HAL_GPIO_ReadPin(key_1_GPIO_Port,key_1_Pin == GPIO_PIN_SET))</span><br><span class="line">		&#123;</span><br><span class="line">			osSignalSet(task2Handle,event1);</span><br><span class="line">		&#125;	</span><br><span class="line">		osDelay(<span class="number">10</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">/* USER CODE END led_G */</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">task2</span><span class="params">(<span class="type">void</span> <span class="type">const</span> * argument)</span> <span class="comment">//高优先级任务</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="comment">/* USER CODE BEGIN led_B */</span></span><br><span class="line">	osEvent event;	</span><br><span class="line">  <span class="comment">/* Infinite loop */</span></span><br><span class="line">  <span class="keyword">for</span>(;;)</span><br><span class="line">  &#123;</span><br><span class="line">	event = osSignalWait(event1,osWaitForever);  </span><br><span class="line">	<span class="keyword">if</span>(event.status == osEventSignal)  </span><br><span class="line">	&#123;</span><br><span class="line">		HAL_GPIO_WritePin(led_g_GPIO_Port,led_g_Pin,GPIO_PIN_RESET);</span><br><span class="line">	&#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>这里task2可以不用额外在循环中添加堵塞，因为wait函数本身自带堵塞，<strong>其堵塞的解除是在osSignalSet函数的作用之后的瞬间，也就是说在执行完osSignalSet(task2Handle,event1)后task2会直接抢占task1</strong></p>
 <p><strong>而xTask函数不同于os函数，xTask函数是在task1执行完后才会进入task2，这点请务必记住，二者通知原理不同，所以根据使用情况选择使用xTask函数还是os函数</strong></p>
-<h1 id="3、信号量"><a href="#3、信号量" class="headerlink" title="3、信号量"></a>3、信号量</h1><p>信号量同样是一种任务之间交互的函数，但是就我按照网上教程使用过后感觉。。。不如队列和任务通知，可能是我目前的一些工程量还没到使用到信号量的程度？而且在使用过程中也遇到了一些迷惑的地方，所以目前不准备深究，等到实在要用的时候再说吧😋，感兴趣的同学可以去<a target="_blank" rel="noopener" href="https://freertos.blog.csdn.net/article/details/50835613">(19条消息) FreeRTOS系列第19篇—FreeRTOS信号量_研究是为了理解的博客-CSDN博客_freertos 信号</a>看看，讲的很详细了可以说，我大部分内容也是跟着这个学的。</p>
+<h1 id="3、信号量"><a href="#3、信号量" class="headerlink" title="3、信号量"></a>3、信号量</h1><p>信号量同样是一种任务之间交互的函数，但是就我按照网上教程使用过后感觉。。。不如队列和任务通知，可能是我目前的一些工程量还没到使用到信号量的程度？而且在使用过程中也遇到了一些迷惑的地方，所以目前不准备深究，等到实在要用的时候再说吧😋，感兴趣的同学可以去<a target="_blank" rel="noopener" href="https://freertos.blog.csdn.net/article/details/50835613">(19条消息) FreeRTOS系列第19篇—-FreeRTOS信号量_研究是为了理解的博客-CSDN博客_freertos 信号</a>看看，讲的很详细了可以说，我大部分内容也是跟着这个学的。</p>
 
     </div>
 
@@ -694,6 +731,8 @@
 
 
 
+
+  
 
   
 

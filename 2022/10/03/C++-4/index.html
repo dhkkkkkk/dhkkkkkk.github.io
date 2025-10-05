@@ -92,7 +92,9 @@
   </style>
 </noscript>
 
-</head>
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --></head>
 
 <body itemscope itemtype="http://schema.org/WebPage">
   <div class="container use-motion">
@@ -254,27 +256,22 @@
 </ul>
 <h2 id="求值顺序"><a href="#求值顺序" class="headerlink" title="求值顺序"></a>求值顺序</h2><p>部分运算符是没有明确指明执行顺序的，例如&lt;&lt;运算符：</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cout&lt;&lt;i&lt;&lt;<span class="string">&quot;&quot;</span>&lt;&lt;++i;</span><br></pre></td></tr></table></figure>
-
 <p>++i和i没有明确的先后关系，因此编译器可能做出任何行为。</p>
 <p>当多个函数会影响同一对象时，当同时调用这些函数时，调用函数的顺序也没有明确的先后关系。</p>
 <h1 id="2、算术运算符"><a href="#2、算术运算符" class="headerlink" title="2、算术运算符"></a>2、算术运算符</h1><h2 id="bool类型"><a href="#bool类型" class="headerlink" title="bool类型"></a>bool类型</h2><p>bool类型原则不应参与运算，在运算时会自动转化为int型的1，只要计算结果不为0，都将返回ture</p>
 <h2 id="优先级"><a href="#优先级" class="headerlink" title="优先级"></a>优先级</h2><p>C++大部分同优先级运算都满足从左至右的规律，赋值则相反</p>
-<h2 id="递增运算"><a href="#递增运算" class="headerlink" title="递增运算"></a>递增运算</h2><p>C++中，<strong>非必要不使用</strong>后置递增&#x2F;减符（i++&#x2F;i–)，因为前置运算为将对象本身作为左值返回，而后置则要额外的空间存储原始值，并将这个额外存储的原始值副本作为右值返回，因此，使用后置操作会消耗更多内存，这在相对复杂的工作中是消耗巨大的。</p>
+<h2 id="递增运算"><a href="#递增运算" class="headerlink" title="递增运算"></a>递增运算</h2><p>C++中，<strong>非必要不使用</strong>后置递增/减符（i++/i—)，因为前置运算为将对象本身作为左值返回，而后置则要额外的空间存储原始值，并将这个额外存储的原始值副本作为右值返回，因此，使用后置操作会消耗更多内存，这在相对复杂的工作中是消耗巨大的。</p>
 <h2 id="位操作"><a href="#位操作" class="headerlink" title="位操作"></a>位操作</h2><p>关于符号位的处理没有明确规定，因此位运算最好用来处理无符号类型</p>
 <h1 id="3、类型转换"><a href="#3、类型转换" class="headerlink" title="3、类型转换"></a>3、类型转换</h1><p>C++的类型转换格式不同于C：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cast-name&lt;类型&gt;(表达式)</span><br></pre></td></tr></table></figure>
-
 <p>最常用的cast-name为<code>static_cast</code>和<code>const_cast</code></p>
 <h3 id="static-cast"><a href="#static-cast" class="headerlink" title="static_cast"></a>static_cast</h3><p>任何有明确定义的类型转换（除了底层const）都可以使用static_cast</p>
 <p>例：</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> *p = &amp;d;<span class="comment">//d不能为常量（底层const）</span></span><br><span class="line"><span class="type">double</span> *dp = <span class="built_in">static_cast</span>&lt;<span class="type">double</span>*&gt;(p);</span><br></pre></td></tr></table></figure>
-
 <h3 id="const-cast"><a href="#const-cast" class="headerlink" title="const_cast"></a>const_cast</h3><p><strong>专用</strong>于改变底层const，其作用为改变const性质</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">const</span> <span class="type">char</span>* pc;</span><br><span class="line"><span class="type">char</span> *p=<span class="built_in">const_cast</span>&lt;<span class="type">char</span>*&gt;(pc);</span><br></pre></td></tr></table></figure>
-
 <p>需要注意，可以有以下用法：</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">char</span>* pc;</span><br><span class="line"><span class="type">char</span> *p=<span class="built_in">const_cast</span>&lt;<span class="type">const</span> <span class="type">char</span>*&gt;(pc);</span><br></pre></td></tr></table></figure>
-
 
     </div>
 
@@ -481,6 +478,8 @@
 
 
 
+
+  
 
   
 

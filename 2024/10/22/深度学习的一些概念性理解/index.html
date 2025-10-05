@@ -94,7 +94,9 @@
   </style>
 </noscript>
 
-</head>
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --></head>
 
 <body itemscope itemtype="http://schema.org/WebPage">
   <div class="container use-motion">
@@ -257,7 +259,6 @@
 <p>缺点：但如果参数在一次不恰当的更新后，导致某一个层输入到某个神经元的值为0时，<strong>该神经元输出到后面所有神经元的值全为0，此时该神经元的w无论怎么变化，输出到下一层所有神经元的值都为0（梯度为0），导致该神经元前的参数都无法更新</strong>，出现dead relu</p>
 <h1 id="反向传播（BP）"><a href="#反向传播（BP）" class="headerlink" title="反向传播（BP）"></a>反向传播（BP）</h1><h2 id="参数学习"><a href="#参数学习" class="headerlink" title="参数学习"></a>参数学习</h2><p>以交叉熵损失函数为例，假设y为one-hot向量（仅标签位置为1，其他0），则可以延伸至多分类问题，且其输出仅与标签位置处的y^相关，y^越小，损失函数越大(y^&lt;1)</p>
 <img src="/images/loading.png" data-original="/2024/10/22/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%9A%84%E4%B8%80%E4%BA%9B%E6%A6%82%E5%BF%B5%E6%80%A7%E7%90%86%E8%A7%A3/1.jpg" class title="This is an image"> 
-
 <p>由于y^是W（权重矩阵）和偏置的函数，因此Loss函数也为W和b的函数，通过优化迭代他们的值即可接近Loss的最小值，而要降低Loss，通常是借助各w的梯度实现</p>
 <h2 id="反向传播算法"><a href="#反向传播算法" class="headerlink" title="反向传播算法"></a>反向传播算法</h2><p>当一次正向传播后，Loss值已经确定，此时Loss对所有w的偏导都已确定，因此计算出这些偏导即可完成一次梯度下降。如果从开头通过链式法则对所有w逐一计算效率较低。但由链式法则又可得：</p>
 <p><strong>loss对某一w的偏导可通过下一层的所有w偏导计算而得，因此从输出层对w偏导进行反向计算效率更高</strong></p>
@@ -470,6 +471,8 @@
 
 
 
+
+  
 
   
 

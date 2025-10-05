@@ -89,7 +89,9 @@
   </style>
 </noscript>
 
-</head>
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --></head>
 
 <body itemscope itemtype="http://schema.org/WebPage">
   <div class="container use-motion">
@@ -222,7 +224,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2025-10-05 15:17:22 / 修改时间：15:17:55" itemprop="dateCreated datePublished" datetime="2025-10-05T15:17:22+08:00">2025-10-05</time>
+              <time title="创建时间：2025-10-05 15:17:22 / 修改时间：15:31:06" itemprop="dateCreated datePublished" datetime="2025-10-05T15:17:22+08:00">2025-10-05</time>
             </span>
 
           
@@ -236,42 +238,40 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="卷积与互相关"><a href="#卷积与互相关" class="headerlink" title="卷积与互相关"></a>卷积与互相关</h1><p>对于离散信号，卷积的定义为：<br>$$<br>(f * g)(n) &#x3D; \sum_{\tau &#x3D; -\infty}^{\infty} f(\tau) g(n - \tau)<br>$$<br>其中g就是滤波器（卷积核），公式的理解就是将g先进行-τ的翻转，再进行+n的滑动以对其输入信号f，卷积操作的输出即为经过滤波器的输出信号</p>
+          <h1 id="卷积与互相关"><a href="#卷积与互相关" class="headerlink" title="卷积与互相关"></a>卷积与互相关</h1><p>对于离散信号，卷积的定义为：</p>
+<script type="math/tex; mode=display">
+(f * g)(n) = \sum_{\tau = -\infty}^{\infty} f(\tau) g(n - \tau)</script><p>其中g就是滤波器（卷积核），公式的理解就是将g先进行-τ的翻转，再进行+n的滑动以对其输入信号f，卷积操作的输出即为经过滤波器的输出信号</p>
 <p>而在深度学习中，卷积核的翻转其实是不必要的，因此省去了翻转，直接对卷积核进行滑动的操作，也就是互相关操作</p>
 <p>来源：<a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/2127881">【CNN】很详细的讲解什么以及为什么是卷积（Convolution）！-腾讯云开发者社区-腾讯云</a></p>
 <p>卷积核根据参数的不同可以实现提取低频、高频特征（边缘特征），平滑、锐化处理等操作</p>
 <h1 id="参数理解"><a href="#参数理解" class="headerlink" title="参数理解"></a>参数理解</h1><h2 id="数据形状"><a href="#数据形状" class="headerlink" title="数据形状"></a>数据形状</h2><p>以二维卷积为例，在pytorch中，conv2d的定义为：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params"></span></span><br><span class="line"><span class="params">    self,</span></span><br><span class="line"><span class="params">    in_channels: <span class="built_in">int</span>,</span></span><br><span class="line"><span class="params">    out_channels: <span class="built_in">int</span>,</span></span><br><span class="line"><span class="params">    kernel_size: _size_2_t,</span></span><br><span class="line"><span class="params">    stride: _size_2_t = <span class="number">1</span>,</span></span><br><span class="line"><span class="params">    padding: <span class="type">Union</span>[<span class="built_in">str</span>, _size_2_t] = <span class="number">0</span>,</span></span><br><span class="line"><span class="params">    dilation: _size_2_t = <span class="number">1</span>,</span></span><br><span class="line"><span class="params">    groups: <span class="built_in">int</span> = <span class="number">1</span>,</span></span><br><span class="line"><span class="params">    bias: <span class="built_in">bool</span> = <span class="literal">True</span>,</span></span><br><span class="line"><span class="params">    padding_mode: <span class="built_in">str</span> = <span class="string">&#x27;zeros&#x27;</span>,  <span class="comment"># <span class="doctag">TODO:</span> refine this type</span></span></span><br><span class="line"><span class="params">    device=<span class="literal">None</span>,</span></span><br><span class="line"><span class="params">    dtype=<span class="literal">None</span></span></span><br><span class="line"><span class="params"></span>)</span><br></pre></td></tr></table></figure>
-
 <ul>
 <li>in_channels决定了卷积核的<strong>深度</strong>，每层卷积核输出的数据最终会相加，也就是说一个卷积核输出一个单通道数据</li>
 <li>out_channels决定了卷积核的<strong>个数</strong>，决定生成多少个上条中说到的单通道数据</li>
 <li>kernel_size决定了每个卷积核的<strong>长宽</strong>（参数量）</li>
 </ul>
-<p>这三个参数共同决定了该卷积层的参数量，具体图片等参考：<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/80041030">(1 封私信 &#x2F; 80 条消息) Depthwise卷积与Pointwise卷积 - 知乎</a></p>
+<p>这三个参数共同决定了该卷积层的参数量，具体图片等参考：<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/80041030">(1 封私信 / 80 条消息) Depthwise卷积与Pointwise卷积 - 知乎</a></p>
 <p>对于一维卷积，当不考虑channels的改变（且为1）时，卷积核为1*k时等价于对其进行一维卷积；例：对于形状为(b,t,f)的频谱图，直接对其进行一维卷积就是在对其frequency bin进行卷积操作</p>
 <h2 id="感受野大小与步长"><a href="#感受野大小与步长" class="headerlink" title="感受野大小与步长"></a>感受野大小与步长</h2><ul>
-<li>非1*1卷积核：<code>3*3</code>和<code>5*5</code>具有较好的细粒度特征提取能力且计算开销适中，对于有特殊要求的数据也可以使用不规则形状；而使用大卷积核可以获取更大的局部感受野，对大面积的特征会更加敏感，但计算量也会变大</li>
-<li>1*1卷积核：<code>1*1</code>目前我见到过的有如下几种用法：1.用于对数据进行单纯的channel维度上\下采样；2.用于Depthwise Separable Convolution中的pointwise 卷积；3.用于代替某些attention结构中qkv的linear计算；4.inception模块中的多感受野融合</li>
+<li>非1<em>1卷积核：`3</em>3<code>和</code>5*5`具有较好的细粒度特征提取能力且计算开销适中，对于有特殊要求的数据也可以使用不规则形状；而使用大卷积核可以获取更大的局部感受野，对大面积的特征会更加敏感，但计算量也会变大</li>
+<li>1<em>1卷积核：`1</em>1`目前我见到过的有如下几种用法：1.用于对数据进行单纯的channel维度上\下采样；2.用于Depthwise Separable Convolution中的pointwise 卷积；3.用于代替某些attention结构中qkv的linear计算；4.inception模块中的多感受野融合</li>
 </ul>
 <p>对于步长，常用的就是1和2，1适合用于特征提取阶段；选择2时输出形状会缩减约一半，常用于下采样</p>
 <h1 id="卷积种类"><a href="#卷积种类" class="headerlink" title="卷积种类"></a>卷积种类</h1><h2 id="常规卷积"><a href="#常规卷积" class="headerlink" title="常规卷积"></a>常规卷积</h2><p>卷积权重形状为(out_channels, inchannels, H, W)，可以理解为有out_channels个(inchannels, H, W)的卷积核。</p>
-<p>常规卷积group&#x3D;1，具体看下一小节</p>
+<p>常规卷积group=1，具体看下一小节</p>
 <h2 id="Depthwise-Separable-Convolution"><a href="#Depthwise-Separable-Convolution" class="headerlink" title="Depthwise Separable Convolution"></a>Depthwise Separable Convolution</h2><p>由pointwise conv 和 depthwise conv组合而成（先depth再pointwise）。其中，pointwise conv就是卷积核为1*1的常规卷积，在efficient net中其扩大了输出channels；而depthwise conv 则是通过调整nn.conv2d的groups选项实现：</p>
-<p>卷积权重形状完整写法其实为(out_channels, inchannels&#x2F;groups, H, W)，对于depthwise conv：<strong>groups&#x3D;in_channels&#x3D;out_channels</strong> ，groups必须要能被in_channels整除；</p>
-<p>举个例子，对于一个in_channels&#x3D;4的数据来说，先将其分为4个channel&#x3D;1的数据，因此每个卷积核的大小只能为(1,H,W)；而对于卷积核的个数，每组数据分到out_channels&#x2F;groups个（depthwise中为该结果为1），最后拼接起来即为out_channels</p>
-<p>Depthwise Separable Convolution可以有效缩减参数量，以达到更深的网络结构：假设in&#x2F;out_channels&#x3D;4，卷积核3*3：</p>
+<p>卷积权重形状完整写法其实为(out_channels, inchannels/groups, H, W)，对于depthwise conv：<strong>groups=in_channels=out_channels</strong> ，groups必须要能被in_channels整除；</p>
+<p>举个例子，对于一个in_channels=4的数据来说，先将其分为4个channel=1的数据，因此每个卷积核的大小只能为(1,H,W)；而对于卷积核的个数，每组数据分到out_channels/groups个（depthwise中为该结果为1），最后拼接起来即为out_channels</p>
+<p>Depthwise Separable Convolution可以有效缩减参数量，以达到更深的网络结构：假设in/out_channels=4，卷积核3*3：</p>
 <p>常规卷积参数：<code>4*4*3*3=144</code></p>
 <p>Depthwise Separable：<code>4*4*1*1+4*1*3*3=52</code></p>
 <h3 id="转置卷积"><a href="#转置卷积" class="headerlink" title="转置卷积"></a>转置卷积</h3><p>通过对输入进行padding的方式，可以实现输入H、W维度的上采样，生成更高分辨率的数据</p>
 <h1 id="搭建EfficientNet-v2"><a href="#搭建EfficientNet-v2" class="headerlink" title="搭建EfficientNet_v2"></a>搭建EfficientNet_v2</h1><p>本节以efficientnetv2_s为例</p>
 <h2 id="主模型类"><a href="#主模型类" class="headerlink" title="主模型类"></a>主模型类</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">EfficientNetV2</span>(nn.Module):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self,</span></span><br><span class="line"><span class="params">                 model_cnf: <span class="built_in">list</span>, <span class="comment">#传入格式为[[repeat, kernel, stride, expansion, in_c, out_c, operator, se_ratio],...],其中op参数为是否使用fuse mbconv</span></span></span><br><span class="line"><span class="params">                 num_classes: <span class="built_in">int</span> = <span class="number">1000</span>,</span></span><br><span class="line"><span class="params">                 num_features: <span class="built_in">int</span> = <span class="number">1280</span>,</span></span><br><span class="line"><span class="params">                 dropout_rate: <span class="built_in">float</span> = <span class="number">0.2</span>,</span></span><br><span class="line"><span class="params">                 drop_connect_rate: <span class="built_in">float</span> = <span class="number">0.2</span></span>):</span><br><span class="line">        <span class="built_in">super</span>(EfficientNetV2, self).__init__()</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> cnf <span class="keyword">in</span> model_cnf:</span><br><span class="line">            <span class="keyword">assert</span> <span class="built_in">len</span>(cnf) == <span class="number">8</span>、</span><br><span class="line">            </span><br><span class="line">		<span class="comment">#functools.partial可以在每次调用时都传回一个新的函数对象，对于不改变参数的网络结构更简洁</span></span><br><span class="line">        norm_layer = partial(nn.BatchNorm2d, eps=<span class="number">1e-3</span>, momentum=<span class="number">0.1</span>)</span><br><span class="line">        </span><br><span class="line">        <span class="comment">#头部卷积单独实现，其卷积核数量需匹配后续模型in_channels</span></span><br><span class="line">        stem_filter_num = model_cnf[<span class="number">0</span>][<span class="number">4</span>]</span><br><span class="line">		</span><br><span class="line">        <span class="comment">#简单的conv2d+norm+act，不再展开</span></span><br><span class="line">        self.stem = ConvBNAct(<span class="number">3</span>,</span><br><span class="line">                              stem_filter_num,</span><br><span class="line">                              kernel_size=<span class="number">3</span>,</span><br><span class="line">                              stride=<span class="number">2</span>,</span><br><span class="line">                              norm_layer=norm_layer)  <span class="comment"># 激活函数默认是SiLU</span></span><br><span class="line">		</span><br><span class="line">       	<span class="comment">#i[0]为该block的重复次数</span></span><br><span class="line">        total_blocks = <span class="built_in">sum</span>([i[<span class="number">0</span>] <span class="keyword">for</span> i <span class="keyword">in</span> model_cnf])</span><br><span class="line">        block_id = <span class="number">0</span></span><br><span class="line">        blocks = []</span><br><span class="line">        <span class="keyword">for</span> cnf <span class="keyword">in</span> model_cnf:</span><br><span class="line">            repeats = cnf[<span class="number">0</span>]</span><br><span class="line">            op = FusedMBConv <span class="keyword">if</span> cnf[-<span class="number">2</span>] == <span class="number">0</span> <span class="keyword">else</span> MBConv</span><br><span class="line">            <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(repeats):</span><br><span class="line">                blocks.append(op(kernel_size=cnf[<span class="number">1</span>],</span><br><span class="line">                                 input_c=cnf[<span class="number">4</span>] <span class="keyword">if</span> i == <span class="number">0</span> <span class="keyword">else</span> cnf[<span class="number">5</span>],</span><br><span class="line">                                 out_c=cnf[<span class="number">5</span>],</span><br><span class="line">                                 expand_ratio=cnf[<span class="number">3</span>],</span><br><span class="line">                                 stride=cnf[<span class="number">2</span>] <span class="keyword">if</span> i == <span class="number">0</span> <span class="keyword">else</span> <span class="number">1</span>,</span><br><span class="line">                                 se_ratio=cnf[-<span class="number">1</span>],</span><br><span class="line">                                 drop_rate=drop_connect_rate * block_id / total_blocks,</span><br><span class="line">                                 norm_layer=norm_layer))</span><br><span class="line">                block_id += <span class="number">1</span></span><br><span class="line">                </span><br><span class="line">        <span class="comment">#*操作会按添加顺序返回list，是模块化神经网络的常用操作</span></span><br><span class="line">        self.blocks = nn.Sequential(*blocks)</span><br><span class="line"></span><br><span class="line">        <span class="comment">#构建分类头</span></span><br><span class="line">        head_input_c = model_cnf[-<span class="number">1</span>][-<span class="number">3</span>]</span><br><span class="line">        head = OrderedDict()</span><br><span class="line">        <span class="comment">#orderdict是一个有序字典，其update方法在插入新键时按顺序插入，覆盖已有键时不改变顺序</span></span><br><span class="line">        head.update(&#123;<span class="string">&quot;project_conv&quot;</span>: ConvBNAct(head_input_c,</span><br><span class="line">                                               num_features,</span><br><span class="line">                                               kernel_size=<span class="number">1</span>,</span><br><span class="line">                                               norm_layer=norm_layer)&#125;)  <span class="comment"># 激活函数默认是SiLU</span></span><br><span class="line">        <span class="comment">#可以看出，该分类头是直接将H，W池化为1*1，将channels维作为最后linear的输入维度</span></span><br><span class="line">        head.update(&#123;<span class="string">&quot;avgpool&quot;</span>: nn.AdaptiveAvgPool2d(<span class="number">1</span>)&#125;)</span><br><span class="line">        head.update(&#123;<span class="string">&quot;flatten&quot;</span>: nn.Flatten()&#125;)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> dropout_rate &gt; <span class="number">0</span>:</span><br><span class="line">            head.update(&#123;<span class="string">&quot;dropout&quot;</span>: nn.Dropout(p=dropout_rate, inplace=<span class="literal">True</span>)&#125;)</span><br><span class="line">        head.update(&#123;<span class="string">&quot;classifier&quot;</span>: nn.Linear(num_features, num_classes)&#125;)</span><br><span class="line"></span><br><span class="line">        <span class="comment">#dict和list都能直接传入nn.Sequential</span></span><br><span class="line">        self.head = nn.Sequential(head)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># initial weights</span></span><br><span class="line">        <span class="keyword">for</span> m <span class="keyword">in</span> self.modules():</span><br><span class="line">            <span class="keyword">if</span> <span class="built_in">isinstance</span>(m, nn.Conv2d):</span><br><span class="line">                nn.init.kaiming_normal_(m.weight, mode=<span class="string">&quot;fan_out&quot;</span>)</span><br><span class="line">                <span class="keyword">if</span> m.bias <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">                    nn.init.zeros_(m.bias)</span><br><span class="line">            <span class="keyword">elif</span> <span class="built_in">isinstance</span>(m, nn.BatchNorm2d):</span><br><span class="line">                nn.init.ones_(m.weight)</span><br><span class="line">                nn.init.zeros_(m.bias)</span><br><span class="line">            <span class="keyword">elif</span> <span class="built_in">isinstance</span>(m, nn.Linear):</span><br><span class="line">                nn.init.normal_(m.weight, <span class="number">0</span>, <span class="number">0.01</span>)</span><br><span class="line">                nn.init.zeros_(m.bias)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, x: Tensor</span>) -&gt; Tensor:</span><br><span class="line">        x = self.stem(x)</span><br><span class="line">        x = self.blocks(x)</span><br><span class="line">        x = self.head(x)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> x</span><br></pre></td></tr></table></figure>
-
 <h2 id="MBConv"><a href="#MBConv" class="headerlink" title="MBConv"></a>MBConv</h2><p>对于v2版本，其前半部分网络使用的fuse-MBConv将原1*1conv+depthwise替换为了一个33conv，不再额外说明</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">MBConv</span>(nn.Module):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self,</span></span><br><span class="line"><span class="params">                 kernel_size: <span class="built_in">int</span>,</span></span><br><span class="line"><span class="params">                 input_c: <span class="built_in">int</span>,</span></span><br><span class="line"><span class="params">                 out_c: <span class="built_in">int</span>,</span></span><br><span class="line"><span class="params">                 expand_ratio: <span class="built_in">int</span>,</span></span><br><span class="line"><span class="params">                 stride: <span class="built_in">int</span>,</span></span><br><span class="line"><span class="params">                 se_ratio: <span class="built_in">float</span>,</span></span><br><span class="line"><span class="params">                 drop_rate: <span class="built_in">float</span>,</span></span><br><span class="line"><span class="params">                 norm_layer: <span class="type">Callable</span>[..., nn.Module]</span>):</span><br><span class="line">        <span class="built_in">super</span>(MBConv, self).__init__()</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> stride <span class="keyword">not</span> <span class="keyword">in</span> [<span class="number">1</span>, <span class="number">2</span>]:</span><br><span class="line">            <span class="keyword">raise</span> ValueError(<span class="string">&quot;illegal stride value.&quot;</span>)</span><br><span class="line"></span><br><span class="line">        self.has_shortcut = (stride == <span class="number">1</span> <span class="keyword">and</span> input_c == out_c)</span><br><span class="line"></span><br><span class="line">        activation_layer = nn.SiLU  <span class="comment"># alias Swish</span></span><br><span class="line">        expanded_c = input_c * expand_ratio</span><br><span class="line"></span><br><span class="line">        <span class="keyword">assert</span> expand_ratio != <span class="number">1</span></span><br><span class="line">        <span class="comment"># channel 采样</span></span><br><span class="line">        self.expand_conv = ConvBNAct(input_c,</span><br><span class="line">                                     expanded_c,</span><br><span class="line">                                     kernel_size=<span class="number">1</span>,</span><br><span class="line">                                     norm_layer=norm_layer,</span><br><span class="line">                                     activation_layer=activation_layer)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 标准depthwise conv</span></span><br><span class="line">        self.dwconv = ConvBNAct(expanded_c,</span><br><span class="line">                                expanded_c,</span><br><span class="line">                                kernel_size=kernel_size,</span><br><span class="line">                                stride=stride,</span><br><span class="line">                                groups=expanded_c,</span><br><span class="line">                                norm_layer=norm_layer,</span><br><span class="line">                                activation_layer=activation_layer)</span><br><span class="line"></span><br><span class="line">        <span class="comment">#se模块</span></span><br><span class="line">        self.se = SqueezeExcite(input_c, expanded_c, se_ratio) <span class="keyword">if</span> se_ratio &gt; <span class="number">0</span> <span class="keyword">else</span> nn.Identity()</span><br><span class="line"></span><br><span class="line">        <span class="comment"># Point-wise linear projection</span></span><br><span class="line">        self.project_conv = ConvBNAct(expanded_c,</span><br><span class="line">                                      out_planes=out_c,</span><br><span class="line">                                      kernel_size=<span class="number">1</span>,</span><br><span class="line">                                      norm_layer=norm_layer,</span><br><span class="line">                                      activation_layer=nn.Identity)  <span class="comment"># 注意这里没有激活函数，传入的是Identity</span></span><br><span class="line"></span><br><span class="line">        self.out_channels = out_c</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 只有在使用shortcut连接时才使用dropout层</span></span><br><span class="line">        self.drop_rate = drop_rate</span><br><span class="line">        <span class="keyword">if</span> self.has_shortcut <span class="keyword">and</span> drop_rate &gt; <span class="number">0</span>:</span><br><span class="line">            self.dropout = DropPath(drop_rate)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, x: Tensor</span>) -&gt; Tensor:</span><br><span class="line">        result = self.expand_conv(x)</span><br><span class="line">        result = self.dwconv(result)</span><br><span class="line">        result = self.se(result)</span><br><span class="line">        result = self.project_conv(result)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> self.has_shortcut:</span><br><span class="line">            <span class="keyword">if</span> self.drop_rate &gt; <span class="number">0</span>:</span><br><span class="line">                result = self.dropout(result)</span><br><span class="line">            result += x</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> result</span><br></pre></td></tr></table></figure>
-
 <h2 id="SE模块"><a href="#SE模块" class="headerlink" title="SE模块"></a>SE模块</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">SqueezeExcite</span>(nn.Module):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self,</span></span><br><span class="line"><span class="params">                 input_c: <span class="built_in">int</span>,   <span class="comment"># block input channel</span></span></span><br><span class="line"><span class="params">                 expand_c: <span class="built_in">int</span>,  <span class="comment"># block expand channel</span></span></span><br><span class="line"><span class="params">                 se_ratio: <span class="built_in">float</span> = <span class="number">0.25</span></span>):</span><br><span class="line">        <span class="built_in">super</span>(SqueezeExcite, self).__init__()</span><br><span class="line">        squeeze_c = <span class="built_in">int</span>(input_c * se_ratio)</span><br><span class="line">        <span class="comment">#将linear替换为了1*1conv，这样做可以不用变换维度，是常见做法</span></span><br><span class="line">        self.conv_reduce = nn.Conv2d(expand_c, squeeze_c, <span class="number">1</span>)</span><br><span class="line">        self.act1 = nn.SiLU()  <span class="comment"># alias Swish</span></span><br><span class="line">        self.conv_expand = nn.Conv2d(squeeze_c, expand_c, <span class="number">1</span>)</span><br><span class="line">        self.act2 = nn.Sigmoid()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, x: Tensor</span>) -&gt; Tensor:</span><br><span class="line">        scale = x.mean((<span class="number">2</span>, <span class="number">3</span>), keepdim=<span class="literal">True</span>)<span class="comment">#相当于avgpool</span></span><br><span class="line">        scale = self.conv_reduce(scale) </span><br><span class="line">        scale = self.act1(scale)</span><br><span class="line">        scale = self.conv_expand(scale)</span><br><span class="line">        scale = self.act2(scale)</span><br><span class="line">        <span class="comment">#scale会学习到哪些通道更重要，相当于对x的通道维度施加了一个注意力因子</span></span><br><span class="line">        <span class="keyword">return</span> scale * x</span><br></pre></td></tr></table></figure>
-
 
       
     </div>
@@ -318,7 +318,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2025-10-05 15:14:37 / 修改时间：15:16:23" itemprop="dateCreated datePublished" datetime="2025-10-05T15:14:37+08:00">2025-10-05</time>
+              <time title="创建时间：2025-10-05 15:14:37 / 修改时间：15:31:00" itemprop="dateCreated datePublished" datetime="2025-10-05T15:14:37+08:00">2025-10-05</time>
             </span>
 
           
@@ -332,39 +332,60 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="常用激活函数"><a href="#常用激活函数" class="headerlink" title="常用激活函数"></a>常用激活函数</h1><h2 id="sigmoid"><a href="#sigmoid" class="headerlink" title="sigmoid"></a>sigmoid</h2><p>指一类**<u>S型</u>的两端饱和函数**，常见的有logistic和Tanh及其变种</p>
-<h3 id="logistic"><a href="#logistic" class="headerlink" title="logistic"></a>logistic</h3><p>$$<br>\sigma(x)&#x3D;\frac{1}{1+e^{-x}}<br>$$</p>
-<p>由于最大导数只有0.25，两端饱和严重，输出始终为正，导致梯度下降变慢，现在深度学习隐藏层中已很少使用</p>
-<h3 id="Tanh"><a href="#Tanh" class="headerlink" title="Tanh"></a>Tanh</h3><p>$$<br>\sigma(x)&#x3D;\frac{e^x-e^{-x}}{e^x+e^{-x}}<br>$$</p>
-<p>零中心化，优于logistic</p>
-<h2 id="ReLU"><a href="#ReLU" class="headerlink" title="ReLU"></a>ReLU</h2><p>$$<br>f(x) &#x3D; \max(0, x)<br>$$</p>
-<p>导数1缓解了梯度消失问题</p>
+          <h1 id="常用激活函数"><a href="#常用激活函数" class="headerlink" title="常用激活函数"></a>常用激活函数</h1><h2 id="sigmoid"><a href="#sigmoid" class="headerlink" title="sigmoid"></a>sigmoid</h2><p>指一类<strong><u>S型</u>的两端饱和函数</strong>，常见的有logistic和Tanh及其变种</p>
+<h3 id="logistic"><a href="#logistic" class="headerlink" title="logistic"></a>logistic</h3><script type="math/tex; mode=display">
+\sigma(x)=\frac{1}{1+e^{-x}}</script><p>由于最大导数只有0.25，两端饱和严重，输出始终为正，导致梯度下降变慢，现在深度学习隐藏层中已很少使用</p>
+<h3 id="Tanh"><a href="#Tanh" class="headerlink" title="Tanh"></a>Tanh</h3><script type="math/tex; mode=display">
+\sigma(x)=\frac{e^x-e^{-x}}{e^x+e^{-x}}</script><p>零中心化，优于logistic</p>
+<h2 id="ReLU"><a href="#ReLU" class="headerlink" title="ReLU"></a>ReLU</h2><script type="math/tex; mode=display">
+f(x) = \max(0, x)</script><p>导数1缓解了梯度消失问题</p>
 <p>0的部分导致了该神经元的输入参数死亡，永不更新（注：死亡ReLU和梯度消失不是一回事）</p>
-<h3 id="LeakyReLU"><a href="#LeakyReLU" class="headerlink" title="LeakyReLU"></a>LeakyReLU</h3><p>$$<br>f(x) &#x3D; \max(0, x)+\gamma\min(0,x)<br>$$</p>
-<p>gamma为一个很小值（torch中默认e-2），代替ReLU的0</p>
+<h3 id="LeakyReLU"><a href="#LeakyReLU" class="headerlink" title="LeakyReLU"></a>LeakyReLU</h3><script type="math/tex; mode=display">
+f(x) = \max(0, x)+\gamma\min(0,x)</script><p>gamma为一个很小值（torch中默认e-2），代替ReLU的0</p>
 <h3 id="PReLU"><a href="#PReLU" class="headerlink" title="PReLU"></a>PReLU</h3><p>将gamma换作可学习的参数</p>
-<h3 id="Swish"><a href="#Swish" class="headerlink" title="Swish"></a>Swish</h3><p>$$<br>f(x)&#x3D;x\sigma(\beta x)<br>$$</p>
-<p>自门控激活函数。其中sigma为logisitc函数，beta是一个可学习或超参数。</p>
+<h3 id="Swish"><a href="#Swish" class="headerlink" title="Swish"></a>Swish</h3><script type="math/tex; mode=display">
+f(x)=x\sigma(\beta x)</script><p>自门控激活函数。其中sigma为logisitc函数，beta是一个可学习或超参数。</p>
 <p>当logistic接近1时，swish输出接近x，logistic接近0时，输出接近0但不为0。</p>
 <p>形状类似LeakyRelu</p>
-<h1 id="损失函数"><a href="#损失函数" class="headerlink" title="损失函数"></a>损失函数</h1><h2 id="均方误差（Mean-Squared-Error-）"><a href="#均方误差（Mean-Squared-Error-）" class="headerlink" title="均方误差（Mean Squared Error ）"></a>均方误差（Mean Squared Error ）</h2><p>$$<br>MSE &#x3D; \frac{1}{n} \sum_{i&#x3D;1}^{n} (\hat{y}_i - y_i)^2<br>$$</p>
-<p>其中y^hat为模型输出（概率），y为标签值（真1假0）</p>
-<p>在分类问题中，使用sigmoid&#x2F;softmx得到概率，配合MSE损失函数时，采用梯度下降法进行学习时，会出现模型<strong>一开始训练时，学习速度非常慢</strong>的情况</p>
-<h2 id="交叉熵（Cross-Entropy-Loss-Function）"><a href="#交叉熵（Cross-Entropy-Loss-Function）" class="headerlink" title="交叉熵（Cross Entropy Loss Function）"></a>交叉熵（Cross Entropy Loss Function）</h2><p>$$<br>L &#x3D; \frac{1}{N} \sum_{i&#x3D;1}^{N} L_i &#x3D; -\frac{1}{N} \sum_{i&#x3D;1}^{N} \sum_{c&#x3D;1}^{M} y_{ic} \log(p_{ic})<br>$$</p>
-<p>其中N可以理解为batchsize（只是最后对所有样本的交叉熵求平均），M为类别数量（模型输出维度），y_ic为标签值（真1假0），p_ic为模型对每个类的输出概率</p>
+<h1 id="损失函数"><a href="#损失函数" class="headerlink" title="损失函数"></a>损失函数</h1><h2 id="均方误差（Mean-Squared-Error-）"><a href="#均方误差（Mean-Squared-Error-）" class="headerlink" title="均方误差（Mean Squared Error ）"></a>均方误差（Mean Squared Error ）</h2><script type="math/tex; mode=display">
+MSE = \frac{1}{n} \sum_{i=1}^{n} (\hat{y}_i - y_i)^2</script><p>其中y^hat为模型输出（概率），y为标签值（真1假0）</p>
+<p>在分类问题中，使用sigmoid/softmx得到概率，配合MSE损失函数时，采用梯度下降法进行学习时，会出现模型<strong>一开始训练时，学习速度非常慢</strong>的情况</p>
+<h2 id="交叉熵（Cross-Entropy-Loss-Function）"><a href="#交叉熵（Cross-Entropy-Loss-Function）" class="headerlink" title="交叉熵（Cross Entropy Loss Function）"></a>交叉熵（Cross Entropy Loss Function）</h2><script type="math/tex; mode=display">
+L = \frac{1}{N} \sum_{i=1}^{N} L_i = -\frac{1}{N} \sum_{i=1}^{N} \sum_{c=1}^{M} y_{ic} \log(p_{ic})</script><p>其中N可以理解为batchsize（只是最后对所有样本的交叉熵求平均），M为类别数量（模型输出维度），y_ic为标签值（真1假0），p_ic为模型对每个类的输出概率</p>
 <p><em><u>对于torch，可选择是否最终除以N</u></em></p>
-<h1 id="反向传播算法"><a href="#反向传播算法" class="headerlink" title="反向传播算法"></a>反向传播算法</h1><p>对于某个神经元的输出，设为（假设无偏置项）：<br>$$<br>out^{(l)}&#x3D;f(\omega x)&#x3D;in^{(l+1)}<br>$$<br>其中，l上标指网络层数，f为激活函数。（其实ωx是一个矩阵，为方便理解，假设该神经元只有一个输入）对于梯度下降算法中权重的更新，有：<br>$$<br>\omega _{new}&#x3D; \omega - \alpha \frac{\partial L}{\partial \omega}<br>$$<br>由链式法则可知：<br>$$<br>\frac{\partial L}{\partial \omega} &#x3D; \frac{\part L}{\part f}<br>\cdot \frac{\part f}{\part (\omega x)}<br>\cdot \frac{\part (\omega x)}{\part \omega}&#x3D;<br>\frac{\part L}{\part out^{(l)}} \cdot f’ \cdot out^{(l-1)}<br>$$<br>一般称损失函数对l层该神经元输出的偏导为<strong>误差项</strong>δ，则损失函数对该权重的偏导则为：</p>
+<h1 id="反向传播算法"><a href="#反向传播算法" class="headerlink" title="反向传播算法"></a>反向传播算法</h1><p>对于某个神经元的输出，设为（假设无偏置项）：</p>
+<script type="math/tex; mode=display">
+out^{(l)}=f(\omega x)=in^{(l+1)}</script><p>其中，l上标指网络层数，f为激活函数。（其实ωx是一个矩阵，为方便理解，假设该神经元只有一个输入）对于梯度下降算法中权重的更新，有：</p>
+<script type="math/tex; mode=display">
+\omega _{new}= \omega - \alpha \frac{\partial L}{\partial \omega}</script><p>由链式法则可知：</p>
+<script type="math/tex; mode=display">
+\frac{\partial L}{\partial \omega} = \frac{\part L}{\part f}
+\cdot \frac{\part f}{\part (\omega x)}
+\cdot \frac{\part (\omega x)}{\part \omega}=
+\frac{\part L}{\part out^{(l)}} \cdot f' \cdot out^{(l-1)}</script><p>一般称损失函数对l层该神经元输出的偏导为<strong>误差项</strong>δ，则损失函数对该权重的偏导则为：</p>
 <p>误差项  x  <strong>该神经元</strong>激活函数的<strong>梯度</strong>  x  <strong>该权重对应上一神经元</strong>的输出</p>
 <p>而误差项的计算：</p>
-<p>$$<br>out^{l+1}&#x3D;f_{l+1}(\omega^{(l+1)} out^{(l)})<br>\<br>\frac{\part L}{\part out^{(l)}}&#x3D; \frac{\part L}{\part out^{(l+1)}}<br>\cdot \frac{\part out^{l+1}}{\part f_{l+1}}<br>\cdot \frac{\part f_{l+1}}{\part out^{(l)}}&#x3D; \delta^{(l+1)} \cdot f_{(l+1)}’ \cdot \omega^{(l+1)}<br>$$<br>注意此处最后一导是对l层该神经元的输出偏导，所以结果是l+1层的权重。（我对激活函数的理解与标准公式中梯度的位置不太一样，但其实最终结果都是一样的。即：<br>$$<br>\frac{\partial L}{\partial \omega_{(l)}}&#x3D;\frac{\partial L}{\partial out^{(last)}} \ \cdot f_{(last)}’\cdot \omega^{(last)}\cdot…<br>\cdot  \cdot f_{(l+1)}’ \cdot \omega^{(l+1)} \cdot<br>\<br> f_{(l)}’ \cdot out^{(l-1)}<br>$$<br>最后一层的输出即模型的输出（概率），总结下来就是：</p>
+<script type="math/tex; mode=display">
+out^{l+1}=f_{l+1}(\omega^{(l+1)} out^{(l)})
+\\
+\frac{\part L}{\part out^{(l)}}= \frac{\part L}{\part out^{(l+1)}}
+\cdot \frac{\part out^{l+1}}{\part f_{l+1}}
+\cdot \frac{\part f_{l+1}}{\part out^{(l)}}= \delta^{(l+1)} \cdot f_{(l+1)}' \cdot \omega^{(l+1)}</script><p>注意此处最后一导是对l层该神经元的输出偏导，所以结果是l+1层的权重。（我对激活函数的理解与标准公式中梯度的位置不太一样，但其实最终结果都是一样的。即：</p>
+<script type="math/tex; mode=display">
+\frac{\partial L}{\partial \omega_{(l)}}=\frac{\partial L}{\partial out^{(last)}} \\ \cdot f_{(last)}'\cdot \omega^{(last)}\cdot...
+\cdot  \cdot f_{(l+1)}' \cdot \omega^{(l+1)} \cdot
+\\
+ f_{(l)}' \cdot out^{(l-1)}</script><p>最后一层的输出即模型的输出（概率），总结下来就是：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">损失函数对l层权重的偏导 = 损失函数对模型输出的偏导 *</span><br><span class="line">					  最后一层到l层的所有激活函数的梯度 *</span><br><span class="line">					  最后一层到l+1层的权重和 *</span><br><span class="line">					  l-1层的神经元输出</span><br></pre></td></tr></table></figure>
-
 <p>（题外话，由该公式可理解死亡ReLU造成的是在反向传播中该神经元之前所有相关线路中参数更新的直接死亡，而梯度消失问题则是由于某些激活函数饱和区导数接近0导致的网络参数更新缓慢）</p>
 <h1 id="自动微分与计算图"><a href="#自动微分与计算图" class="headerlink" title="自动微分与计算图"></a>自动微分与计算图</h1><p>本节以pytorch操作为例</p>
 <p>自动微分的存在是为了方便对参数梯度的计算，其基本原理是将所有的数值计算分解为基本数值运算和一些初等函数，最终通过链式法则自动计算该复合函数的梯度</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">x = torch.tensor([<span class="number">1.0</span>, <span class="number">2.0</span>, <span class="number">3.0</span>, <span class="number">4.0</span>], requires_grad=<span class="literal">True</span>)</span><br><span class="line">y = (torch.exp(-(<span class="number">2</span>*x + <span class="number">1</span>) + <span class="number">1</span>) + <span class="number">1</span>)</span><br><span class="line">y.retain_grad()</span><br><span class="line">z = <span class="number">1</span> / y</span><br><span class="line">z.<span class="built_in">sum</span>().backward()</span><br><span class="line"><span class="built_in">print</span>(x.grad) <span class="comment"># tensor([0.2100, 0.0353, 0.0049, 0.0007])</span></span><br><span class="line"><span class="built_in">print</span>(y.grad) <span class="comment"># tensor([-0.7758, -0.9644, -0.9951, -0.9993])</span></span><br></pre></td></tr></table></figure>
-
-<p>此时x到z的计算即为：<br>$$<br>z&#x3D;\frac{1}{y}&#x3D;\frac{1}{e^{(-(2x+1)+1)}+1}<br>$$<br>其计算图为：<br>$$<br>2x&gt;2x+1&gt;-(2x+1)&gt;-(2x+1)+1&gt;…&gt;\frac{1}{e^{(-(2x+1)+1)}+1}<br>$$<br>因此若要计算z对x的导数，则可以通过链式法则+反向传播进行求解，因为每个子函数的导数都很简单，所以降低了运算量</p>
+<p>此时x到z的计算即为：</p>
+<script type="math/tex; mode=display">
+z=\frac{1}{y}=\frac{1}{e^{(-(2x+1)+1)}+1}</script><p>其计算图为：</p>
+<script type="math/tex; mode=display">
+2x>2x+1>-(2x+1)>-(2x+1)+1>...>\frac{1}{e^{(-(2x+1)+1)}+1}</script><p>因此若要计算z对x的导数，则可以通过链式法则+反向传播进行求解，因为每个子函数的导数都很简单，所以降低了运算量</p>
 <p>若想单独得到某一步运算中tensor的梯度，则需要向上述代码中的y一样先单独保存该tensor并保存其梯度</p>
 <h2 id="在深度学习中"><a href="#在深度学习中" class="headerlink" title="在深度学习中"></a>在深度学习中</h2><p>在训练神经网络时，backward会计算出loss计算图中所有节点的梯度，包括激活函数梯度等，然后后续再通过用户设置不同的优化器对参数进行优化计算，因此在代码中需要先backward然后再optimizer，backward只负责计算梯度，不负责优化（训练）参数。</p>
 <p>因此，当网络中存在并联结构时（例如一个encoder后并联接入两个decoder），如果只想让一个decoder能影响encoder的更新（让另一个decoder自己单独训练），可以对这个单独训练的decoder输入进行.detach()操作以断掉其之前的计算图，这样对该decoder进行反向传播时梯度就只会计算至detach处（注：只要使用了detach，该条线路上之前的神经元就无论如何都无法被该线路的loss优化所训练了）</p>
@@ -415,7 +436,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2025-10-05 15:10:49 / 修改时间：15:13:39" itemprop="dateCreated datePublished" datetime="2025-10-05T15:10:49+08:00">2025-10-05</time>
+              <time title="创建时间：2025-10-05 15:10:49 / 修改时间：15:30:52" itemprop="dateCreated datePublished" datetime="2025-10-05T15:10:49+08:00">2025-10-05</time>
             </span>
 
           
@@ -430,17 +451,26 @@
 
       
           <h1 id="导向矢量"><a href="#导向矢量" class="headerlink" title="导向矢量"></a>导向矢量</h1><img src="/images/loading.png" data-original="/2025/10/05/beamform/1.jpg" class title="This is an image"> 
-
-<p>选定参考阵元后，后面阵元接收到的信号比参考阵元晚：<br>$$<br>\Delta t &#x3D; \left[0,\ \frac{\delta \cos(\theta_d)}{c},\ \frac{2\delta \cos(\theta_d)}{c},\ \cdots,\ \frac{(M-1)\delta \cos(\theta_d)}{c}\right]<br>$$<br>其中c为声速，δ为后续阵元相对参考阵元的间距（针对复杂阵元δ不为定值），θ为信号入射角度，将其反应到信号的相位变化上（假设输入为单频信号）：</p>
-<p><em>对于使用减法的理解：由于后续信号接收都晚于参考信号，对于参考信号的波形，在绝对时间轴上需要<u>右移（x轴减法）</u>才会露出更早部分的信号，而在同一时刻，后续麦克风受到的波形就是包含更早部分的参考波形（不包含更新、更晚的波形）</em><br>$$<br>y(n) &#x3D; \left[ x(n),\ x(n)e^{-j2\pi f_0\frac{\delta\cos(\theta_d)}{c}},\ x(n)e^{-j2\pi f_0\frac{2\delta\cos(\theta_d)}{c}},\ \cdots,\ x(n)e^{-j2\pi f_0\frac{(M-1)\delta\cos(\theta_d)}{c}} \right]  \ &#x3D; \left[ 1,\ e^{-j2\pi f_0\frac{\delta\cos(\theta_d)}{c}},\ e^{-j2\pi f_0\frac{2\delta\cos(\theta_d)}{c}},\ \cdots,\ e^{-j2\pi f_0\frac{(M-1)\delta\cos(\theta_d)}{c}} \right]x(n) \<br>&#x3D;a(\theta_d) \cdot x(n)<br>$$<br>其中a反应了不同a阵元的空间相位差，即导向矢量，受到以下变量影响：</p>
+<p>选定参考阵元后，后面阵元接收到的信号比参考阵元晚：</p>
+<script type="math/tex; mode=display">
+\Delta t = \left[0,\ \frac{\delta \cos(\theta_d)}{c},\ \frac{2\delta \cos(\theta_d)}{c},\ \cdots,\ \frac{(M-1)\delta \cos(\theta_d)}{c}\right]</script><p>其中c为声速，δ为后续阵元相对参考阵元的间距（针对复杂阵元δ不为定值），θ为信号入射角度，将其反应到信号的相位变化上（假设输入为单频信号）：</p>
+<p><em>对于使用减法的理解：由于后续信号接收都晚于参考信号，对于参考信号的波形，在绝对时间轴上需要<u>右移（x轴减法）</u>才会露出更早部分的信号，而在同一时刻，后续麦克风受到的波形就是包含更早部分的参考波形（不包含更新、更晚的波形）</em></p>
+<script type="math/tex; mode=display">
+y(n) = \left[ x(n),\ x(n)e^{-j2\pi f_0\frac{\delta\cos(\theta_d)}{c}},\ x(n)e^{-j2\pi f_0\frac{2\delta\cos(\theta_d)}{c}},\ \cdots,\ x(n)e^{-j2\pi f_0\frac{(M-1)\delta\cos(\theta_d)}{c}} \right]  \\ = \left[ 1,\ e^{-j2\pi f_0\frac{\delta\cos(\theta_d)}{c}},\ e^{-j2\pi f_0\frac{2\delta\cos(\theta_d)}{c}},\ \cdots,\ e^{-j2\pi f_0\frac{(M-1)\delta\cos(\theta_d)}{c}} \right]x(n) \\
+=a(\theta_d) \cdot x(n)</script><p>其中a反应了不同a阵元的空间相位差，即导向矢量，受到以下变量影响：</p>
 <ul>
 <li>阵元布置结构，影响阵元间距</li>
 <li>来波方向，影响入射角</li>
 <li>参考阵元位置，影响其他阵元计算间距，不影响阵元间相对相位差</li>
 </ul>
 <p>若多个声源从不同角度入射，则导向矢量变为一个MxN的矩阵，M为阵元个数，N为信号数量</p>
-<h2 id="利用导向矢量估计声源入射方向"><a href="#利用导向矢量估计声源入射方向" class="headerlink" title="利用导向矢量估计声源入射方向"></a>利用导向矢量估计声源入射方向</h2><p>当入射角未知时，当阵元布置和参考阵元确定时，导向矢量的形式是确定的，且只受到入射角影响，因此可以构造一个方向为α的导向矢量形式的向量（共轭转置）与输入信号做<strong>内积</strong>计算：<br>$$<br>a^H(\alpha) \cdot a(\theta_d) \cdot x(n) \&#x3D; \left[ 1 + e^{-j2\pi f_0\delta \frac{[\cos(\alpha) - \cos(\theta_d)]}{c}} + e^{-j2\pi f_0\delta \frac{2[\cos(\alpha) - \cos(\theta_d)]}{c}} + \cdots + e^{-j2\pi f_0\delta \frac{(M-1)[\cos(\alpha) - \cos(\theta_d)]}{c}} \right] \\leq M \cdot x(n)<br>$$<br>当角度重合时，内积最大</p>
-<h1 id="延迟求和"><a href="#延迟求和" class="headerlink" title="延迟求和"></a>延迟求和</h1><p>由上一章得知麦克风信号为对参考信号相位分别进行了减法的信号，因此只要对麦克风信号的相位分别进行相反的加法（加权）即可得到原始的信号波形：<br>$$<br>z(n)&#x3D;\frac{1}{M}(1,e^{j2\pi f \tau_1},e^{j2\pi f \tau_2}…) \cdot y(n)^T<br>\&#x3D; \frac{1}{M}\omega(\theta) \cdot y(n)^T<br>$$<br>因此，在进行某个方向的波束求和时，频率f为变量（f依次变化计算出每个频率上的响应）</p>
+<h2 id="利用导向矢量估计声源入射方向"><a href="#利用导向矢量估计声源入射方向" class="headerlink" title="利用导向矢量估计声源入射方向"></a>利用导向矢量估计声源入射方向</h2><p>当入射角未知时，当阵元布置和参考阵元确定时，导向矢量的形式是确定的，且只受到入射角影响，因此可以构造一个方向为α的导向矢量形式的向量（共轭转置）与输入信号做<strong>内积</strong>计算：</p>
+<script type="math/tex; mode=display">
+a^H(\alpha) \cdot a(\theta_d) \cdot x(n) \\= \left[ 1 + e^{-j2\pi f_0\delta \frac{[\cos(\alpha) - \cos(\theta_d)]}{c}} + e^{-j2\pi f_0\delta \frac{2[\cos(\alpha) - \cos(\theta_d)]}{c}} + \cdots + e^{-j2\pi f_0\delta \frac{(M-1)[\cos(\alpha) - \cos(\theta_d)]}{c}} \right] \\\leq M \cdot x(n)</script><p>当角度重合时，内积最大</p>
+<h1 id="延迟求和"><a href="#延迟求和" class="headerlink" title="延迟求和"></a>延迟求和</h1><p>由上一章得知麦克风信号为对参考信号相位分别进行了减法的信号，因此只要对麦克风信号的相位分别进行相反的加法（加权）即可得到原始的信号波形：</p>
+<script type="math/tex; mode=display">
+z(n)=\frac{1}{M}(1,e^{j2\pi f \tau_1},e^{j2\pi f \tau_2}...) \cdot y(n)^T
+\\= \frac{1}{M}\omega(\theta) \cdot y(n)^T</script><p>因此，在进行某个方向的波束求和时，频率f为变量（f依次变化计算出每个频率上的响应）</p>
 <p>（其实原理和上一小节的估计声源方向一样）</p>
 
       
@@ -629,6 +659,61 @@
 
 
   
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
 
   
 

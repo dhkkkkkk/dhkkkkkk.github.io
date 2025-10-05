@@ -89,7 +89,9 @@
   </style>
 </noscript>
 
-</head>
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --></head>
 
 <body itemscope itemtype="http://schema.org/WebPage">
   <div class="container use-motion">
@@ -243,7 +245,6 @@
 
       
           <img src="/images/loading.png" data-original="/2022/08/03/C-%E5%85%B3%E9%94%AE%E5%AD%97/%E5%85%B3%E9%94%AE%E5%AD%97.jpg" class title="This is an image"> 
-
 <h1 id="1-auto-和-register"><a href="#1-auto-和-register" class="headerlink" title="1. auto 和 register"></a>1. auto 和 register</h1><ul>
 <li><p>auto关键字</p>
 <ul>
@@ -294,7 +295,7 @@
 <p>对函数而言，如果你想在本源文件(例如文件名A)中使用另一个源文件(例如文件名B)的函数，<strong>方法有2种</strong>：(1)在A文件中用extern声明在B文件中定义的函数(其实，也可省略extern，只需在A文件中出现B文件定义函数原型即可)；(2)在A文件中添加B文件对应的头文件，当然这个头文件包含B文件中的函数原型，<strong>在头文件中函数可以不用加extern。</strong></p>
 </li>
 <li><p>总结：</p>
-<p>使用extern时，会加速程序的编译（确切的说是预处理）的过程，节省时间。但是当需要对变量&#x2F;函数名进行修改时需要把所有使用extern关键字的地方全部修改一次，而使用头文件包含只需更改一次，效率更高。</p>
+<p>使用extern时，会加速程序的编译（确切的说是预处理）的过程，节省时间。但是当需要对变量/函数名进行修改时需要把所有使用extern关键字的地方全部修改一次，而使用头文件包含只需更改一次，效率更高。</p>
 </li>
 </ul>
 <h1 id="4-条件编译"><a href="#4-条件编译" class="headerlink" title="4. 条件编译"></a>4. 条件编译</h1><ul>
@@ -315,7 +316,6 @@
 </li>
 <li><p>指针</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 定义一个sum函数，计算a跟b的和</span></span><br><span class="line">  <span class="type">int</span> <span class="title function_">sum</span><span class="params">(<span class="type">int</span> a, <span class="type">int</span> b)</span> </span><br><span class="line">  &#123;</span><br><span class="line">      <span class="type">int</span> c = a + b;</span><br><span class="line">      <span class="built_in">printf</span>(<span class="string">&quot;%d + %d = %d&quot;</span>, a, b, c);</span><br><span class="line">      <span class="keyword">return</span> c;</span><br><span class="line"> &#125;</span><br><span class="line"><span class="keyword">typedef</span> <span class="title function_">int</span> <span class="params">(*MySum)</span><span class="params">(<span class="type">int</span>, <span class="type">int</span>)</span>;</span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line"> MySum p = sum;<span class="comment">// 定义一个指向sum函数的指针变量p</span></span><br><span class="line"> <span class="built_in">printf</span>(<span class="string">&quot;%d&quot;</span>,(*p)(<span class="number">1</span>,<span class="number">2</span>)); <span class="comment">//3</span></span><br><span class="line"> <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>详细解释可参考<a target="_blank" rel="noopener" href="https://dhkkk.gitee.io/2022/08/23/FreeRTOS-2/">FreeRTOS的任务相关 | 小董的BLOG (gitee.io)</a>中有详细案例</p>
 <p><strong>也就是说，在正常的定义前加上typedef，即把该定义的变量改为一个新的类型，要再次定义该类型的变量时，直接使用该类型的名字即可。</strong></p>
 </li>
@@ -331,10 +331,10 @@
 </li>
 <li><p>修饰指针</p>
 <ul>
-<li>const int *A; &#x2F;&#x2F;const修饰指针,A可变,A指向的值不能被修改</li>
-<li>int const *A; &#x2F;&#x2F;const修饰指向的对象,A可变,A指向的对象不可变</li>
-<li>int *const A; &#x2F;&#x2F;const修饰指针A, A不可变,A指向的对象可变</li>
-<li>const int *const A;&#x2F;&#x2F;指针A和A指向的对象都不可变</li>
+<li>const int *A; //const修饰指针,A可变,A指向的值不能被修改</li>
+<li>int const *A; //const修饰指向的对象,A可变,A指向的对象不可变</li>
+<li>int *const A; //const修饰指针A, A不可变,A指向的对象可变</li>
+<li>const int *const A;//指针A和A指向的对象都不可变</li>
 </ul>
 </li>
 </ul>
@@ -353,88 +353,98 @@
 </li>
 <li><p>C语言允许宏带有参数。在宏定义中的参数称为形式参数,在宏调用中的参数称为实际参数。(类似函数的使用)</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> average(a, b) (a+b)/2</span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span> <span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="type">int</span> a = average(<span class="number">10</span>, <span class="number">4</span>);</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">&quot;平均值：%d&quot;</span>, a); <span class="comment">//7</span></span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <ul>
 <li><p>带参数的宏在展开时，只作简单的字符和参数的替换，不进行任何计算操作。所以在定义宏时，<strong>一般用一个小括号</strong>括住字符串的参数。</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> D1(a) (2*a)</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> D2(a) (2*(a))</span></span><br><span class="line"><span class="comment">//计算结果最好也用括号括起来,小型计算不括问题应该不大</span></span><br><span class="line">  <span class="type">int</span> <span class="title function_">main</span> <span class="params">()</span></span><br><span class="line">  &#123;</span><br><span class="line">     <span class="type">int</span> b = D1(<span class="number">3</span>+<span class="number">4</span>);</span><br><span class="line">     <span class="type">int</span> c = D2(<span class="number">3</span>+<span class="number">4</span>);</span><br><span class="line">     <span class="built_in">printf</span>(<span class="string">&quot;%d&quot;</span>, b);  <span class="comment">//输出等价于2*3+4=10</span></span><br><span class="line">     <span class="built_in">printf</span>(<span class="string">&quot;%d&quot;</span>, c);  <span class="comment">//2*(3+4)=14</span></span><br><span class="line">     <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure></li>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> D1(a) (2*a)</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> D2(a) (2*(a))</span></span><br><span class="line"><span class="comment">//计算结果最好也用括号括起来,小型计算不括问题应该不大</span></span><br><span class="line">  <span class="type">int</span> <span class="title function_">main</span> <span class="params">()</span></span><br><span class="line">  &#123;</span><br><span class="line">     <span class="type">int</span> b = D1(<span class="number">3</span>+<span class="number">4</span>);</span><br><span class="line">     <span class="type">int</span> c = D2(<span class="number">3</span>+<span class="number">4</span>);</span><br><span class="line">     <span class="built_in">printf</span>(<span class="string">&quot;%d&quot;</span>, b);  <span class="comment">//输出等价于2*3+4=10</span></span><br><span class="line">     <span class="built_in">printf</span>(<span class="string">&quot;%d&quot;</span>, c);  <span class="comment">//2*(3+4)=14</span></span><br><span class="line">     <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+</li>
 </ul>
 </li>
 </ul>
 <h1 id="2、动态存储分配"><a href="#2、动态存储分配" class="headerlink" title="2、动态存储分配"></a>2、动态存储分配</h1><p>此前，用于存储数据的变量和数组在定义后，C编译程序通过定义的类型来了解其所需存储空间的大小并预先为其分配适当的存储空间，这些空间一经分配，在变量或数组的生存期内是固定不变的，所以这种方式也称为“静态存储分配”</p>
 <p>C中还有一种“动态存储分配”的方法，在程序执行期间需要空间来存储数据时，通过申请分配指定的内存空间；当有闲置不用的空间时可以随时将其释放。C标准库提供了相关函数来进行对应操作：</p>
-<h2 id="库函数"><a href="#库函数" class="headerlink" title="库函数"></a>库函数</h2><h3 id="malloc函数"><a href="#malloc函数" class="headerlink" title="malloc函数"></a>malloc函数</h3><table>
+<h2 id="库函数"><a href="#库函数" class="headerlink" title="库函数"></a>库函数</h2><h3 id="malloc函数"><a href="#malloc函数" class="headerlink" title="malloc函数"></a>malloc函数</h3><div class="table-container">
+<table>
 <thead>
 <tr>
-<th align="center">函数名</th>
-<th align="center">malloc(unsigned int size);</th>
+<th style="text-align:center">函数名</th>
+<th style="text-align:center">malloc(unsigned int size);</th>
 </tr>
 </thead>
-<tbody><tr>
-<td align="center">参数</td>
-<td align="center">size:字节数</td>
+<tbody>
+<tr>
+<td style="text-align:center">参数</td>
+<td style="text-align:center">size:字节数</td>
 </tr>
 <tr>
-<td align="center">返回值</td>
-<td align="center">成功则返回一个类型为void的首地址，失败为null</td>
+<td style="text-align:center">返回值</td>
+<td style="text-align:center">成功则返回一个类型为void的首地址，失败为null</td>
 </tr>
 <tr>
-<td align="center">功能</td>
-<td align="center">在内存的动态存储区中分配一块长度为size字节的连续区域</td>
+<td style="text-align:center">功能</td>
+<td style="text-align:center">在内存的动态存储区中分配一块长度为size字节的连续区域</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <p>例：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//使用时需要包含&quot;stdlib.h&quot;或&quot;malloc.h&quot;</span></span><br><span class="line"><span class="type">int</span> *pi=(<span class="type">int</span>*)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(<span class="type">int</span>));</span><br><span class="line"><span class="comment">//malloc返回值为void*型，可以强制转化为任何类型</span></span><br></pre></td></tr></table></figure>
-
 <ul>
 <li>需要注意的是，malloc只会负责分配空间。并不能对其进行初始化，所以此时*pi的值是随机的</li>
 <li>该函数常用于初始化一个指针，这样可以避免使该指针成为<strong>野指针</strong></li>
 </ul>
-<h3 id="calloc函数"><a href="#calloc函数" class="headerlink" title="calloc函数"></a>calloc函数</h3><table>
+<h3 id="calloc函数"><a href="#calloc函数" class="headerlink" title="calloc函数"></a>calloc函数</h3><div class="table-container">
+<table>
 <thead>
 <tr>
-<th align="center">函数名</th>
-<th align="center">calloc(unsigned int num,unsigned int size)</th>
+<th style="text-align:center">函数名</th>
+<th style="text-align:center">calloc(unsigned int num,unsigned int size)</th>
 </tr>
 </thead>
-<tbody><tr>
-<td align="center">参数</td>
-<td align="center">num:分配数据项的个数<br>size:每个数据项的大小</td>
+<tbody>
+<tr>
+<td style="text-align:center">参数</td>
+<td style="text-align:center">num:分配数据项的个数<br>size:每个数据项的大小</td>
 </tr>
 <tr>
-<td align="center">返回值</td>
-<td align="center">成功则返回一个类型为void的首地址，失败为null</td>
+<td style="text-align:center">返回值</td>
+<td style="text-align:center">成功则返回一个类型为void的首地址，失败为null</td>
 </tr>
 <tr>
-<td align="center">功能</td>
-<td align="center">在内存的动态存储区中分配n块长度为size字节的连续区域</td>
+<td style="text-align:center">功能</td>
+<td style="text-align:center">在内存的动态存储区中分配n块长度为size字节的连续区域</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <ul>
 <li>不同于malloc，calloc会对分配的存储单元值自动初始化为0</li>
 </ul>
 <p>因此，可以用以下方法开辟一个一维数组</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">char</span> *p;</span><br><span class="line">p=(<span class="type">char</span>*)<span class="built_in">calloc</span>(<span class="number">10</span>,<span class="keyword">sizeof</span>(<span class="type">char</span>));<span class="comment">//开辟一个可以存放十个字符串的数组</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="free函数"><a href="#free函数" class="headerlink" title="free函数"></a>free函数</h3><table>
+<h3 id="free函数"><a href="#free函数" class="headerlink" title="free函数"></a>free函数</h3><div class="table-container">
+<table>
 <thead>
 <tr>
-<th align="center">函数名</th>
-<th align="center">free(void *ptr);</th>
+<th style="text-align:center">函数名</th>
+<th style="text-align:center">free(void *ptr);</th>
 </tr>
 </thead>
-<tbody><tr>
-<td align="center">参数</td>
-<td align="center">一个指针</td>
+<tbody>
+<tr>
+<td style="text-align:center">参数</td>
+<td style="text-align:center">一个指针</td>
 </tr>
 <tr>
-<td align="center">返回值</td>
-<td align="center">无</td>
+<td style="text-align:center">返回值</td>
+<td style="text-align:center">无</td>
 </tr>
 <tr>
-<td align="center">功能</td>
-<td align="center">释放ptr所指向的一块内存空间</td>
+<td style="text-align:center">功能</td>
+<td style="text-align:center">释放ptr所指向的一块内存空间</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <ul>
 <li>需要注意的是，free释放的区域应为malloc或calloc所分配的区域</li>
 <li>free函数的实际功能是告诉系统输入参数对应的内存不再使用，即不再被保护，也就是说其他变量随时会占用占用那个地址。<strong>因此，原则上不再访问已经被free的的内存</strong></li>
@@ -506,13 +516,9 @@
 
       
           <h1 id="1-基本内容"><a href="#1-基本内容" class="headerlink" title="1.基本内容"></a>1.基本内容</h1><h2 id="几种初始化"><a href="#几种初始化" class="headerlink" title="几种初始化"></a>几种初始化</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Student</span> </span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">     <span class="type">char</span> *name;</span><br><span class="line">     <span class="type">int</span> age;</span><br><span class="line"> &#125;;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Student</span> <span class="title">stu</span> =</span> &#123;“lnj<span class="string">&quot;, 27&#125;; //定义的同时按顺序初始化</span></span><br><span class="line"><span class="string">/**************************************************************************/</span></span><br><span class="line"><span class="string">struct Student stu = &#123;.age = 35, .name = “lnj&quot;</span>&#125;;<span class="comment">//定义的同时不按顺序初始化</span></span><br><span class="line"><span class="comment">/**************************************************************************/</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Student</span> <span class="title">stu</span>;</span></span><br><span class="line">stu.name = <span class="string">&quot;lnj&quot;</span>;</span><br><span class="line">stu.age = <span class="number">35</span>;  <span class="comment">//先定义后逐个初始化</span></span><br><span class="line"><span class="comment">/**************************************************************************/</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Student</span> <span class="title">stu</span>;</span></span><br><span class="line">stu = (<span class="keyword">struct</span> Student)&#123;<span class="string">&quot;lnj&quot;</span>, <span class="number">35</span>&#125;;    <span class="comment">// 先定义后,再一次性初始化   </span></span><br></pre></td></tr></table></figure>
-
 <h2 id="结构体数组"><a href="#结构体数组" class="headerlink" title="结构体数组"></a>结构体数组</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">struct Student </span><br><span class="line">&#123;</span><br><span class="line">    char *name;</span><br><span class="line">    int age;</span><br><span class="line">&#125;;</span><br><span class="line">struct Student stu[2]; </span><br><span class="line">stu[0] = &#123;&quot;lnj&quot;, 35&#125;;</span><br><span class="line">stu[1] = &#123;&quot;zs&quot;, 18&#125;;</span><br></pre></td></tr></table></figure>
-
 <h2 id="结构体指针"><a href="#结构体指针" class="headerlink" title="结构体指针"></a>结构体指针</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">     <span class="comment">// 定义一个结构体类型</span></span><br><span class="line">     <span class="class"><span class="keyword">struct</span> <span class="title">Student</span> </span></span><br><span class="line"><span class="class">     &#123;</span></span><br><span class="line">         <span class="type">char</span> *name;</span><br><span class="line">         <span class="type">int</span> age;</span><br><span class="line">     &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 定义一个结构体变量</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">Student</span> <span class="title">stu</span> =</span> &#123;“lnj<span class="string">&quot;, 18&#125;;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    // 定义一个指向结构体的指针变量</span></span><br><span class="line"><span class="string">    struct Student *p;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">   // 指向结构体变量stu</span></span><br><span class="line"><span class="string">   p = &amp;stu;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    /*</span></span><br><span class="line"><span class="string">     这时候可以用3种方式访问结构体的成员</span></span><br><span class="line"><span class="string">     */</span></span><br><span class="line"><span class="string">    // 方式1：结构体变量名.成员名</span></span><br><span class="line"><span class="string">    printf(&quot;</span>name=%s, age = %d \n<span class="string">&quot;, stu.name, stu.age);</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    // 方式2：(*指针变量名).成员名</span></span><br><span class="line"><span class="string">    printf(&quot;</span>name=%s, age = %d \n<span class="string">&quot;, (*p).name, (*p).age);</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    // 方式3：指针变量名-&gt;成员名</span></span><br><span class="line"><span class="string">    printf(&quot;</span>name=%s, age = %d \n<span class="string">&quot;, p-&gt;name, p-&gt;age);</span></span><br><span class="line"><span class="string">  //-&gt;运算符只用于指针结构体</span></span><br><span class="line"><span class="string">    return 0;</span></span><br><span class="line"><span class="string">&#125;</span></span><br></pre></td></tr></table></figure>
-
 <h2 id="结构体嵌套"><a href="#结构体嵌套" class="headerlink" title="结构体嵌套"></a>结构体嵌套</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Date</span>&#123;</span></span><br><span class="line">     <span class="type">int</span> month;</span><br><span class="line">     <span class="type">int</span> day;</span><br><span class="line">     <span class="type">int</span> year;</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">struct</span>  <span class="title">stu</span>&#123;</span></span><br><span class="line">     <span class="type">int</span> num;</span><br><span class="line">    <span class="type">char</span> *name;</span><br><span class="line">    <span class="type">char</span> sex;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">Date</span> <span class="title">birthday</span>;</span></span><br><span class="line">    Float score;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <ul>
 <li><p>成员访问</p>
 <p>如果某个成员也是结构体变量，可以连续使用成员运算符”.”访问最低一级成员。</p>
@@ -522,7 +528,6 @@
 <li><p>结构体变量占用的内存空间永远是所有成员中占用内存最大成员的倍数(对齐问题)</p>
 <p>这种强制的要求一来简化了处理器与内存之间传输系统的设计,二来可以提升读取数据的速度。比如这么一种处理器,它每次读写内存的时候都从某个8倍数的地址开始,一次读出或写入8个字节的数据,假如软件能 保证double类型的数据都从8倍数地址开始,那么读或写一个double类型数据就只需要一次内存操作。否则,我们就可能需要两次内存操作才能完成这个动作,因为数据或许恰好横跨在两个符合对齐要求的8字节。</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Person</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">   <span class="type">int</span> age; <span class="comment">// 4</span></span><br><span class="line">   <span class="type">char</span> ch; <span class="comment">// 1</span></span><br><span class="line">   <span class="type">double</span> score; <span class="comment">// 8</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Person</span> <span class="title">p</span>;</span></span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;sizeof = %i\n&quot;</span>, <span class="keyword">sizeof</span>(p)); <span class="comment">// 16</span></span><br></pre></td></tr></table></figure>
-
 <ul>
 <li>占用内存最大属性是score, 占8个字节, 所以第一次会分配8个字节</li>
 <li>将第一次分配的8个字节分配给age4个,分配给ch1个, 还剩下3个字节</li>
@@ -530,7 +535,6 @@
 <li>一共开辟了两次8个字节空间, 所以最终p占用16个字节</li>
 </ul>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Person</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">  <span class="type">int</span> age; <span class="comment">// 4</span></span><br><span class="line">  <span class="type">double</span> score; <span class="comment">// 8</span></span><br><span class="line">  <span class="type">char</span> ch; <span class="comment">// 1</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Person</span> <span class="title">p</span>;</span></span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;sizeof = %i\n&quot;</span>, <span class="keyword">sizeof</span>(p)); <span class="comment">// 24</span></span><br></pre></td></tr></table></figure>
-
 <ul>
 <li>占用内存最大属性是score, 占8个字节, 所以第一次会分配8个字节</li>
 <li>将第一次分配的8个字节分配给age4个,还剩下4个字节</li>
@@ -543,13 +547,15 @@
 <p><strong><code>chara[5];int b;</code>时仍然用int的大小计算。</strong></p>
 <h1 id="3-结构体之间赋值"><a href="#3-结构体之间赋值" class="headerlink" title="3.结构体之间赋值"></a>3.结构体之间赋值</h1><ul>
 <li><p>结构体虽然是构造类型, <strong>但是结构体之间赋值是值拷贝, 而不是地址传递</strong>。所以结构体变量作为函数形参时也是值传递, <strong>在函数内修改形参, 不会影响外界实参</strong>。</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Person</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="type">char</span> *name;</span><br><span class="line">    <span class="type">int</span> age;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="type">void</span> <span class="title function_">test</span><span class="params">(<span class="keyword">struct</span> Person per)</span>;</span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">Person</span> <span class="title">p1</span> =</span> &#123;<span class="string">&quot;lnj&quot;</span>, <span class="number">35</span>&#125;;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;p1.name = %s\n&quot;</span>, p1.name); <span class="comment">// lnj</span></span><br><span class="line">    test(p1);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;p1.name = %s\n&quot;</span>, p1.name); <span class="comment">// lnj</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="type">void</span> <span class="title function_">test</span><span class="params">(<span class="keyword">struct</span> Person per)</span></span><br><span class="line">&#123;</span><br><span class="line">    per.name = <span class="string">&quot;zs&quot;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Person</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="type">char</span> *name;</span><br><span class="line">    <span class="type">int</span> age;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="type">void</span> <span class="title function_">test</span><span class="params">(<span class="keyword">struct</span> Person per)</span>;</span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">Person</span> <span class="title">p1</span> =</span> &#123;<span class="string">&quot;lnj&quot;</span>, <span class="number">35</span>&#125;;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;p1.name = %s\n&quot;</span>, p1.name); <span class="comment">// lnj</span></span><br><span class="line">    test(p1);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;p1.name = %s\n&quot;</span>, p1.name); <span class="comment">// lnj</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="type">void</span> <span class="title function_">test</span><span class="params">(<span class="keyword">struct</span> Person per)</span></span><br><span class="line">&#123;</span><br><span class="line">    per.name = <span class="string">&quot;zs&quot;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
 </ul>
 <h1 id="共用体"><a href="#共用体" class="headerlink" title="共用体"></a>共用体</h1><ul>
 <li><p>和结构体不同的是, 结构体的每个成员都是占用一块独立的存储空间, 而共用体<strong>所有的成员都占用同一块存储空间，因此所有成员的地址都是相同的</strong></p>
 </li>
 <li><p>特点: 由于所有属性共享同一块内存空间, <strong>所以只要其中一个属性发生了改变, 其它的属性都会受到影响</strong>。</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">union</span> <span class="title">Test</span>&#123;</span></span><br><span class="line">    <span class="type">int</span> age;</span><br><span class="line">    <span class="type">char</span> ch;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="class"><span class="keyword">union</span> <span class="title">Test</span> <span class="title">t</span>;</span></span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;sizeof(p) = %i\n&quot;</span>, <span class="keyword">sizeof</span>(t)); <span class="comment">//4</span></span><br><span class="line">  </span><br><span class="line">t.age = <span class="number">33</span>;</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;t.age = %i\n&quot;</span>, t.age); <span class="comment">// 33</span></span><br><span class="line">t.ch = <span class="string">&#x27;a&#x27;</span>;</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;t.ch = %c\n&quot;</span>, t.ch); <span class="comment">// a</span></span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;t.age = %i\n&quot;</span>, t.age); <span class="comment">// 97</span></span><br></pre></td></tr></table></figure></li>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">union</span> <span class="title">Test</span>&#123;</span></span><br><span class="line">    <span class="type">int</span> age;</span><br><span class="line">    <span class="type">char</span> ch;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="class"><span class="keyword">union</span> <span class="title">Test</span> <span class="title">t</span>;</span></span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;sizeof(p) = %i\n&quot;</span>, <span class="keyword">sizeof</span>(t)); <span class="comment">//4</span></span><br><span class="line">  </span><br><span class="line">t.age = <span class="number">33</span>;</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;t.age = %i\n&quot;</span>, t.age); <span class="comment">// 33</span></span><br><span class="line">t.ch = <span class="string">&#x27;a&#x27;</span>;</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;t.ch = %c\n&quot;</span>, t.ch); <span class="comment">// a</span></span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;t.age = %i\n&quot;</span>, t.age); <span class="comment">// 97</span></span><br></pre></td></tr></table></figure>
+</li>
 </ul>
 <h1 id="枚举"><a href="#枚举" class="headerlink" title="枚举"></a>枚举</h1><ul>
 <li>枚举使用的注意<ul>
@@ -560,7 +566,6 @@
 </li>
 </ul>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">enum</span> <span class="title">Season</span> &#123;</span></span><br><span class="line">    Spring = <span class="number">9</span>,</span><br><span class="line">    Summer,</span><br><span class="line">    Autumn = <span class="number">20</span>,</span><br><span class="line">    Winter</span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">// 也就是说spring的值为9，summer的值为10，autumn的值为20，winter的值为21</span></span><br></pre></td></tr></table></figure>
-
 <ul>
 <li>关于枚举类型的内存大小：<ul>
 <li>若为没有在其中赋值的操作，默认4字节</li>
@@ -569,7 +574,6 @@
 </li>
 </ul>
 <h1 id="利用结构体实现动态链表"><a href="#利用结构体实现动态链表" class="headerlink" title="利用结构体实现动态链表"></a>利用结构体实现动态链表</h1><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&quot;stdio.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;stdlib.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&quot;windows.h&quot;</span></span></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">list</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">	<span class="type">int</span> num;</span><br><span class="line">	<span class="type">char</span> name[<span class="number">30</span>];</span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">list</span> *<span class="title">next</span>;</span></span><br><span class="line">&#125;test;</span><br><span class="line"></span><br><span class="line">test *<span class="title function_">creat</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">	test *linkhead,*linkend,*pt;</span><br><span class="line">	<span class="type">int</span> i;</span><br><span class="line">	<span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;<span class="number">3</span>;i++)</span><br><span class="line">	&#123;</span><br><span class="line">		pt=(test*)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(test));<span class="comment">//分配动态内存</span></span><br><span class="line">		<span class="built_in">scanf</span>(<span class="string">&quot;%d %s&quot;</span>,&amp;pt-&gt;num,pt-&gt;name);</span><br><span class="line">		<span class="keyword">if</span>(i==<span class="number">0</span>)</span><br><span class="line">		&#123;</span><br><span class="line">			linkhead=pt;<span class="comment">//第一次先将当前节点赋给链头链尾</span></span><br><span class="line">			linkend=pt;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span><span class="comment">//若不是第一次，先将当前节点存入上一个节点的next中，再将linkend更新为当前节点以供下一次访问</span></span><br><span class="line">		&#123;                                                                <span class="comment">//当前节点的next</span></span><br><span class="line">			linkend-&gt;next=pt;</span><br><span class="line">			linkend=pt;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	linkend-&gt;next=<span class="literal">NULL</span>;</span><br><span class="line">	<span class="keyword">return</span> linkhead;</span><br><span class="line">&#125;</span><br><span class="line"><span class="type">void</span> <span class="title function_">destroy</span><span class="params">(test *linkHead)</span></span><br><span class="line">&#123;</span><br><span class="line">	test *p;</span><br><span class="line">	p=linkHead; </span><br><span class="line">	<span class="keyword">while</span>(p!=<span class="literal">NULL</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		linkHead=linkHead-&gt;next;</span><br><span class="line">		<span class="built_in">free</span>(p);</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;clear\n&quot;</span>);</span><br><span class="line">		p=linkHead;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;	</span><br><span class="line">	test *LH，*Free_item;</span><br><span class="line">	LH=creat();</span><br><span class="line">   Free_item=LH;</span><br><span class="line">	<span class="keyword">while</span>(LH!=<span class="literal">NULL</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;NUM:%d   NAME:%s\n&quot;</span>,LH-&gt;num,LH-&gt;name);</span><br><span class="line">		LH=LH-&gt;next;</span><br><span class="line">	&#125;</span><br><span class="line">	destroy(Free_item);</span><br><span class="line">	system(<span class="string">&quot;pause&quot;</span>);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p><strong>以下解释存在一定问题，我修改后的内容以及写在下一节！！！</strong></p>
 <ul>
 <li><p><em>注：其实这里最开始打印也应该单独写个函数，但是由于我懒得去写了，因此直接在main中操作参数，并且在操作完后我意识到好像无法再以LH为参数去使用destroy函数，按照一般地址与指针的理解，在打印完成过后应该已经改变了在creat()函数中分配的内存所对应的值，但是我抱着尝试的心理用main中的Free_item作为参数使用destroy函数竟然成功了，这一度让我以为我在指针的学习中是不是疏忽了什么重要内容！之后自己以简单的函数间的指针交互写了一些程序发现自己的理解好像也并没有什么问题，最后，在以”形参”为关键字搜索我的个人博客后终于找到如下一段话：</em></p>
@@ -581,16 +585,12 @@
 <p><strong>我们一步一步来捋一下</strong>：</p>
 <h3 id="①creat函数"><a href="#①creat函数" class="headerlink" title="①creat函数"></a>①creat函数</h3><p>首先我们可以确定，在这个链表程序中的所有test类型变量均为指针变量，也就是说，在creat()函数中:</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">test *<span class="title function_">creat</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">	test *linkhead,*linkend,*pt;</span><br><span class="line">	<span class="type">int</span> i;</span><br><span class="line">	<span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;<span class="number">3</span>;i++)</span><br><span class="line">	&#123;</span><br><span class="line">		pt=(test*)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(test));<span class="comment">//分配动态内存</span></span><br><span class="line">		<span class="built_in">scanf</span>(<span class="string">&quot;%d %s&quot;</span>,&amp;pt-&gt;num,pt-&gt;name);</span><br><span class="line">		<span class="keyword">if</span>(i==<span class="number">0</span>)</span><br><span class="line">		&#123;</span><br><span class="line">			linkhead=pt;<span class="comment">//第一次先将当前节点赋给链头链尾</span></span><br><span class="line">			linkend=pt;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span><span class="comment">//若不是第一次，先将当前节点存入上一个节点的next中，再将linkend更新为当前节点以供下一次访问</span></span><br><span class="line">		&#123;                                                                <span class="comment">//当前节点的next</span></span><br><span class="line">			linkend-&gt;next=pt;</span><br><span class="line">			linkend=pt;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	linkend-&gt;next=<span class="literal">NULL</span>;</span><br><span class="line">	<span class="keyword">return</span> linkhead;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
 <ul>
 <li>在<code>scanf(&quot;%d %s&quot;,&amp;pt-&gt;num,pt-&gt;name);</code>中，其实是让pt这个结构体指针指向了一个整型数字和一个字符串，按照C++的说法就是<strong>直接使指针指向了两个字符值常量。</strong></li>
 <li>在三次循环中，分别开辟了三个动态内存区域。</li>
 <li>creat函数返回的也是一个结构体指针</li>
 </ul>
 <h3 id="②main-函数"><a href="#②main-函数" class="headerlink" title="②main()函数"></a>②main()函数</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;	</span><br><span class="line">	test *LH，*Free_item;</span><br><span class="line">	LH=creat();</span><br><span class="line">   Free_item=LH;</span><br><span class="line">	<span class="keyword">while</span>(LH!=<span class="literal">NULL</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;NUM:%d   NAME:%s\n&quot;</span>,LH-&gt;num,LH-&gt;name);</span><br><span class="line">		LH=LH-&gt;next;</span><br><span class="line">	&#125;</span><br><span class="line">	destroy(Free_item);</span><br><span class="line">	system(<span class="string">&quot;pause&quot;</span>);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <ul>
 <li>creat函数返回的指针<strong>赋值</strong>给结构体指针LH，并且在这里，所有的指针都不是二重指针，因此，creat的返回值linkhead的成员num和name都是直接指向的字符值常量，<strong>因此LH也通过linkhead直接指向这两个成员，而不是LH指向linkhead这个指针变量的地址</strong>，可以理解为linkhead和LH是并列的，没有先后顺序的。</li>
 <li>下一步的<code>Free_item=LH;</code>也是同理，字面意义是Free_item指向了LH的地址，但是实际上Free_item也是直接指向的动态内存中的字符值常量，因为Free_item是一个一重指针，<strong>它不具有保存另一个指针变量地址的功能，所以它会通过LH直接指向动态内存</strong></li>
@@ -598,7 +598,6 @@
 </ul>
 <h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>其实说到底，是我自己对指针理解一直存在的误区，例如如下例程：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">int</span> a=<span class="number">10</span>;</span><br><span class="line">	<span class="type">int</span> *p1,*p2;</span><br><span class="line">	p1=&amp;a;</span><br><span class="line">	p2=p1;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%d %d %d %d&quot;</span>,p1,&amp;p1,p2,&amp;a); <span class="comment">//6422036 6422024 6422036 6422036</span></span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>我之前一直认为一个指针指向另一个指针，该指针的便会指向另一个指针变量自己的地址，<strong>但实际上，一重指针并不具有保存另一个指针变量地址的功能，所以该指针会直接指向另一个指针指向的内容。</strong></p>
 <p>就像上述例程中,p1指向整型变量a的地址，再将p1赋值给p2，但打印结果中p2指向的地址是a的地址(&amp;a)，而不是p1本身的地址（&amp;p1)。</p>
 <p>这也从另一方面说明了二重指针的一些重要性吧。</p>
@@ -675,38 +674,36 @@
 </ul>
 <h2 id="什么是指针变量"><a href="#什么是指针变量" class="headerlink" title="什么是指针变量"></a>什么是指针变量</h2><p>在C语言中,允许用一个变量来存放其它变量的地址, 这种专门用于存储其它变量地址的变量, 我们称之为指针变量。</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">char</span> ch = <span class="string">&#x27;a&#x27;</span>;</span><br><span class="line"><span class="type">char</span> *p; <span class="comment">// 一个用于指向字符型变量的指针</span></span><br><span class="line">p = &amp;ch; </span><br></pre></td></tr></table></figure>
-
 <p>*表示这是一个指针变量</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> *p;</span><br><span class="line">p =  <span class="number">250</span>; <span class="comment">// 错误写法</span></span><br><span class="line"><span class="comment">/****************************/</span></span><br><span class="line"><span class="type">int</span> *p;</span><br><span class="line">*p=&amp;a; <span class="comment">//错误写法</span></span><br></pre></td></tr></table></figure>
-
 <ul>
 <li>多个指针变量可以指向同一个地址。</li>
 </ul>
 <h3 id="对指针变量的理解"><a href="#对指针变量的理解" class="headerlink" title="对指针变量的理解"></a>对指针变量的理解</h3><p>指针变量本身的作用是储存一个用户定义的变量的地址，但是其本身作为一个额外的变量，也有自己的地址，<strong>且这个地址不等于其储存的变量的地址；</strong></p>
 <p>例：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">int</span> a=<span class="number">1</span>;</span><br><span class="line">    <span class="type">int</span> *c;</span><br><span class="line">    c=&amp;a;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;指针变量c自身的地址为：%d&quot;</span>,&amp;c);<span class="comment">//6487568 </span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;指针变量c存储单元内存储的内容(也就是a的地址)为：%d&quot;</span>,c);<span class="comment">//6487576</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;变量a的地址为：%d&quot;</span>,a);<span class="comment">//6487576</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//  c代表c内存放的地址</span></span><br><span class="line"><span class="comment">//  &amp;c代表c自身的地址</span></span><br><span class="line"><span class="comment">//  *c代表c内存放的地址中所存储的值</span></span><br><span class="line"><span class="comment">// (c+1)代表c内存放的地址+1*类型长度</span></span><br><span class="line"><span class="comment">// *c+1代表c内存放的地址中所存储的值本身+1</span></span><br><span class="line"><span class="comment">// *(c+1)代表c内存放的地址+1*类型长度后得到的地址中存储的值</span></span><br></pre></td></tr></table></figure>
-
 <h2 id="取地址运算符（-amp-）与解引用运算符（-）"><a href="#取地址运算符（-amp-）与解引用运算符（-）" class="headerlink" title="取地址运算符（&amp;）与解引用运算符（*）"></a>取地址运算符（&amp;）与解引用运算符（*）</h2><ul>
 <li><p>取地址运算符：&amp;x，其作用为返回操作对象的地址</p>
 </li>
 <li><p>解引用运算符：<code>*x</code>，其作用是<strong>返回x中存储的地址内存储的值</strong></p>
 <p>例： <code>int a,*p1;p1=&amp;a;</code><strong>则此时*p1代表的就是变量a的内容,而不是a的地址</strong></p>
-<p>这也就是为什么使用<code>printf(&quot;%d&quot;,*p);</code>时是用*p而不是p了，因为 *p才是代表a的值，p则存储的变量a的地址</p>
+<p>这也就是为什么使用<code>printf(&quot;%d&quot;,*p);</code>时是用<em>p而不是p了，因为 </em>p才是代表a的值，p则存储的变量a的地址</p>
 <p><strong>综上：除开定义时，其余时间*p等同a，p等同&amp;a</strong></p>
 <p>在定义时，<code>int *p1=&amp;a;</code>也是合法的且作用与上相同，个人理解为是一种指针格式的“声明”（？）这也解释了当某个函数参数定义为为<code>int *a</code>时实际使用时传入的也是&amp;的取地址变量了（个人理解）</p>
 </li>
 </ul>
 <h1 id="2-一些用法"><a href="#2-一些用法" class="headerlink" title="2.一些用法"></a>2.一些用法</h1><h2 id="二级指针"><a href="#二级指针" class="headerlink" title="二级指针"></a>二级指针</h2><ul>
 <li><p>如果一个指针变量存放的又是另一个指针变量的地址,则称这个指针变量为指向指针的指针￼变量。也称为“二级指针”。</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">char</span> c = <span class="string">&#x27;a&#x27;</span>;</span><br><span class="line"><span class="type">char</span> *cp;</span><br><span class="line">cp = &amp;c;</span><br><span class="line"><span class="type">char</span> **cp2;</span><br><span class="line">cp2 = &amp;cp;</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;c = %c&quot;</span>, **cp2);<span class="comment">//  c=a</span></span><br></pre></td></tr></table></figure></li>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">char</span> c = <span class="string">&#x27;a&#x27;</span>;</span><br><span class="line"><span class="type">char</span> *cp;</span><br><span class="line">cp = &amp;c;</span><br><span class="line"><span class="type">char</span> **cp2;</span><br><span class="line">cp2 = &amp;cp;</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;c = %c&quot;</span>, **cp2);<span class="comment">//  c=a</span></span><br></pre></td></tr></table></figure>
+</li>
 </ul>
 <h2 id="指针访问数组元素"><a href="#指针访问数组元素" class="headerlink" title="指针访问数组元素"></a>指针访问数组元素</h2><ul>
 <li><p>在指针指向数组元素时,允许以下运算:</p>
 <ul>
-<li>加一个整数(用+或+&#x3D;),如p+1</li>
-<li>减一个整数(用-或-&#x3D;),如p-1</li>
+<li>加一个整数(用+或+=),如p+1</li>
+<li>减一个整数(用-或-=),如p-1</li>
 <li>自加运算,如p++,++p</li>
-<li>自减运算,如p–,–p</li>
+<li>自减运算,如p–,—p</li>
 </ul>
 <p>如果指针变量p已指向数组中的一个元素,则p+1<code>指向</code>同一数组中的下一个元素,p-1<code>指向</code>同 一数组中的上一个元素。【*(p+1)】</p>
 <p>(p+N)在地址上的变化为<code>p内存放的地址+数组元素类型长度*N</code></p>
@@ -717,7 +714,6 @@
 </ul>
 <h2 id="指针与字符串"><a href="#指针与字符串" class="headerlink" title="指针与字符串"></a>指针与字符串</h2><p>定义字符串除了使用字符数组存放之外，还可以通过字符串指针的方式指向字符串。</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 数组名保存的是数组第0个元素的地址, 指针也可以保存第0个元素的地址</span></span><br><span class="line"><span class="type">char</span> *str = <span class="string">&quot;abc&quot;</span></span><br></pre></td></tr></table></figure>
-
 <ul>
 <li><p>使用注意事项</p>
 <ul>
@@ -725,14 +721,14 @@
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//使用字符数组来保存的字符串是保存栈里的,保存栈里面东西是可读可写,所有可以修改字符串中的的字符</span></span><br><span class="line"><span class="comment">//使用字符指针来保存字符串,它保存的是字符串常量地址,常量区是只读的,所以我们不可以修改字符串中的字符</span></span><br><span class="line"><span class="type">char</span> *str = <span class="string">&quot;lnj&quot;</span>;</span><br><span class="line">*(str+<span class="number">2</span>) = <span class="string">&#x27;y&#x27;</span>; <span class="comment">// 错误</span></span><br></pre></td></tr></table></figure>
 </li>
 <li><p>不能够直接接收键盘输入</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 错误的原因是:str是一个野指针,他并没有指向某一块内存空间</span></span><br><span class="line"><span class="comment">// 所以不允许这样写如果给str分配内存空间是可以这样用 的</span></span><br><span class="line"><span class="type">char</span> *str;</span><br><span class="line"><span class="built_in">scanf</span>(<span class="string">&quot;%s&quot;</span>, str);</span><br></pre></td></tr></table></figure></li>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 错误的原因是:str是一个野指针,他并没有指向某一块内存空间</span></span><br><span class="line"><span class="comment">// 所以不允许这样写如果给str分配内存空间是可以这样用 的</span></span><br><span class="line"><span class="type">char</span> *str;</span><br><span class="line"><span class="built_in">scanf</span>(<span class="string">&quot;%s&quot;</span>, str);</span><br></pre></td></tr></table></figure>
+</li>
 </ul>
 </li>
 </ul>
 <h2 id="指向函数的指针"><a href="#指向函数的指针" class="headerlink" title="指向函数的指针"></a>指向函数的指针</h2><p>函数在内存中占据空间，因此也有起始地址。</p>
 <p>格式：返回值类型  (*指针变量名)(形参);</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string.h&gt;</span></span></span><br><span class="line"> <span class="type">int</span> <span class="title function_">sum</span><span class="params">(<span class="type">int</span> a,<span class="type">int</span> b)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">return</span> a+b;</span><br><span class="line">&#125;     </span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">int</span> (*p)(<span class="type">int</span> x,<span class="type">int</span> y);</span><br><span class="line">	p=sum;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%d&quot;</span>,(*p)(<span class="number">1</span>,<span class="number">2</span>)); <span class="comment">//打印3</span></span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <ul>
 <li><p>函数指针有以下几点特点：</p>
 <ul>
@@ -740,30 +736,25 @@
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">p=sum;</span><br><span class="line">p=&amp;sum;<span class="comment">//都正确</span></span><br></pre></td></tr></table></figure>
 </li>
 <li><p>当使用指针调用函数时，解引用也是可选的：</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;%d&quot;</span>,(*p)(<span class="number">1</span>,<span class="number">2</span>));</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;%d&quot;</span>,p(<span class="number">1</span>,<span class="number">2</span>));<span class="comment">//都输出3</span></span><br></pre></td></tr></table></figure></li>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;%d&quot;</span>,(*p)(<span class="number">1</span>,<span class="number">2</span>));</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;%d&quot;</span>,p(<span class="number">1</span>,<span class="number">2</span>));<span class="comment">//都输出3</span></span><br></pre></td></tr></table></figure>
+</li>
 </ul>
 </li>
 <li><p>当函数指针作形参时：</p>
 </li>
 </ul>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;stdio.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;math.h&quot;</span></span></span><br><span class="line"><span class="type">void</span> <span class="title function_">tran</span><span class="params">(<span class="type">double</span> (*a)(<span class="type">double</span> a1),<span class="type">double</span> (*b)(<span class="type">double</span> b1),<span class="type">double</span> x)</span>;</span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">double</span> x=<span class="number">3.141592</span>;</span><br><span class="line">	tran(<span class="built_in">sin</span>,<span class="built_in">cos</span>,x);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="type">void</span> <span class="title function_">tran</span><span class="params">(<span class="type">double</span>(*a)(<span class="type">double</span> a1),<span class="type">double</span>(*b)(<span class="type">double</span> b1),<span class="type">double</span> x)</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%f\n&quot;</span>,(*a)(x/<span class="number">2</span>));</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%f&quot;</span>,(*b)(x/<span class="number">2</span>));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>调用函数时直接传入函数名即可。</p>
 <p>同理的，也可以不声明参数为指针（因为会自动转变为指针）</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">tran</span><span class="params">(<span class="type">double</span> a(<span class="type">double</span> a1),<span class="type">double</span> b(<span class="type">double</span> b1),<span class="type">double</span> x)</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%f\n&quot;</span>,(*a)(x/<span class="number">2</span>));</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%f&quot;</span>,(*b)(x/<span class="number">2</span>));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
 <h2 id="通过形参影响实参"><a href="#通过形参影响实参" class="headerlink" title="通过形参影响实参"></a>通过形参影响实参</h2><p>我们都知道，形参值的改变不能改变对应实参的值，把数据从被调用函数返回到调用函数的唯一途径时通过return。<strong>但如果通过传送地址给被调用函数，再在被调用函数中改变地址中存储的值，也就使通过形参改变对应实参的值成为了可能。</strong></p>
 <p>例如：交换值</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">swap</span><span class="params">(<span class="type">int</span> *x, <span class="type">int</span> *y)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">int</span> c; <span class="comment">// 因为c只是用来存放地址内保存的值，所以为一般变量</span></span><br><span class="line">    c=*x;*x=*y;*y=c;  <span class="comment">//将a、b地址中保存的值互换、地址不变</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">int</span> a=<span class="number">1</span>,b=<span class="number">2</span>;</span><br><span class="line">    swap(&amp;a,&amp;b);<span class="comment">//将a、b的地址传给形参x、y，此时指针变量x、y内保存的就是a、b的地址</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d  %d&quot;</span>,a,b);<span class="comment">//此时a、b地址内保存的值已经互换</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>但如果swap函数定义成如下，又会怎么样呢</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">swap</span><span class="params">(<span class="type">int</span> *x, <span class="type">int</span> *y)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">int</span> *c; </span><br><span class="line">    c=x;x=y;y=c;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>如果这样定义函数，则程序的流程为：<strong>①调用swap函数时，x内保存的为a的地址，y内保存的为b的地址；②在swap函数中，x内保存的地址改变为b的地址，y内保存的地址改变为为a的地址；③swap函数调用结束，x，y的内存被释放；④此时a、b变量自身的地址并没有任何改变，改变的只用形参x、y所保存的地址，因此无法起到交换作用</strong></p>
-<h2 id="二维数组地址详解-数组指针-重要！！！！！"><a href="#二维数组地址详解-数组指针-重要！！！！！" class="headerlink" title="二维数组地址详解+数组指针(重要！！！！！)"></a>二维数组地址详解+数组指针(重要！！！！！)</h2><p>详见<a target="_blank" rel="noopener" href="https://dhkkk.gitee.io/2022/07/28/%E4%BA%8C%E7%BB%B4%E6%95%B0%E7%BB%84/">二维数组复习 | 小董的BLOG (gitee.io)</a></p>
-<h2 id="结构体指针"><a href="#结构体指针" class="headerlink" title="结构体指针"></a>结构体指针</h2><p>详见<a target="_blank" rel="noopener" href="https://dhkkk.gitee.io/2022/11/18/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E7%BA%BF%E6%80%A7%E8%A1%A8/">数据结构_链表 | 小董的BLOG (gitee.io)</a>和<a target="_blank" rel="noopener" href="https://dhkkk.gitee.io/2022/08/01/C-%E7%BB%93%E6%9E%84%E4%BD%93/">结构体复习 | 小董的BLOG (gitee.io)</a></p>
+<h2 id="二维数组地址详解-数组指针-重要！！！！！"><a href="#二维数组地址详解-数组指针-重要！！！！！" class="headerlink" title="二维数组地址详解+数组指针(重要！！！！！)"></a>二维数组地址详解+数组指针(重要！！！！！)</h2><p>详见<a target="_blank" rel="noopener" href="https://dhkkk.gitee.io/2022/07/28/二维数组/">二维数组复习 | 小董的BLOG (gitee.io)</a></p>
+<h2 id="结构体指针"><a href="#结构体指针" class="headerlink" title="结构体指针"></a>结构体指针</h2><p>详见<a target="_blank" rel="noopener" href="https://dhkkk.gitee.io/2022/11/18/数据结构-线性表/">数据结构_链表 | 小董的BLOG (gitee.io)</a>和<a target="_blank" rel="noopener" href="https://dhkkk.gitee.io/2022/08/01/C-结构体/">结构体复习 | 小董的BLOG (gitee.io)</a></p>
 <p>2022.11.20:我是按照自己的理解写的，所以思路那些可能会有点奇怪，我感觉自己写的也不是很精练。。凑合看看吧</p>
 
       
@@ -950,6 +941,8 @@
 
 
 
+
+  
 
   
 

@@ -94,7 +94,9 @@
   </style>
 </noscript>
 
-</head>
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --></head>
 
 <body itemscope itemtype="http://schema.org/WebPage">
   <div class="container use-motion">
@@ -249,12 +251,9 @@
       
         <h1 id="任务相关"><a href="#任务相关" class="headerlink" title="任务相关"></a>任务相关</h1><h2 id="1、RTOS调度器"><a href="#1、RTOS调度器" class="headerlink" title="1、RTOS调度器"></a>1、RTOS调度器</h2><p>在任何时刻，只有一个任务得到运行，RTOS调度器决定运行哪个任务。调度器会不断的启动、停止每一个任务，宏观看上去就像整个应用程序都在执行。作为任务，不需要对调度器的活动有所了解，在任务切入切出时保存上下文环境（寄存器值、堆栈内容）是调度器主要的职责。为了实现这点，每个任务都需要有自己的堆栈。当任务切出时，它的执行环境会被保存在该任务的堆栈中，这样当再次运行时，就能从堆栈中正确的恢复上次的运行环境。</p>
 <h2 id="2、任务状态"><a href="#2、任务状态" class="headerlink" title="2、任务状态"></a>2、任务状态</h2><img src="/images/loading.png" data-original="/2022/08/23/FreeRTOS-2/%E4%BB%BB%E5%8A%A1.jpg" class title="This is an image"> 
-
 <h2 id="3、任务例子（用户）"><a href="#3、任务例子（用户）" class="headerlink" title="3、任务例子（用户）"></a>3、任务例子（用户）</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">vATaskFunction</span><span class="params">( <span class="type">void</span> *pvParameters )</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">while</span>(<span class="number">1</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">/*-- 应用程序代码放在这里. --*/</span></span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    <span class="comment">/* 任务不可以从这个函数返回或退出。在较新的FreeRTOS移植包中，如果</span></span><br><span class="line"><span class="comment">    试图从一个任务中返回，将会调用configASSERT()（如果定义的话）。</span></span><br><span class="line"><span class="comment">    如果一个任务确实要退出函数，那么这个任务应调用vTaskDelete(NULL)</span></span><br><span class="line"><span class="comment">    函数，以便处理一些清理工作。*/</span></span><br><span class="line">    vTaskDelete( <span class="literal">NULL</span> );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>例如步兵v2.6中底盘任务</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">chassis_task</span><span class="params">(<span class="type">void</span> *pvParameters)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//空闲一段时间</span></span><br><span class="line">    vTaskDelay(CHASSIS_TASK_INIT_TIME);</span><br><span class="line">    <span class="comment">//底盘初始化</span></span><br><span class="line">    chassis_init(&amp;chassis_move);</span><br><span class="line">	<span class="comment">//判断遥控器在线状态</span></span><br><span class="line">    <span class="keyword">while</span> (toe_is_error(DBUSTOE))</span><br><span class="line">	&#123;</span><br><span class="line">      vTaskDelay(CHASSIS_CONTROL_TIME_MS);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//底盘循环代码</span></span><br><span class="line">    <span class="keyword">while</span> (<span class="number">1</span>)</span><br><span class="line">    &#123;</span><br><span class="line">	  <span class="comment">//底盘模式设置</span></span><br><span class="line">      chassis_set_mode(&amp;chassis_move);</span><br><span class="line">      <span class="comment">//状态切换数据保存与处理</span></span><br><span class="line">      chassis_mode_change_control_transit(&amp;chassis_move);</span><br><span class="line">      <span class="comment">//底盘相关反馈数据更新</span></span><br><span class="line">      chassis_feedback_update(&amp;chassis_move);</span><br><span class="line">        。。。。。。。。</span><br><span class="line">	  <span class="comment">//系统延时</span></span><br><span class="line">	  vTaskDelay(CHASSIS_CONTROL_TIME_MS);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;	</span><br></pre></td></tr></table></figure>
-
 <ul>
 <li><p>任务函数决不应该返回，因此通常任务函数都是一个死循环。</p>
 </li>
@@ -271,28 +270,23 @@
 <li><p>在FreeRTOSConfig.h头文件中设置configUSE_IDLE_HOOK为1；</p>
 </li>
 <li><p>定义一个函数，名字和参数原型如下所示：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">vApplicationIdleHook</span><span class="params">( <span class="type">void</span> )</span>;</span><br></pre></td></tr></table></figure>
+<p>通常，<strong>使用这个空闲钩子函数设置CPU进入低功耗模式</strong>。</p>
 </li>
 </ul>
-  <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">vApplicationIdleHook</span><span class="params">( <span class="type">void</span> )</span>;</span><br></pre></td></tr></table></figure>
-
-<p>  通常，<strong>使用这个空闲钩子函数设置CPU进入低功耗模式</strong>。</p>
 <h2 id="5、任务的创建"><a href="#5、任务的创建" class="headerlink" title="5、任务的创建"></a>5、任务的创建</h2><p>任务创建和删除API函数位于文件task.c中，需要包含task.h头文件</p>
 <p>具体函数定义如下：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">BaseType_t xTaskCreate(</span><br><span class="line">           TaskFunction_t pvTaskCode,</span><br><span class="line">           const char * const pcName,</span><br><span class="line">           unsigned short usStackDepth,</span><br><span class="line">           void *pvParameters,</span><br><span class="line">           UBaseType_t uxPriority,</span><br><span class="line">           TaskHandle_t * pvCreatedTask</span><br><span class="line">            );</span><br><span class="line">  例：          </span><br><span class="line">    xTaskCreate( (TaskFunction_t)chassis_task,//底盘任务</span><br><span class="line">                 (const char *)&quot;chassis_task&quot;,</span><br><span class="line">                 (uint16_t)CHASSIS_STK_SIZE,</span><br><span class="line">                 (void *)NULL,</span><br><span class="line">                 (UBaseType_t)CHASSIS_TASK_PRIO,</span><br><span class="line">                 (TaskHandle_t *)&amp;CHASSISTask_Handler</span><br><span class="line">               );</span><br></pre></td></tr></table></figure>
-
 <h3 id="参数描述"><a href="#参数描述" class="headerlink" title="参数描述"></a>参数描述</h3><ul>
 <li><p>pvTaskCode：指针，指向任务函数的入口。</p>
 <p>追溯到TaskFunction_t的定义可以找到</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="title function_">void</span> <span class="params">(*TaskFunction_t)</span><span class="params">( <span class="type">void</span> * )</span>;</span><br></pre></td></tr></table></figure>
-
 <p>此处涉及C语言中typedef的一个使用方法</p>
-<p>​	void (<em>TaskFunction_t)( void * )意为定义了一个名为TaskFunction_t，入口参数类型为void</em>型，返回值为void型的函数指针变量；而在使用typedef后再进行TaskFunction_t  pvTaskCode的操作，则意为TaskFunction_t在这里作为类的别名，而 pvTaskCode作为类的变量。也就是说，在使用typedef后，可以将此处的TaskFunction_t理解为一个类似于int，void之类的类型</p>
+<p>​    void (<em>TaskFunction_t)( void </em> )意为定义了一个名为TaskFunction_t，入口参数类型为void*型，返回值为void型的函数指针变量；而在使用typedef后再进行TaskFunction_t  pvTaskCode的操作，则意为TaskFunction_t在这里作为类的别名，而 pvTaskCode作为类的变量。也就是说，在使用typedef后，可以将此处的TaskFunction_t理解为一个类似于int，void之类的类型</p>
 <p>做个总结：此处</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="title function_">void</span> <span class="params">(*TaskFunction_t)</span><span class="params">( <span class="type">void</span> * )</span>;</span><br><span class="line">TaskFunction_t pvTaskCode;</span><br></pre></td></tr></table></figure>
-
 <p>等同于：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">void (*pvTaskCode)( void * );</span><br></pre></td></tr></table></figure>
-
 <p><strong>也就是说，pvTaskCode其实就是一个函数指针</strong></p>
 <p>（此用法同步收录于“C语言学习-一些关键字-typedef-指针”一栏）</p>
 </li>
@@ -318,7 +312,6 @@
 </ul>
 <h2 id="6-任务的删除"><a href="#6-任务的删除" class="headerlink" title="6.任务的删除"></a>6.任务的删除</h2><p>函数定义：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">vTaskDelete</span><span class="params">( TaskHandle_t xTask )</span>;</span><br></pre></td></tr></table></figure>
-
 <p>从RTOS内核管理器中删除一个任务。任务删除后将会从就绪、阻塞、暂停和事件列表中移除。在配置头文件中，必须定义宏INCLUDE_vTaskDelete 为1，本函数才有效。被删除的任务，其在任务创建时由内核分配的存储空间，会由空闲任务释放。如果有应用程序调用xTaskDelete()，必须保证空闲任务获取一定的微控制器处理时间。任务代码自己分配的内存是不会自动释放的，因此删除任务前，应该将这些内存释放。</p>
 <h1 id="任务控制"><a href="#任务控制" class="headerlink" title="任务控制"></a>任务控制</h1><h2 id="延时（阻塞）"><a href="#延时（阻塞）" class="headerlink" title="延时（阻塞）"></a>延时（阻塞）</h2><h3 id="1-相对延时"><a href="#1-相对延时" class="headerlink" title="1.相对延时"></a>1.相对延时</h3><ul>
 <li><p>void vTaskDelay( portTickType xTicksToDelay )；</p>
@@ -328,16 +321,16 @@
 <p>vTaskDelay()指定的延时时间是从调用vTaskDelay()后开始计算的相对时间。比如vTaskDelay(100)，那么从调用vTaskDelay()后，任务进入阻塞状态，经过100个系统时钟节拍周期，任务解除阻塞。因此，vTaskDelay()并不适用与周期性执行任务的场合。因为调用vTaskDelay()到任务解除阻塞的时间不总是固定的并且该任务下一次调用vTaskDelay()函数的时间也不总是固定的（两次执行同一任务的时间间隔本身就不固定，中断或高优先级任务抢占也可能会改变每一次执行时间）。</p>
 <p>在文件FreeRTOSConfig.h中，宏INCLUDE_vTaskDelay 必须设置成1，此函数才能有效。</p>
 <h3 id="2-绝对延时"><a href="#2-绝对延时" class="headerlink" title="2.绝对延时"></a>2.绝对延时</h3><ul>
-<li>void vTaskDelayUntil( TickType_t *pxPreviousWakeTime, const TickType_tx TimeIncrement );</li>
-</ul>
-<p>  参数描述：</p>
+<li><p>void vTaskDelayUntil( TickType_t *pxPreviousWakeTime, const TickType_tx TimeIncrement );</p>
+<p>参数描述：</p>
 <ul>
 <li>pxPreviousWakeTime：指针，指向一个变量，该变量保存任务最后一次解除阻塞的时间。第一次使用前，<strong>该变量必须初始化为当前时间</strong>。之后这个变量会在vTaskDelayUntil()函数内<strong>自动更新</strong>。</li>
 <li>xTimeIncrement：周期循环时间。当<strong>当前时间</strong>等于pxPreviousWakeTime+xTimeIncrement时任务会解除阻塞。</li>
 </ul>
+</li>
+</ul>
 <p>应当指出的是，如果指定的唤醒时间已经达到，vTaskDelayUntil()立刻返回（不会有阻塞）。因此，使用vTaskDelayUntil()周期性执行的任务，无论任何原因（比如，任务临时进入挂起状态）停止了周期性执行，使得任务少运行了一个或多个执行周期，<strong>那么需要重新计算所需要的唤醒时间</strong>。（例如任务挂起态结束后，当前的绝对时间已经超过指定的唤醒时间，vTaskDelayUntil()会立刻返回，且此时需要重新获得当前时间）这可以通过传递给函数的指针参数pxPreviousWake指向的值与当前系统时钟计数值比较来检测。<br>例：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//每10次系统节拍执行一次</span></span><br><span class="line"> <span class="type">void</span> <span class="title function_">vTaskFunction</span><span class="params">( <span class="type">void</span> * pvParameters )</span></span><br><span class="line"> &#123;</span><br><span class="line">     <span class="type">static</span> portTickType xLastWakeTime;</span><br><span class="line">     <span class="type">const</span> portTickType xFrequency = <span class="number">10</span>;</span><br><span class="line"> </span><br><span class="line">     <span class="comment">// 使用当前时间初始化变量xLastWakeTime</span></span><br><span class="line">     xLastWakeTime = xTaskGetTickCount();</span><br><span class="line"> </span><br><span class="line">     <span class="keyword">while</span>(<span class="number">1</span>)</span><br><span class="line">     &#123;</span><br><span class="line">     	<span class="comment">// 需要周期性执行代码放在这里</span></span><br><span class="line">     	.........</span><br><span class="line">     	<span class="comment">//等待下一个周期</span></span><br><span class="line">         vTaskDelayUntil( &amp;xLastWakeTime,xFrequency ); </span><br><span class="line">     &#125;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
-
 <p>在文件FreeRTOSConfig.h中，宏INCLUDE_vTaskDelayUntil 必须设置成1，此函数才有效。</p>
 <h2 id="获取优先级"><a href="#获取优先级" class="headerlink" title="获取优先级"></a>获取优先级</h2><ul>
 <li><p>UBaseType_t uxTaskPriorityGet(TaskHandle_t xTask )；</p>
@@ -349,7 +342,6 @@
 </ul>
 <p>例：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">vAFunction</span><span class="params">( <span class="type">void</span> )</span></span><br><span class="line"> &#123;</span><br><span class="line">    xTaskHandle xHandle;</span><br><span class="line">    <span class="comment">// 创建另一个任务，并保存任务句柄</span></span><br><span class="line">    xTaskCreate( vTaskCode, <span class="string">&quot;NAME&quot;</span>,STACK_SIZE, <span class="literal">NULL</span>, tskIDLE_PRIORITY, &amp;xHandle );</span><br><span class="line">    <span class="comment">// 当前任务优先级比新创建的任务优先级高？</span></span><br><span class="line">    <span class="keyword">if</span>( uxTaskPriorityGet( xHandle ) &lt;uxTaskPriorityGet( <span class="literal">NULL</span> ) )</span><br><span class="line">    &#123;</span><br><span class="line">         <span class="comment">// 当前优先级较高</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">      ......</span><br><span class="line">    &#125;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
-
 <p>在文件FreeRTOSConfig.h中，宏INCLUDE_vTaskPrioritySet 必须设置成1，此函数才有效。</p>
 <h2 id="任务挂起"><a href="#任务挂起" class="headerlink" title="任务挂起"></a>任务挂起</h2><ul>
 <li><p>void vTaskSuspend( TaskHandle_txTaskToSuspend );</p>
@@ -573,6 +565,8 @@
 
 
 
+
+  
 
   
 

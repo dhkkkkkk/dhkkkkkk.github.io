@@ -22,12 +22,12 @@
     var CONFIG = {"hostname":"dhkkkkkk.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="1. auto 和 register auto关键字  只能修饰局部变量, 局部变量如果没有其它修饰符, 默认就是auto的 特点: 随用随开, 用完即销   register关键字  只能修饰局部变量, 原则上将内存中变量提升到CPU寄存器中存储, 这样访问速度会更快 但是由于CPU寄存器数量相当有限, 通常不同平台和编译器在优化阶段会自动转换为auto    2. static 对局部变">
+  <meta name="description" content="1. auto 和 register auto关键字  只能修饰局部变量, 局部变量如果没有其它修饰符, 默认就是auto的 特点: 随用随开, 用完即销   register关键字  只能修饰局部变量, 原则上将内存中变量提升到CPU寄存器中存储, 这样访问速度会更快 但是由于CPU寄存器数量相当有限, 通常不同平台和编译器在优化阶段会自动转换为auto    2. static 对局部变量">
 <meta property="og:type" content="article">
 <meta property="og:title" content="一些关键字">
 <meta property="og:url" content="https://dhkkkkkk.github.io/2022/08/03/C-%E5%85%B3%E9%94%AE%E5%AD%97/index.html">
 <meta property="og:site_name" content="小董的BLOG">
-<meta property="og:description" content="1. auto 和 register auto关键字  只能修饰局部变量, 局部变量如果没有其它修饰符, 默认就是auto的 特点: 随用随开, 用完即销   register关键字  只能修饰局部变量, 原则上将内存中变量提升到CPU寄存器中存储, 这样访问速度会更快 但是由于CPU寄存器数量相当有限, 通常不同平台和编译器在优化阶段会自动转换为auto    2. static 对局部变">
+<meta property="og:description" content="1. auto 和 register auto关键字  只能修饰局部变量, 局部变量如果没有其它修饰符, 默认就是auto的 特点: 随用随开, 用完即销   register关键字  只能修饰局部变量, 原则上将内存中变量提升到CPU寄存器中存储, 这样访问速度会更快 但是由于CPU寄存器数量相当有限, 通常不同平台和编译器在优化阶段会自动转换为auto    2. static 对局部变量">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://dhkkkkkk.github.io/images/loading.png">
 <meta property="article:published_time" content="2022-08-03T15:24:52.000Z">
@@ -94,7 +94,9 @@
   </style>
 </noscript>
 
-</head>
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --></head>
 
 <body itemscope itemtype="http://schema.org/WebPage">
   <div class="container use-motion">
@@ -248,7 +250,6 @@
 
       
         <img src="/images/loading.png" data-original="/2022/08/03/C-%E5%85%B3%E9%94%AE%E5%AD%97/%E5%85%B3%E9%94%AE%E5%AD%97.jpg" class title="This is an image"> 
-
 <h1 id="1-auto-和-register"><a href="#1-auto-和-register" class="headerlink" title="1. auto 和 register"></a>1. auto 和 register</h1><ul>
 <li><p>auto关键字</p>
 <ul>
@@ -299,7 +300,7 @@
 <p>对函数而言，如果你想在本源文件(例如文件名A)中使用另一个源文件(例如文件名B)的函数，<strong>方法有2种</strong>：(1)在A文件中用extern声明在B文件中定义的函数(其实，也可省略extern，只需在A文件中出现B文件定义函数原型即可)；(2)在A文件中添加B文件对应的头文件，当然这个头文件包含B文件中的函数原型，<strong>在头文件中函数可以不用加extern。</strong></p>
 </li>
 <li><p>总结：</p>
-<p>使用extern时，会加速程序的编译（确切的说是预处理）的过程，节省时间。但是当需要对变量&#x2F;函数名进行修改时需要把所有使用extern关键字的地方全部修改一次，而使用头文件包含只需更改一次，效率更高。</p>
+<p>使用extern时，会加速程序的编译（确切的说是预处理）的过程，节省时间。但是当需要对变量/函数名进行修改时需要把所有使用extern关键字的地方全部修改一次，而使用头文件包含只需更改一次，效率更高。</p>
 </li>
 </ul>
 <h1 id="4-条件编译"><a href="#4-条件编译" class="headerlink" title="4. 条件编译"></a>4. 条件编译</h1><ul>
@@ -320,7 +321,6 @@
 </li>
 <li><p>指针</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 定义一个sum函数，计算a跟b的和</span></span><br><span class="line">  <span class="type">int</span> <span class="title function_">sum</span><span class="params">(<span class="type">int</span> a, <span class="type">int</span> b)</span> </span><br><span class="line">  &#123;</span><br><span class="line">      <span class="type">int</span> c = a + b;</span><br><span class="line">      <span class="built_in">printf</span>(<span class="string">&quot;%d + %d = %d&quot;</span>, a, b, c);</span><br><span class="line">      <span class="keyword">return</span> c;</span><br><span class="line"> &#125;</span><br><span class="line"><span class="keyword">typedef</span> <span class="title function_">int</span> <span class="params">(*MySum)</span><span class="params">(<span class="type">int</span>, <span class="type">int</span>)</span>;</span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line"> MySum p = sum;<span class="comment">// 定义一个指向sum函数的指针变量p</span></span><br><span class="line"> <span class="built_in">printf</span>(<span class="string">&quot;%d&quot;</span>,(*p)(<span class="number">1</span>,<span class="number">2</span>)); <span class="comment">//3</span></span><br><span class="line"> <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>详细解释可参考<a target="_blank" rel="noopener" href="https://dhkkk.gitee.io/2022/08/23/FreeRTOS-2/">FreeRTOS的任务相关 | 小董的BLOG (gitee.io)</a>中有详细案例</p>
 <p><strong>也就是说，在正常的定义前加上typedef，即把该定义的变量改为一个新的类型，要再次定义该类型的变量时，直接使用该类型的名字即可。</strong></p>
 </li>
@@ -336,10 +336,10 @@
 </li>
 <li><p>修饰指针</p>
 <ul>
-<li>const int *A; &#x2F;&#x2F;const修饰指针,A可变,A指向的值不能被修改</li>
-<li>int const *A; &#x2F;&#x2F;const修饰指向的对象,A可变,A指向的对象不可变</li>
-<li>int *const A; &#x2F;&#x2F;const修饰指针A, A不可变,A指向的对象可变</li>
-<li>const int *const A;&#x2F;&#x2F;指针A和A指向的对象都不可变</li>
+<li>const int *A; //const修饰指针,A可变,A指向的值不能被修改</li>
+<li>int const *A; //const修饰指向的对象,A可变,A指向的对象不可变</li>
+<li>int *const A; //const修饰指针A, A不可变,A指向的对象可变</li>
+<li>const int *const A;//指针A和A指向的对象都不可变</li>
 </ul>
 </li>
 </ul>
@@ -358,88 +358,98 @@
 </li>
 <li><p>C语言允许宏带有参数。在宏定义中的参数称为形式参数,在宏调用中的参数称为实际参数。(类似函数的使用)</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> average(a, b) (a+b)/2</span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span> <span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="type">int</span> a = average(<span class="number">10</span>, <span class="number">4</span>);</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">&quot;平均值：%d&quot;</span>, a); <span class="comment">//7</span></span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <ul>
 <li><p>带参数的宏在展开时，只作简单的字符和参数的替换，不进行任何计算操作。所以在定义宏时，<strong>一般用一个小括号</strong>括住字符串的参数。</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> D1(a) (2*a)</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> D2(a) (2*(a))</span></span><br><span class="line"><span class="comment">//计算结果最好也用括号括起来,小型计算不括问题应该不大</span></span><br><span class="line">  <span class="type">int</span> <span class="title function_">main</span> <span class="params">()</span></span><br><span class="line">  &#123;</span><br><span class="line">     <span class="type">int</span> b = D1(<span class="number">3</span>+<span class="number">4</span>);</span><br><span class="line">     <span class="type">int</span> c = D2(<span class="number">3</span>+<span class="number">4</span>);</span><br><span class="line">     <span class="built_in">printf</span>(<span class="string">&quot;%d&quot;</span>, b);  <span class="comment">//输出等价于2*3+4=10</span></span><br><span class="line">     <span class="built_in">printf</span>(<span class="string">&quot;%d&quot;</span>, c);  <span class="comment">//2*(3+4)=14</span></span><br><span class="line">     <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure></li>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> D1(a) (2*a)</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> D2(a) (2*(a))</span></span><br><span class="line"><span class="comment">//计算结果最好也用括号括起来,小型计算不括问题应该不大</span></span><br><span class="line">  <span class="type">int</span> <span class="title function_">main</span> <span class="params">()</span></span><br><span class="line">  &#123;</span><br><span class="line">     <span class="type">int</span> b = D1(<span class="number">3</span>+<span class="number">4</span>);</span><br><span class="line">     <span class="type">int</span> c = D2(<span class="number">3</span>+<span class="number">4</span>);</span><br><span class="line">     <span class="built_in">printf</span>(<span class="string">&quot;%d&quot;</span>, b);  <span class="comment">//输出等价于2*3+4=10</span></span><br><span class="line">     <span class="built_in">printf</span>(<span class="string">&quot;%d&quot;</span>, c);  <span class="comment">//2*(3+4)=14</span></span><br><span class="line">     <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+</li>
 </ul>
 </li>
 </ul>
 <h1 id="2、动态存储分配"><a href="#2、动态存储分配" class="headerlink" title="2、动态存储分配"></a>2、动态存储分配</h1><p>此前，用于存储数据的变量和数组在定义后，C编译程序通过定义的类型来了解其所需存储空间的大小并预先为其分配适当的存储空间，这些空间一经分配，在变量或数组的生存期内是固定不变的，所以这种方式也称为“静态存储分配”</p>
 <p>C中还有一种“动态存储分配”的方法，在程序执行期间需要空间来存储数据时，通过申请分配指定的内存空间；当有闲置不用的空间时可以随时将其释放。C标准库提供了相关函数来进行对应操作：</p>
-<h2 id="库函数"><a href="#库函数" class="headerlink" title="库函数"></a>库函数</h2><h3 id="malloc函数"><a href="#malloc函数" class="headerlink" title="malloc函数"></a>malloc函数</h3><table>
+<h2 id="库函数"><a href="#库函数" class="headerlink" title="库函数"></a>库函数</h2><h3 id="malloc函数"><a href="#malloc函数" class="headerlink" title="malloc函数"></a>malloc函数</h3><div class="table-container">
+<table>
 <thead>
 <tr>
-<th align="center">函数名</th>
-<th align="center">malloc(unsigned int size);</th>
+<th style="text-align:center">函数名</th>
+<th style="text-align:center">malloc(unsigned int size);</th>
 </tr>
 </thead>
-<tbody><tr>
-<td align="center">参数</td>
-<td align="center">size:字节数</td>
+<tbody>
+<tr>
+<td style="text-align:center">参数</td>
+<td style="text-align:center">size:字节数</td>
 </tr>
 <tr>
-<td align="center">返回值</td>
-<td align="center">成功则返回一个类型为void的首地址，失败为null</td>
+<td style="text-align:center">返回值</td>
+<td style="text-align:center">成功则返回一个类型为void的首地址，失败为null</td>
 </tr>
 <tr>
-<td align="center">功能</td>
-<td align="center">在内存的动态存储区中分配一块长度为size字节的连续区域</td>
+<td style="text-align:center">功能</td>
+<td style="text-align:center">在内存的动态存储区中分配一块长度为size字节的连续区域</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <p>例：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//使用时需要包含&quot;stdlib.h&quot;或&quot;malloc.h&quot;</span></span><br><span class="line"><span class="type">int</span> *pi=(<span class="type">int</span>*)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(<span class="type">int</span>));</span><br><span class="line"><span class="comment">//malloc返回值为void*型，可以强制转化为任何类型</span></span><br></pre></td></tr></table></figure>
-
 <ul>
 <li>需要注意的是，malloc只会负责分配空间。并不能对其进行初始化，所以此时*pi的值是随机的</li>
 <li>该函数常用于初始化一个指针，这样可以避免使该指针成为<strong>野指针</strong></li>
 </ul>
-<h3 id="calloc函数"><a href="#calloc函数" class="headerlink" title="calloc函数"></a>calloc函数</h3><table>
+<h3 id="calloc函数"><a href="#calloc函数" class="headerlink" title="calloc函数"></a>calloc函数</h3><div class="table-container">
+<table>
 <thead>
 <tr>
-<th align="center">函数名</th>
-<th align="center">calloc(unsigned int num,unsigned int size)</th>
+<th style="text-align:center">函数名</th>
+<th style="text-align:center">calloc(unsigned int num,unsigned int size)</th>
 </tr>
 </thead>
-<tbody><tr>
-<td align="center">参数</td>
-<td align="center">num:分配数据项的个数<br>size:每个数据项的大小</td>
+<tbody>
+<tr>
+<td style="text-align:center">参数</td>
+<td style="text-align:center">num:分配数据项的个数<br>size:每个数据项的大小</td>
 </tr>
 <tr>
-<td align="center">返回值</td>
-<td align="center">成功则返回一个类型为void的首地址，失败为null</td>
+<td style="text-align:center">返回值</td>
+<td style="text-align:center">成功则返回一个类型为void的首地址，失败为null</td>
 </tr>
 <tr>
-<td align="center">功能</td>
-<td align="center">在内存的动态存储区中分配n块长度为size字节的连续区域</td>
+<td style="text-align:center">功能</td>
+<td style="text-align:center">在内存的动态存储区中分配n块长度为size字节的连续区域</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <ul>
 <li>不同于malloc，calloc会对分配的存储单元值自动初始化为0</li>
 </ul>
 <p>因此，可以用以下方法开辟一个一维数组</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">char</span> *p;</span><br><span class="line">p=(<span class="type">char</span>*)<span class="built_in">calloc</span>(<span class="number">10</span>,<span class="keyword">sizeof</span>(<span class="type">char</span>));<span class="comment">//开辟一个可以存放十个字符串的数组</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="free函数"><a href="#free函数" class="headerlink" title="free函数"></a>free函数</h3><table>
+<h3 id="free函数"><a href="#free函数" class="headerlink" title="free函数"></a>free函数</h3><div class="table-container">
+<table>
 <thead>
 <tr>
-<th align="center">函数名</th>
-<th align="center">free(void *ptr);</th>
+<th style="text-align:center">函数名</th>
+<th style="text-align:center">free(void *ptr);</th>
 </tr>
 </thead>
-<tbody><tr>
-<td align="center">参数</td>
-<td align="center">一个指针</td>
+<tbody>
+<tr>
+<td style="text-align:center">参数</td>
+<td style="text-align:center">一个指针</td>
 </tr>
 <tr>
-<td align="center">返回值</td>
-<td align="center">无</td>
+<td style="text-align:center">返回值</td>
+<td style="text-align:center">无</td>
 </tr>
 <tr>
-<td align="center">功能</td>
-<td align="center">释放ptr所指向的一块内存空间</td>
+<td style="text-align:center">功能</td>
+<td style="text-align:center">释放ptr所指向的一块内存空间</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <ul>
 <li>需要注意的是，free释放的区域应为malloc或calloc所分配的区域</li>
 <li>free函数的实际功能是告诉系统输入参数对应的内存不再使用，即不再被保护，也就是说其他变量随时会占用占用那个地址。<strong>因此，原则上不再访问已经被free的的内存</strong></li>
@@ -650,6 +660,8 @@
 
 
 
+
+  
 
   
 

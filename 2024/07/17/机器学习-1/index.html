@@ -98,7 +98,9 @@
   </style>
 </noscript>
 
-</head>
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --></head>
 
 <body itemscope itemtype="http://schema.org/WebPage">
   <div class="container use-motion">
@@ -260,23 +262,20 @@
 </ul>
 <h2 id="线性回归模型（linear-regression）"><a href="#线性回归模型（linear-regression）" class="headerlink" title="线性回归模型（linear regression）"></a>线性回归模型（linear regression）</h2><ul>
 <li>训练集（training set）：用于训练模型的已知数据<strong>集合</strong></li>
-<li>输入变量x(input&#x2F;feature)：训练集中的输入</li>
-<li>输出变量y (output&#x2F;target)：训练集中的输出</li>
+<li>输入变量x(input/feature)：训练集中的输入</li>
+<li>输出变量y (output/target)：训练集中的输出</li>
 <li>模型：用于预测的函数  </li>
 <li>预测y-hat(^)（prediction）：模型的输出，<strong>注意区分y和y-hat</strong></li>
 </ul>
 <h3 id="代价函数（cost-function）or损失函数（loss）"><a href="#代价函数（cost-function）or损失函数（loss）" class="headerlink" title="代价函数（cost function）or损失函数（loss）"></a>代价函数（cost function）or损失函数（loss）</h3><p>用于评估模型输出和训练数据的拟合程度</p>
 <p>因此代价函数输出应尽可能<strong>小</strong></p>
 <h4 id="平方误差代价函数（squared-error-cost-function）"><a href="#平方误差代价函数（squared-error-cost-function）" class="headerlink" title="平方误差代价函数（squared error cost function）"></a>平方误差代价函数（squared error cost function）</h4><img src="/images/loading.png" data-original="/2024/07/17/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-1/2.JPG" class title="This is an image"> 
-
 <p>模型参数w，b会影响代价函数的输出，而找到当前训练集下使代价函数输出最小的参数w，b，即可找到对当前训练集最适合的线性回归模型</p>
 <img src="/images/loading.png" data-original="/2024/07/17/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-1/3.jpg" class title="This is an image"> 
-
 <p><u>对于使用平方误差代价函数的线性回归中总会出现弓形、吊床形的图像</u></p>
 <p>即只有一个最小值</p>
 <h3 id="梯度下降算法（gradient-descent）"><a href="#梯度下降算法（gradient-descent）" class="headerlink" title="梯度下降算法（gradient descent）"></a>梯度下降算法（gradient descent）</h3><p>可用于尝试最小化任何函数</p>
 <img src="/images/loading.png" data-original="/2024/07/17/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-1/4.jpg" class title="This is an image"> 
-
 <ul>
 <li><p>参数w、b必须同时更新，而不算将更新后的w用于b的更新中</p>
 </li>
@@ -286,20 +285,17 @@
 </li>
 </ul>
 <img src="/images/loading.png" data-original="/2024/07/17/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-1/5.jpg" class title="This is an image">
-
 <p>由于两个参数的梯度下降式是互相独立的，因此对w或b的更新可以视作，另一个参数固定。再结合梯度下降算式可以看出该算法其实是利用了斜率的正负特性进行找极小值的过程 </p>
 <h2 id="分类算法"><a href="#分类算法" class="headerlink" title="分类算法"></a>分类算法</h2><h3 id="逻辑回归算法（非回归算法）logistic-regression"><a href="#逻辑回归算法（非回归算法）logistic-regression" class="headerlink" title="逻辑回归算法（非回归算法）logistic regression"></a>逻辑回归算法（非回归算法）logistic regression</h3><h1 id="非监督学习"><a href="#非监督学习" class="headerlink" title="非监督学习"></a>非监督学习</h1><p>非监督学习算法的输入样本<strong>不对应某种特定的标签</strong>，而是<strong>自动</strong>地从样本中学习以找到某种结构、模式……</p>
 <p>分类：</p>
 <ul>
 <li>聚类算法(clustering)：例如从数万篇文章中找到相似词（<strong>非特定</strong>）并聚类</li>
 <li>异常检测（anomaly detection）</li>
-<li>降维（dimensionality reduction）</li>
+<li>降维（dimensionality reduction） </li>
 </ul>
 <p>吴恩达の小练习：（其中两个为监督两个为非监督）</p>
 <img src="/images/loading.png" data-original="/2024/07/17/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-1/1.jpg" class title="This is an image"> 
-
 <h1 id="jupyter-Notebook"><a href="#jupyter-Notebook" class="headerlink" title="jupyter Notebook"></a>jupyter Notebook</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">python -m pip install --upgrade pip</span><br><span class="line">pip install jupyter notebook</span><br></pre></td></tr></table></figure>
-
 <p>剩下的一些操作lab1文件写的很清楚，忘了就去看看</p>
 <h1 id="参数归一化（normalization）"><a href="#参数归一化（normalization）" class="headerlink" title="参数归一化（normalization）"></a>参数归一化（normalization）</h1><p>由于各参数（特征）的变化范围、大小、单位不同，需要先进行归一化处理后才输入到模型</p>
 <h2 id="平均归一化（mean-normalization）"><a href="#平均归一化（mean-normalization）" class="headerlink" title="平均归一化（mean normalization）"></a>平均归一化（mean normalization）</h2><h2 id="Z-score-normalization"><a href="#Z-score-normalization" class="headerlink" title="Z-score normalization"></a>Z-score normalization</h2>
@@ -508,6 +504,8 @@
 
 
 
+
+  
 
   
 

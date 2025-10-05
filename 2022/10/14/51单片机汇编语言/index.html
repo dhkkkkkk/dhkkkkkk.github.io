@@ -22,12 +22,12 @@
     var CONFIG = {"hostname":"dhkkkkkk.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="1、寻址寻址方式寻找操作数的地址的各种方式。 1.立即寻址直接使用操作数将操作数存入相关地址中 12MOV R0,#26HMOV DPTR,#2000H   立即数可以是8位或16位 立即数前必须加#  2.直接寻址将操作数视为地址，并将该地址存储的数据转递到相关地址中。 1MOV A,30H &#x2F;&#x2F;相当于对30H进行解引用，将30H值传入A中  3.寄存器寻址直接使用寄存器名字作为地址并对进行解引">
+  <meta name="description" content="1、寻址寻址方式寻找操作数的地址的各种方式。 1.立即寻址直接使用操作数将操作数存入相关地址中 12MOV R0,#26HMOV DPTR,#2000H  立即数可以是8位或16位 立即数前必须加#  2.直接寻址将操作数视为地址，并将该地址存储的数据转递到相关地址中。 1MOV A,30H &#x2F;&#x2F;相当于对30H进行解引用，将30H值传入A中 3.寄存器寻址直接使用寄存器名字作为地址并对进行解引用">
 <meta property="og:type" content="article">
 <meta property="og:title" content="51单片机汇编指令查询">
 <meta property="og:url" content="https://dhkkkkkk.github.io/2022/10/14/51%E5%8D%95%E7%89%87%E6%9C%BA%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80/index.html">
 <meta property="og:site_name" content="小董的BLOG">
-<meta property="og:description" content="1、寻址寻址方式寻找操作数的地址的各种方式。 1.立即寻址直接使用操作数将操作数存入相关地址中 12MOV R0,#26HMOV DPTR,#2000H   立即数可以是8位或16位 立即数前必须加#  2.直接寻址将操作数视为地址，并将该地址存储的数据转递到相关地址中。 1MOV A,30H &#x2F;&#x2F;相当于对30H进行解引用，将30H值传入A中  3.寄存器寻址直接使用寄存器名字作为地址并对进行解引">
+<meta property="og:description" content="1、寻址寻址方式寻找操作数的地址的各种方式。 1.立即寻址直接使用操作数将操作数存入相关地址中 12MOV R0,#26HMOV DPTR,#2000H  立即数可以是8位或16位 立即数前必须加#  2.直接寻址将操作数视为地址，并将该地址存储的数据转递到相关地址中。 1MOV A,30H &#x2F;&#x2F;相当于对30H进行解引用，将30H值传入A中 3.寄存器寻址直接使用寄存器名字作为地址并对进行解引用">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-10-14T02:13:19.000Z">
 <meta property="article:modified_time" content="2022-12-01T09:45:28.736Z">
@@ -92,7 +92,9 @@
   </style>
 </noscript>
 
-</head>
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --></head>
 
 <body itemscope itemtype="http://schema.org/WebPage">
   <div class="container use-motion">
@@ -248,35 +250,28 @@
         <h1 id="1、寻址"><a href="#1、寻址" class="headerlink" title="1、寻址"></a>1、寻址</h1><h2 id="寻址方式"><a href="#寻址方式" class="headerlink" title="寻址方式"></a>寻址方式</h2><p>寻找操作数的地址的各种方式。</p>
 <h3 id="1-立即寻址"><a href="#1-立即寻址" class="headerlink" title="1.立即寻址"></a>1.立即寻址</h3><p>直接使用操作数将操作数存入相关地址中</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">MOV R0,#26H</span><br><span class="line">MOV DPTR,#2000H</span><br></pre></td></tr></table></figure>
-
 <ul>
 <li>立即数可以是8位或16位</li>
 <li>立即数前必须加<code>#</code></li>
 </ul>
 <h3 id="2-直接寻址"><a href="#2-直接寻址" class="headerlink" title="2.直接寻址"></a>2.直接寻址</h3><p>将操作数视为地址，并将该地址存储的数据转递到相关地址中。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">MOV A,30H //相当于对30H进行解引用，将30H值传入A中</span><br></pre></td></tr></table></figure>
-
 <h3 id="3-寄存器寻址"><a href="#3-寄存器寻址" class="headerlink" title="3.寄存器寻址"></a>3.寄存器寻址</h3><p>直接使用寄存器名字作为地址并对进行解引用</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">MOV A,R1 //*R1</span><br></pre></td></tr></table></figure>
-
 <h3 id="4-寄存器间接寻址"><a href="#4-寄存器间接寻址" class="headerlink" title="4.寄存器间接寻址"></a>4.寄存器间接寻址</h3><p>指定寄存器的内容为操作数的地址，该地址存储的内容才是操作数</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">MOV A,@R0 // @R0相当于**R0</span><br></pre></td></tr></table></figure>
-
 <ul>
 <li>需使用间址符<code>@</code></li>
 <li>对外部RAM进行读取时必须采用该方式</li>
 </ul>
 <h3 id="5-变址寻址"><a href="#5-变址寻址" class="headerlink" title="5.变址寻址"></a>5.变址寻址</h3><p>通过对基地址进行偏移获得当前操作数地址</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">MOV A,#06H</span><br><span class="line">MOVC A,@A+PC</span><br></pre></td></tr></table></figure>
-
 <p>由于这里（@A+PC）整体应为一个地址，所以这里要对<strong>A使用间址符取06H作为地址</strong>的偏移量，因此该两行指令的意思为：将（@A+PC）地址中存储的数据传入A中</p>
 <h3 id="6-相对寻址"><a href="#6-相对寻址" class="headerlink" title="6.相对寻址"></a>6.相对寻址</h3><p>直接以PC作为基地址，只写出相对偏移量，有两种方式：</p>
 <h4 id="无条件转移："><a href="#无条件转移：" class="headerlink" title="无条件转移："></a>无条件转移：</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SJMP 08H //使PC转移至当前PC值+08H（当前PC为下一指令地址）</span><br></pre></td></tr></table></figure>
-
 <h4 id="条件转移："><a href="#条件转移：" class="headerlink" title="条件转移："></a>条件转移：</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">JZ LOP //仅当（A）=0时执行，LOP为标号</span><br></pre></td></tr></table></figure>
-
 <h3 id="7-位寻址"><a href="#7-位寻址" class="headerlink" title="7.位寻址"></a>7.位寻址</h3><h1 id="2、指令系统"><a href="#2、指令系统" class="headerlink" title="2、指令系统"></a>2、指令系统</h1><h2 id="1-数据传送指令"><a href="#1-数据传送指令" class="headerlink" title="1.数据传送指令"></a>1.数据传送指令</h2><ul>
-<li>片内数据传送：MOV	访问内部RAM</li>
+<li>片内数据传送：MOV    访问内部RAM</li>
 <li>片外数据传送：MOVX    访问外部RAM</li>
 <li>程序存储器数据传送：MOVC    访问内外ROM</li>
 </ul>
@@ -286,11 +281,10 @@
 </li>
 <li><p>字节交换（低四位）：XCHD</p>
 </li>
-<li><p>字节交换（高低互换）：SWAP</p>
-</li>
+<li>字节交换（高低互换）：SWAP</li>
 </ul>
 <h2 id="3-堆栈操作指令"><a href="#3-堆栈操作指令" class="headerlink" title="3.堆栈操作指令"></a>3.堆栈操作指令</h2><ul>
-<li>入栈：PUSH	SP先变化再压栈</li>
+<li>入栈：PUSH    SP先变化再压栈</li>
 <li>出栈：POP      先出栈再变化SP</li>
 </ul>
 <h2 id="4-算术运算指令"><a href="#4-算术运算指令" class="headerlink" title="4.算术运算指令"></a>4.算术运算指令</h2><ul>
@@ -316,8 +310,8 @@
 <li>取反：CPL</li>
 <li>清零：CLR</li>
 <li>移位<ul>
-<li>不带进位：RL&#x2F;RR 左移&#x2F;右移1位</li>
-<li>带进位：RLC&#x2F;RRC ~</li>
+<li>不带进位：RL/RR 左移/右移1位</li>
+<li>带进位：RLC/RRC ~</li>
 </ul>
 </li>
 </ul>
@@ -335,17 +329,18 @@
 </li>
 <li><p>相对转移：SJMP</p>
 </li>
-<li><p>条件转移：**(条件转移皆为相对PC的转移)**</p>
+<li><p>条件转移：<strong>(条件转移皆为相对PC的转移)</strong></p>
 <ul>
-<li><p>累加器<u><strong>判0</strong></u>：JZ&#x2F;JNZ</p>
+<li><p>累加器<u><strong>判0</strong></u>：JZ/JNZ</p>
 </li>
-<li><p>进位Cy判断：JC&#x2F;JNC</p>
+<li><p>进位Cy判断：JC/JNC</p>
 </li>
-<li><p>任意位判断：JB&#x2F;JNB&#x2F;JBC</p>
+<li><p>任意位判断：JB/JNB/JBC</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">JB bit,rel</span><br><span class="line">// bit: 判断位  rel：偏移量</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>比较<strong>不相等</strong>判断（不相等为满足条件）:CJNE</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">CJNE A,#data,rel</span><br></pre></td></tr></table></figure></li>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">CJNE A,#data,rel</span><br></pre></td></tr></table></figure>
+</li>
 </ul>
 </li>
 <li><p>减1<strong>不为0</strong>判断转移：DJNZ</p>
@@ -557,6 +552,8 @@
 
 
 
+
+  
 
   
 

@@ -92,7 +92,9 @@
   </style>
 </noscript>
 
-</head>
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --></head>
 
 <body itemscope itemtype="http://schema.org/WebPage">
   <div class="container use-motion">
@@ -252,38 +254,38 @@
 <p>它们被定义在头文件memory中</p>
 <h2 id="1、shared-ptr类"><a href="#1、shared-ptr类" class="headerlink" title="1、shared_ptr类"></a>1、shared_ptr类</h2><p>智能指针也是一个模板，类似于vector等类型，对智能指针的初始化也要提供指针指向的类型这一信息。</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">shared_ptr&lt;string&gt; p1;</span><br><span class="line">shared_ptr&lt;vector&lt;<span class="type">int</span>&gt;&gt; p2;</span><br></pre></td></tr></table></figure>
-
 <p>智能指针的操作基本于常规指针相同，当然其作为一个模板也有自己特有的操作：</p>
 <p>shared_ptr和unique_ptr均支持的操作</p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
-<th align="center">p</th>
-<th align="center">可用作一个条件判断，若p指向了一个对象则返回true</th>
+<th style="text-align:center">p</th>
+<th style="text-align:center">可用作一个条件判断，若p指向了一个对象则返回true</th>
 </tr>
 </thead>
-<tbody><tr>
-<td align="center">*p</td>
-<td align="center">~</td>
+<tbody>
+<tr>
+<td style="text-align:center">*p</td>
+<td style="text-align:center">~</td>
 </tr>
 <tr>
-<td align="center">p.get()</td>
-<td align="center">返回p中保存的指针</td>
+<td style="text-align:center">p.get()</td>
+<td style="text-align:center">返回p中保存的指针</td>
 </tr>
 <tr>
-<td align="center">swap(p1,p2)&#x2F;p1.swap(q)</td>
-<td align="center">交换p和q中的指针</td>
+<td style="text-align:center">swap(p1,p2)/p1.swap(q)</td>
+<td style="text-align:center">交换p和q中的指针</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <h3 id="make-shared函数"><a href="#make-shared函数" class="headerlink" title="make_shared函数"></a>make_shared函数</h3><p>make_shared函数被定义在标准库中，该函数可以在动态内存中分配一个对象并初始化，并返回指向该对象的shared_ptr。</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">shared_ptr&lt;string&gt; sp=<span class="built_in">make_shared</span>&lt;string&gt;(<span class="string">&quot;dhk&quot;</span>);</span><br></pre></td></tr></table></figure>
-
 <p>因为该函数会返回一个对应指向类型的shared_prt，因此也可以直接使用auto来保存函数make_shared的结果：</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">auto</span> sp=<span class="built_in">make_shared</span>&lt;string&gt;(<span class="string">&quot;dhk&quot;</span>);</span><br></pre></td></tr></table></figure>
-
 <p>另外，make_shared函数支持参数用作构造，其用法于顺序容器的成员emplace相似，参数顺序等需严格遵守构造函数内容，详见<a target="_blank" rel="noopener" href="https://dhkkk.gitee.io/2023/01/12/C++-8/">C++-顺序容器 | 小董的BLOG (gitee.io)</a></p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">auto</span> sp=<span class="built_in">make_shared</span>&lt;string&gt;(<span class="number">10</span>,<span class="string">&#x27;d&#x27;</span>);<span class="comment">//使用构造</span></span><br></pre></td></tr></table></figure>
-
 <h3 id="shared-ptr的拷贝和赋值"><a href="#shared-ptr的拷贝和赋值" class="headerlink" title="shared_ptr的拷贝和赋值"></a>shared_ptr的拷贝和赋值</h3><p>当在进行拷贝和赋值时，每个shared_ptr都会实时地记录当前有多少个shared_ptr指向相同的对象，称之为<strong>引用计数</strong>，一但一个shared_ptr的计数器变为0，则会自动释放自己所管理的对象。</p>
 <p><strong>当指向一个对象的最后一个shared_ptr被销毁时，shared_ptr类会自动销毁这个对象。</strong>该操作通过类的一个成员函数——析构函数完成。</p>
 <p>如果该shared_ptr是作为局部变量导致被自动销毁，析构函数同样会对引用计数进行递减操作</p>
@@ -291,14 +293,11 @@
 <h3 id="使用new分配动态内存"><a href="#使用new分配动态内存" class="headerlink" title="使用new分配动态内存"></a>使用new分配动态内存</h3><p>在堆中的分配的内存是无名的，因此无论是make_shared还是new都无法为分配空间的对象命名，取而代之的是返回一个指向该内存的指针。</p>
 <p>几种初始化方式：</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> *p= <span class="keyword">new</span> <span class="type">int</span>;</span><br><span class="line"><span class="keyword">auto</span> p= <span class="keyword">new</span> <span class="type">int</span>;<span class="comment">//不定义值</span></span><br><span class="line"><span class="type">int</span> *p= <span class="keyword">new</span> <span class="built_in">int</span>();<span class="comment">//进行值默认初始化</span></span><br><span class="line"><span class="type">int</span> *p= <span class="keyword">new</span> <span class="built_in">int</span>(<span class="number">100</span>);</span><br><span class="line"><span class="keyword">auto</span> p= <span class="keyword">new</span> vector&lt;<span class="type">int</span>&gt;&#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>&#125;;</span><br></pre></td></tr></table></figure>
-
 <p>也可以使用new分配const对象：</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">auto</span> p = <span class="keyword">new</span> <span class="type">const</span> <span class="built_in">int</span>(<span class="number">100</span>);</span><br></pre></td></tr></table></figure>
-
 <p>需要注意的是，new和delete<strong>都是运算符，而不是关键字！</strong>因此<code>const new int()</code>是不合法的</p>
 <p>如果堆内存耗尽，无法再分配新的内存，则new表达式会失败，抛出一个bad_alloc，如果不想其抛出异常，可以使用<strong>定位new</strong>的方式阻止其抛出异常：</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">auto</span> p = <span class="built_in">new</span>(nothrow) <span class="type">int</span>;<span class="comment">//此时如果分配失败，则只会返回一个空指针</span></span><br></pre></td></tr></table></figure>
-
 <p><strong>使用定位new需要包含头文件new</strong></p>
 <h3 id="使用delete释放内存"><a href="#使用delete释放内存" class="headerlink" title="使用delete释放内存"></a>使用delete释放内存</h3><p>通过delete表达式可以将指定的动态内存释放，使用时需注意：</p>
 <ul>
@@ -311,7 +310,6 @@
 <p>因此，使用者必须记得在不使用时删除这块内存，如果指向该内存的常规指针指向改变，这块内存就无法被释放了（因为已经找不到了），所以最好的办法是将该指针定义为常量指针，虽然这样也仅仅能避免地址丢失的发生</p>
 <h3 id="混合使用shared-ptr和new"><a href="#混合使用shared-ptr和new" class="headerlink" title="混合使用shared_ptr和new"></a>混合使用shared_ptr和new</h3><p>可以使用一个指向动态内存的内置指针来初始化一个智能指针：</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">shared_ptr&lt;<span class="type">int</span>&gt; <span class="title">p1</span><span class="params">(<span class="keyword">new</span> <span class="type">int</span>(<span class="number">100</span>))</span></span>;</span><br></pre></td></tr></table></figure>
-
 <p>使用时需注意：</p>
 <ul>
 <li><p>用于初始化智能指针的参数<strong>必须是一个指向动态内存的指针</strong></p>
@@ -531,6 +529,8 @@
 
 
 
+
+  
 
   
 

@@ -92,7 +92,9 @@
   </style>
 </noscript>
 
-</head>
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --></head>
 
 <body itemscope itemtype="http://schema.org/WebPage">
   <div class="container use-motion">
@@ -260,15 +262,14 @@
 </ul>
 </li>
 <li><p>逗号运算符</p>
-<p>在C语言中逗号“,”也是一种运算符，称为逗号运算符。 其功能是把两个表达式连接起来组成一个表达式， 称为逗号表达式。其一般形式为：<br>  表达式1, 表达式2<br>其求值过程是分别求两个表达式的值，并以表达式**2(即最右边的一个表达式)**的值作为整个逗号表达式的值。</p>
+<p>在C语言中逗号“,”也是一种运算符，称为逗号运算符。 其功能是把两个表达式连接起来组成一个表达式， 称为逗号表达式。其一般形式为：<br>  表达式1, 表达式2<br>其求值过程是分别求两个表达式的值，并以表达式<strong>2(即最右边的一个表达式)</strong>的值作为整个逗号表达式的值。</p>
 </li>
 </ul>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> x=<span class="number">2</span>;</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;%d&quot;</span>,(x++,<span class="number">2</span>*x)); <span class="number">6</span></span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;%d&quot;</span>,x); <span class="number">3</span></span><br></pre></td></tr></table></figure>
-
-<p>​		<strong>逗号仅计算结果，并不具有赋值作用</strong>（但是x++有赋值作用）</p>
+<p>​        <strong>逗号仅计算结果，并不具有赋值作用</strong>（但是x++有赋值作用）</p>
 <ul>
 <li><p>算术运算符优先级</p>
-<p>优先级的次序如下（由高到低）：（）、++、–、＊、／、％、＋、－</p>
+<p>优先级的次序如下（由高到低）：（）、++、—、＊、／、％、＋、－</p>
 <p>以上所列的运算符，<strong>只有单目运算符正“＋”和负“－”的结合性是从右到左，其余运算符的结合性都是从左到右</strong></p>
 <ul>
 <li>%对象必须为整型</li>
@@ -289,7 +290,6 @@
 <li>数字的默认类型为整型</li>
 </ul>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;%lf&quot;</span>,<span class="number">1</span>/<span class="number">2</span>); <span class="comment">//0.000000</span></span><br></pre></td></tr></table></figure>
-
 <ul>
 <li><p>c的基本数据类型：单精度型、双精度型、字符型、整型、枚举型</p>
 </li>
@@ -301,7 +301,7 @@
 <ul>
 <li>%i同%d</li>
 <li>%o 八进制</li>
-<li>%g&#x2F;G 系统决定采用什么格式（f或e）使输出宽度最小</li>
+<li>%g/G 系统决定采用什么格式（f或e）使输出宽度最小</li>
 <li>%p 输出变量地址</li>
 </ul>
 <p>%m.ns，输出占ｍ列，但只取字符串中左边ｎ个字符。这ｎ个字符输出在ｍ列的右边，<strong>左边补空格</strong></p>
@@ -324,7 +324,7 @@
 <p>DBADD <strong>A</strong>A<strong>A</strong>A<strong>A</strong> AC</p>
 <p>DBADD DACAB AC    54页</p>
 <h1 id="五、循环结构"><a href="#五、循环结构" class="headerlink" title="五、循环结构"></a>五、循环结构</h1><ul>
-<li>while((ch&#x3D;getchar())!&#x3D;’\n’);符合语法</li>
+<li>while((ch=getchar())!=’\n’);符合语法</li>
 </ul>
 <p>AA<strong>AD</strong>C DBBC<strong>C</strong> B<strong>CA</strong></p>
 <p>AACBC DBBCB BBC    75页</p>
@@ -335,7 +335,7 @@
 <p>\xhh: 1~2位16进制数对应字符例如’\x12’</p>
 </li>
 </ul>
-<p>BA*<u>A</u>*DD DBCB</p>
+<p>BA<em><u>A</u></em>DD DBCB</p>
 <p>BA<u><em>C</em></u>DD D<strong>C</strong>CB    85页</p>
 <p>3忽略</p>
 <ul>
@@ -348,57 +348,54 @@
 <li>return语句中带有++时，返回之后并且作用之后才会++</li>
 </ul>
 <h1 id="八、指针"><a href="#八、指针" class="headerlink" title="八、指针"></a>八、指针</h1><ul>
-<li><p>有<code>int a,*p1=&amp;a;</code>由于&amp;和*运算优先级相同，&amp; *p1则从右至左运算，则&amp; *p1等同于&amp;a</p>
-<p>*&amp;a则是等同于 *p1等同于a</p>
+<li><p>有<code>int a,*p1=&amp;a;</code>由于&amp;和<em>运算优先级相同，&amp; </em>p1则从右至左运算，则&amp; *p1等同于&amp;a</p>
+<p><em>&amp;a则是等同于 </em>p1等同于a</p>
 </li>
-<li><p><strong><code>*</code>的优先级高于+、-,因此<code> *p1</code>&#x3D;<code> *p1</code>+1是将a+1的值存进p内存储的地址所指向的内容中，也就是相当于a&#x3D;a+1；但是a的地址是不变的。</strong></p>
+<li><p><strong><code>*</code>的优先级高于+、-,因此<code>*p1</code>=<code>*p1</code>+1是将a+1的值存进p内存储的地址所指向的内容中，也就是相当于a=a+1；但是a的地址是不变的。</strong></p>
 </li>
 </ul>
-<p>具体对指针的一些理解已添加在<a target="_blank" rel="noopener" href="https://dhkkk.gitee.io/2022/07/31/C-%E6%8C%87%E9%92%88/">指针相关复习 | 小董的BLOG (gitee.io)</a>中</p>
+<p>具体对指针的一些理解已添加在<a target="_blank" rel="noopener" href="https://dhkkk.gitee.io/2022/07/31/C-指针/">指针相关复习 | 小董的BLOG (gitee.io)</a>中</p>
 <p>DADBB A<u><em>D</em></u>BDB BCC</p>
-<p>DADDB A<u><em><strong>C</strong></em></u>BDB BCC  116页</p>
+<p>DADDB A<u><strong><em>C</em></strong></u>BDB BCC  116页</p>
 <p>7忽略（第一次全对捏）</p>
 <h1 id="九、数组"><a href="#九、数组" class="headerlink" title="九、数组"></a>九、数组</h1><p>CDDBC CBBCD ACA<strong>B</strong></p>
 <p>CDDBC CBBCD ACAC   146页</p>
 <h1 id="十、字符串"><a href="#十、字符串" class="headerlink" title="十、字符串"></a>十、字符串</h1><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;stdio.h&quot;</span></span></span><br><span class="line"><span class="type">void</span> <span class="title function_">swap</span><span class="params">(<span class="type">char</span> *x, <span class="type">char</span> *y)</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">while</span>(*x==<span class="string">&#x27;*&#x27;</span>) x++;</span><br><span class="line">	<span class="keyword">while</span>(*y=*x) <span class="comment">//将x所指向的字符赋值给y，直到遇到&#x27;/0&#x27;为止，这样写是正确的</span></span><br><span class="line">	&#123;</span><br><span class="line">		x++;y++;	</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">char</span> s[<span class="number">30</span>]=<span class="string">&quot;******a*b***&quot;</span>,t[<span class="number">30</span>];</span><br><span class="line">	swap(s,t);</span><br><span class="line">	<span class="built_in">puts</span>(t);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>AADCC <strong>DA</strong>BB<strong>D</strong> C<strong>A</strong></p>
 <p>AADCC CBBBA CB              173页  6、10、12</p>
 <p><strong>strcpy会覆盖原来的整个字符串，而strncpy只会覆盖n个字节原来的字符串，剩下的保留</strong></p>
 <h1 id="十一、对函数的进一步讨论"><a href="#十一、对函数的进一步讨论" class="headerlink" title="十一、对函数的进一步讨论"></a>十一、对函数的进一步讨论</h1><ul>
 <li><p>传入main的参数</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">main(<span class="type">int</span> argc, <span class="type">char</span> *argv[])</span><br></pre></td></tr></table></figure></li>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">main(<span class="type">int</span> argc, <span class="type">char</span> *argv[])</span><br></pre></td></tr></table></figure>
+</li>
 </ul>
 <p>当我们对一个名为test的c文件进行编译时，在终端输入： test  ok  good后：</p>
 <ul>
-<li><p>argc值为3，即存入argv的字符串个数</p>
-</li>
-<li><p>argv[0]存放</p>
-</li>
-<li><p>对指向函数的指针变量进行加减法无意义</p>
-</li>
+<li>argc值为3，即存入argv的字符串个数</li>
+<li>argv[0]存放</li>
+</ul>
+<ul>
+<li>对指向函数的指针变量进行加减法无意义</li>
 </ul>
 <p>CDCD<strong>D</strong> BBCB</p>
 <p>CDCDC BBCB 184页</p>
-<h1 id="十二、用户标识符的作用域和存储类"><a href="#十二、用户标识符的作用域和存储类" class="headerlink" title="十二、用户标识符的作用域和存储类"></a>十二、用户标识符的作用域和存储类</h1><p>ACDB<strong>A</strong> A<strong>C</strong>CC**<u>D</u>** <strong>C</strong></p>
+<h1 id="十二、用户标识符的作用域和存储类"><a href="#十二、用户标识符的作用域和存储类" class="headerlink" title="十二、用户标识符的作用域和存储类"></a>十二、用户标识符的作用域和存储类</h1><p>ACDB<strong>A</strong> A<strong>C</strong>CC<strong><u>D</u></strong> <strong>C</strong></p>
 <p>ACDBB ADCCA D  195页</p>
 <ul>
 <li>若全局变量和某一函数中局部变量同名，则在函数内全局变量被屏蔽</li>
 </ul>
-<h1 id="十三、编译预处理和动态存储分配"><a href="#十三、编译预处理和动态存储分配" class="headerlink" title="十三、编译预处理和动态存储分配"></a>十三、编译预处理和动态存储分配</h1><p>详见<a target="_blank" rel="noopener" href="https://dhkkk.gitee.io/2022/08/03/C-%E5%85%B3%E9%94%AE%E5%AD%97/">一些关键字 | 小董的BLOG (gitee.io)</a></p>
+<h1 id="十三、编译预处理和动态存储分配"><a href="#十三、编译预处理和动态存储分配" class="headerlink" title="十三、编译预处理和动态存储分配"></a>十三、编译预处理和动态存储分配</h1><p>详见<a target="_blank" rel="noopener" href="https://dhkkk.gitee.io/2022/08/03/C-关键字/">一些关键字 | 小董的BLOG (gitee.io)</a></p>
 <p><strong>AACD</strong>C A<strong>D</strong>AA</p>
 <p>DBBBC ACAA</p>
 <p>define只作替换！！！！</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> D1(a) (2*a)</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> D2(a) (2*(a))</span></span><br><span class="line"><span class="comment">//计算结果最好也用括号括起来,小型计算不括问题应该不大</span></span><br><span class="line">  <span class="type">int</span> <span class="title function_">main</span> <span class="params">()</span></span><br><span class="line">  &#123;</span><br><span class="line">     <span class="type">int</span> b = D1(<span class="number">3</span>+<span class="number">4</span>);</span><br><span class="line">     <span class="type">int</span> c = D2(<span class="number">3</span>+<span class="number">4</span>);</span><br><span class="line">     <span class="built_in">printf</span>(<span class="string">&quot;%d&quot;</span>, b);  <span class="comment">//输出等价于2*3+4=10 ※※※※※※※※※※※※※</span></span><br><span class="line">     <span class="built_in">printf</span>(<span class="string">&quot;%d&quot;</span>, c);  <span class="comment">//2*(3+4)=14</span></span><br><span class="line">     <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
-
 <h1 id="十四、结构体、共用体和用户自定义型"><a href="#十四、结构体、共用体和用户自定义型" class="headerlink" title="十四、结构体、共用体和用户自定义型"></a>十四、结构体、共用体和用户自定义型</h1><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> &#123;</span><span class="type">int</span> a;<span class="type">int</span> b;&#125;a;<span class="comment">//合法</span></span><br></pre></td></tr></table></figure>
-
-<p>关于动态链表详见<a target="_blank" rel="noopener" href="https://dhkkk.gitee.io/2022/08/01/C-%E7%BB%93%E6%9E%84%E4%BD%93/">结构体复习 | 小董的BLOG (gitee.io)</a></p>
-<p>AABB×	<strong>C</strong>CBDD	BC</p>
-<p>ADBBA	DCBCD	BD    6题看题不仔细捏</p>
+<p>关于动态链表详见<a target="_blank" rel="noopener" href="https://dhkkk.gitee.io/2022/08/01/C-结构体/">结构体复习 | 小董的BLOG (gitee.io)</a></p>
+<p>AABB×    <strong>C</strong>CBDD    BC</p>
+<p>ADBBA    DCBCD    BD    6题看题不仔细捏</p>
 <h1 id="十五、位运算"><a href="#十五、位运算" class="headerlink" title="十五、位运算"></a>十五、位运算</h1><p>长度不同的数据进行位运算时先将最低位对齐，然后将短的一方扩充</p>
-<p>D<strong>C</strong>DAA	BCD</p>
-<p>DADAA	BCD</p>
+<p>D<strong>C</strong>DAA    BCD</p>
+<p>DADAA    BCD</p>
 <p>看清楚输出的格式声明</p>
 <p>240</p>
 
@@ -607,6 +604,8 @@
 
 
 
+
+  
 
   
 

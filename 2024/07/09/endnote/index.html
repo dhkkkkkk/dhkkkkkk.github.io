@@ -22,12 +22,12 @@
     var CONFIG = {"hostname":"dhkkkkkk.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="本文学习基于endnote中科大慕课_bilibili 基本使用    在线搜索可在不同数据库中按需检索文献 Retrieve result可选检索结果显示数量 ➕可将选中文献复制到本地数据库 查找全文可搜索原文PDF；也可通过打开网址进行检索。PDF最好用endnote内置阅读器打开 可在左侧栏对数据库文献进行分组，直接拖拽就可  在word中使用endnote关联word 在endnote安装">
+  <meta name="description" content="本文学习基于endnote中科大慕课_bilibili 基本使用   在线搜索可在不同数据库中按需检索文献 Retrieve result可选检索结果显示数量 ➕可将选中文献复制到本地数据库 查找全文可搜索原文PDF；也可通过打开网址进行检索。PDF最好用endnote内置阅读器打开 可在左侧栏对数据库文献进行分组，直接拖拽就可  在word中使用endnote关联word 在endnote安装路">
 <meta property="og:type" content="article">
 <meta property="og:title" content="EndNote">
 <meta property="og:url" content="https://dhkkkkkk.github.io/2024/07/09/endnote/index.html">
 <meta property="og:site_name" content="小董的BLOG">
-<meta property="og:description" content="本文学习基于endnote中科大慕课_bilibili 基本使用    在线搜索可在不同数据库中按需检索文献 Retrieve result可选检索结果显示数量 ➕可将选中文献复制到本地数据库 查找全文可搜索原文PDF；也可通过打开网址进行检索。PDF最好用endnote内置阅读器打开 可在左侧栏对数据库文献进行分组，直接拖拽就可  在word中使用endnote关联word 在endnote安装">
+<meta property="og:description" content="本文学习基于endnote中科大慕课_bilibili 基本使用   在线搜索可在不同数据库中按需检索文献 Retrieve result可选检索结果显示数量 ➕可将选中文献复制到本地数据库 查找全文可搜索原文PDF；也可通过打开网址进行检索。PDF最好用endnote内置阅读器打开 可在左侧栏对数据库文献进行分组，直接拖拽就可  在word中使用endnote关联word 在endnote安装路">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://dhkkkkkk.github.io/images/loading.png">
 <meta property="og:image" content="https://dhkkkkkk.github.io/images/loading.png">
@@ -95,7 +95,9 @@
   </style>
 </noscript>
 
-</head>
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --></head>
 
 <body itemscope itemtype="http://schema.org/WebPage">
   <div class="container use-motion">
@@ -248,9 +250,8 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>本文学习基于<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1W4411b7GM/?p=3&spm_id_from=pageDriver&vd_source=063d3dd412d275078eaf18c62b5f21f6">endnote中科大慕课_bilibili</a></p>
+        <p>本文学习基于<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1W4411b7GM/?p=3&amp;spm_id_from=pageDriver&amp;vd_source=063d3dd412d275078eaf18c62b5f21f6">endnote中科大慕课_bilibili</a></p>
 <h1 id="基本使用"><a href="#基本使用" class="headerlink" title="基本使用"></a>基本使用</h1><img src="/images/loading.png" data-original="/2024/07/09/endnote/1.jpg" class title="This is an image"> 
-
 <ul>
 <li>在线搜索可在不同数据库中按需检索文献</li>
 <li>Retrieve result可选检索结果显示数量</li>
@@ -263,20 +264,19 @@
 </li>
 <li><p>文件-选项-加载项-管理COM加载项 转到-勾选Endnote cite while you write，如果出现<strong>报错</strong>：</p>
 <ul>
-<li><p>检查window系统位数（一般为64），在endnote安装路径下的Product-Support&#x2F;CWYW中将..x64.dat改为压缩包格式后缀并解压，将解压后的5个文件复制到word的endnote加载项地址进行替换</p>
+<li><p>检查window系统位数（一般为64），在endnote安装路径下的Product-Support/CWYW中将..x64.dat改为压缩包格式后缀并解压，将解压后的5个文件复制到word的endnote加载项地址进行替换</p>
 </li>
 <li><p>如果还是不行，检查<strong>word</strong>是否为64位，如果win系统为64位而word为32位建议<strong>重装一个64位office（</strong>本人原为32位office2019，全网的方法都试过了还是不行，重装为64位office2021后就正常了，使用的是endnote 21）</p>
 </li>
 <li><p>其他问题可参考：<a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_45936544/article/details/134223088?spm=1001.2014.3001.5506">Word 找不到 Endnote选项_word加载项里找不到endnote-CSDN博客</a></p>
 <p><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/340094831/answer/1057369528"> word2019与endnote如何关联？ - 知乎 (zhihu.com)</a></p>
 <p>如果上述方法都不行真的建议立刻重装一个64位office，反正我是被折磨了一整天的😥</p>
-<p>office卸载建议使用微软官方的彻底卸载（整个过程大概20min左右）：<a target="_blank" rel="noopener" href="https://support.microsoft.com/zh-cn/office/%E4%BB%8E-pc-%E5%8D%B8%E8%BD%BD-office-9dd49b83-264a-477a-8fcc-2fdf5dbf61d8?ui=zh-cn&rs=zh-cn&ad=cn">卸载 Office -Microsoft 支持</a></p>
+<p>office卸载建议使用微软官方的彻底卸载（整个过程大概20min左右）：<a target="_blank" rel="noopener" href="https://support.microsoft.com/zh-cn/office/从-pc-卸载-office-9dd49b83-264a-477a-8fcc-2fdf5dbf61d8?ui=zh-cn&amp;rs=zh-cn&amp;ad=cn">卸载 Office -Microsoft 支持</a></p>
 </li>
 </ul>
 </li>
 </ul>
 <h2 id="在word中插入参考文献"><a href="#在word中插入参考文献" class="headerlink" title="在word中插入参考文献"></a>在word中插入参考文献</h2><img src="/images/loading.png" data-original="/2024/07/09/endnote/2.jpg" class title="This is an image"> 
-
 <ul>
 <li>可在<strong>word中插入</strong>endnote中选中的文献</li>
 <li>也可以<strong>在endnote中</strong>有个引号图标在指定文档中插入文献</li>
@@ -327,7 +327,7 @@
 <li><p><strong>查找重复文献</strong></p>
 <p>endnote21：数据库-查找重复项</p>
 </li>
-<li><p><strong>分组&#x2F;Tags&#x2F;Label</strong></p>
+<li><p><strong>分组/Tags/Label</strong></p>
 <ul>
 <li><p>分组：手动拖动；创建可筛选的智能组；根据已有组再次筛选新组；组集下可以再创组</p>
 <p>可以通过组集(group set)+组(group)的方式对文献进行<strong>分级管理</strong></p>
@@ -561,6 +561,8 @@
 
 
 
+
+  
 
   
 

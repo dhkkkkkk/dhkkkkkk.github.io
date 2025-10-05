@@ -92,7 +92,9 @@
   </style>
 </noscript>
 
-</head>
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --></head>
 
 <body itemscope itemtype="http://schema.org/WebPage">
   <div class="container use-motion">
@@ -272,14 +274,12 @@
 </li>
 </ul>
 <h2 id="输入输出例程："><a href="#输入输出例程：" class="headerlink" title="输入输出例程："></a>输入输出例程：</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;iostream&quot;</span></span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="type">int</span> a,b;</span><br><span class="line">	std::cin&gt;&gt;a&gt;&gt;b;<span class="comment">//输入</span></span><br><span class="line">	std::cout&lt;&lt;a+b&lt;&lt;std::endl;<span class="comment">//输出</span></span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>下面针对这个例程讲解：</p>
 <ul>
 <li><p>前缀std::</p>
 <p>这个前缀指出cin、cout、endl都是定义在名为std的命名空间中的。使用命名空间可以避免与用户定义的名字冲突。且标准库的所有名字都是定义在std中的。</p>
 </li>
 <li><h3 id="从输入流读取数据："><a href="#从输入流读取数据：" class="headerlink" title="从输入流读取数据："></a>从输入流<strong>读取</strong>数据：</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> a,b;</span><br><span class="line">std::cin&gt;&gt;a&gt;&gt;b;<span class="comment">//输入</span></span><br></pre></td></tr></table></figure>
-
 <ul>
 <li><p><strong>输入运算符（&gt;&gt;)</strong></p>
 <p>该运算符接收两个运算对象：</p>
@@ -291,11 +291,11 @@
 </ul>
 <p>返回值（计算结果）： ostream型的对象（左侧运算对象）</p>
 <p>也就是说下面几种写法是一个意思：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">std::cin&gt;&gt;a&gt;&gt;b;</span><br><span class="line">/****************************/</span><br><span class="line">(std::cin&gt;&gt;a)&gt;&gt;b;</span><br><span class="line">/****************************/</span><br><span class="line">std:cin&gt;&gt;a;</span><br><span class="line">std:cin&gt;&gt;b;</span><br></pre></td></tr></table></figure></li>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">std::cin&gt;&gt;a&gt;&gt;b;</span><br><span class="line">/****************************/</span><br><span class="line">(std::cin&gt;&gt;a)&gt;&gt;b;</span><br><span class="line">/****************************/</span><br><span class="line">std:cin&gt;&gt;a;</span><br><span class="line">std:cin&gt;&gt;b;</span><br></pre></td></tr></table></figure>
+</li>
 </ul>
 </li>
 <li><h3 id="向输出流写入数据："><a href="#向输出流写入数据：" class="headerlink" title="向输出流写入数据："></a>向输出流<strong>写入</strong>数据：</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">std::cout&lt;&lt;a+b&lt;&lt;std::endl;<span class="comment">//输出</span></span><br></pre></td></tr></table></figure>
-
 <ul>
 <li><p><strong>输出运算符（&lt;&lt;)</strong></p>
 <p>该运算符接收两个运算对象：</p>
@@ -313,7 +313,6 @@
 </li>
 <li><p><strong>关于数据缓冲区</strong></p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;iostream&quot;</span></span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="type">int</span> a,b=<span class="number">1</span>,c;</span><br><span class="line">	<span class="keyword">while</span>(std::cin&gt;&gt;a)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="comment">//while (getchar()!= &#x27;\n&#x27;);</span></span><br><span class="line">		std::cout&lt;&lt;<span class="string">&quot;times:&quot;</span>&lt;&lt;b++&lt;&lt;std::endl;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>当使用一个istream对象为<strong>条件</strong>时，其效果就是检测输入流当前的状态，如果流是有效的，此时istream对象使条件为真，当遇到以下情况时为假：</p>
 <ul>
 <li>无效输入：例如上方输入不为int型（与a类型不符合）</li>
@@ -530,6 +529,8 @@
 
 
 
+
+  
 
   
 

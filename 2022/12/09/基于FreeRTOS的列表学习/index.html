@@ -22,12 +22,12 @@
     var CONFIG = {"hostname":"dhkkkkkk.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="本文参考了FreeRTOS高级篇1—FreeRTOS列表和列表项研究是为了理解的博客-CSDN博客freertos list进行学习 列表与列表项FreeRTOS内核为了调度任务之间的关系，大量地使用了列表和列表项的数据结果来跟踪任务当前的状态。例如，处于挂起、延时、就绪的任务都会被挂接到各自的列表中 FreeRTOS中使用指针实现列表的功能，类似于链式列表。一个列表下有多个列表项，且每个列表项中">
+  <meta name="description" content="本文参考了FreeRTOS高级篇1—-FreeRTOS列表和列表项研究是为了理解的博客-CSDN博客freertos list进行学习 列表与列表项FreeRTOS内核为了调度任务之间的关系，大量地使用了列表和列表项的数据结果来跟踪任务当前的状态。例如，处于挂起、延时、就绪的任务都会被挂接到各自的列表中 FreeRTOS中使用指针实现列表的功能，类似于链式列表。一个列表下有多个列表项，且每个列表项">
 <meta property="og:type" content="article">
 <meta property="og:title" content="基于FreeRTOS的列表学习">
 <meta property="og:url" content="https://dhkkkkkk.github.io/2022/12/09/%E5%9F%BA%E4%BA%8EFreeRTOS%E7%9A%84%E5%88%97%E8%A1%A8%E5%AD%A6%E4%B9%A0/index.html">
 <meta property="og:site_name" content="小董的BLOG">
-<meta property="og:description" content="本文参考了FreeRTOS高级篇1—FreeRTOS列表和列表项研究是为了理解的博客-CSDN博客freertos list进行学习 列表与列表项FreeRTOS内核为了调度任务之间的关系，大量地使用了列表和列表项的数据结果来跟踪任务当前的状态。例如，处于挂起、延时、就绪的任务都会被挂接到各自的列表中 FreeRTOS中使用指针实现列表的功能，类似于链式列表。一个列表下有多个列表项，且每个列表项中">
+<meta property="og:description" content="本文参考了FreeRTOS高级篇1—-FreeRTOS列表和列表项研究是为了理解的博客-CSDN博客freertos list进行学习 列表与列表项FreeRTOS内核为了调度任务之间的关系，大量地使用了列表和列表项的数据结果来跟踪任务当前的状态。例如，处于挂起、延时、就绪的任务都会被挂接到各自的列表中 FreeRTOS中使用指针实现列表的功能，类似于链式列表。一个列表下有多个列表项，且每个列表项">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://dhkkkkkk.github.io/images/loading.png">
 <meta property="og:image" content="https://dhkkkkkk.github.io/images/loading.png">
@@ -111,7 +111,9 @@
   </style>
 </noscript>
 
-</head>
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --></head>
 
 <body itemscope itemtype="http://schema.org/WebPage">
   <div class="container use-motion">
@@ -264,15 +266,13 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p><em>本文参考了<a target="_blank" rel="noopener" href="https://freertos.blog.csdn.net/article/details/51190095">FreeRTOS高级篇1—FreeRTOS列表和列表项研究是为了理解的博客-CSDN博客freertos list</a>进行学习</em></p>
+        <p><em>本文参考了<a target="_blank" rel="noopener" href="https://freertos.blog.csdn.net/article/details/51190095">FreeRTOS高级篇1—-FreeRTOS列表和列表项研究是为了理解的博客-CSDN博客freertos list</a>进行学习</em></p>
 <h1 id="列表与列表项"><a href="#列表与列表项" class="headerlink" title="列表与列表项"></a>列表与列表项</h1><p>FreeRTOS内核为了调度任务之间的关系，大量地使用了列表和列表项的数据结果来跟踪任务当前的状态。例如，处于挂起、延时、就绪的任务都会被挂接<strong>到各自的列表中</strong></p>
 <p>FreeRTOS中使用指针实现列表的功能，类似于链式列表。<strong>一个列表下有多个列表项</strong>，且每个列表项中都有一个指针指向列表。</p>
 <img src="/images/loading.png" data-original="/2022/12/09/%E5%9F%BA%E4%BA%8EFreeRTOS%E7%9A%84%E5%88%97%E8%A1%A8%E5%AD%A6%E4%B9%A0/1.jpg" class title="This is an image"> 
-
 <p><strong>需要注意的是，<u>列表</u>和之前讲到任务交互时使用的<u>队列</u>是两个东西！</strong></p>
 <h1 id="FreeRTOS列表项的构成"><a href="#FreeRTOS列表项的构成" class="headerlink" title="FreeRTOS列表项的构成"></a>FreeRTOS列表项的构成</h1><h2 id="全功能版列表项"><a href="#全功能版列表项" class="headerlink" title="全功能版列表项"></a>全功能版列表项</h2><p>我们可以在list.h中找到freertos对列表项的定义</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">xLIST_ITEM</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">     listFIRST_LIST_ITEM_INTEGRITY_CHECK_VALUE           <span class="comment">/*用于检测列表项数据是否完整*/</span></span><br><span class="line">     configLIST_VOLATILE TickType_t xItemValue;           <span class="comment">/*列表项值*/</span></span><br><span class="line">     <span class="class"><span class="keyword">struct</span> <span class="title">xLIST_ITEM</span> * <span class="title">configLIST_VOLATILE</span> <span class="title">pxNext</span>;</span>      <span class="comment">/*指向列表中下一个列表项*/</span></span><br><span class="line">     <span class="class"><span class="keyword">struct</span> <span class="title">xLIST_ITEM</span> * <span class="title">configLIST_VOLATILE</span> <span class="title">pxPrevious</span>;</span>  <span class="comment">/*指向列表中上一个列表项*/</span></span><br><span class="line">     <span class="type">void</span> * pvOwner;                                     <span class="comment">/*指向一个任务TCB*/</span></span><br><span class="line">     <span class="type">void</span> * configLIST_VOLATILE pvContainer;             <span class="comment">/*指向包含该列表项的列表 */</span></span><br><span class="line">     listSECOND_LIST_ITEM_INTEGRITY_CHECK_VALUE          <span class="comment">/*用于检测列表项数据是否完整*/</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">xLIST_ITEM</span> <span class="title">ListItem_t</span>;</span></span><br></pre></td></tr></table></figure>
-
 <ul>
 <li><p>listFIRST_LIST_ITEM_INTEGRITY_CHECK_VALUE 和listSECOND_LIST_ITEM_INTEGRITY_CHECK_VALUE 这两个宏定义用于<strong>检查列表项的数据是否完整</strong>。</p>
 <p>当使能projdefs.h中的宏configUSE_LIST_DATA_INTEGRITY_CHECK_BYTES时，这两个宏会被替换成两个已知的数值用于检测完整性。</p>
@@ -281,7 +281,7 @@
 <p>例如在队列的使用中，如果一个任务因为在等待从队列中读取数据而进入阻塞态，则该任务的<strong>事件列表项中的列表项值</strong>会用于保存该任务的优先级有关信息；该任务的<strong>状态列表项的列表项值</strong>会用于保存阻塞时间的有关信息（之前讲过，当有多个任务等待读取队列时，读取顺序与优先级和阻塞时间相关）。至于什么是事件列表项和状态列表项，之后的文章会讲到。</p>
 <p>由于列表项值应是随时都可能更新的，因此该变量被configLIST_VOLATILE修饰，<strong>该宏被映射为C的关键字volatile</strong>。</p>
 </li>
-<li><p>pxNext和pxPrevious为两个结构体指针，用于指向上下列表项，实现类似于双向链表的结构，对结构体指针还不太懂的话可以参考<a target="_blank" rel="noopener" href="https://dhkkk.gitee.io/2022/11/18/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E7%BA%BF%E6%80%A7%E8%A1%A8/">数据结构_链表 | 小董的BLOG (gitee.io)</a>中的一些解释。</p>
+<li><p>pxNext和pxPrevious为两个结构体指针，用于指向上下列表项，实现类似于双向链表的结构，对结构体指针还不太懂的话可以参考<a target="_blank" rel="noopener" href="https://dhkkk.gitee.io/2022/11/18/数据结构-线性表/">数据结构_链表 | 小董的BLOG (gitee.io)</a>中的一些解释。</p>
 </li>
 <li><p>pvOwner用于指向一个任务的TCB（Task Control Block），之后的文章会讲到。</p>
 </li>
@@ -290,13 +290,10 @@
 </ul>
 <h2 id="迷你版列表项"><a href="#迷你版列表项" class="headerlink" title="迷你版列表项"></a>迷你版列表项</h2><p>list.h中还有一个迷你版列表项的定义：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">xMINI_LIST_ITEM</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">	listFIRST_LIST_ITEM_INTEGRITY_CHECK_VALUE			<span class="comment">//检测完整性</span></span><br><span class="line">	configLIST_VOLATILE TickType_t xItemValue;	<span class="comment">//列表项值</span></span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">xLIST_ITEM</span> * <span class="title">configLIST_VOLATILE</span> <span class="title">pxNext</span>;</span>		<span class="comment">//指向下一列表项</span></span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">xLIST_ITEM</span> * <span class="title">configLIST_VOLATILE</span> <span class="title">pxPrevious</span>;</span>	<span class="comment">//指向前一列表项</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">xMINI_LIST_ITEM</span> <span class="title">MiniListItem_t</span>;</span></span><br></pre></td></tr></table></figure>
-
 <p>迷你版列表项的作用下一节讲列表时会讲到。</p>
 <h2 id="初始化列表项"><a href="#初始化列表项" class="headerlink" title="初始化列表项"></a>初始化列表项</h2><p>  列表项的初始比较简单，只要确保列表项不在任何列表中即可。</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">vListInitialiseItem</span><span class="params">( ListItem_t * <span class="type">const</span> pxItem )</span></span><br><span class="line">&#123;</span><br><span class="line">     pxItem-&gt;pvContainer = <span class="literal">NULL</span>;</span><br><span class="line"> </span><br><span class="line">     <span class="comment">/*设置为已知值，用于检测列表项数据是否完整*/</span></span><br><span class="line">     listSET_FIRST_LIST_ITEM_INTEGRITY_CHECK_VALUE(pxItem );</span><br><span class="line">     listSET_SECOND_LIST_ITEM_INTEGRITY_CHECK_VALUE(pxItem );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <h1 id="FreeRTOS的列表构成"><a href="#FreeRTOS的列表构成" class="headerlink" title="FreeRTOS的列表构成"></a>FreeRTOS的列表构成</h1><h2 id="列表的定义"><a href="#列表的定义" class="headerlink" title="列表的定义"></a>列表的定义</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">xLIST</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">	listFIRST_LIST_INTEGRITY_CHECK_VALUE				<span class="comment">//检测完整性</span></span><br><span class="line">	configLIST_VOLATILE UBaseType_t uxNumberOfItems;</span><br><span class="line">	ListItem_t * configLIST_VOLATILE pxIndex;			</span><br><span class="line">	MiniListItem_t xListEnd;							</span><br><span class="line">	listSECOND_LIST_INTEGRITY_CHECK_VALUE				<span class="comment">//检测完整性</span></span><br><span class="line">&#125; List_t;</span><br></pre></td></tr></table></figure>
-
 <ul>
 <li><p>uxNumberOfItems用于表示该列表中挂接的列表项数目，0表示列表为空。</p>
 </li>
@@ -308,25 +305,21 @@
 </ul>
 <h2 id="列表的初始化"><a href="#列表的初始化" class="headerlink" title="列表的初始化"></a>列表的初始化</h2><p>可以在list.c中找到初始化函数vListInitialise()</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">vListInitialise</span><span class="params">( List_t * <span class="type">const</span> pxList )</span></span><br><span class="line">&#123;</span><br><span class="line">     <span class="comment">/*列表索引指向列表项xListEnd*/</span></span><br><span class="line">     pxList-&gt;pxIndex = ( ListItem_t * )&amp;( pxList-&gt;xListEnd );                  </span><br><span class="line">     <span class="comment">/* 设置为最大可能值为0xffff */</span></span><br><span class="line">     pxList-&gt;xListEnd.xItemValue =portMAX_DELAY;</span><br><span class="line"> </span><br><span class="line">     <span class="comment">/* 列表项xListEnd的pxNext和pxPrevious指针指向了它自己 */</span></span><br><span class="line">     pxList-&gt;xListEnd.pxNext = (ListItem_t * ) &amp;( pxList-&gt;xListEnd );</span><br><span class="line">     pxList-&gt;xListEnd.pxPrevious= ( ListItem_t * ) &amp;( pxList-&gt;xListEnd );</span><br><span class="line">     pxList-&gt;uxNumberOfItems = ( UBaseType_t) <span class="number">0U</span>;</span><br><span class="line"> </span><br><span class="line">     <span class="comment">/* 设置为已知值，用于检测列表数据是否完整*/</span></span><br><span class="line">     listSET_LIST_INTEGRITY_CHECK_1_VALUE(pxList );</span><br><span class="line">     listSET_LIST_INTEGRITY_CHECK_2_VALUE(pxList );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <ul>
 <li><p>如果宏configUSE_LIST_DATA_INTEGRITY_CHECK_BYTES设置为1，则使能列表项数据完整性检查，则宏listSET_LIST_INTEGRITY_CHECK_1_VALUE()和listSET_LIST_INTEGRITY_CHECK_2_VALUE被一个已知值代替，默认为0x5a5a（16位架构）或者0x5a5a5a5a（32位架构）。</p>
 </li>
 <li><p>按照上述初始化后就应该是下图的情况：</p>
 <img src="/images/loading.png" data-original="/2022/12/09/%E5%9F%BA%E4%BA%8EFreeRTOS%E7%9A%84%E5%88%97%E8%A1%A8%E5%AD%A6%E4%B9%A0/2.jpg" class title="This is an image"> 
-
 <p>此时pxIndex、pxList-&gt;xListEnd.pxNext、pxList-&gt;xListEnd.pxPrevious都指向了 pxList-&gt;xListEnd（也可以说是xListEnd这个结构体的首元素）</p>
 </li>
 </ul>
 <h1 id="将列表项插入列表中"><a href="#将列表项插入列表中" class="headerlink" title="将列表项插入列表中"></a>将列表项插入列表中</h1><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">vListInsert</span><span class="params">( List_t * <span class="type">const</span> pxList, ListItem_t * <span class="type">const</span> pxNewListItem )</span></span><br><span class="line">&#123;</span><br><span class="line">ListItem_t *pxIterator;		<span class="comment">//函数内定义一个列表项指针，通过列表项值的比较，找到当前输入列表项需插入的位置</span></span><br><span class="line"><span class="type">const</span> TickType_t xValueOfInsertion = pxNewListItem-&gt;xItemValue;	<span class="comment">//定义一个变量存放当前输入列表项的列表项值</span></span><br><span class="line"></span><br><span class="line">	listTEST_LIST_INTEGRITY( pxList );		<span class="comment">//检测完整性</span></span><br><span class="line">	listTEST_LIST_ITEM_INTEGRITY( pxNewListItem );		<span class="comment">//检测完整性</span></span><br><span class="line"></span><br><span class="line">   <span class="comment">/*开始为输入列表项寻找合适的插入位置*/</span></span><br><span class="line">	<span class="keyword">if</span>( xValueOfInsertion == portMAX_DELAY )</span><br><span class="line">	&#123;</span><br><span class="line">		pxIterator = pxList-&gt;xListEnd.pxPrevious;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">for</span>( pxIterator = ( ListItem_t * ) &amp;( pxList-&gt;xListEnd ); </span><br><span class="line">								  pxIterator-&gt;pxNext-&gt;xItemValue &lt;= xValueOfInsertion; </span><br><span class="line">								  pxIterator = pxIterator-&gt;pxNext ) </span><br><span class="line">		&#123;</span><br><span class="line">			<span class="comment">/* There is nothing to do here, just iterating to the wanted</span></span><br><span class="line"><span class="comment">			insertion position. */</span></span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">   <span class="comment">/******************************/</span></span><br><span class="line">   </span><br><span class="line">   <span class="comment">/*此时pxIterator为当前pxNewListItem要插入的位置*/</span></span><br><span class="line">	pxNewListItem-&gt;pxNext = pxIterator-&gt;pxNext;</span><br><span class="line">	pxNewListItem-&gt;pxNext-&gt;pxPrevious = pxNewListItem;</span><br><span class="line">	pxNewListItem-&gt;pxPrevious = pxIterator;</span><br><span class="line">	pxIterator-&gt;pxNext = pxNewListItem;</span><br><span class="line">   </span><br><span class="line">	<span class="comment">/*将列表项接入列表，列表项数目+1*/</span></span><br><span class="line">	pxNewListItem-&gt;pvContainer = ( <span class="type">void</span> * ) pxList;</span><br><span class="line">	( pxList-&gt;uxNumberOfItems )++;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>这个函数中比较难以理解的地方就是关于寻找列表项插入位置的判断和循环部分，接下来将一步一步讲解：</p>
 <h2 id="当列表内无列表项时（当前插入的列表项为第一个列表项）"><a href="#当列表内无列表项时（当前插入的列表项为第一个列表项）" class="headerlink" title="当列表内无列表项时（当前插入的列表项为第一个列表项）"></a>当列表内无列表项时（当前插入的列表项为第一个列表项）</h2><p>假设该列表项值为50</p>
 <h3 id="if判断"><a href="#if判断" class="headerlink" title="if判断"></a>if判断</h3><p>不满足条件，跳过</p>
 <h3 id="for循环"><a href="#for循环" class="headerlink" title="for循环"></a>for循环</h3><ul>
 <li><p>初始化<code>pxIterator = ( ListItem_t * ) &amp;( pxList-&gt;xListEnd );</code>后，此时情况为：</p>
 <img src="/images/loading.png" data-original="/2022/12/09/%E5%9F%BA%E4%BA%8EFreeRTOS%E7%9A%84%E5%88%97%E8%A1%A8%E5%AD%A6%E4%B9%A0/3.jpg" class title="This is an image"> 
-
 <p>此时pxIterator成员与pxList-&gt;xListEnd的成员一一对应</p>
 </li>
 <li><p>条件判断<code>pxIterator-&gt;pxNext-&gt;xItemValue &lt;= xValueOfInsertion;</code></p>
@@ -335,27 +328,26 @@
 </li>
 </ul>
 <h3 id="赋值"><a href="#赋值" class="headerlink" title="赋值"></a>赋值</h3><ul>
-<li><p><strong>pxNewListItem-&gt;pxNext &#x3D; pxIterator-&gt;pxNext;</strong></p>
+<li><p><strong>pxNewListItem-&gt;pxNext = pxIterator-&gt;pxNext;</strong></p>
 <p>pxIterator-&gt;pxNext指向pxList-&gt;xListEnd.pxnext，而pxList-&gt;xListEnd.pxnext又指向本身xListEnd；因此，<u><strong>最终pxNewListItem-&gt;pxNext指向了pxList-&gt;xListEnd</strong></u></p>
 <img src="/images/loading.png" data-original="/2022/12/09/%E5%9F%BA%E4%BA%8EFreeRTOS%E7%9A%84%E5%88%97%E8%A1%A8%E5%AD%A6%E4%B9%A0/4.jpg" class title="cysgbj"> 
 </li>
-<li><p><strong>pxNewListItem-&gt;pxNext-&gt;pxPrevious &#x3D; pxNewListItem;</strong></p>
+<li><p><strong>pxNewListItem-&gt;pxNext-&gt;pxPrevious = pxNewListItem;</strong></p>
 <p>上一步中pxNewListItem-&gt;pxNext指向了pxList-&gt;xListEnd，因此pxNewListItem-&gt;pxNext-&gt;pxPrevious等同于pxList-&gt;xListEnd.pxPrevious，而pxList-&gt;xListEnd.pxPrevious之前是指向pxList-&gt;xListEnd本身的，因此<u><strong>这一步最终的结果相当于将pxList-&gt;xListEnd.pxPrevious改变指向，指向pxNewListItem</strong></u></p>
 <img src="/images/loading.png" data-original="/2022/12/09/%E5%9F%BA%E4%BA%8EFreeRTOS%E7%9A%84%E5%88%97%E8%A1%A8%E5%AD%A6%E4%B9%A0/5.jpg" class title="cysgbj"> 
 </li>
-<li><p><strong>pxNewListItem-&gt;pxPrevious &#x3D; pxIterator;</strong></p>
+<li><p><strong>pxNewListItem-&gt;pxPrevious = pxIterator;</strong></p>
 <p>由于pxIterator本身就是指向pxList-&gt;xListEnd的，因此这一步相当于：</p>
-<p><u><strong>pxNewListItem-&gt;pxPrevious &#x3D; pxList-&gt;xListEnd</strong></u></p>
+<p><u><strong>pxNewListItem-&gt;pxPrevious = pxList-&gt;xListEnd</strong></u></p>
 <img src="/images/loading.png" data-original="/2022/12/09/%E5%9F%BA%E4%BA%8EFreeRTOS%E7%9A%84%E5%88%97%E8%A1%A8%E5%AD%A6%E4%B9%A0/6.jpg" class title="cysgbj"> 
 </li>
-<li><p><strong>pxIterator-&gt;pxNext &#x3D; pxNewListItem;</strong></p>
+<li><p><strong>pxIterator-&gt;pxNext = pxNewListItem;</strong></p>
 <p>pxIterator-&gt;pxNext指向pxList-&gt;xListEnd.pxnext，此时pxList-&gt;xListEnd.pxnext本来是指向自己（pxList-&gt;xListEnd）的，因此这一步最终是：</p>
 <p><strong><u>将pxList-&gt;xListEnd.pxnext改变指向，指向pxNewListItem</u></strong></p>
 <img src="/images/loading.png" data-original="/2022/12/09/%E5%9F%BA%E4%BA%8EFreeRTOS%E7%9A%84%E5%88%97%E8%A1%A8%E5%AD%A6%E4%B9%A0/7.jpg" class title="cysgbj"> 
 </li>
 <li><p>综上，最终的结果为：</p>
 <img src="/images/loading.png" data-original="/2022/12/09/%E5%9F%BA%E4%BA%8EFreeRTOS%E7%9A%84%E5%88%97%E8%A1%A8%E5%AD%A6%E4%B9%A0/8.jpg" class title="cysgbj"> 
-
 <p><em>上图省略了pvContainer和pxIndex的指向和uxNumberOfItems的变化</em></p>
 </li>
 </ul>
@@ -379,27 +371,25 @@
 <p><strong>综上，通过该for循环，可以根据每个列表项值的大小进行列表中的位置排序</strong></p>
 <h3 id="赋值-1"><a href="#赋值-1" class="headerlink" title="赋值"></a>赋值</h3><p>这里的所有pxNewListItem在未特别说明的情况下都是指pxNewListItem(2）</p>
 <ul>
-<li><p><strong>pxNewListItem-&gt;pxNext &#x3D; pxIterator-&gt;pxNext;</strong></p>
+<li><p><strong>pxNewListItem-&gt;pxNext = pxIterator-&gt;pxNext;</strong></p>
 <p>同第一次插入列表，<u><strong>最终pxNewListItem-&gt;pxNext指向了pxList-&gt;xListEnd</strong></u></p>
 </li>
-<li><p><strong>pxNewListItem-&gt;pxNext-&gt;pxPrevious &#x3D; pxNewListItem;</strong></p>
+<li><p><strong>pxNewListItem-&gt;pxNext-&gt;pxPrevious = pxNewListItem;</strong></p>
 <p>同第一次插入列表，<u><strong>将pxList-&gt;xListEnd.pxPrevious改变指向，指向pxNewListItem</strong></u></p>
 </li>
-<li><p><strong>pxNewListItem-&gt;pxPrevious &#x3D; pxIterator;</strong></p>
+<li><p><strong>pxNewListItem-&gt;pxPrevious = pxIterator;</strong></p>
 <p>pxIterator在for循环中已经指向了pxNewListItem(1)，因此这里：</p>
 <p><u><strong>pxNewListItem-&gt;pxPrevious指向pxNewListItem(1)</strong></u></p>
 </li>
-<li><p><strong>pxIterator-&gt;pxNext &#x3D; pxNewListItem;</strong></p>
+<li><p><strong>pxIterator-&gt;pxNext = pxNewListItem;</strong></p>
 <p>pxIterator-&gt;pxNext指向pxNewListItem(1)-&gt;pxnext，而pxNewListItem(1)-&gt;next最终指向了pxlist.xListEnd，因此这里相当于:</p>
 <p><u><strong>改变pxNewListItem(1)-&gt;pxnext的指向，使其指向pxNewListItem(2)</strong></u></p>
 </li>
 </ul>
 <p>综上，当前结果为：</p>
 <img src="/images/loading.png" data-original="/2022/12/09/%E5%9F%BA%E4%BA%8EFreeRTOS%E7%9A%84%E5%88%97%E8%A1%A8%E5%AD%A6%E4%B9%A0/11.jpg" class title="cysgbj"> 
-
 <p>有点乱，也可以参考下图，一样的</p>
 <img src="/images/loading.png" data-original="/2022/12/09/%E5%9F%BA%E4%BA%8EFreeRTOS%E7%9A%84%E5%88%97%E8%A1%A8%E5%AD%A6%E4%B9%A0/12.jpg" class title="cysgbj">
-
 <p>不难看出，赋值的最后两步将各个列表项相互链接</p>
 <h2 id="第二次，当列表中已有列表项时，但该列表项值小于上一个"><a href="#第二次，当列表中已有列表项时，但该列表项值小于上一个" class="headerlink" title="第二次，当列表中已有列表项时，但该列表项值小于上一个"></a>第二次，当列表中已有列表项时，但该列表项值小于上一个</h2><p>假设第二个列表值为30，小于第一个列表值50</p>
 <h3 id="if判断-2"><a href="#if判断-2" class="headerlink" title="if判断"></a>if判断</h3><p>不满足条件，跳过</p>
@@ -413,32 +403,29 @@
 </ul>
 <h3 id="赋值-2"><a href="#赋值-2" class="headerlink" title="赋值"></a>赋值</h3><p>这里的所有pxNewListItem在未特别说明的情况下都是指pxNewListItem(2）</p>
 <ul>
-<li><p><strong>pxNewListItem-&gt;pxNext &#x3D; pxIterator-&gt;pxNext;</strong></p>
+<li><p><strong>pxNewListItem-&gt;pxNext = pxIterator-&gt;pxNext;</strong></p>
 <p><u><strong>不同第一次插入列表！此时pxNewListItem-&gt;pxNext最终指向了xNewListItem(1)</strong></u></p>
 </li>
-<li><p><strong>pxNewListItem-&gt;pxNext-&gt;pxPrevious &#x3D; pxNewListItem;</strong></p>
+<li><p><strong>pxNewListItem-&gt;pxNext-&gt;pxPrevious = pxNewListItem;</strong></p>
 <p><strong>不同第一次插入列表！</strong>此时pxNewListItem-&gt;pxNext-&gt;pxPrevious 即是：</p>
 <p><u><strong>pxNewListItem(1)-&gt;xPrevious指向了pxNewListItem(2)</strong></u></p>
 </li>
-<li><p><strong>pxNewListItem-&gt;pxPrevious &#x3D; pxIterator;</strong></p>
+<li><p><strong>pxNewListItem-&gt;pxPrevious = pxIterator;</strong></p>
 <p>pxIterator是直接指向pxList-&gt;xListEnd的，因此：</p>
 <p><u><strong>pxNewListItem-&gt;pxPrevious 直接指向pxList-&gt;xListEnd</strong></u></p>
 </li>
-<li><p><strong>pxIterator-&gt;pxNext &#x3D; pxNewListItem;</strong></p>
+<li><p><strong>pxIterator-&gt;pxNext = pxNewListItem;</strong></p>
 <p>在执行这一步之前，情况如下：</p>
 <img src="/images/loading.png" data-original="/2022/12/09/%E5%9F%BA%E4%BA%8EFreeRTOS%E7%9A%84%E5%88%97%E8%A1%A8%E5%AD%A6%E4%B9%A0/13.jpg" class title="cysgbj"> 
-
-<p>这里我产生了一个疑问，pxIterator-&gt;pxNext是指向pxNewListItem(1)，那让pxNewListItem(1)&#x3D;pxNewListItem是什么意思呢？让上一个列表项指向当前列表项？这明显是不符合列表逻辑的。</p>
+<p>这里我产生了一个疑问，pxIterator-&gt;pxNext是指向pxNewListItem(1)，那让pxNewListItem(1)=pxNewListItem是什么意思呢？让上一个列表项指向当前列表项？这明显是不符合列表逻辑的。</p>
 <p>后来在找寻问题的过程中，才发现自己又犯了老错误，pxNewListItem(1)其实也是一个指针变量，他是直接指向列表项1的内存单元的，<strong>因此pxIterator-&gt;pxNext是直接指向了列表项1的内存单元</strong>，因此改变pxIterator-&gt;pxNext是直接改变了这个指针的指向，也就是说结果是：</p>
 <p><strong><u>将pxList-&gt;xListEnd.pxNext改变指向，使其指向pxNewListItem(2)</u></strong></p>
 </li>
 </ul>
 <p>综上，最后结果为：</p>
 <img src="/images/loading.png" data-original="/2022/12/09/%E5%9F%BA%E4%BA%8EFreeRTOS%E7%9A%84%E5%88%97%E8%A1%A8%E5%AD%A6%E4%B9%A0/14.jpg" class title="cysgbj"> 
-
 <h2 id="对比两种情况"><a href="#对比两种情况" class="headerlink" title="对比两种情况"></a>对比两种情况</h2><p>第二个列表项值大于第一个的情况：</p>
 <img src="/images/loading.png" data-original="/2022/12/09/%E5%9F%BA%E4%BA%8EFreeRTOS%E7%9A%84%E5%88%97%E8%A1%A8%E5%AD%A6%E4%B9%A0/11.jpg" class title="cysgbj"> 
-
 <p>对比一下，可以看出：</p>
 <ul>
 <li><strong>pxList-&gt;xListEnd.pxNext总是指向列表项值最小的列表项</strong></li>
@@ -449,12 +436,10 @@
 </ul>
 <p>根据上述的规律，就可以清晰地明白FreeRTOS对列表的插入方式了：</p>
 <img src="/images/loading.png" data-original="/2022/12/09/%E5%9F%BA%E4%BA%8EFreeRTOS%E7%9A%84%E5%88%97%E8%A1%A8%E5%AD%A6%E4%B9%A0/15.jpg" class title="cysgbj"> 
-
 <p>因此，若要访问列表项，要通过pxList-&gt;xListEnd.pxNext访问手列表项，通过pxList-&gt;xListEnd.pxPrevious访问尾列表项。</p>
 <p>实现插入的方法看了之后感觉真的很巧妙，我感觉也只能停留在理解的阶段，要自己写出来感觉难度还是很大。。。<strong>但是规律还是很好记住的😋</strong></p>
 <h1 id="直接将列表项插入列表尾"><a href="#直接将列表项插入列表尾" class="headerlink" title="直接将列表项插入列表尾"></a>直接将列表项插入列表尾</h1><p>原理跟上面的是一样的，如果能理解插入的方法，相信这个理解起来就很ez了，就不多说了</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">vListInsertEnd</span><span class="params">( List_t * <span class="type">const</span> pxList, ListItem_t * <span class="type">const</span> pxNewListItem )</span></span><br><span class="line">&#123;</span><br><span class="line">ListItem_t* <span class="type">const</span> pxIndex = pxList-&gt;pxIndex;</span><br><span class="line"> </span><br><span class="line">         <span class="comment">/*检查列表和列表项数据的完整性，仅当configASSERT()定义时有效。*/</span></span><br><span class="line">         listTEST_LIST_INTEGRITY( pxList );</span><br><span class="line">         listTEST_LIST_ITEM_INTEGRITY(pxNewListItem );</span><br><span class="line"> </span><br><span class="line">         <span class="comment">/*向列表中插入新的列表项*/</span></span><br><span class="line">         pxNewListItem-&gt;pxNext = pxIndex;</span><br><span class="line">         pxNewListItem-&gt;pxPrevious =pxIndex-&gt;pxPrevious;</span><br><span class="line"> </span><br><span class="line">         mtCOVERAGE_TEST_DELAY();</span><br><span class="line"> </span><br><span class="line">         pxIndex-&gt;pxPrevious-&gt;pxNext =pxNewListItem;</span><br><span class="line">         pxIndex-&gt;pxPrevious = pxNewListItem;</span><br><span class="line"> </span><br><span class="line">         pxNewListItem-&gt;pvContainer = ( <span class="type">void</span>* ) pxList;</span><br><span class="line"> </span><br><span class="line">         ( pxList-&gt;uxNumberOfItems )++;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>在FreeRTOS中，任务的调度与列表息息相关，因此要想学好任务调度的原理，列表是第一大难关！</p>
 
     </div>
@@ -663,6 +648,8 @@
 
 
 
+
+  
 
   
 

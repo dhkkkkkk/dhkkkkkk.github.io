@@ -89,7 +89,9 @@
   </style>
 </noscript>
 
-</head>
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --></head>
 
 <body itemscope itemtype="http://schema.org/WebPage">
   <div class="container use-motion">
@@ -243,15 +245,16 @@
 
       
           <h1 id="Ubuntu网络图标消失"><a href="#Ubuntu网络图标消失" class="headerlink" title="Ubuntu网络图标消失"></a>Ubuntu网络图标消失</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo service network-manager stop</span><br><span class="line">sudo rm /var/lib/NetworkManager/NetworkManager.state </span><br><span class="line">sudo service network-manager start</span><br></pre></td></tr></table></figure>
-
-<h1 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h1><table>
+<h1 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h1><div class="table-container">
+<table>
 <thead>
 <tr>
 <th>ls</th>
 <th>查看当前目录</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td>cd</td>
 <td>进入目标路径</td>
 </tr>
@@ -264,7 +267,7 @@
 <td>创建目录</td>
 </tr>
 <tr>
-<td>rmdir&#x2F;rm</td>
+<td>rmdir/rm</td>
 <td>删除目录</td>
 </tr>
 <tr>
@@ -280,12 +283,12 @@
 <td>查看文件类型</td>
 </tr>
 <tr>
-<td>more&#x2F;less</td>
-<td>查看文件内容，空格翻页，q退出。（less更灵活，&#x2F;..搜索字符串）</td>
+<td>more/less</td>
+<td>查看文件内容，空格翻页，q退出。（less更灵活，/..搜索字符串）</td>
 </tr>
 <tr>
-<td>head&#x2F;tail</td>
-<td>查看文件头部&#x2F;尾部</td>
+<td>head/tail</td>
+<td>查看文件头部/尾部</td>
 </tr>
 <tr>
 <td>cat</td>
@@ -325,41 +328,42 @@
 </tr>
 <tr>
 <td></td>
-<td></td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <ul>
 <li><p>find [路径] -name “”</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">无路径默认桌面</span><br><span class="line">find -name &quot;*1*&quot;	名字含1的文件</span><br><span class="line">find -name &quot;*.txt&quot;	为后缀的文件</span><br><span class="line">find -name &quot;1*&quot;	以1为开头的文件</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>tar</p>
-<p>打&#x2F;解包文件，解包后文件存放路径为当且文件夹</p>
+<p>打/解包文件，解包后文件存放路径为当且文件夹</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">tar -cvf test.tar 1 2</span><br><span class="line">tar -xvf test.tar</span><br></pre></td></tr></table></figure>
-
 <p>tar下的压缩与解压</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">tar -zcvf test.gz 1 2</span><br><span class="line">tar -zxvf test.gz</span><br><span class="line">tar -zxvf test.gz -C 指定路径（必须存在）</span><br><span class="line"></span><br><span class="line">tar -jcvf test.bz2 1 2</span><br><span class="line">tar -jxvf test.bz2</span><br><span class="line">tar -jxvf test.bz2 -C 指定路径（必须存在）</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>软件安装</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># 1. 安装软件</span><br><span class="line">sudo apt install 软件包</span><br><span class="line"># 2. 卸载软件</span><br><span class="line">sudo apt remove 软件名</span><br><span class="line"># 3. 更新已安装的包</span><br><span class="line">sudo apt upgrade</span><br></pre></td></tr></table></figure>
 </li>
-<li><p>which 提示文件&#x2F;命令所在位置</p>
+<li><p>which 提示文件/命令所在位置</p>
 </li>
 </ul>
 <h2 id="杀死进程"><a href="#杀死进程" class="headerlink" title="杀死进程"></a>杀死进程</h2><ul>
-<li>xkill	强制关闭窗口</li>
+<li>xkill    强制关闭窗口</li>
 <li>kill (pid号)     pid号用ps -aux查询</li>
 <li>pkill (程序名)</li>
 </ul>
-<h1 id="ROS无法定位软件包"><a href="#ROS无法定位软件包" class="headerlink" title="ROS无法定位软件包"></a>ROS无法定位软件包</h1><p><a target="_blank" rel="noopener" href="https://fishros.org.cn/forum/topic/149/e-%E6%97%A0%E6%B3%95%E5%AE%9A%E4%BD%8D%E8%BD%AF%E4%BB%B6%E5%8C%85/3">E：无法定位软件包 | 鱼香ROS (fishros.org.cn)</a></p>
+<h1 id="ROS无法定位软件包"><a href="#ROS无法定位软件包" class="headerlink" title="ROS无法定位软件包"></a>ROS无法定位软件包</h1><p><a target="_blank" rel="noopener" href="https://fishros.org.cn/forum/topic/149/e-无法定位软件包/3">E：无法定位软件包 | 鱼香ROS (fishros.org.cn)</a></p>
 <p>版本对应or源的问题，ubuntu20对应noetic</p>
 <h1 id="ROS-TF乌龟程序报错"><a href="#ROS-TF乌龟程序报错" class="headerlink" title="ROS TF乌龟程序报错"></a>ROS TF乌龟程序报错</h1><p><code>sudo apt install python-is-python3</code>升级python版本</p>
 <h1 id="view-frames意外停止"><a href="#view-frames意外停止" class="headerlink" title="view_frames意外停止"></a><strong>view_frames</strong>意外停止</h1><ul>
 <li><code>sudo apt-get install vim</code></li>
 <li><code>sudo vim /opt/ros/noetic/lib/tf/view_frames</code> </li>
-<li>89行处，修改为 <code>m = r.search(vstr.decode(&#39;utf-8&#39;))</code></li>
+<li>89行处，修改为 <code>m = r.search(vstr.decode(&#39;utf-8&#39;))</code> </li>
 </ul>
 <h2 id="Vim的输入模式"><a href="#Vim的输入模式" class="headerlink" title="Vim的输入模式"></a>Vim的输入模式</h2><p>在输入模式下，Vim 可以对文件执行写操作，类似于在 Windows 系统的文档中输入内容。</p>
 <p>使 Vim 进行输入模式的方式是在命令模式状态下输入 i、I、a、A、o、O 等插入命令（各指令的具体功能如表 3 所示），<strong>当编辑文件完成后按 Esc 键即可返回命令模式。</strong></p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
@@ -367,7 +371,8 @@
 <th>功能描述</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td>i</td>
 <td><strong>在当前光标所在位置插入随后输入的文本，光标后的文本相应向右移动</strong></td>
 </tr>
@@ -391,10 +396,11 @@
 <td>A</td>
 <td>在光标所在行的行尾插入随后输入的文本，相当于光标移动到行尾再执行a命令</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <h2 id="退出vim"><a href="#退出vim" class="headerlink" title="退出vim"></a>退出vim</h2><p><strong>按esc</strong>后，输入如下，一般<code>:wq</code>就行</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">:q  </span><br><span class="line">//退出</span><br><span class="line"></span><br><span class="line">:q! </span><br><span class="line">//退出且不保存（:quit!的缩写）</span><br><span class="line"></span><br><span class="line">:wq</span><br><span class="line">//保存并退出</span><br><span class="line"></span><br><span class="line">:wq!</span><br><span class="line">//保存并退出即使文件没有写入权限（强制保存退出）</span><br><span class="line"></span><br><span class="line">:x</span><br><span class="line">//保存并退出（类似:wq，但是只有在有更改的情况下才保存）</span><br><span class="line"></span><br><span class="line">:exit</span><br><span class="line">//保存并退出（和:x相同）</span><br><span class="line"></span><br><span class="line">:qa</span><br><span class="line">//退出所有(:quitall的缩写)</span><br><span class="line"></span><br><span class="line">:cq</span><br><span class="line">//退出且不保存（即便有错误）</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
 
       
     </div>
@@ -461,150 +467,174 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="常用大调"><a href="#常用大调" class="headerlink" title="常用大调"></a>常用大调</h1><h2 id="C大调"><a href="#C大调" class="headerlink" title="C大调"></a>C大调</h2><table>
+          <h1 id="常用大调"><a href="#常用大调" class="headerlink" title="常用大调"></a>常用大调</h1><h2 id="C大调"><a href="#C大调" class="headerlink" title="C大调"></a>C大调</h2><div class="table-container">
+<table>
 <thead>
 <tr>
-<th align="center">C</th>
-<th align="center">D</th>
-<th align="center">E</th>
-<th align="center">F</th>
-<th align="center">G</th>
-<th align="center">A</th>
-<th align="center">B</th>
-<th align="center">C</th>
+<th style="text-align:center">C</th>
+<th style="text-align:center">D</th>
+<th style="text-align:center">E</th>
+<th style="text-align:center">F</th>
+<th style="text-align:center">G</th>
+<th style="text-align:center">A</th>
+<th style="text-align:center">B</th>
+<th style="text-align:center">C</th>
 </tr>
 </thead>
-<tbody><tr>
-<td align="center">1</td>
-<td align="center">2</td>
-<td align="center">3</td>
-<td align="center">4</td>
-<td align="center">5</td>
-<td align="center">6</td>
-<td align="center">7</td>
-<td align="center">8</td>
+<tbody>
+<tr>
+<td style="text-align:center">1</td>
+<td style="text-align:center">2</td>
+<td style="text-align:center">3</td>
+<td style="text-align:center">4</td>
+<td style="text-align:center">5</td>
+<td style="text-align:center">6</td>
+<td style="text-align:center">7</td>
+<td style="text-align:center">8</td>
 </tr>
-</tbody></table>
-<h2 id="D大调"><a href="#D大调" class="headerlink" title="D大调"></a>D大调</h2><table>
+</tbody>
+</table>
+</div>
+<h2 id="D大调"><a href="#D大调" class="headerlink" title="D大调"></a>D大调</h2><div class="table-container">
+<table>
 <thead>
 <tr>
-<th align="center">D</th>
-<th align="center">E</th>
-<th align="center">升F</th>
-<th align="center">G</th>
-<th align="center">A</th>
-<th align="center">B</th>
-<th align="center">升C</th>
-<th align="center">D</th>
+<th style="text-align:center">D</th>
+<th style="text-align:center">E</th>
+<th style="text-align:center">升F</th>
+<th style="text-align:center">G</th>
+<th style="text-align:center">A</th>
+<th style="text-align:center">B</th>
+<th style="text-align:center">升C</th>
+<th style="text-align:center">D</th>
 </tr>
 </thead>
-<tbody><tr>
-<td align="center">1</td>
-<td align="center">2</td>
-<td align="center">3</td>
-<td align="center">4</td>
-<td align="center">5</td>
-<td align="center">6</td>
-<td align="center">7</td>
-<td align="center">8</td>
+<tbody>
+<tr>
+<td style="text-align:center">1</td>
+<td style="text-align:center">2</td>
+<td style="text-align:center">3</td>
+<td style="text-align:center">4</td>
+<td style="text-align:center">5</td>
+<td style="text-align:center">6</td>
+<td style="text-align:center">7</td>
+<td style="text-align:center">8</td>
 </tr>
-</tbody></table>
-<h2 id="E大调"><a href="#E大调" class="headerlink" title="E大调"></a>E大调</h2><table>
+</tbody>
+</table>
+</div>
+<h2 id="E大调"><a href="#E大调" class="headerlink" title="E大调"></a>E大调</h2><div class="table-container">
+<table>
 <thead>
 <tr>
-<th align="center">E</th>
-<th align="center">升F</th>
-<th align="center">升G</th>
-<th align="center">A</th>
-<th align="center">B</th>
-<th align="center">升C</th>
-<th align="center">升D</th>
-<th align="center">E</th>
+<th style="text-align:center">E</th>
+<th style="text-align:center">升F</th>
+<th style="text-align:center">升G</th>
+<th style="text-align:center">A</th>
+<th style="text-align:center">B</th>
+<th style="text-align:center">升C</th>
+<th style="text-align:center">升D</th>
+<th style="text-align:center">E</th>
 </tr>
 </thead>
-<tbody><tr>
-<td align="center">1</td>
-<td align="center">2</td>
-<td align="center">3</td>
-<td align="center">4</td>
-<td align="center">5</td>
-<td align="center">6</td>
-<td align="center">7</td>
-<td align="center">8</td>
+<tbody>
+<tr>
+<td style="text-align:center">1</td>
+<td style="text-align:center">2</td>
+<td style="text-align:center">3</td>
+<td style="text-align:center">4</td>
+<td style="text-align:center">5</td>
+<td style="text-align:center">6</td>
+<td style="text-align:center">7</td>
+<td style="text-align:center">8</td>
 </tr>
-</tbody></table>
-<h2 id="F大调"><a href="#F大调" class="headerlink" title="F大调"></a>F大调</h2><table>
+</tbody>
+</table>
+</div>
+<h2 id="F大调"><a href="#F大调" class="headerlink" title="F大调"></a>F大调</h2><div class="table-container">
+<table>
 <thead>
 <tr>
-<th align="center">F</th>
-<th align="center">G</th>
-<th align="center">A</th>
-<th align="center">降B</th>
-<th align="center">C</th>
-<th align="center">D</th>
-<th align="center">E</th>
-<th align="center">F</th>
+<th style="text-align:center">F</th>
+<th style="text-align:center">G</th>
+<th style="text-align:center">A</th>
+<th style="text-align:center">降B</th>
+<th style="text-align:center">C</th>
+<th style="text-align:center">D</th>
+<th style="text-align:center">E</th>
+<th style="text-align:center">F</th>
 </tr>
 </thead>
-<tbody><tr>
-<td align="center">1</td>
-<td align="center">2</td>
-<td align="center">3</td>
-<td align="center">4</td>
-<td align="center">5</td>
-<td align="center">6</td>
-<td align="center">7</td>
-<td align="center">8</td>
+<tbody>
+<tr>
+<td style="text-align:center">1</td>
+<td style="text-align:center">2</td>
+<td style="text-align:center">3</td>
+<td style="text-align:center">4</td>
+<td style="text-align:center">5</td>
+<td style="text-align:center">6</td>
+<td style="text-align:center">7</td>
+<td style="text-align:center">8</td>
 </tr>
-</tbody></table>
-<h2 id="G大调"><a href="#G大调" class="headerlink" title="G大调"></a>G大调</h2><table>
+</tbody>
+</table>
+</div>
+<h2 id="G大调"><a href="#G大调" class="headerlink" title="G大调"></a>G大调</h2><div class="table-container">
+<table>
 <thead>
 <tr>
-<th align="center">G</th>
-<th align="center">A</th>
-<th align="center">B</th>
-<th align="center">C</th>
-<th align="center">D</th>
-<th align="center">E</th>
-<th align="center">升F</th>
-<th align="center">G</th>
+<th style="text-align:center">G</th>
+<th style="text-align:center">A</th>
+<th style="text-align:center">B</th>
+<th style="text-align:center">C</th>
+<th style="text-align:center">D</th>
+<th style="text-align:center">E</th>
+<th style="text-align:center">升F</th>
+<th style="text-align:center">G</th>
 </tr>
 </thead>
-<tbody><tr>
-<td align="center">1</td>
-<td align="center">2</td>
-<td align="center">3</td>
-<td align="center">4</td>
-<td align="center">5</td>
-<td align="center">6</td>
-<td align="center">7</td>
-<td align="center">8</td>
+<tbody>
+<tr>
+<td style="text-align:center">1</td>
+<td style="text-align:center">2</td>
+<td style="text-align:center">3</td>
+<td style="text-align:center">4</td>
+<td style="text-align:center">5</td>
+<td style="text-align:center">6</td>
+<td style="text-align:center">7</td>
+<td style="text-align:center">8</td>
 </tr>
-</tbody></table>
-<h2 id="A大调"><a href="#A大调" class="headerlink" title="A大调"></a>A大调</h2><table>
+</tbody>
+</table>
+</div>
+<h2 id="A大调"><a href="#A大调" class="headerlink" title="A大调"></a>A大调</h2><div class="table-container">
+<table>
 <thead>
 <tr>
-<th align="center">A</th>
-<th align="center">B</th>
-<th align="center">升C</th>
-<th align="center">D</th>
-<th align="center">E</th>
-<th align="center">升F</th>
-<th align="center">升G</th>
-<th align="center">A</th>
+<th style="text-align:center">A</th>
+<th style="text-align:center">B</th>
+<th style="text-align:center">升C</th>
+<th style="text-align:center">D</th>
+<th style="text-align:center">E</th>
+<th style="text-align:center">升F</th>
+<th style="text-align:center">升G</th>
+<th style="text-align:center">A</th>
 </tr>
 </thead>
-<tbody><tr>
-<td align="center">1</td>
-<td align="center">2</td>
-<td align="center">3</td>
-<td align="center">4</td>
-<td align="center">5</td>
-<td align="center">6</td>
-<td align="center">7</td>
-<td align="center">8</td>
+<tbody>
+<tr>
+<td style="text-align:center">1</td>
+<td style="text-align:center">2</td>
+<td style="text-align:center">3</td>
+<td style="text-align:center">4</td>
+<td style="text-align:center">5</td>
+<td style="text-align:center">6</td>
+<td style="text-align:center">7</td>
+<td style="text-align:center">8</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <h1 id="大小调关系"><a href="#大小调关系" class="headerlink" title="大小调关系"></a>大小调关系</h1><ul>
 <li>大调音阶的6级音为其关系小调的根音；小调音阶的3级音为其关系大调的根音</li>
 <li>大调指型+1为小调指型</li>
@@ -620,32 +650,36 @@
 <h2 id="上下行"><a href="#上下行" class="headerlink" title="上下行"></a>上下行</h2><p>上行：向高音推（根音作为1级音）</p>
 <p>下行：向低音推（根音作为8级音）</p>
 <p><strong>音程是固定的距离，因此无论上下行其距离都是相同的，指型都是固定的</strong>（重要！！！）</p>
-<h2 id="大调纯音程定义"><a href="#大调纯音程定义" class="headerlink" title="大调纯音程定义"></a>大调纯音程定义</h2><table>
+<h2 id="大调纯音程定义"><a href="#大调纯音程定义" class="headerlink" title="大调纯音程定义"></a>大调纯音程定义</h2><div class="table-container">
+<table>
 <thead>
 <tr>
-<th align="center">度数</th>
-<th align="center">1</th>
-<th align="center">2</th>
-<th align="center">3</th>
-<th align="center">4</th>
-<th align="center">5</th>
-<th align="center">6</th>
-<th align="center">7</th>
-<th align="center">8</th>
+<th style="text-align:center">度数</th>
+<th style="text-align:center">1</th>
+<th style="text-align:center">2</th>
+<th style="text-align:center">3</th>
+<th style="text-align:center">4</th>
+<th style="text-align:center">5</th>
+<th style="text-align:center">6</th>
+<th style="text-align:center">7</th>
+<th style="text-align:center">8</th>
 </tr>
 </thead>
-<tbody><tr>
-<td align="center">性质</td>
-<td align="center">纯</td>
-<td align="center">大</td>
-<td align="center">大</td>
-<td align="center">纯</td>
-<td align="center">纯</td>
-<td align="center">大</td>
-<td align="center">大</td>
-<td align="center">纯</td>
+<tbody>
+<tr>
+<td style="text-align:center">性质</td>
+<td style="text-align:center">纯</td>
+<td style="text-align:center">大</td>
+<td style="text-align:center">大</td>
+<td style="text-align:center">纯</td>
+<td style="text-align:center">纯</td>
+<td style="text-align:center">大</td>
+<td style="text-align:center">大</td>
+<td style="text-align:center">纯</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <h2 id="指板音程规律（均可正、倒推）"><a href="#指板音程规律（均可正、倒推）" class="headerlink" title="指板音程规律（均可正、倒推）"></a>指板音程规律（均可正、倒推）</h2><h3 id="纯一度"><a href="#纯一度" class="headerlink" title="纯一度"></a>纯一度</h3><p>同一音符</p>
 <p>两弦间全音规律再<strong>减</strong>1个全音距离</p>
 <h3 id="大二度"><a href="#大二度" class="headerlink" title="大二度"></a><u>大二度</u></h3><p>同全音规律，大二度长度为<strong>1个全音！</strong></p>
@@ -659,8 +693,7 @@
 </li>
 <li><p>2、3弦同品为大三度，因此纯四度向上（高）1品</p>
 </li>
-<li><p>同一弦向上5品</p>
-</li>
+<li>同一弦向上5品</li>
 </ul>
 <h3 id="纯五度"><a href="#纯五度" class="headerlink" title="纯五度"></a>纯五度</h3><p>通过纯四度记忆</p>
 <ul>
@@ -675,7 +708,7 @@
 <p>纯八度（根音指型）——&gt;大七度</p>
 <p>大六度</p>
 <h1 id="小、减、增音程"><a href="#小、减、增音程" class="headerlink" title="小、减、增音程"></a>小、减、增音程</h1><h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><ul>
-<li><strong>纯</strong>音程增&#x2F;减半音——&gt;<strong>增&#x2F;减</strong>音程</li>
+<li><strong>纯</strong>音程增/减半音——&gt;<strong>增/减</strong>音程</li>
 <li>大音程增半音——&gt;<strong>增</strong>音程</li>
 <li>大音程减半音——&gt;<strong>小</strong>音程</li>
 <li>大音程减全音——&gt;<strong>减</strong>音程</li>
@@ -687,21 +720,21 @@
 </ul>
 <h2 id="命名"><a href="#命名" class="headerlink" title="命名"></a>命名</h2><p>每个音程可能有多个名称（增四度和减五度；大三度和减四度都是同一音程），但当两个音的符号知道时，音程名唯一（每个字母只出现一次）</p>
 <p>x度的x等于当前音在大调中的<strong>级数</strong></p>
-<h1 id="复合音程"><a href="#复合音程" class="headerlink" title="复合音程"></a>复合音程</h1><p>大九度&#x3D;二度+八度</p>
-<p>纯十五度&#x3D;八度+八度</p>
+<h1 id="复合音程"><a href="#复合音程" class="headerlink" title="复合音程"></a>复合音程</h1><p>大九度=二度+八度</p>
+<p>纯十五度=八度+八度</p>
 <p>照推即可，找到小度的位置后直接按照根音指型加八度<strong>（注意相加后的度数要减1才为当前度数）</strong></p>
 <p>例如大九度，找到大二度后直接加一个八度音程</p>
 <h1 id="三和弦琶音"><a href="#三和弦琶音" class="headerlink" title="三和弦琶音"></a>三和弦琶音</h1><h2 id="大三和弦-C"><a href="#大三和弦-C" class="headerlink" title="大三和弦(C)"></a>大三和弦(C)</h2><p>由根音和根音的大三度、纯五度组成</p>
 <p><strong>根音纯五度位置与下一根音之间为纯四度关系</strong></p>
-<p>​	因此除二三弦外，纯五度必在下一根音正上方；二三弦再高1个半音距离即可</p>
+<p>​    因此除二三弦外，纯五度必在下一根音正上方；二三弦再高1个半音距离即可</p>
 <h2 id="小三和弦-Cm"><a href="#小三和弦-Cm" class="headerlink" title="小三和弦(Cm)"></a>小三和弦(Cm)</h2><p>由根音和根音的<strong>小三度</strong>、纯五度组成</p>
-<p>​	在大三度处减半音</p>
-<p>​	可以通过增二度推，同弦上小三度与根音相差三个品位</p>
+<p>​    在大三度处减半音</p>
+<p>​    可以通过增二度推，同弦上小三度与根音相差三个品位</p>
 <h2 id="减三和弦-Cdim"><a href="#减三和弦-Cdim" class="headerlink" title="减三和弦(Cdim)"></a>减三和弦(Cdim)</h2><p>由根音和根音的<strong>小三度</strong>、<strong>减五度</strong>组成（不是减三度）</p>
-<p>​	<strong>根音纯五度位置与下一根音之间为增四度关系</strong>，因此在纯四度基础上还要<strong>增加</strong>1个半音距离</p>
+<p>​    <strong>根音纯五度位置与下一根音之间为增四度关系</strong>，因此在纯四度基础上还要<strong>增加</strong>1个半音距离</p>
 <h2 id="增三和弦-Caug"><a href="#增三和弦-Caug" class="headerlink" title="增三和弦(Caug)"></a>增三和弦(Caug)</h2><p>由根音和根音的大三度、<strong>增五度</strong>组成</p>
 <p>由于增五度与下一根音为减四度关系，等同于大三度</p>
-<p>​	因此增三和弦中<strong>每个音间隔都为大三度</strong>，<strong>所有音都可以作为根音</strong>，所有音都可以在上一音上用大三度指板规律推（最简单的一集）</p>
+<p>​    因此增三和弦中<strong>每个音间隔都为大三度</strong>，<strong>所有音都可以作为根音</strong>，所有音都可以在上一音上用大三度指板规律推（最简单的一集）</p>
 <h1 id="三和弦"><a href="#三和弦" class="headerlink" title="三和弦"></a>三和弦</h1><h2 id="密集和弦"><a href="#密集和弦" class="headerlink" title="密集和弦"></a>密集和弦</h2><p>按照135的顺序固定排列的和弦</p>
 <h2 id="转位"><a href="#转位" class="headerlink" title="转位"></a>转位</h2><ul>
 <li>原位：最低音为根音</li>
@@ -710,46 +743,50 @@
 </ul>
 <h1 id="七和弦"><a href="#七和弦" class="headerlink" title="七和弦"></a>七和弦</h1><h2 id="大七和弦（Cmaj7）"><a href="#大七和弦（Cmaj7）" class="headerlink" title="大七和弦（Cmaj7）"></a>大七和弦（Cmaj7）</h2><p>1、3、5、7</p>
 <h2 id="小七和弦（Cm7）"><a href="#小七和弦（Cm7）" class="headerlink" title="小七和弦（Cm7）"></a>小七和弦（Cm7）</h2><p>小三和弦+<strong>小</strong>七度</p>
-<p>​	根音+<strong>小三度</strong>+纯五度+<strong>小七度</strong></p>
+<p>​    根音+<strong>小三度</strong>+纯五度+<strong>小七度</strong></p>
 <h2 id="属七和弦（C7）"><a href="#属七和弦（C7）" class="headerlink" title="属七和弦（C7）"></a>属七和弦（C7）</h2><p>大三和弦+<strong>小</strong>七度</p>
 <h2 id="减七和弦（Cdim7）"><a href="#减七和弦（Cdim7）" class="headerlink" title="减七和弦（Cdim7）"></a>减七和弦（Cdim7）</h2><p>减三和弦+<strong>减</strong>七度</p>
-<p>​	每个音间隔都为<strong>小三度</strong></p>
+<p>​    每个音间隔都为<strong>小三度</strong></p>
 <h2 id="开放和弦"><a href="#开放和弦" class="headerlink" title="开放和弦"></a>开放和弦</h2><p>相比于密集和弦，开放和弦更加常用且容易实现</p>
 <p>以下是七和弦常用声部构成，可用来快速找到和弦，其中指型4、2最重要</p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
-<th align="center">指型</th>
-<th align="center">常用声部构成</th>
-<th align="center">根音所在弦</th>
+<th style="text-align:center">指型</th>
+<th style="text-align:center">常用声部构成</th>
+<th style="text-align:center">根音所在弦</th>
 </tr>
 </thead>
-<tbody><tr>
-<td align="center">4</td>
-<td align="center"><strong>1</strong>、7、3、5</td>
-<td align="center">6</td>
+<tbody>
+<tr>
+<td style="text-align:center">4</td>
+<td style="text-align:center"><strong>1</strong>、7、3、5</td>
+<td style="text-align:center">6</td>
 </tr>
 <tr>
-<td align="center">2</td>
-<td align="center"><strong>1</strong>、5、7、3</td>
-<td align="center">5</td>
+<td style="text-align:center">2</td>
+<td style="text-align:center"><strong>1</strong>、5、7、3</td>
+<td style="text-align:center">5</td>
 </tr>
 <tr>
-<td align="center">5</td>
-<td align="center"><strong>1</strong>、5、7、3</td>
-<td align="center">4</td>
+<td style="text-align:center">5</td>
+<td style="text-align:center"><strong>1</strong>、5、7、3</td>
+<td style="text-align:center">4</td>
 </tr>
 <tr>
-<td align="center">3</td>
-<td align="center"><strong>5</strong>、1、3、7</td>
-<td align="center">3</td>
+<td style="text-align:center">3</td>
+<td style="text-align:center"><strong>5</strong>、1、3、7</td>
+<td style="text-align:center">3</td>
 </tr>
 <tr>
-<td align="center">1</td>
-<td align="center"><strong>3</strong>、7、1、5</td>
-<td align="center">2</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center"><strong>3</strong>、7、1、5</td>
+<td style="text-align:center">2</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <p>技巧：在二弦找五度音时，直接用一弦的四度关系找；二弦找三度音时，用三弦的三度关系找</p>
 <p>在三弦找五度音时要注意二三弦是大三度，在正上方<strong>多一个半音距离</strong></p>
 
@@ -863,8 +900,7 @@
 </li>
 </ul>
 </li>
-<li><p><strong><u>正运动学</u></strong></p>
-<ul>
+<li><strong><u>正运动学</u></strong><ul>
 <li>已知？求？</li>
 <li>位置雅可比公式</li>
 <li>力雅可比公式</li>
@@ -881,7 +917,7 @@
 <li><p><strong><u>基础公式</u></strong></p>
 <ul>
 <li>拉格朗日运动方程式</li>
-<li>L&#x3D;？分别是？</li>
+<li>L=？分别是？</li>
 <li>转动动能公式？</li>
 <li>两次偏导，分别对？</li>
 <li>一次求导，对？</li>
@@ -1006,7 +1042,7 @@
 <li><strong>框图</strong></li>
 </ul>
 </li>
-<li><h4 id="计算力矩法-（控制逆动力学输入）"><a href="#计算力矩法-（控制逆动力学输入）" class="headerlink" title="**计算力矩法**（控制逆动力学输入）"></a>**<u>计算力矩法</u>**（控制逆动力学输入）</h4><ul>
+<li><h4 id="计算力矩法（控制逆动力学输入）"><a href="#计算力矩法（控制逆动力学输入）" class="headerlink" title="计算力矩法（控制逆动力学输入）"></a><strong><u>计算力矩法</u></strong>（控制逆动力学输入）</h4><ul>
 <li><p><strong>控制律</strong></p>
 </li>
 <li><p><strong>框图</strong></p>
@@ -1018,11 +1054,11 @@
 <li>普遍适用性</li>
 </ul>
 <p><strong>优点</strong></p>
-<p><strong>末端操作器位姿变化但<u>最优增益未变</u></strong></p>
+<p><strong>末端操作器位姿变化但<u>最优增益未变</u></strong>&lt;/u&gt;</p>
 </li>
 </ul>
 </li>
-<li><h4 id="加速度分解控制-（PD正反馈）"><a href="#加速度分解控制-（PD正反馈）" class="headerlink" title="**加速度分解控制**（PD正反馈）"></a>**<u>加速度分解控制</u>**（PD正反馈）</h4><p>与计算力矩法的不同？</p>
+<li><h4 id="加速度分解控制（PD正反馈）"><a href="#加速度分解控制（PD正反馈）" class="headerlink" title="加速度分解控制（PD正反馈）"></a><strong><u>加速度分解控制</u></strong>（PD正反馈）</h4><p>与计算力矩法的不同？</p>
 <ul>
 <li><strong>控制律</strong></li>
 <li><strong>框图</strong></li>
@@ -1365,6 +1401,8 @@
 
 
 
+
+  
 
   
 

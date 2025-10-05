@@ -89,7 +89,9 @@
   </style>
 </noscript>
 
-</head>
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --></head>
 
 <body itemscope itemtype="http://schema.org/WebPage">
   <div class="container use-motion">
@@ -251,23 +253,20 @@
 </ul>
 <h2 id="线性回归模型（linear-regression）"><a href="#线性回归模型（linear-regression）" class="headerlink" title="线性回归模型（linear regression）"></a>线性回归模型（linear regression）</h2><ul>
 <li>训练集（training set）：用于训练模型的已知数据<strong>集合</strong></li>
-<li>输入变量x(input&#x2F;feature)：训练集中的输入</li>
-<li>输出变量y (output&#x2F;target)：训练集中的输出</li>
+<li>输入变量x(input/feature)：训练集中的输入</li>
+<li>输出变量y (output/target)：训练集中的输出</li>
 <li>模型：用于预测的函数  </li>
 <li>预测y-hat(^)（prediction）：模型的输出，<strong>注意区分y和y-hat</strong></li>
 </ul>
 <h3 id="代价函数（cost-function）or损失函数（loss）"><a href="#代价函数（cost-function）or损失函数（loss）" class="headerlink" title="代价函数（cost function）or损失函数（loss）"></a>代价函数（cost function）or损失函数（loss）</h3><p>用于评估模型输出和训练数据的拟合程度</p>
 <p>因此代价函数输出应尽可能<strong>小</strong></p>
 <h4 id="平方误差代价函数（squared-error-cost-function）"><a href="#平方误差代价函数（squared-error-cost-function）" class="headerlink" title="平方误差代价函数（squared error cost function）"></a>平方误差代价函数（squared error cost function）</h4><img src="/images/loading.png" data-original="/2024/07/17/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-1/2.JPG" class title="This is an image"> 
-
 <p>模型参数w，b会影响代价函数的输出，而找到当前训练集下使代价函数输出最小的参数w，b，即可找到对当前训练集最适合的线性回归模型</p>
 <img src="/images/loading.png" data-original="/2024/07/17/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-1/3.jpg" class title="This is an image"> 
-
 <p><u>对于使用平方误差代价函数的线性回归中总会出现弓形、吊床形的图像</u></p>
 <p>即只有一个最小值</p>
 <h3 id="梯度下降算法（gradient-descent）"><a href="#梯度下降算法（gradient-descent）" class="headerlink" title="梯度下降算法（gradient descent）"></a>梯度下降算法（gradient descent）</h3><p>可用于尝试最小化任何函数</p>
 <img src="/images/loading.png" data-original="/2024/07/17/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-1/4.jpg" class title="This is an image"> 
-
 <ul>
 <li><p>参数w、b必须同时更新，而不算将更新后的w用于b的更新中</p>
 </li>
@@ -277,20 +276,17 @@
 </li>
 </ul>
 <img src="/images/loading.png" data-original="/2024/07/17/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-1/5.jpg" class title="This is an image">
-
 <p>由于两个参数的梯度下降式是互相独立的，因此对w或b的更新可以视作，另一个参数固定。再结合梯度下降算式可以看出该算法其实是利用了斜率的正负特性进行找极小值的过程 </p>
 <h2 id="分类算法"><a href="#分类算法" class="headerlink" title="分类算法"></a>分类算法</h2><h3 id="逻辑回归算法（非回归算法）logistic-regression"><a href="#逻辑回归算法（非回归算法）logistic-regression" class="headerlink" title="逻辑回归算法（非回归算法）logistic regression"></a>逻辑回归算法（非回归算法）logistic regression</h3><h1 id="非监督学习"><a href="#非监督学习" class="headerlink" title="非监督学习"></a>非监督学习</h1><p>非监督学习算法的输入样本<strong>不对应某种特定的标签</strong>，而是<strong>自动</strong>地从样本中学习以找到某种结构、模式……</p>
 <p>分类：</p>
 <ul>
 <li>聚类算法(clustering)：例如从数万篇文章中找到相似词（<strong>非特定</strong>）并聚类</li>
 <li>异常检测（anomaly detection）</li>
-<li>降维（dimensionality reduction）</li>
+<li>降维（dimensionality reduction） </li>
 </ul>
 <p>吴恩达の小练习：（其中两个为监督两个为非监督）</p>
 <img src="/images/loading.png" data-original="/2024/07/17/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-1/1.jpg" class title="This is an image"> 
-
 <h1 id="jupyter-Notebook"><a href="#jupyter-Notebook" class="headerlink" title="jupyter Notebook"></a>jupyter Notebook</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">python -m pip install --upgrade pip</span><br><span class="line">pip install jupyter notebook</span><br></pre></td></tr></table></figure>
-
 <p>剩下的一些操作lab1文件写的很清楚，忘了就去看看</p>
 <h1 id="参数归一化（normalization）"><a href="#参数归一化（normalization）" class="headerlink" title="参数归一化（normalization）"></a>参数归一化（normalization）</h1><p>由于各参数（特征）的变化范围、大小、单位不同，需要先进行归一化处理后才输入到模型</p>
 <h2 id="平均归一化（mean-normalization）"><a href="#平均归一化（mean-normalization）" class="headerlink" title="平均归一化（mean normalization）"></a>平均归一化（mean normalization）</h2><h2 id="Z-score-normalization"><a href="#Z-score-normalization" class="headerlink" title="Z-score normalization"></a>Z-score normalization</h2>
@@ -379,7 +375,7 @@
 </li>
 <li><p>整篇文章做的事，1句话</p>
 </li>
-<li><p>创新点&#x2F;过程&#x2F;如何实现。2-3句话</p>
+<li><p>创新点/过程/如何实现。2-3句话</p>
 </li>
 <li><p>重要的定性结论、数据，不用非常详细，2-3句</p>
 </li>
@@ -391,7 +387,7 @@
 <h2 id="图文摘要（TOC）"><a href="#图文摘要（TOC）" class="headerlink" title="图文摘要（TOC）"></a>图文摘要（TOC）</h2><p>和摘要放在一起，<strong>总结性、可读性</strong>要强，<strong>展示研究的特色、方法</strong>，可适当进行文字标注</p>
 <h1 id="3、引言-Introduction"><a href="#3、引言-Introduction" class="headerlink" title="3、引言 Introduction"></a>3、引言 Introduction</h1><h2 id="第一部分"><a href="#第一部分" class="headerlink" title="第一部分"></a>第一部分</h2><p>需给出<strong>背景信息</strong>，从广泛到具体分析研究对象，<strong>每个观点都需要引用文献</strong>，最好不超过3篇，且<strong>越新越好</strong></p>
 <h2 id="第二部分"><a href="#第二部分" class="headerlink" title="第二部分"></a>第二部分</h2><p>通过分析某个具体研究对象的不足<strong>引出</strong>本文研究内容的<strong>迫切性</strong></p>
-<h2 id="第三部分"><a href="#第三部分" class="headerlink" title="第三部分"></a>第三部分</h2><p><strong><u>文献综述段（重要）</u><strong>，对各文献要有深刻、到位的理解（不可只是xxx使用xxx做了xxx），</strong>优缺点都要写出</strong></p>
+<h2 id="第三部分"><a href="#第三部分" class="headerlink" title="第三部分"></a>第三部分</h2><p><strong><u>文献综述段（重要）</u></strong>，对各文献要有深刻、到位的理解（不可只是xxx使用xxx做了xxx），<strong>优缺点都要写出</strong></p>
 <h2 id="结论部分"><a href="#结论部分" class="headerlink" title="结论部分"></a>结论部分</h2><p>对上文进行总结，提出问题，如何解决，列出创新点 </p>
 <h1 id="4、Materials-amp-Methods"><a href="#4、Materials-amp-Methods" class="headerlink" title="4、Materials &amp; Methods"></a>4、Materials &amp; Methods</h1><p>可大致分为模拟类和实验类，其中：</p>
 <ul>
@@ -439,10 +435,8 @@
 </li>
 <li><p>提交前记得生成行号，布局-行号</p>
 </li>
-<li><p>参考文献尽量饱满一点，记得列DOI号</p>
-</li>
-<li><p>投稿需准备（具体需根据各期刊要求）</p>
-<ul>
+<li>参考文献尽量饱满一点，记得列DOI号</li>
+<li>投稿需准备（具体需根据各期刊要求）<ul>
 <li>手稿</li>
 <li>Cover Letter</li>
 <li>High Light</li>
@@ -450,8 +444,7 @@
 <li>利益冲突说明</li>
 </ul>
 </li>
-<li><p>期刊分析网站<a target="_blank" rel="noopener" href="https://www.letpub.com.cn/index.php?page=./journalapp">LetPub</a></p>
-</li>
+<li>期刊分析网站<a target="_blank" rel="noopener" href="https://www.letpub.com.cn/index.php?page=./journalapp">LetPub</a></li>
 </ul>
 <h1 id="一些常识"><a href="#一些常识" class="headerlink" title="一些常识"></a><em>一些常识</em></h1><p><strong>SCI</strong>(科学引文索引 )、<strong>EI</strong> (工程索引 )、<strong>ISTP</strong> (科技会议录索引 ) 是世界著名的三大科技文献检索系统。<strong>SCI</strong>论文 (Science Citation Index)：在SCI所收录的科学期刊上发表的论文。</p>
 <p>影响因子 (impact factor，<strong>IF</strong>)：指的是某一期刊的文章在特定年份或时期被引用的频率，是衡量学术期刊影响力的一个重要指标。老的计算方式：某杂志2008年的IF：2006、 2007两年论文在2008年被引总数，除以在2006、2007两年所发论文总数。</p>
@@ -537,7 +530,6 @@
 <li>添加标题、图例</li>
 </ul>
 <h3 id="1、book的相关操作"><a href="#1、book的相关操作" class="headerlink" title="1、book的相关操作"></a>1、book的相关操作</h3><img src="/images/loading.png" data-original="/2024/07/11/origin/1.jpg" class title="This is an image"> 
-
 <ul>
 <li>点击表格左上栏左侧可添加新列；右侧可选中整表</li>
 <li>点击绘图，根据需求选择X、Y轴要显示的内容，其中X只有1个，Y可以有多个（全体选中后绘图会自动将所有Y绘制）</li>
@@ -560,224 +552,234 @@
 <h2 id="其他功能"><a href="#其他功能" class="headerlink" title="其他功能"></a>其他功能</h2><h3 id="链接其他文件"><a href="#链接其他文件" class="headerlink" title="链接其他文件"></a>链接其他文件</h3><p>导入网络中、本地其他格式的文件、数据库： book页面下  数据-链接到xx</p>
 <h3 id="绘制基线不为0的柱状图"><a href="#绘制基线不为0的柱状图" class="headerlink" title="绘制基线不为0的柱状图"></a>绘制基线不为0的柱状图</h3><ul>
 <li><strong>2020b后的版本需先：设置-系统变量中令CBB为0</strong>，才会使柱状图起点不为默认值</li>
-<li>建立新图-双击坐标轴-轴线和刻度线-下轴-线条-轴位置设置为“在位置&#x3D;”</li>
+<li>建立新图-双击坐标轴-轴线和刻度线-下轴-线条-轴位置设置为“在位置=”</li>
 <li>导入数据</li>
 </ul>
 <img src="/images/loading.png" data-original="/2024/07/11/origin/3.jpg" class title="This is an image"> 
-
 <h3 id="堆叠柱状图"><a href="#堆叠柱状图" class="headerlink" title="堆叠柱状图"></a>堆叠柱状图</h3><p>调出要堆叠的柱状图，在：图-合标图表中</p>
 <ul>
 <li>在排列设置中设置行数列数</li>
 </ul>
 <h3 id="添加参考线"><a href="#添加参考线" class="headerlink" title="添加参考线"></a>添加参考线</h3><p>双击坐标轴，参照线-选择垂直or水平-细节-追加，并设置想要的样式</p>
-<h1 id="Matlab绘图相关函数"><a href="#Matlab绘图相关函数" class="headerlink" title="Matlab绘图相关函数"></a>Matlab绘图相关函数</h1><table>
+<h1 id="Matlab绘图相关函数"><a href="#Matlab绘图相关函数" class="headerlink" title="Matlab绘图相关函数"></a>Matlab绘图相关函数</h1><div class="table-container">
+<table>
 <thead>
 <tr>
-<th align="center">命令</th>
-<th align="center">作用&#x2F;目的</th>
+<th style="text-align:center">命令</th>
+<th style="text-align:center">作用/目的</th>
 </tr>
 </thead>
-<tbody><tr>
-<td align="center">axis</td>
-<td align="center">人工选择坐标轴尺寸</td>
+<tbody>
+<tr>
+<td style="text-align:center">axis</td>
+<td style="text-align:center">人工选择坐标轴尺寸</td>
 </tr>
 <tr>
-<td align="center">fplot</td>
-<td align="center">智能绘图功能</td>
+<td style="text-align:center">fplot</td>
+<td style="text-align:center">智能绘图功能</td>
 </tr>
 <tr>
-<td align="center">grid</td>
-<td align="center">显示网格线</td>
+<td style="text-align:center">grid</td>
+<td style="text-align:center">显示网格线</td>
 </tr>
 <tr>
-<td align="center">plot</td>
-<td align="center">生成XY图</td>
+<td style="text-align:center">plot</td>
+<td style="text-align:center">生成XY图</td>
 </tr>
 <tr>
-<td align="center">print</td>
-<td align="center">打印或绘图到文件</td>
+<td style="text-align:center">print</td>
+<td style="text-align:center">打印或绘图到文件</td>
 </tr>
 <tr>
-<td align="center">title</td>
-<td align="center">把文字置于顶部</td>
+<td style="text-align:center">title</td>
+<td style="text-align:center">把文字置于顶部</td>
 </tr>
 <tr>
-<td align="center">xlabel</td>
-<td align="center">将文本标签添加到x轴</td>
+<td style="text-align:center">xlabel</td>
+<td style="text-align:center">将文本标签添加到x轴</td>
 </tr>
 <tr>
-<td align="center">ylabel</td>
-<td align="center">将文本标签添加到y轴</td>
+<td style="text-align:center">ylabel</td>
+<td style="text-align:center">将文本标签添加到y轴</td>
 </tr>
 <tr>
-<td align="center">axes</td>
-<td align="center">创建轴对象</td>
+<td style="text-align:center">axes</td>
+<td style="text-align:center">创建轴对象</td>
 </tr>
 <tr>
-<td align="center">close</td>
-<td align="center">关闭当前的绘图</td>
+<td style="text-align:center">close</td>
+<td style="text-align:center">关闭当前的绘图</td>
 </tr>
 <tr>
-<td align="center">close all</td>
-<td align="center">关闭所有绘图</td>
+<td style="text-align:center">close all</td>
+<td style="text-align:center">关闭所有绘图</td>
 </tr>
 <tr>
-<td align="center">figure</td>
-<td align="center">打开一个新的图形窗口</td>
+<td style="text-align:center">figure</td>
+<td style="text-align:center">打开一个新的图形窗口</td>
 </tr>
 <tr>
-<td align="center">gtext</td>
-<td align="center">通过鼠标在指定位置放注文</td>
+<td style="text-align:center">gtext</td>
+<td style="text-align:center">通过鼠标在指定位置放注文</td>
 </tr>
 <tr>
-<td align="center">hold</td>
-<td align="center">保持当前图形</td>
+<td style="text-align:center">hold</td>
+<td style="text-align:center">保持当前图形</td>
 </tr>
 <tr>
-<td align="center">legend</td>
-<td align="center">鼠标放置图例</td>
+<td style="text-align:center">legend</td>
+<td style="text-align:center">鼠标放置图例</td>
 </tr>
 <tr>
-<td align="center">refresh</td>
-<td align="center">重新绘制当前图形窗口</td>
+<td style="text-align:center">refresh</td>
+<td style="text-align:center">重新绘制当前图形窗口</td>
 </tr>
 <tr>
-<td align="center">set</td>
-<td align="center">指定对象的属性，如轴</td>
+<td style="text-align:center">set</td>
+<td style="text-align:center">指定对象的属性，如轴</td>
 </tr>
 <tr>
-<td align="center">subplot</td>
-<td align="center">在子窗口中创建图</td>
+<td style="text-align:center">subplot</td>
+<td style="text-align:center">在子窗口中创建图</td>
 </tr>
 <tr>
-<td align="center">text</td>
-<td align="center">在图上做标记</td>
+<td style="text-align:center">text</td>
+<td style="text-align:center">在图上做标记</td>
 </tr>
 <tr>
-<td align="center">bar</td>
-<td align="center">创建条形图</td>
+<td style="text-align:center">bar</td>
+<td style="text-align:center">创建条形图</td>
 </tr>
 <tr>
-<td align="center">loglog</td>
-<td align="center">创建双对数图</td>
+<td style="text-align:center">loglog</td>
+<td style="text-align:center">创建双对数图</td>
 </tr>
 <tr>
-<td align="center">polar</td>
-<td align="center">创建极坐标图像</td>
+<td style="text-align:center">polar</td>
+<td style="text-align:center">创建极坐标图像</td>
 </tr>
 <tr>
-<td align="center">semilogx</td>
-<td align="center">创建半对数图（对数横坐标）</td>
+<td style="text-align:center">semilogx</td>
+<td style="text-align:center">创建半对数图（对数横坐标）</td>
 </tr>
 <tr>
-<td align="center">semilogy</td>
-<td align="center">创建半对数图（对数纵坐标）</td>
+<td style="text-align:center">semilogy</td>
+<td style="text-align:center">创建半对数图（对数纵坐标）</td>
 </tr>
 <tr>
-<td align="center">stairs</td>
-<td align="center">创建阶梯图</td>
+<td style="text-align:center">stairs</td>
+<td style="text-align:center">创建阶梯图</td>
 </tr>
 <tr>
-<td align="center">stem</td>
-<td align="center">创建针状图</td>
+<td style="text-align:center">stem</td>
+<td style="text-align:center">创建针状图</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">x=[<span class="number">-100</span>:<span class="number">5</span>:<span class="number">100</span>]; <span class="comment">%设置范围和增量值的方法</span></span><br><span class="line">y1=x.^<span class="number">2</span>;</span><br><span class="line">y2=<span class="built_in">sin</span>(x);</span><br><span class="line">f=<span class="built_in">plot</span>(x,y1,<span class="string">&#x27;r--&#x27;</span>,x,y2,<span class="string">&#x27;k+&#x27;</span>),	<span class="comment">%红色虚线和黑色x型点</span></span><br><span class="line">set(f(<span class="number">1</span>),<span class="string">&#x27;LineWidth&#x27;</span>,<span class="number">2</span>),set(f(<span class="number">2</span>),<span class="string">&#x27;LineWidth&#x27;</span>,<span class="number">2</span>),	<span class="comment">%设置两线线宽</span></span><br><span class="line"><span class="built_in">legend</span>(<span class="string">&#x27;&#x27;</span>,<span class="string">&#x27;&#x27;</span>),	<span class="comment">%图例</span></span><br><span class="line">xlabel(<span class="string">&#x27;&#x27;</span>),ylabel(<span class="string">&#x27;&#x27;</span>),	<span class="comment">%xy轴标签</span></span><br><span class="line">title(<span class="string">&#x27;&#x27;</span>),	<span class="comment">%标题</span></span><br><span class="line">grid on,  <span class="comment">%生成网格线</span></span><br><span class="line">axis square		<span class="comment">%生成正方形图</span></span><br><span class="line"><span class="comment">%% </span></span><br><span class="line">axis ( [xmin xmax ymin ymax] ) <span class="comment">%刻度最大值最小值</span></span><br><span class="line">subplot(m, n, p)	<span class="comment">%生成子图，m和n是绘图数组的行数和列数，而p指定放置特定绘图的位置</span></span><br><span class="line">line([x1,x2],[y1,y2])	<span class="comment">%连接两点</span></span><br></pre></td></tr></table></figure>
-
 <p>颜色及其代码：</p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
-<th align="center">代码</th>
-<th align="center">颜色</th>
+<th style="text-align:center">代码</th>
+<th style="text-align:center">颜色</th>
 </tr>
 </thead>
-<tbody><tr>
-<td align="center">w</td>
-<td align="center">白色</td>
+<tbody>
+<tr>
+<td style="text-align:center">w</td>
+<td style="text-align:center">白色</td>
 </tr>
 <tr>
-<td align="center">k</td>
-<td align="center">黑色</td>
+<td style="text-align:center">k</td>
+<td style="text-align:center">黑色</td>
 </tr>
 <tr>
-<td align="center">b</td>
-<td align="center">蓝色</td>
+<td style="text-align:center">b</td>
+<td style="text-align:center">蓝色</td>
 </tr>
 <tr>
-<td align="center">r</td>
-<td align="center">红色</td>
+<td style="text-align:center">r</td>
+<td style="text-align:center">红色</td>
 </tr>
 <tr>
-<td align="center">c</td>
-<td align="center">青色</td>
+<td style="text-align:center">c</td>
+<td style="text-align:center">青色</td>
 </tr>
 <tr>
-<td align="center">g</td>
-<td align="center">绿色</td>
+<td style="text-align:center">g</td>
+<td style="text-align:center">绿色</td>
 </tr>
 <tr>
-<td align="center">m</td>
-<td align="center">洋红色</td>
+<td style="text-align:center">m</td>
+<td style="text-align:center">洋红色</td>
 </tr>
 <tr>
-<td align="center">y</td>
-<td align="center">黄色</td>
+<td style="text-align:center">y</td>
+<td style="text-align:center">黄色</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <p>线性、标记类型代码：</p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
-<th align="center">代码</th>
-<th align="center">含义</th>
+<th style="text-align:center">代码</th>
+<th style="text-align:center">含义</th>
 </tr>
 </thead>
-<tbody><tr>
-<td align="center">–</td>
-<td align="center">虚线</td>
+<tbody>
+<tr>
+<td style="text-align:center">—</td>
+<td style="text-align:center">虚线</td>
 </tr>
 <tr>
-<td align="center">：</td>
-<td align="center">点线</td>
+<td style="text-align:center">：</td>
+<td style="text-align:center">点线</td>
 </tr>
 <tr>
-<td align="center">-.</td>
-<td align="center">点划线</td>
+<td style="text-align:center">-.</td>
+<td style="text-align:center">点划线</td>
 </tr>
 <tr>
-<td align="center">+</td>
-<td align="center">加号形点</td>
+<td style="text-align:center">+</td>
+<td style="text-align:center">加号形点</td>
 </tr>
 <tr>
-<td align="center">o</td>
-<td align="center">空心圆</td>
+<td style="text-align:center">o</td>
+<td style="text-align:center">空心圆</td>
 </tr>
 <tr>
-<td align="center">*</td>
-<td align="center">星号</td>
+<td style="text-align:center">*</td>
+<td style="text-align:center">星号</td>
 </tr>
 <tr>
-<td align="center">x</td>
-<td align="center">x形点</td>
+<td style="text-align:center">x</td>
+<td style="text-align:center">x形点</td>
 </tr>
 <tr>
-<td align="center">s</td>
-<td align="center">空心正方形</td>
+<td style="text-align:center">s</td>
+<td style="text-align:center">空心正方形</td>
 </tr>
 <tr>
-<td align="center">d</td>
-<td align="center">空心菱形</td>
+<td style="text-align:center">d</td>
+<td style="text-align:center">空心菱形</td>
 </tr>
 <tr>
-<td align="center">^v&gt;&lt;</td>
-<td align="center">空心上下右左三角</td>
+<td style="text-align:center">^v&gt;&lt;</td>
+<td style="text-align:center">空心上下右左三角</td>
 </tr>
 <tr>
-<td align="center">p</td>
-<td align="center">空心六角形</td>
+<td style="text-align:center">p</td>
+<td style="text-align:center">空心六角形</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 
       
     </div>
@@ -963,6 +965,8 @@
 
 
 
+
+  
 
   
 

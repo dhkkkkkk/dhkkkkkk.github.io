@@ -92,7 +92,9 @@
   </style>
 </noscript>
 
-</head>
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --></head>
 
 <body itemscope itemtype="http://schema.org/WebPage">
   <div class="container use-motion">
@@ -248,7 +250,6 @@
         <h1 id="位域结构体"><a href="#位域结构体" class="headerlink" title="位域结构体"></a>位域结构体</h1><p>有时候，信息存储的时候，并不需要一个完整的字节，而只需占几个或一个二进制位就能满足需求。例如存放一个bool类型的变量，只需要true或者false即可，这种情况下，只需要0或者1一位二进制位即可。为了节省存储空间，并使处理简便，C语言又提供了一种数据结构，称为“位域”或“位段”。<strong>所谓“位域”是把一个字节中的二进位划分为几个不同的区域，并说明每个区域的位数。</strong>每个域有一个域名，允许在程序中按域名进行操作。<strong>这样就可以把几个不同的对象用一个字节的二进制位域来表示。</strong></p>
 <p>格式：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> _<span class="title">net_pro_cdu</span>  </span></span><br><span class="line"><span class="class">&#123;</span> </span><br><span class="line">    <span class="type">unsigned</span>  <span class="type">char</span> acs:<span class="number">4</span> </span><br><span class="line">    <span class="type">unsigned</span>  <span class="type">char</span> :<span class="number">0</span>  </span><br><span class="line">    <span class="type">unsigned</span>  <span class="type">char</span> ace:<span class="number">4</span>  </span><br><span class="line">    <span class="type">unsigned</span>  <span class="type">char</span> dve:<span class="number">4</span> </span><br><span class="line">&#125; Ncdu;</span><br></pre></td></tr></table></figure>
-
 <p>注意：</p>
 <ul>
 <li>无位域名的位域不能使用，仅用来填充、调整尾置（如第四行）</li>
@@ -256,12 +257,10 @@
 </ul>
 <h1 id="volatile关键字"><a href="#volatile关键字" class="headerlink" title="volatile关键字"></a>volatile关键字</h1><p>声明一个变量是易变的，可以防止编译器对程序一些变量运算的过度优化。</p>
 <h1 id="for循环执行顺序"><a href="#for循环执行顺序" class="headerlink" title="for循环执行顺序"></a>for循环执行顺序</h1><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="type">int</span> i =<span class="number">0</span>; i&lt;<span class="number">5</span>;i++)&#123;</span><br><span class="line">     <span class="comment">// 循环体</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>执行顺序解抛<br>执行的顺序如下：<br>第一步 ： i&#x3D;0  初始化值<br>第二步 ： i&lt;5 进行条件判断，如果为真，则继续执行<br>第三步 ： 执行循环体的内容<br>第四步 ： i++ 变量i自增<br>第五步 ： 回到第二步，条件判断为真，则执行循环体内容，再到i++一直循环，<br>直到第二步的判断条件为假，则退出该循环</p>
+<p>执行顺序解抛<br>执行的顺序如下：<br>第一步 ： i=0  初始化值<br>第二步 ： i&lt;5 进行条件判断，如果为真，则继续执行<br>第三步 ： 执行循环体的内容<br>第四步 ： i++ 变量i自增<br>第五步 ： 回到第二步，条件判断为真，则执行循环体内容，再到i++一直循环，<br>直到第二步的判断条件为假，则退出该循环</p>
 <p>原文链接：<a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_44080187/article/details/123429045">https://blog.csdn.net/weixin_44080187/article/details/123429045</a></p>
 <h1 id="union类型"><a href="#union类型" class="headerlink" title="union类型"></a>union类型</h1><h2 id="长度问题"><a href="#长度问题" class="headerlink" title="长度问题"></a>长度问题</h2><p>实例化为变量后，这个变量的长度是这个union中最长的数据类型的长度</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">union</span> <span class="title">DEMO</span>&#123;</span> </span><br><span class="line">     <span class="type">char</span> status;</span><br><span class="line">     <span class="type">int</span> a; </span><br><span class="line">     <span class="type">int</span> serial[<span class="number">4</span>]; </span><br><span class="line">&#125;demo；<span class="comment">//大小为16字节</span></span><br></pre></td></tr></table></figure>
-
 <h2 id="数据访问"><a href="#数据访问" class="headerlink" title="数据访问"></a>数据访问</h2><p>对于union成员，地址相同，存储有点像并列一样的存储（？我是这么理解的），一个成员变化一定会影响其他成员</p>
 
     </div>
@@ -469,6 +468,8 @@
 
 
 
+
+  
 
   
 

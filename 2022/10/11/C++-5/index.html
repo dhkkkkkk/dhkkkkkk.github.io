@@ -92,7 +92,9 @@
   </style>
 </noscript>
 
-</head>
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --></head>
 
 <body itemscope itemtype="http://schema.org/WebPage">
   <div class="container use-motion">
@@ -252,67 +254,22 @@
 <li>一套异常类：用于传递具体的异常信息（异常声明的含义）</li>
 </ul>
 <h2 id="例程"><a href="#例程" class="headerlink" title="例程"></a>例程</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;windows.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdexcept&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> std::vector;</span><br><span class="line"><span class="keyword">using</span> std::string;</span><br><span class="line"><span class="keyword">using</span> std::cin;</span><br><span class="line"><span class="keyword">using</span> std::cout;</span><br><span class="line"><span class="keyword">using</span> std::endl;</span><br><span class="line"><span class="keyword">using</span> std::runtime_error;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="type">int</span> a,b;</span><br><span class="line">    cin&gt;&gt;a&gt;&gt;b;</span><br><span class="line">    <span class="keyword">try</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span>(a!=b) <span class="keyword">throw</span> <span class="built_in">runtime_error</span>(<span class="string">&quot;ERROR!!!&quot;</span>);</span><br><span class="line">        cout&lt;&lt;<span class="string">&quot;good&quot;</span>&lt;&lt;endl;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">catch</span>(runtime_error err)</span><br><span class="line">    &#123;</span><br><span class="line">        cout&lt;&lt;err.<span class="built_in">what</span>();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">system</span>(<span class="string">&quot;pause&quot;</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <h2 id="throw表达式"><a href="#throw表达式" class="headerlink" title="throw表达式"></a>throw表达式</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(a!=b) <span class="keyword">throw</span> <span class="built_in">runtime_error</span>(<span class="string">&quot;ERROR!!!&quot;</span>);</span><br></pre></td></tr></table></figure>
-
 <p>格式：throw+异常类+初始化异常类对象</p>
 <ul>
 <li><p>该初始化的对象只用于提供一些关于异常的辅助信息（用户自行定义）</p>
 </li>
 <li><p>异常类为一系列在库中定义的类型，使用时需要声明其命名空间，以下是几种常用的异常类，在头文件stdexcept中</p>
-<table>
-<thead>
-<tr>
-<th align="center">exception</th>
-<th align="center">一般错误</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">runtime_error</td>
-<td align="center">运行时才能检测出的任务</td>
-</tr>
-<tr>
-<td align="center">range_error</td>
-<td align="center">运行时：生成结果超出有意义的值域范围的错误</td>
-</tr>
-<tr>
-<td align="center">overflow_error</td>
-<td align="center">运行时：计算上溢错误</td>
-</tr>
-<tr>
-<td align="center">underflow_error</td>
-<td align="center">运行时：计算下溢错误</td>
-</tr>
-<tr>
-<td align="center">logic_error</td>
-<td align="center">程序逻辑错误</td>
-</tr>
-<tr>
-<td align="center">domain_error</td>
-<td align="center">逻辑错误：参数对应的结果不存在</td>
-</tr>
-<tr>
-<td align="center">invalid_error</td>
-<td align="center">逻辑错误：无效参数</td>
-</tr>
-<tr>
-<td align="center">length_error</td>
-<td align="center">逻辑错误：超出对象类型长度</td>
-</tr>
-<tr>
-<td align="center">out_of_range</td>
-<td align="center">逻辑错误：超出有效范围</td>
-</tr>
-</tbody></table>
+<p>|    exception    |                  一般错误                  |<br>| :——————-: | :————————————————————: |<br>|  runtime_error  |           运行时才能检测出的任务           |<br>|   range_error   | 运行时：生成结果超出有意义的值域范围的错误 |<br>| overflow_error  |            运行时：计算上溢错误            |<br>| underflow_error |            运行时：计算下溢错误            |<br>|   logic_error   |                程序逻辑错误                |<br>|  domain_error   |       逻辑错误：参数对应的结果不存在       |<br>|  invalid_error  |             逻辑错误：无效参数             |<br>|  length_error   |         逻辑错误：超出对象类型长度         |<br>|  out_of_range   |           逻辑错误：超出有效范围           |</p>
 <ul>
 <li><p>除exception外其他类型都<strong>必须</strong>用一个字符串初始化，而exception则不允许这种初始化</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">if</span>(a!=b) <span class="keyword">throw</span> <span class="built_in">exception</span>();</span><br><span class="line">	cout&lt;&lt;<span class="string">&quot;good&quot;</span>&lt;&lt;endl;</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">catch</span>(exception)</span><br><span class="line">&#123;</span><br><span class="line">   cout&lt;&lt;<span class="string">&quot;ERROR!!&quot;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">if</span>(a!=b) <span class="keyword">throw</span> <span class="built_in">exception</span>();</span><br><span class="line">	cout&lt;&lt;<span class="string">&quot;good&quot;</span>&lt;&lt;endl;</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">catch</span>(exception)</span><br><span class="line">&#123;</span><br><span class="line">   cout&lt;&lt;<span class="string">&quot;ERROR!!&quot;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
 </ul>
 </li>
 </ul>
 <h2 id="try语句块"><a href="#try语句块" class="headerlink" title="try语句块"></a>try语句块</h2><p>格式：</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span></span><br><span class="line">&#123; &#125;<span class="comment">//程序正常逻辑，异常类在此throw出 </span></span><br><span class="line"><span class="built_in">catch</span>(异常声明)</span><br><span class="line">&#123;&#125;</span><br><span class="line"><span class="built_in">catch</span>(异常声明)</span><br><span class="line">&#123;&#125;</span><br></pre></td></tr></table></figure>
-
 <ul>
 <li>当try内一旦提出异常类时，就不再执行该throw表达式后的内容；反之，若没有throw任何异常，则不会触发任何catch语句，程序正常执行完try语句。</li>
 <li>catch括号中需定义一个对象，类型为触发的异常类，这些异常类只有一个子函数what，用于输出初始化时的字符串（不能用于exception类）</li>
@@ -324,11 +281,9 @@
 </ul>
 <h2 id="数组的传递"><a href="#数组的传递" class="headerlink" title="数组的传递"></a>数组的传递</h2><p>以下三种对形参的定义是等价的：</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">a</span><span class="params">(<span class="type">const</span> <span class="type">int</span>*)</span></span>;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">b</span><span class="params">(<span class="type">const</span> <span class="type">int</span>[])</span></span>;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">c</span><span class="params">(<span class="type">const</span> <span class="type">int</span>[<span class="number">10</span>])</span></span>;</span><br></pre></td></tr></table></figure>
-
 <p>编译器在编译时只会检查传入的参数类型是否为const int*型，甚至不会检查传入数组的长度是否超出形参大小。</p>
 <h3 id="数组的引用形参"><a href="#数组的引用形参" class="headerlink" title="数组的引用形参"></a>数组的引用形参</h3><p>可以使用数组的引用作为形参：</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">test</span><span class="params">(<span class="type">int</span> (&amp;arr)[<span class="number">10</span>])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">   <span class="keyword">for</span>(<span class="keyword">auto</span> elem : arr)</span><br><span class="line">      cout&lt;&lt;elem&lt;&lt;endl;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
 <p>使用数组的引用作为形参需要注意：</p>
 <ul>
 <li>初始化时必须使用括号括起&amp;arr</li>
@@ -336,13 +291,11 @@
 </ul>
 <h2 id="函数的返回类型"><a href="#函数的返回类型" class="headerlink" title="函数的返回类型"></a>函数的返回类型</h2><h3 id="返回引用"><a href="#返回引用" class="headerlink" title="返回引用"></a>返回引用</h3><p>函数返回引用可以理解为返回的为一个地址</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">char</span> <span class="title">test1</span><span class="params">(string s ,string::size_type num)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">   <span class="keyword">return</span> s[num];</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">char</span> &amp;<span class="title">test2</span><span class="params">(string &amp;s ,string::size_type num)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">   <span class="keyword">return</span> s[num];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">   <span class="function">srting <span class="title">s</span><span class="params">(<span class="string">&quot;test&quot;</span>)</span></span>;</span><br><span class="line">   cout&lt;&lt;<span class="built_in">test1</span>(s,<span class="number">0</span>)&lt;&lt;endl; <span class="comment">//t</span></span><br><span class="line">   <span class="built_in">test2</span>(s,<span class="number">0</span>)=<span class="string">&#x27;a&#x27;</span>;</span><br><span class="line">   cout&lt;&lt;s[<span class="number">0</span>]&lt;&lt;endl;       <span class="comment">//a</span></span><br><span class="line">   <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>当一个函数的返回值为引用时，该返回值为左值而非右值，因此可以像使用其他左值一样使用这个返回值</p>
 <p>（注：左值≠地址，它仍然是一个值）</p>
 <ul>
 <li><p><strong>不可返回局部变量的引用</strong>，由于局部变量在函数完成后会被释放，因此在函数完成后引用会找不到它的对象。例如上一个例程，如果把test2()函数改为：</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">char</span> &amp;<span class="title">test2</span><span class="params">(string s ,string::size_type num)</span><span class="comment">//此处形参不再是引用</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">   <span class="keyword">return</span> s[num];</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">   <span class="function">srting <span class="title">s</span><span class="params">(<span class="string">&quot;test&quot;</span>)</span></span>;</span><br><span class="line">   <span class="built_in">test2</span>(s,<span class="number">0</span>)=<span class="string">&#x27;a&#x27;</span>;</span><br><span class="line">   cout&lt;&lt;s[<span class="number">0</span>]&lt;&lt;endl;      <span class="comment">//t</span></span><br><span class="line">   <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>该函数的返回值为对s的引用，但s本身为一个局部变量，在函数完成时已经被释放，因此该引用是无效的（但是这样<strong>返回形参的引用</strong>编译器并不会报错，而返回<strong>函数内定义的局部变量</strong>的引用会报错）</p>
 <p>但如果形参定义为引用，由于引用本身是不占用存储空间的，所以’a’可以通过引用直接向s[0]赋值</p>
 </li>
@@ -350,12 +303,10 @@
 <h3 id="返回数组指针"><a href="#返回数组指针" class="headerlink" title="返回数组指针"></a>返回数组指针</h3><ul>
 <li><p>尾置返回类型</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">auto</span> <span class="title">func</span><span class="params">(<span class="type">int</span> i)</span> -&gt; <span class="title">int</span><span class="params">(*)</span>[10]</span></span><br></pre></td></tr></table></figure>
-
 <p>声明函数的返回值为一个含有十个整数的数组的指针</p>
 </li>
 <li><p>使用decltype</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> test[<span class="number">5</span>]=&#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>&#125;;</span><br><span class="line"><span class="keyword">decltype</span>(test) *<span class="built_in">func</span>()</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">return</span> &amp;test;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;	</span><br><span class="line">	cout&lt;&lt;*(*func+<span class="number">1</span>); <span class="comment">//输出2</span></span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <ul>
 <li>decltype(test)的结果是一个数组，因此函数前要用*声明返回值为指针</li>
 <li>使用此方法返回的是一个数组的整体地址，而不是首地址，类型为int*[5]，因此一次解引用的结果才是首地址</li>
@@ -364,7 +315,6 @@
 </ul>
 <h2 id="内联函数"><a href="#内联函数" class="headerlink" title="内联函数"></a>内联函数</h2><p>正常的调用函数一般比等价的表达式要慢（保存寄存器、拷贝等操作），因此对于规模较小的函数可以定义为内联函数类型：</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">inline</span> <span class="type">int</span> <span class="title">fuc</span><span class="params">(<span class="type">int</span> a,<span class="type">int</span> b)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">return</span> a+b;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <h2 id="constexpr函数"><a href="#constexpr函数" class="headerlink" title="constexpr函数"></a>constexpr函数</h2><p>将函数隐式地定义为内联函数，但函数内只能有一条return语句，且返回值必须为字面值</p>
 
     </div>
@@ -572,6 +522,8 @@
 
 
 
+
+  
 
   
 

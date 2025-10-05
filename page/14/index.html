@@ -89,7 +89,9 @@
   </style>
 </noscript>
 
-</head>
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --></head>
 
 <body itemscope itemtype="http://schema.org/WebPage">
   <div class="container use-motion">
@@ -245,7 +247,6 @@
           <h1 id="位域结构体"><a href="#位域结构体" class="headerlink" title="位域结构体"></a>位域结构体</h1><p>有时候，信息存储的时候，并不需要一个完整的字节，而只需占几个或一个二进制位就能满足需求。例如存放一个bool类型的变量，只需要true或者false即可，这种情况下，只需要0或者1一位二进制位即可。为了节省存储空间，并使处理简便，C语言又提供了一种数据结构，称为“位域”或“位段”。<strong>所谓“位域”是把一个字节中的二进位划分为几个不同的区域，并说明每个区域的位数。</strong>每个域有一个域名，允许在程序中按域名进行操作。<strong>这样就可以把几个不同的对象用一个字节的二进制位域来表示。</strong></p>
 <p>格式：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> _<span class="title">net_pro_cdu</span>  </span></span><br><span class="line"><span class="class">&#123;</span> </span><br><span class="line">    <span class="type">unsigned</span>  <span class="type">char</span> acs:<span class="number">4</span> </span><br><span class="line">    <span class="type">unsigned</span>  <span class="type">char</span> :<span class="number">0</span>  </span><br><span class="line">    <span class="type">unsigned</span>  <span class="type">char</span> ace:<span class="number">4</span>  </span><br><span class="line">    <span class="type">unsigned</span>  <span class="type">char</span> dve:<span class="number">4</span> </span><br><span class="line">&#125; Ncdu;</span><br></pre></td></tr></table></figure>
-
 <p>注意：</p>
 <ul>
 <li>无位域名的位域不能使用，仅用来填充、调整尾置（如第四行）</li>
@@ -253,12 +254,10 @@
 </ul>
 <h1 id="volatile关键字"><a href="#volatile关键字" class="headerlink" title="volatile关键字"></a>volatile关键字</h1><p>声明一个变量是易变的，可以防止编译器对程序一些变量运算的过度优化。</p>
 <h1 id="for循环执行顺序"><a href="#for循环执行顺序" class="headerlink" title="for循环执行顺序"></a>for循环执行顺序</h1><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="type">int</span> i =<span class="number">0</span>; i&lt;<span class="number">5</span>;i++)&#123;</span><br><span class="line">     <span class="comment">// 循环体</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>执行顺序解抛<br>执行的顺序如下：<br>第一步 ： i&#x3D;0  初始化值<br>第二步 ： i&lt;5 进行条件判断，如果为真，则继续执行<br>第三步 ： 执行循环体的内容<br>第四步 ： i++ 变量i自增<br>第五步 ： 回到第二步，条件判断为真，则执行循环体内容，再到i++一直循环，<br>直到第二步的判断条件为假，则退出该循环</p>
+<p>执行顺序解抛<br>执行的顺序如下：<br>第一步 ： i=0  初始化值<br>第二步 ： i&lt;5 进行条件判断，如果为真，则继续执行<br>第三步 ： 执行循环体的内容<br>第四步 ： i++ 变量i自增<br>第五步 ： 回到第二步，条件判断为真，则执行循环体内容，再到i++一直循环，<br>直到第二步的判断条件为假，则退出该循环</p>
 <p>原文链接：<a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_44080187/article/details/123429045">https://blog.csdn.net/weixin_44080187/article/details/123429045</a></p>
 <h1 id="union类型"><a href="#union类型" class="headerlink" title="union类型"></a>union类型</h1><h2 id="长度问题"><a href="#长度问题" class="headerlink" title="长度问题"></a>长度问题</h2><p>实例化为变量后，这个变量的长度是这个union中最长的数据类型的长度</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">union</span> <span class="title">DEMO</span>&#123;</span> </span><br><span class="line">     <span class="type">char</span> status;</span><br><span class="line">     <span class="type">int</span> a; </span><br><span class="line">     <span class="type">int</span> serial[<span class="number">4</span>]; </span><br><span class="line">&#125;demo；<span class="comment">//大小为16字节</span></span><br></pre></td></tr></table></figure>
-
 <h2 id="数据访问"><a href="#数据访问" class="headerlink" title="数据访问"></a>数据访问</h2><p>对于union成员，地址相同，存储有点像并列一样的存储（？我是这么理解的），一个成员变化一定会影响其他成员</p>
 
       
@@ -328,7 +327,6 @@
       
           <h1 id="定义抽象数据类型"><a href="#定义抽象数据类型" class="headerlink" title="定义抽象数据类型"></a>定义抽象数据类型</h1><h2 id="定义一个类"><a href="#定义一个类" class="headerlink" title="定义一个类"></a>定义一个类</h2><p>C++中可以使用struct和class构建一个类，struct为继承C语言留下，但用法与C不同。struct和class使用方法完全相同，只是对类成员默认的访问权限不同，这点后面会谈到。</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span>/<span class="keyword">class</span> <span class="title class_">person</span></span><br><span class="line">&#123;</span><br><span class="line">	string name;</span><br><span class="line">	string addr;</span><br><span class="line">   <span class="function"><span class="type">int</span> <span class="title">test</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <h2 id="在类的外部定义成员函数"><a href="#在类的外部定义成员函数" class="headerlink" title="在类的外部定义成员函数"></a>在类的外部定义成员函数</h2><p>C++的struct与C最不同的一点就是C++可以在类中定义函数，例如上述类中声明了一个返回值为int型的函数。</p>
 <p>该函数的内容可以在类中定义，也可以只在类中声明，再在外部定义。在外部定义时需注意以下几点：</p>
 <ul>
@@ -336,9 +334,7 @@
 <li>由于函数是在类中声明，在定义时需声明其命名空间（声明函数名）</li>
 </ul>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">person::test</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;&#125;</span><br></pre></td></tr></table></figure>
-
 <h2 id="定义一个返回类的函数"><a href="#定义一个返回类的函数" class="headerlink" title="定义一个返回类的函数"></a>定义一个返回类的函数</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">person</span></span><br><span class="line">&#123;</span><br><span class="line">	string name;</span><br><span class="line">	string addr;</span><br><span class="line">   <span class="function">person&amp; <span class="title">copy</span><span class="params">(<span class="type">const</span> person &amp;x)</span></span></span><br><span class="line"><span class="function">   </span>&#123;</span><br><span class="line">      name=x.name;</span><br><span class="line">      <span class="keyword">return</span> *<span class="keyword">this</span>;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <ul>
 <li><p>该函数同样可以在类外定义，规则同上一节</p>
 </li>
@@ -353,7 +349,6 @@
 </li>
 </ul>
 <h2 id="定义类相关的非成员函数"><a href="#定义类相关的非成员函数" class="headerlink" title="定义类相关的非成员函数"></a>定义类相关的非成员函数</h2><h3 id="通过定义流的引用直接操作类成员的输入输出"><a href="#通过定义流的引用直接操作类成员的输入输出" class="headerlink" title="通过定义流的引用直接操作类成员的输入输出"></a>通过定义流的引用直接操作类成员的输入输出</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">istream &amp;<span class="title">read</span><span class="params">(istream &amp;in, person &amp;item)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    in&gt;&gt;item.name&gt;&gt;item.addr;</span><br><span class="line">    <span class="keyword">return</span> in;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function">ostream &amp;<span class="title">print</span><span class="params">(ostream &amp;out, person &amp;item)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    out&lt;&lt;<span class="string">&quot;NAME: &quot;</span>&lt;&lt;item.name&lt;&lt;endl;</span><br><span class="line">    out&lt;&lt;<span class="string">&quot;ADDR: &quot;</span>&lt;&lt;item.addr&lt;&lt;endl;</span><br><span class="line">    <span class="keyword">return</span> out;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <ul>
 <li>istream和ostream需提前声明其命名空间</li>
 <li>IO类不能被拷贝，因此当其作为参数时<strong>必须通过引用传递值</strong></li>
@@ -362,7 +357,6 @@
 <h1 id="类的构造函数"><a href="#类的构造函数" class="headerlink" title="类的构造函数"></a>类的构造函数</h1><p>当我们定义一个类对象时，并没有对每一个类成员进行初始化，这时，编译器便通过一个特殊的构造函数来控制当前初始化，此函数叫做默认构造函数，<strong>该函数会对所有成员进行默认初始化。</strong></p>
 <p>但是如果我们想在定义类对象时就对一些成员进行我们想要的初始化该怎么办呢？这时我们就可以自己定义构造函数对一些类成员进行想要的初始化：</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">person</span></span><br><span class="line">&#123;	</span><br><span class="line">   <span class="built_in">person</span>()=<span class="keyword">default</span>;</span><br><span class="line">   <span class="built_in">person</span>(string s1, string s2) &#123;name=s1;addr=s2;&#125;</span><br><span class="line">   <span class="built_in">person</span>(person &amp;item) &#123;<span class="built_in">copy</span>(item);&#125;</span><br><span class="line">   <span class="built_in">person</span>(istream &amp;in) &#123;<span class="built_in">read</span>(in,*<span class="keyword">this</span>);&#125;</span><br><span class="line"><span class="comment">/**********************以上为构造函数*******************/</span>      </span><br><span class="line">	string name;</span><br><span class="line">	string addr;</span><br><span class="line">   <span class="function">person&amp; <span class="title">copy</span><span class="params">(<span class="type">const</span> person &amp;x)</span></span></span><br><span class="line"><span class="function">   </span>&#123;</span><br><span class="line">      name=x.name;</span><br><span class="line">      <span class="keyword">return</span> *<span class="keyword">this</span>;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function">istream &amp;<span class="title">read</span><span class="params">(istream &amp;in, person &amp;item)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    in&gt;&gt;item.name&gt;&gt;item.addr;</span><br><span class="line">    <span class="keyword">return</span> in;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">   person a;</span><br><span class="line">   <span class="function">string <span class="title">s1</span><span class="params">(<span class="string">&quot;dhk&quot;</span>)</span>,<span class="title">s2</span><span class="params">(<span class="string">&quot;aca&quot;</span>)</span></span>; <span class="function">person <span class="title">b</span><span class="params">(s1,s2)</span></span>;</span><br><span class="line">   <span class="function">person <span class="title">c</span><span class="params">(b)</span></span>;</span><br><span class="line">   <span class="function">person <span class="title">d</span><span class="params">(cin)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>在person类中一共定义了四个构造函数，下面将分别讲解这四个构造函数的含义和相关知识：</p>
 <ul>
 <li><p><code>person()=default;</code>默认构造函数</p>
@@ -375,7 +369,6 @@
 </li>
 <li><p>这里也有一种构造初始值列表的初始化方式：</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">person</span>(string s1, string s2): <span class="built_in">name</span>(s1),<span class="built_in">addr</span>(s2) &#123;&#125;</span><br></pre></td></tr></table></figure>
-
 <p>两种方式作用完全相同，但是实现的原理有所差异，这点后面会讲到。</p>
 </li>
 </ul>
@@ -389,20 +382,15 @@
 </ul>
 <h2 id="构造函数初始值列表和赋值的区别"><a href="#构造函数初始值列表和赋值的区别" class="headerlink" title="构造函数初始值列表和赋值的区别"></a>构造函数初始值列表和赋值的区别</h2><p>之前我们讲到了构造函数对类成员的操作有两种：</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">person</span>(string s1, string s2) &#123;name=s1;addr=s2;&#125;</span><br><span class="line"><span class="built_in">person</span>(string s1, string s2): <span class="built_in">name</span>(s1),<span class="built_in">addr</span>(s2) &#123;&#125;</span><br></pre></td></tr></table></figure>
-
 <p>两个操作在效果上一样，但是第一种操作根源上为赋值，而第二种操作才是初始化，在大部分情况下二者区别不大但是如果当类成员为引用或者const类型时，此时将不能赋值，但是可以初始化：</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">person</span></span><br><span class="line">&#123;</span><br><span class="line">   <span class="built_in">person</span>(<span class="type">int</span> i) &#123;a=i;r=i&#125; <span class="comment">//错误的，不能给引用和常量赋值</span></span><br><span class="line">   <span class="built_in">person</span>(<span class="type">int</span> i): <span class="built_in">a</span>(i),<span class="built_in">r</span>(i) &#123;&#125; <span class="comment">//正确</span></span><br><span class="line">	<span class="type">const</span> <span class="type">int</span> a;</span><br><span class="line">	<span class="type">int</span> &amp;r;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <h1 id="访问控制和封装"><a href="#访问控制和封装" class="headerlink" title="访问控制和封装"></a>访问控制和封装</h1><p>前面讲到了使用class和struct唯一区别是对类成员默认的访问权限不同，C++中可以使用访问说明符来管理类成员的访问权限以达到更好的封装。如果使用struct，则在第一个访问说明符前的成员默认为public，class则相反。</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">person</span></span><br><span class="line">&#123;	</span><br><span class="line">   <span class="keyword">public</span>: <span class="comment">//以下成员在整个程序中都可以被访问</span></span><br><span class="line">   <span class="built_in">person</span>()=<span class="keyword">default</span>;</span><br><span class="line">   <span class="built_in">person</span>(string s1, string s2) &#123;name=s1;addr=s2;&#125;</span><br><span class="line">   <span class="built_in">person</span>(person &amp;item) &#123;<span class="built_in">copy</span>(item);&#125;</span><br><span class="line">   <span class="built_in">person</span>(istream &amp;in) &#123;<span class="built_in">read</span>(in,*<span class="keyword">this</span>);&#125;  </span><br><span class="line">   <span class="keyword">private</span>: <span class="comment">//以下成员只可以被类的成员函数访问</span></span><br><span class="line">	string name;</span><br><span class="line">	string addr;</span><br><span class="line">   <span class="function">person&amp; <span class="title">copy</span><span class="params">(<span class="type">const</span> person &amp;x)</span></span></span><br><span class="line"><span class="function">   </span>&#123;</span><br><span class="line">      name=x.name;</span><br><span class="line">      <span class="keyword">return</span> *<span class="keyword">this</span>;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>需要注意，private说明符后的成员<strong>只可以被类的成员函数访问，</strong>像前面讲到的read和print函数不属于类的成员函数，因此无法访问private中的成员。</p>
 <h2 id="友元"><a href="#友元" class="headerlink" title="友元"></a>友元</h2><p>若想非类成员函数访问private内容,可以在类中<strong>使用friend关键字对其进行友元声明</strong></p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">person</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="function"><span class="keyword">friend</span> istream &amp;<span class="title">read</span><span class="params">(istream &amp;in, person &amp;item)</span></span>;</span><br><span class="line">   <span class="function"><span class="keyword">friend</span> ostream &amp;<span class="title">print</span><span class="params">(ostream &amp;out, person &amp;item)</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">istream &amp;<span class="title">read</span><span class="params">(istream &amp;in, person &amp;item)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    in&gt;&gt;item.name&gt;&gt;item.addr;</span><br><span class="line">    <span class="keyword">return</span> in;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function">ostream &amp;<span class="title">print</span><span class="params">(ostream &amp;out, person &amp;item)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    out&lt;&lt;<span class="string">&quot;NAME: &quot;</span>&lt;&lt;item.name&lt;&lt;endl;</span><br><span class="line">    out&lt;&lt;<span class="string">&quot;ADDR: &quot;</span>&lt;&lt;item.addr&lt;&lt;endl;</span><br><span class="line">    <span class="keyword">return</span> out;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>友元声明也适用于声明其他类及其成员函数</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">person</span></span><br><span class="line">&#123;</span><br><span class="line">   <span class="keyword">friend</span> <span class="keyword">class</span> <span class="title class_">test</span>;</span><br><span class="line">   <span class="function"><span class="keyword">friend</span> <span class="type">void</span> <span class="title">test::test1</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">test</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="function"><span class="type">void</span> <span class="title">test1</span><span class="params">()</span></span>&#123;...&#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <h1 id="关于类的静态成员"><a href="#关于类的静态成员" class="headerlink" title="关于类的静态成员"></a>关于类的静态成员</h1><p>在仔细阅读了书籍过后个人觉得用处不是特别大，如果以后用到了相关知识再在这里补充，目前就不写了。</p>
 
       
@@ -473,35 +461,28 @@
           <h1 id="1、寻址"><a href="#1、寻址" class="headerlink" title="1、寻址"></a>1、寻址</h1><h2 id="寻址方式"><a href="#寻址方式" class="headerlink" title="寻址方式"></a>寻址方式</h2><p>寻找操作数的地址的各种方式。</p>
 <h3 id="1-立即寻址"><a href="#1-立即寻址" class="headerlink" title="1.立即寻址"></a>1.立即寻址</h3><p>直接使用操作数将操作数存入相关地址中</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">MOV R0,#26H</span><br><span class="line">MOV DPTR,#2000H</span><br></pre></td></tr></table></figure>
-
 <ul>
 <li>立即数可以是8位或16位</li>
 <li>立即数前必须加<code>#</code></li>
 </ul>
 <h3 id="2-直接寻址"><a href="#2-直接寻址" class="headerlink" title="2.直接寻址"></a>2.直接寻址</h3><p>将操作数视为地址，并将该地址存储的数据转递到相关地址中。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">MOV A,30H //相当于对30H进行解引用，将30H值传入A中</span><br></pre></td></tr></table></figure>
-
 <h3 id="3-寄存器寻址"><a href="#3-寄存器寻址" class="headerlink" title="3.寄存器寻址"></a>3.寄存器寻址</h3><p>直接使用寄存器名字作为地址并对进行解引用</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">MOV A,R1 //*R1</span><br></pre></td></tr></table></figure>
-
 <h3 id="4-寄存器间接寻址"><a href="#4-寄存器间接寻址" class="headerlink" title="4.寄存器间接寻址"></a>4.寄存器间接寻址</h3><p>指定寄存器的内容为操作数的地址，该地址存储的内容才是操作数</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">MOV A,@R0 // @R0相当于**R0</span><br></pre></td></tr></table></figure>
-
 <ul>
 <li>需使用间址符<code>@</code></li>
 <li>对外部RAM进行读取时必须采用该方式</li>
 </ul>
 <h3 id="5-变址寻址"><a href="#5-变址寻址" class="headerlink" title="5.变址寻址"></a>5.变址寻址</h3><p>通过对基地址进行偏移获得当前操作数地址</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">MOV A,#06H</span><br><span class="line">MOVC A,@A+PC</span><br></pre></td></tr></table></figure>
-
 <p>由于这里（@A+PC）整体应为一个地址，所以这里要对<strong>A使用间址符取06H作为地址</strong>的偏移量，因此该两行指令的意思为：将（@A+PC）地址中存储的数据传入A中</p>
 <h3 id="6-相对寻址"><a href="#6-相对寻址" class="headerlink" title="6.相对寻址"></a>6.相对寻址</h3><p>直接以PC作为基地址，只写出相对偏移量，有两种方式：</p>
 <h4 id="无条件转移："><a href="#无条件转移：" class="headerlink" title="无条件转移："></a>无条件转移：</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SJMP 08H //使PC转移至当前PC值+08H（当前PC为下一指令地址）</span><br></pre></td></tr></table></figure>
-
 <h4 id="条件转移："><a href="#条件转移：" class="headerlink" title="条件转移："></a>条件转移：</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">JZ LOP //仅当（A）=0时执行，LOP为标号</span><br></pre></td></tr></table></figure>
-
 <h3 id="7-位寻址"><a href="#7-位寻址" class="headerlink" title="7.位寻址"></a>7.位寻址</h3><h1 id="2、指令系统"><a href="#2、指令系统" class="headerlink" title="2、指令系统"></a>2、指令系统</h1><h2 id="1-数据传送指令"><a href="#1-数据传送指令" class="headerlink" title="1.数据传送指令"></a>1.数据传送指令</h2><ul>
-<li>片内数据传送：MOV	访问内部RAM</li>
+<li>片内数据传送：MOV    访问内部RAM</li>
 <li>片外数据传送：MOVX    访问外部RAM</li>
 <li>程序存储器数据传送：MOVC    访问内外ROM</li>
 </ul>
@@ -511,11 +492,10 @@
 </li>
 <li><p>字节交换（低四位）：XCHD</p>
 </li>
-<li><p>字节交换（高低互换）：SWAP</p>
-</li>
+<li>字节交换（高低互换）：SWAP</li>
 </ul>
 <h2 id="3-堆栈操作指令"><a href="#3-堆栈操作指令" class="headerlink" title="3.堆栈操作指令"></a>3.堆栈操作指令</h2><ul>
-<li>入栈：PUSH	SP先变化再压栈</li>
+<li>入栈：PUSH    SP先变化再压栈</li>
 <li>出栈：POP      先出栈再变化SP</li>
 </ul>
 <h2 id="4-算术运算指令"><a href="#4-算术运算指令" class="headerlink" title="4.算术运算指令"></a>4.算术运算指令</h2><ul>
@@ -541,8 +521,8 @@
 <li>取反：CPL</li>
 <li>清零：CLR</li>
 <li>移位<ul>
-<li>不带进位：RL&#x2F;RR 左移&#x2F;右移1位</li>
-<li>带进位：RLC&#x2F;RRC ~</li>
+<li>不带进位：RL/RR 左移/右移1位</li>
+<li>带进位：RLC/RRC ~</li>
 </ul>
 </li>
 </ul>
@@ -560,17 +540,18 @@
 </li>
 <li><p>相对转移：SJMP</p>
 </li>
-<li><p>条件转移：**(条件转移皆为相对PC的转移)**</p>
+<li><p>条件转移：<strong>(条件转移皆为相对PC的转移)</strong></p>
 <ul>
-<li><p>累加器<u><strong>判0</strong></u>：JZ&#x2F;JNZ</p>
+<li><p>累加器<u><strong>判0</strong></u>：JZ/JNZ</p>
 </li>
-<li><p>进位Cy判断：JC&#x2F;JNC</p>
+<li><p>进位Cy判断：JC/JNC</p>
 </li>
-<li><p>任意位判断：JB&#x2F;JNB&#x2F;JBC</p>
+<li><p>任意位判断：JB/JNB/JBC</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">JB bit,rel</span><br><span class="line">// bit: 判断位  rel：偏移量</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>比较<strong>不相等</strong>判断（不相等为满足条件）:CJNE</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">CJNE A,#data,rel</span><br></pre></td></tr></table></figure></li>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">CJNE A,#data,rel</span><br></pre></td></tr></table></figure>
+</li>
 </ul>
 </li>
 <li><p>减1<strong>不为0</strong>判断转移：DJNZ</p>
@@ -761,6 +742,8 @@
 
 
 
+
+  
 
   
 
