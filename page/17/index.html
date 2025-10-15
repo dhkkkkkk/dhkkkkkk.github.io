@@ -197,6 +197,589 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2022/09/14/python-1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/zoe.gif">
+      <meta itemprop="name" content="dhk">
+      <meta itemprop="description" content="记录一些学习日常">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小董的BLOG">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/09/14/python-1/" class="post-title-link" itemprop="url">python_基础定义</a>
+        </h2>
+
+        <div class="post-meta">
+		  
+		  
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-09-14 18:30:37" itemprop="dateCreated datePublished" datetime="2022-09-14T18:30:37+08:00">2022-09-14</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2024-08-12 14:04:55" itemprop="dateModified" datetime="2024-08-12T14:04:55+08:00">2024-08-12</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="1、基本数据类型"><a href="#1、基本数据类型" class="headerlink" title="1、基本数据类型"></a>1、基本数据类型</h1><ul>
+<li>变量不需要声明，也没有类型。</li>
+<li>python允许同时给多个变量赋值</li>
+</ul>
+<h2 id="标准数据类型："><a href="#标准数据类型：" class="headerlink" title="标准数据类型："></a>标准数据类型：</h2><ul>
+<li>Number</li>
+<li>String</li>
+<li>List</li>
+<li>Tuple（元组）</li>
+<li>Set（集合）</li>
+<li>Dictionary（字典）</li>
+</ul>
+<h3 id="1、Number（数字）"><a href="#1、Number（数字）" class="headerlink" title="1、Number（数字）"></a>1、Number（数字）</h3><p>Python3 支持 int、float、bool、<strong>complex（复数）</strong>。</p>
+<ul>
+<li>可使用type(<em>变量</em> )函数查询变量类型</li>
+<li><p>可用isinstance(<em>变量，类型</em> )判断变量是否为想要的类型，为真返回Ture</p>
+</li>
+<li><p>del 语句可用删除对对象的引用</p>
+</li>
+<li><p>在除法的计算中，<code>/</code>返回浮点数，<code>//</code>返回整数，在混合计算时会把整数转化为浮点数</p>
+</li>
+<li><p><code>//</code>返回的不一定是整型的数，这与分母分子的类型有关</p>
+</li>
+</ul>
+<p>python可以使用<code>**</code>来进行幂运算，如5的平方：<code>5**2</code></p>
+<ul>
+<li><p><strong>number为不可变类型，</strong>例如变量赋值 <strong>a=5</strong> 后再赋值 <strong>a=10</strong>，这里实际是新生成一个 int 值对象 10，再让 a 指向它，而 5 被丢弃，不是改变 a 的值，相当于新生成了 a</p>
+</li>
+<li><p>数字类型转换</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">a=<span class="number">1.0</span></span><br><span class="line"><span class="built_in">int</span>(a)</span><br><span class="line"><span class="built_in">float</span>(a)</span><br><span class="line"><span class="built_in">complex</span>(a)	<span class="comment">#转换为复数，实数部分为a，虚数部分为0</span></span><br><span class="line">b=<span class="number">2</span></span><br><span class="line"><span class="built_in">complex</span>(a,b)	<span class="comment">#转换为复数，实数部分为a，虚数部分为b</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>其他常用数字函数</p>
+<p><a target="_blank" rel="noopener" href="https://www.runoob.com/python3/python3-number.html">Python3 数字(Number) | 菜鸟教程 (runoob.com)</a></p>
+</li>
+</ul>
+<h3 id="2、String（字符串）"><a href="#2、String（字符串）" class="headerlink" title="2、String（字符串）"></a>2、String（字符串）</h3><p>Python 没有单独的字符类型，一个字符就是长度为 1 的字符串</p>
+<p>python中的字符串可用单引号或双引号括起来，使用完全相同</p>
+<p>字符串的截取：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#变量[头下标:尾下标:截取步长]</span></span><br><span class="line"><span class="comment">#若截取步长为负数则逆向读取</span></span><br><span class="line"><span class="comment">#第一个字符索引值为0，末尾字符为-1</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;dhk&quot;</span>*<span class="number">2</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;dhk&quot;</span>+<span class="string">&quot;dhk&quot;</span>)</span><br><span class="line"><span class="comment">#dhkdhk</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>字符索引：变量[索引下标]</li>
+<li>屏蔽转义字符：在字符串前（引号外）添加一个r</li>
+<li><strong>python字符串不能被改变，也就是说不能给单个索引位置赋值</strong></li>
+</ul>
+<p>字符串的格式化：<code>print(&quot;%s %d&quot; % (&#39;abc&#39;, 10))</code></p>
+<h4 id="input"><a href="#input" class="headerlink" title="input"></a>input</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">input</span>([prompt]) <span class="comment">#prompt为用户写的提示信息</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt;a = <span class="built_in">input</span>(<span class="string">&quot;input:&quot;</span>)</span><br><span class="line"><span class="built_in">input</span>:<span class="number">123</span>                  <span class="comment"># 输入整数</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">type</span>(a)</span><br><span class="line">&lt;<span class="built_in">type</span> <span class="string">&#x27;int&#x27;</span>&gt;               <span class="comment"># 整型</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a = <span class="built_in">input</span>(<span class="string">&quot;input:&quot;</span>)    </span><br><span class="line"><span class="built_in">input</span>:<span class="string">&quot;runoob&quot;</span>           <span class="comment"># 正确，字符串表达式</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">type</span>(a)</span><br><span class="line">&lt;<span class="built_in">type</span> <span class="string">&#x27;str&#x27;</span>&gt;             <span class="comment"># 字符串，python3 里 input() 默认接收到的是 str 类型</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a = <span class="built_in">input</span>(<span class="string">&quot;input:&quot;</span>)</span><br><span class="line"><span class="built_in">input</span>:runoob               <span class="comment"># 报错，不是表达式</span></span><br></pre></td></tr></table></figure>
+<h4 id="f-string字符串格式化"><a href="#f-string字符串格式化" class="headerlink" title="f-string字符串格式化"></a>f-string字符串格式化</h4><p> 格式化字符串以 <strong>f</strong> 开头，后面跟着字符串，字符串中的表达式用大括号 {} 包起来，它会将变量或表达式计算后的值替换进去，括号中的变量不仅限于字符串</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">name = <span class="string">&#x27;dhk&#x27;</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&#x27;hello <span class="subst">&#123;name&#125;</span>&#x27;</span>)</span><br><span class="line"><span class="comment">#hello dhk</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>print中的转义字符用法同C</li>
+</ul>
+<h4 id="print"><a href="#print" class="headerlink" title="print"></a>print</h4><p>python的输出不同于c，直接把想输出的内容通过逗号连接即可</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">a=<span class="number">11</span></span><br><span class="line">b=<span class="string">&#x27;dhk&#x27;</span></span><br><span class="line"><span class="built_in">print</span>(a,b)</span><br></pre></td></tr></table></figure>
+<p>也可以通过类似C的语法：</p>
+<p>但是感觉这种方法不如f-string和上述用法方便简单</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span> (<span class="string">&quot;我叫 %s 今年 %d 岁!&quot;</span> % (<span class="string">&#x27;小明&#x27;</span>, <span class="number">10</span>))</span><br></pre></td></tr></table></figure>
+<p>格式化符号详见<a target="_blank" rel="noopener" href="https://www.runoob.com/python3/python3-string.html">Python3 字符串 | 菜鸟教程 (runoob.com)</a></p>
+<ul>
+<li><p>end关键字，用于将结果输出到同一行</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(b, end=<span class="string">&#x27;,&#x27;</span>)</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="转义字符"><a href="#转义字符" class="headerlink" title="转义字符"></a>转义字符</h4><p><a target="_blank" rel="noopener" href="https://www.runoob.com/python3/python3-string.html">Python3 字符串 | 菜鸟教程 (runoob.com)</a></p>
+<p>其中进制的转换为：</p>
+<ul>
+<li>bin(a)：转二进制</li>
+<li>oct(a)：转八进制</li>
+<li>hex(a)：转十六进制</li>
+</ul>
+<h4 id="字符串相关函数"><a href="#字符串相关函数" class="headerlink" title="字符串相关函数"></a>字符串相关函数</h4><p><a target="_blank" rel="noopener" href="https://www.runoob.com/python3/python3-string.html">Python3 字符串 | 菜鸟教程 (runoob.com)</a></p>
+<h3 id="3、List（列表），中括号"><a href="#3、List（列表），中括号" class="headerlink" title="3、List（列表），中括号"></a>3、List（列表），中括号</h3><p>定义方式：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">a=[<span class="number">1</span>,<span class="number">10.1</span>,<span class="string">&#x27;abcd&#x27;</span>]</span><br></pre></td></tr></table></figure>
+<ul>
+<li>基本使用同字符串，也可以索引、截取，使用步长截取（包括逆向）等。</li>
+<li><strong>列表内的元素可改变！</strong>，直接像c的数组一样改就行</li>
+<li>逆向读取不会将元素内容逆向</li>
+</ul>
+<h4 id="更新列表："><a href="#更新列表：" class="headerlink" title="更新列表："></a>更新列表：</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">list1 = [<span class="string">&#x27;Google&#x27;</span>, <span class="string">&#x27;Runoob&#x27;</span>, <span class="string">&#x27;Taobao&#x27;</span>]</span><br><span class="line">list1.append(<span class="string">&#x27;Baidu&#x27;</span>)</span><br><span class="line"><span class="built_in">print</span> (<span class="string">&quot;更新后的列表 : &quot;</span>, list1)	<span class="comment">#更新后的列表 :  [&#x27;Google&#x27;, &#x27;Runoob&#x27;, &#x27;Taobao&#x27;, &#x27;Baidu&#x27;]</span></span><br></pre></td></tr></table></figure>
+<h4 id="删除列表元素"><a href="#删除列表元素" class="headerlink" title="删除列表元素"></a>删除列表元素</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">list1 = [<span class="string">&#x27;Google&#x27;</span>, <span class="string">&#x27;Runoob&#x27;</span>, <span class="string">&#x27;Taobao&#x27;</span>]</span><br><span class="line"><span class="keyword">del</span> <span class="built_in">list</span>[<span class="number">2</span>]</span><br></pre></td></tr></table></figure>
+<h4 id="索引"><a href="#索引" class="headerlink" title="索引"></a>索引</h4><p>变量[头下标:尾下标] or 变量[头下标:尾下标:<strong>步长</strong>]步长为-1时逆向读取</p>
+<p>其中-1代表末尾（用于不知道实际长度时的索引），同时-2、-3对应倒数第二、第三…</p>
+<p>正数和负数的使用<strong>不相互冲突</strong></p>
+<h4 id="列表操作函数"><a href="#列表操作函数" class="headerlink" title="列表操作函数"></a>列表操作函数</h4><p><a target="_blank" rel="noopener" href="https://www.runoob.com/python3/python3-list.html">Python3 列表 | 菜鸟教程 (runoob.com)</a></p>
+<h4 id="创建指定长度空列表"><a href="#创建指定长度空列表" class="headerlink" title="创建指定长度空列表"></a>创建指定长度空列表</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">n = <span class="number">5</span></span><br><span class="line">empty_list = [<span class="literal">None</span>] * n</span><br></pre></td></tr></table></figure>
+<h3 id="4、Tuple（元组），小括号"><a href="#4、Tuple（元组），小括号" class="headerlink" title="4、Tuple（元组），小括号"></a>4、Tuple（元组），小括号</h3><p>定义方式：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">a=(<span class="number">1</span>,<span class="number">10.1</span>,<span class="string">&#x27;abcd&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>基本使用同字符串，也可以索引、截取，使用步长截取（包括逆向）等。</p>
+</li>
+<li><p>元组在输入时可能没有括号，例如<code>t = 12345, 54321, &#39;hello!&#39;</code></p>
+</li>
+<li><p><strong>元组内元素不可改变，但可以包含可变的对象，比如列表</strong>，同时也可以对元组之间进行连接组合成新元组：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">tup1 = (<span class="number">12</span>, <span class="number">34.56</span>)</span><br><span class="line">tup2 = (<span class="string">&#x27;abc&#x27;</span>, <span class="string">&#x27;xyz&#x27;</span>)</span><br><span class="line"> </span><br><span class="line"><span class="comment"># 以下修改元组元素操作是非法的。</span></span><br><span class="line"><span class="comment"># tup1[0] = 100</span></span><br><span class="line"> </span><br><span class="line"><span class="comment"># 创建一个新的元组</span></span><br><span class="line">tup3 = tup1 + tup2</span><br><span class="line"><span class="built_in">print</span> (tup3)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>包含0和1个的元组有额外的语法规则：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">tup1 = ()    <span class="comment"># 空元组</span></span><br><span class="line">tup2 = (<span class="number">20</span>,) <span class="comment"># 一个元素，需要在元素后添加逗号,否则括号会被当作运算符使用</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong><u>元组中只包含一个元素时，需要在元素后面添加逗号  ，否则括号会被当作运算符使用</u></strong></p>
+</li>
+<li><p>内置函数</p>
+<p><a target="_blank" rel="noopener" href="https://www.runoob.com/python3/python3-tuple.html">Python3 元组 | 菜鸟教程 (runoob.com)</a></p>
+</li>
+</ul>
+<h3 id="5、Set（集合），大括号"><a href="#5、Set（集合），大括号" class="headerlink" title="5、Set（集合），大括号"></a>5、Set（集合），大括号</h3><p>定义方式：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">a=() <span class="comment">#空集合需用小括号</span></span><br><span class="line">b=&#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>&#125;</span><br><span class="line">c=<span class="built_in">set</span>(<span class="string">&#x27;abcde&#x27;</span>) <span class="comment">#使用set函数=&#123;&#x27;a&#x27;,&#x27;b&#x27;,&#x27;c&#x27;,&#x27;d&#x27;,&#x27;e&#x27;&#125;</span></span><br><span class="line"><span class="comment">#必须用 set() 而不是 &#123; &#125;，因为 &#123; &#125; 是用来创建一个空字典。</span></span><br><span class="line">b.add(<span class="number">4</span>)</span><br><span class="line">b.update(<span class="number">4</span>)	<span class="comment">#添加元素上述两种都可以</span></span><br><span class="line">b.remove(<span class="number">4</span>)</span><br><span class="line">b.discard(<span class="number">4</span>)	<span class="comment">#remove不存在元素会报错，discard则不会</span></span><br></pre></td></tr></table></figure>
+<p>特点：</p>
+<ul>
+<li><p><strong>输出时会自动去掉重复的元素（从第二次重复的元素开始删除）</strong></p>
+</li>
+<li><p>可以进行集合运算</p>
+</li>
+<li><p><strong>不可像前面几个类型一样进行索引</strong>，集合是无序的</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(a-b) <span class="comment">#将a中与b相同的元素去掉后输出a</span></span><br><span class="line"><span class="built_in">print</span>(a|b) <span class="comment"># 并集</span></span><br><span class="line"><span class="built_in">print</span>(a&amp;b) <span class="comment">#交集</span></span><br><span class="line"><span class="built_in">print</span>(a^b) <span class="comment">#非交集</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>其余内置函数</p>
+<p><a target="_blank" rel="noopener" href="https://www.runoob.com/python3/python3-set.html">Python3 集合 | 菜鸟教程 (runoob.com)</a></p>
+<h3 id="6、Dictionary（字典）"><a href="#6、Dictionary（字典）" class="headerlink" title="6、Dictionary（字典）"></a>6、Dictionary（字典）</h3><p>字典是一种映射类型，它是一个<strong>无序</strong>的 <strong>键(key) : 值(value)</strong> 的集合。</p>
+<p>定义方式：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">a = &#123;<span class="string">&#x27;a&#x27;</span> : <span class="number">1</span>, <span class="string">&#x27;b&#x27;</span>: <span class="number">2</span>, <span class="string">&#x27;c&#x27;</span> :<span class="number">3</span>&#125;  <span class="comment">#&#x27;:&#x27;前为“键”，后为“值”</span></span><br><span class="line"><span class="comment">#or</span></span><br><span class="line">a= &#123;&#125;</span><br><span class="line">a[<span class="string">&#x27;a&#x27;</span>] = <span class="number">1</span></span><br><span class="line">a[<span class="string">&#x27;b&#x27;</span>] = <span class="number">2</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(a) <span class="comment">#&#123;&#x27;a&#x27;: &#x27;abcd&#x27;, &#x27;b&#x27;: &#x27;123&#x27;&#125;</span></span><br><span class="line"><span class="built_in">print</span>(a.keys()) <span class="comment">#dict_keys([&#x27;a&#x27;, &#x27;b&#x27;])</span></span><br><span class="line"><span class="built_in">print</span>(a.values()) <span class="comment">#dict_values([&#x27;abcd&#x27;, &#x27;123&#x27;])</span></span><br><span class="line"><span class="built_in">print</span>(a[<span class="string">&#x27;b&#x27;</span>])	<span class="comment">#2    访问字典里的值</span></span><br></pre></td></tr></table></figure>
+<p>键的特性：</p>
+<ul>
+<li><p>同一个键出现两次时只有后一个值会被记住</p>
+</li>
+<li><p>键<strong>必须是不可变</strong>的，因此可以是数字、字符串、元组，而不能是列表等可以改变的变量</p>
+</li>
+<li><p>修改字典</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">tinydict = &#123;<span class="string">&#x27;Name&#x27;</span>: <span class="string">&#x27;Runoob&#x27;</span>, <span class="string">&#x27;Age&#x27;</span>: <span class="number">7</span>, <span class="string">&#x27;Class&#x27;</span>: <span class="string">&#x27;First&#x27;</span>&#125;</span><br><span class="line"> </span><br><span class="line">tinydict[<span class="string">&#x27;Age&#x27;</span>] = <span class="number">8</span>               <span class="comment"># 更新 Age</span></span><br><span class="line">tinydict[<span class="string">&#x27;School&#x27;</span>] = <span class="string">&quot;菜鸟教程&quot;</span>  <span class="comment"># 添加信息</span></span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line"><span class="built_in">print</span> (<span class="string">&quot;tinydict[&#x27;Age&#x27;]: &quot;</span>, tinydict[<span class="string">&#x27;Age&#x27;</span>])</span><br><span class="line"><span class="built_in">print</span> (<span class="string">&quot;tinydict[&#x27;School&#x27;]: &quot;</span>, tinydict[<span class="string">&#x27;School&#x27;</span>])</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>同时遍历多个序列和用单个字典表示：</p>
+</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">questions = &#123;<span class="string">&#x27;name&#x27;</span>: <span class="string">&#x27;lancelot&#x27;</span>, <span class="string">&#x27;quest&#x27;</span>:<span class="string">&#x27;the holy grail&#x27;</span>, <span class="string">&#x27;favorite color&#x27;</span>:<span class="string">&#x27;blue&#x27;</span>&#125;</span><br><span class="line"><span class="keyword">for</span> q, a <span class="keyword">in</span> questions.items():<span class="comment">#q和a会分别遍历键和值</span></span><br><span class="line">	<span class="built_in">print</span>(<span class="string">f&#x27;What is your <span class="subst">&#123;q&#125;</span>?  It is <span class="subst">&#123;a&#125;</span>.&#x27;</span>)</span><br><span class="line">   </span><br><span class="line"><span class="comment">####################or#####################</span></span><br><span class="line"></span><br><span class="line">questions = [<span class="string">&#x27;name&#x27;</span>, <span class="string">&#x27;quest&#x27;</span>, <span class="string">&#x27;favorite color&#x27;</span>]</span><br><span class="line">answers = [<span class="string">&#x27;lancelot&#x27;</span>, <span class="string">&#x27;the holy grail&#x27;</span>, <span class="string">&#x27;blue&#x27;</span>]</span><br><span class="line"><span class="keyword">for</span> q, a <span class="keyword">in</span> <span class="built_in">zip</span>(questions, answers): <span class="comment">#索引多个序列</span></span><br><span class="line">   <span class="built_in">print</span>(<span class="string">f&#x27;What is your <span class="subst">&#123;q&#125;</span>?  It is <span class="subst">&#123;a&#125;</span>.&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">What is your name?  It is lancelot.</span></span><br><span class="line"><span class="string">What is your quest?  It is the holy grail.</span></span><br><span class="line"><span class="string">What is your favorite color?  It is blue.</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>其余内置函数和方法</p>
+<p><a target="_blank" rel="noopener" href="https://www.runoob.com/python3/python3-dictionary.html">Python3 字典 | 菜鸟教程 (runoob.com)</a></p>
+</li>
+</ul>
+<h2 id="综上"><a href="#综上" class="headerlink" title="综上"></a>综上</h2><ul>
+<li>list元素可改变，有序</li>
+<li>tuple元素不可改变，有序</li>
+<li>set无序，不可索引</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">a=[<span class="number">1</span>,<span class="number">10.1</span>,<span class="string">&#x27;abcd&#x27;</span>]  <span class="comment">#列表</span></span><br><span class="line">a=(<span class="number">1</span>,<span class="number">10.1</span>,<span class="string">&#x27;abcd&#x27;</span>)	<span class="comment">#元组</span></span><br><span class="line">a=&#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>&#125;	<span class="comment">#集合</span></span><br><span class="line">a = &#123;<span class="string">&#x27;a&#x27;</span> : <span class="number">1</span>, <span class="string">&#x27;b&#x27;</span>: <span class="number">2</span>, <span class="string">&#x27;c&#x27;</span> :<span class="number">3</span>&#125; <span class="comment">#字典</span></span><br></pre></td></tr></table></figure>
+<h1 id="2、推导式"><a href="#2、推导式" class="headerlink" title="2、推导式"></a>2、推导式</h1><p>Python 推导式是一种独特的数据处理方式，<strong>可以从一个数据序列构建另一个新的数据序列的结构体</strong>。</p>
+<p>Python 支持各种数据结构的推导式：</p>
+<ul>
+<li>列表(list)推导式</li>
+<li>字典(dict)推导式</li>
+<li>集合(set)推导式</li>
+<li>元组(tuple)推导式</li>
+</ul>
+<h2 id="列表推导式"><a href="#列表推导式" class="headerlink" title="列表推导式"></a>列表推导式</h2><p>格式：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[表达式 <span class="keyword">for</span> 变量 <span class="keyword">in</span> 列表 <span class="keyword">if</span> 条件]</span><br></pre></td></tr></table></figure>
+<ul>
+<li>表达式：需要对输出元素的操作，可以是有返回值的函数，<strong>其格式即推导式最终输出的格式</strong></li>
+<li><p>变量＆列表：我的理解是定义一个新变量，通过这个新变量将现有列表元素传入<strong>表达式</strong>中</p>
+</li>
+<li><p>条件：对变量进行筛选</p>
+</li>
+</ul>
+<p>例：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">a = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>, <span class="number">10</span>]</span><br><span class="line">b = [i/<span class="number">2</span> <span class="keyword">for</span> i <span class="keyword">in</span> a <span class="keyword">if</span> i % <span class="number">2</span> == <span class="number">0</span>]</span><br><span class="line"><span class="comment">#定义变量i，i来自列表a中的可以整除2的元素，最后返回i/2的值作为新列表b的元素</span></span><br><span class="line"><span class="built_in">print</span>(b)</span><br><span class="line"><span class="comment">#[1.0, 2.0, 3.0, 4.0, 5.0]</span></span><br></pre></td></tr></table></figure>
+<p>同时定义多个变量存放值：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">vec1 = [2, 4, 6]</span><br><span class="line">vec2 = [4, 3, -9]</span><br><span class="line">[x*y for x in vec1 for y in vec2] </span><br><span class="line">[x+y for x in vec1 for y in vec2]</span><br><span class="line">[vec1[i]*vec2[i] for i in range(len(vec1))]</span><br></pre></td></tr></table></figure>
+<p>在矩阵列表中使用：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">a = [[1, 2, 3], [4, 5, 6]]</span><br><span class="line">b = [row[0] for row in a]</span><br><span class="line">print(b)</span><br></pre></td></tr></table></figure>
+<h2 id="字典推导式"><a href="#字典推导式" class="headerlink" title="字典推导式"></a>字典推导式</h2><p>格式与列表推导式几乎相同，只是将表达式换成了<code>key:value</code>的格式，具体见下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">a = [<span class="number">97</span>, <span class="number">98</span>, <span class="number">99</span>, <span class="number">100</span>, <span class="number">101</span>] <span class="comment"># 传入推导式的为一个列表</span></span><br><span class="line">b = &#123;k: <span class="built_in">chr</span>(k) <span class="keyword">for</span> k <span class="keyword">in</span> a&#125;</span><br><span class="line"><span class="built_in">print</span>(b)	<span class="comment">#&#123;97: &#x27;a&#x27;, 98: &#x27;b&#x27;, 99: &#x27;c&#x27;, 100: &#x27;d&#x27;, 101: &#x27;e&#x27;&#125;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">a = &#123;<span class="number">97</span>: <span class="string">&#x27;a&#x27;</span>, <span class="number">98</span>: <span class="string">&#x27;b&#x27;</span>, <span class="number">99</span>: <span class="string">&#x27;c&#x27;</span>, <span class="number">100</span>: <span class="string">&#x27;d&#x27;</span>, <span class="number">101</span>: <span class="string">&#x27;e&#x27;</span>&#125;<span class="comment"># 传入推导式的为一个字典</span></span><br><span class="line">b = &#123;k: <span class="built_in">chr</span>(k) <span class="keyword">for</span> k <span class="keyword">in</span> a.keys()&#125;</span><br><span class="line"><span class="built_in">print</span>(b)	<span class="comment">#&#123;97: &#x27;a&#x27;, 98: &#x27;b&#x27;, 99: &#x27;c&#x27;, 100: &#x27;d&#x27;, 101: &#x27;e&#x27;&#125;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#or</span></span><br><span class="line"></span><br><span class="line">a = &#123;<span class="number">97</span>: <span class="string">&#x27;a&#x27;</span>, <span class="number">98</span>: <span class="string">&#x27;b&#x27;</span>, <span class="number">99</span>: <span class="string">&#x27;c&#x27;</span>, <span class="number">100</span>: <span class="string">&#x27;d&#x27;</span>, <span class="number">101</span>: <span class="string">&#x27;e&#x27;</span>&#125;</span><br><span class="line">b = &#123;k: i <span class="keyword">for</span> k,i <span class="keyword">in</span> a.items()&#125;</span><br><span class="line"><span class="built_in">print</span>(b)</span><br></pre></td></tr></table></figure>
+<p>但如果如下操作：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">a = &#123;<span class="number">97</span>: <span class="string">&#x27;a&#x27;</span>, <span class="number">98</span>: <span class="string">&#x27;b&#x27;</span>, <span class="number">99</span>: <span class="string">&#x27;c&#x27;</span>, <span class="number">100</span>: <span class="string">&#x27;d&#x27;</span>, <span class="number">101</span>: <span class="string">&#x27;e&#x27;</span>&#125;</span><br><span class="line">b = &#123;k: i <span class="keyword">for</span> i <span class="keyword">in</span> a.values() <span class="keyword">for</span> k <span class="keyword">in</span> a.keys()&#125;</span><br><span class="line"><span class="built_in">print</span>(b)</span><br><span class="line"><span class="comment">#&#123;97: &#x27;e&#x27;, 98: &#x27;e&#x27;, 99: &#x27;e&#x27;, 100: &#x27;e&#x27;, 101: &#x27;e&#x27;&#125;</span></span><br></pre></td></tr></table></figure>
+<p>目前还不知道原因。</p>
+<h2 id="集合推导式"><a href="#集合推导式" class="headerlink" title="集合推导式"></a>集合推导式</h2><p>规则格式与列表推导式相同</p>
+<p>例：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">a = &#123;x <span class="keyword">for</span> x <span class="keyword">in</span> <span class="string">&#x27;abracadabra&#x27;</span> <span class="keyword">if</span> x <span class="keyword">not</span> <span class="keyword">in</span> <span class="string">&#x27;abc&#x27;</span>&#125; <span class="comment">#判断不是abc的字母</span></span><br><span class="line"><span class="built_in">print</span>(a) <span class="comment">#&#123;&#x27;d&#x27;, &#x27;r&#x27;&#125;</span></span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">type</span>(a)) <span class="comment">#&lt;class &#x27;set&#x27;&gt;</span></span><br></pre></td></tr></table></figure>
+<h2 id="元组推导式（生成器表达式）"><a href="#元组推导式（生成器表达式）" class="headerlink" title="元组推导式（生成器表达式）"></a>元组推导式（生成器表达式）</h2><p>元组推导式和列表推导式的用法也完全相同，但元组推导式返回的结果是一个生成器对象</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>a = (x <span class="keyword">for</span> x <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>,<span class="number">10</span>))</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a</span><br><span class="line">&lt;generator <span class="built_in">object</span> &lt;genexpr&gt; at <span class="number">0x7faf6ee20a50</span>&gt;  <span class="comment"># 返回的是生成器对象</span></span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">tuple</span>(a)       <span class="comment"># 使用 tuple() 函数，可以直接将生成器对象转换成元组</span></span><br><span class="line">(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>)</span><br></pre></td></tr></table></figure>
+<h1 id="3、运算符"><a href="#3、运算符" class="headerlink" title="3、运算符"></a>3、运算符</h1><h2 id="赋值运算符"><a href="#赋值运算符" class="headerlink" title="赋值运算符"></a>赋值运算符</h2><ul>
+<li><p><code>:=</code>   海象运算符，在表达式内部为变量赋值：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (n := <span class="built_in">len</span>(a)) &gt; <span class="number">10</span>  <span class="comment">#可以避免调用两次len函数</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="python逻辑运算符"><a href="#python逻辑运算符" class="headerlink" title="python逻辑运算符"></a>python逻辑运算符</h2><div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">运算符</th>
+<th style="text-align:center">表达式</th>
+<th style="text-align:center">作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">and</td>
+<td style="text-align:center">x and y</td>
+<td style="text-align:center">x为<strong>假</strong>则返回x，x为<strong>真</strong>则返回y</td>
+</tr>
+<tr>
+<td style="text-align:center">or</td>
+<td style="text-align:center">a or y</td>
+<td style="text-align:center">x为<strong>真</strong>则返回x，x为<strong>假</strong>则返回y</td>
+</tr>
+<tr>
+<td style="text-align:center">not</td>
+<td style="text-align:center">not x</td>
+<td style="text-align:center">x为真返回假，为假返回真</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 id="python成员运算符"><a href="#python成员运算符" class="headerlink" title="python成员运算符"></a>python成员运算符</h2><p>可用于字符串、列表、元组、集合、字典（貌似是判断键）</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">运算符</th>
+<th style="text-align:center">表达式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">in</td>
+<td style="text-align:center">x in list</td>
+</tr>
+<tr>
+<td style="text-align:center">not in</td>
+<td style="text-align:center">x not in list</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 id="python身份运算符"><a href="#python身份运算符" class="headerlink" title="python身份运算符"></a>python身份运算符</h2><div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">运算符</th>
+<th style="text-align:center">表达式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">is</td>
+<td style="text-align:center">a is b</td>
+</tr>
+<tr>
+<td style="text-align:center">is not</td>
+<td style="text-align:center">a is not b</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h1 id="4、其他"><a href="#4、其他" class="headerlink" title="4、其他"></a>4、其他</h1><ul>
+<li><p>end关键字，用于将结果输出到同一行，同时将end=的内容添加在每次输出的末尾</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">b=<span class="number">1</span></span><br><span class="line"><span class="keyword">while</span> b&lt;<span class="number">10</span>：</span><br><span class="line">	<span class="built_in">print</span>(b,end=<span class="string">&#x27;,&#x27;</span>)</span><br><span class="line">	b+=<span class="number">1</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>多行语句</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">total = item_one + \</span><br><span class="line">        item_two + \</span><br><span class="line">        item_three</span><br><span class="line"><span class="comment">#在 [], &#123;&#125;, 或 () 中的多行语句，不需要使用反斜杠</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2022/09/09/C++-2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/zoe.gif">
+      <meta itemprop="name" content="dhk">
+      <meta itemprop="description" content="记录一些学习日常">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小董的BLOG">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/09/09/C++-2/" class="post-title-link" itemprop="url">C++变量和基本类型</a>
+        </h2>
+
+        <div class="post-meta">
+		  
+		  
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-09-09 17:16:42" itemprop="dateCreated datePublished" datetime="2022-09-09T17:16:42+08:00">2022-09-09</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-10-30 19:11:12" itemprop="dateModified" datetime="2022-10-30T19:11:12+08:00">2022-10-30</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="第二章——变量和基本类型"><a href="#第二章——变量和基本类型" class="headerlink" title="第二章——变量和基本类型"></a>第二章——变量和基本类型</h1><h2 id="说在前面"><a href="#说在前面" class="headerlink" title="说在前面"></a>说在前面</h2><p>C++这个板块是我在学习了C之后才学的，因此我只会记录一些重要的或者在C中没有的东西</p>
+<p><em>C++板块是基于C++primer的方案学习的</em></p>
+<h2 id="1、基本内置类型"><a href="#1、基本内置类型" class="headerlink" title="1、基本内置类型"></a>1、基本内置类型</h2><ul>
+<li><p>bool类型取值只为真（1）和假（0）</p>
+</li>
+<li><p>当一个算术表达式中既有无符号数（unsigned）又有int型时，int型的值会转换成无符号数。且值大于0时会正常显示，小于零时会异常显示（当int为4字节时，值为2^32 + 计算结果（负数））也就是4294967295加上</p>
+<p>(-n)。</p>
+</li>
+</ul>
+<h3 id="指定字面值类型："><a href="#指定字面值类型：" class="headerlink" title="指定字面值类型："></a>指定字面值类型：</h3><ul>
+<li>字符和字符串字面值</li>
+</ul>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">前缀</th>
+<th style="text-align:center">含义</th>
+<th style="text-align:center">代表类型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">u</td>
+<td style="text-align:center">Unicode16字符</td>
+<td style="text-align:center">char16_t</td>
+</tr>
+<tr>
+<td style="text-align:center">U</td>
+<td style="text-align:center">Unicode32字符</td>
+<td style="text-align:center">char32_t</td>
+</tr>
+<tr>
+<td style="text-align:center">L</td>
+<td style="text-align:center">宽字符（2字节）</td>
+<td style="text-align:center">wchar_t</td>
+</tr>
+<tr>
+<td style="text-align:center">u8</td>
+<td style="text-align:center">Unicode8字符</td>
+<td style="text-align:center">char</td>
+</tr>
+</tbody>
+</table>
+</div>
+<ul>
+<li>整型字面值</li>
+</ul>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">后缀</th>
+<th style="text-align:center">最小匹配类型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">u or U</td>
+<td style="text-align:center">unsigned</td>
+</tr>
+<tr>
+<td style="text-align:center">l or L</td>
+<td style="text-align:center">long</td>
+</tr>
+<tr>
+<td style="text-align:center">ll or LL</td>
+<td style="text-align:center">long long</td>
+</tr>
+</tbody>
+</table>
+</div>
+<ul>
+<li>浮点型</li>
+</ul>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">后缀</th>
+<th style="text-align:center">代表的类型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">f or F</td>
+<td style="text-align:center">float</td>
+</tr>
+<tr>
+<td style="text-align:center">l or L</td>
+<td style="text-align:center">long double</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 id="2、变量"><a href="#2、变量" class="headerlink" title="2、变量"></a>2、变量</h2><ul>
+<li><p>一种初始化字符串的方法</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">std::string <span class="title">a</span><span class="params">(<span class="string">&quot;test&quot;</span>)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>字符串变量名a，内容为test</p>
+</li>
+</ul>
+<h2 id="3、对象"><a href="#3、对象" class="headerlink" title="3、对象"></a>3、对象</h2><p>通常情况下，对象是指<strong>一块能存储数据并具有某种类型的内存空间</strong></p>
+<h3 id="关于初始化的问题"><a href="#关于初始化的问题" class="headerlink" title="关于初始化的问题"></a>关于初始化的问题</h3><p>在学C的时候我自己也是一直把初始化理解成赋值，但是也一直感觉怪怪的，特别是对于指针变量的初始化，感觉明显是不符合“赋值”这一操作的，今天在阅读书籍时书中也指出了初始化≠赋值，但是具体的区别目前我也不能讲的很明白，学到后面如果搞懂了再说吧。</p>
+<ul>
+<li>定义在函数体内部的变量将不被初始化。</li>
+</ul>
+<h3 id="列表初始化"><a href="#列表初始化" class="headerlink" title="列表初始化"></a>列表初始化</h3><p>用花括号来初始化变量，在C++中以下四种初始化都是正确的：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> a =<span class="number">1</span>;</span><br><span class="line"><span class="type">int</span> a =&#123;<span class="number">1</span>&#125;;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">a</span><span class="params">(<span class="number">1</span>)</span></span>;</span><br><span class="line"><span class="type">int</span> a&#123;<span class="number">1</span>&#125;;</span><br></pre></td></tr></table></figure>
+<h2 id="4、标识符"><a href="#4、标识符" class="headerlink" title="4、标识符"></a>4、标识符</h2><p>虽然感觉很怪异，但是<code>int _=1;</code>是合法的。</p>
+<h2 id="5、复合类型变量"><a href="#5、复合类型变量" class="headerlink" title="5、复合类型变量"></a>5、复合类型变量</h2><h3 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h3><p>为对象起另外一个名字，<strong>同时引用必须被初始化。</strong></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">a</span><span class="params">(<span class="number">1</span>)</span></span>;</span><br><span class="line"><span class="type">int</span> &amp;b=a;</span><br><span class="line">b=<span class="number">2</span>;<span class="comment">//等同于 a=2;</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>引用并非对象，可以只是理解为一个已存在变量的别名。</li>
+<li>一旦使用引用，引用对象将和引用的初始化变量绑定，无法更改，因此引用必须初始化。</li>
+<li><strong>引用只能绑定在对象上，而不能与某个字面值或某个计算结果绑定</strong>。</li>
+</ul>
+<p><strong>指向指针的引用：</strong></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> i=<span class="number">1</span>;</span><br><span class="line"><span class="type">int</span> *p;</span><br><span class="line"><span class="type">int</span> *&amp;r=p; <span class="comment">//注意这里是*&amp;r</span></span><br><span class="line">r=&amp;i;</span><br><span class="line">*r=<span class="number">0</span>;</span><br></pre></td></tr></table></figure>
+<h3 id="指针"><a href="#指针" class="headerlink" title="指针"></a>指针</h3><p>规则与C基本一样，不再赘述。</p>
+<h2 id="6、const-限定符"><a href="#6、const-限定符" class="headerlink" title="6、const 限定符"></a>6、const 限定符</h2><ul>
+<li><p>作用：定义一个变量后，它的值不能再被改变</p>
+<p>因此，const的对象必须初始化。</p>
+</li>
+<li><p>当多个文件出现了同名的const变量时，视作分别定义了独立的变量，也就是说默认情况下const对象只在本文件内有效。（当然也可以使用extern关键字，具体可见<a target="_blank" rel="noopener" href="https://dhkkk.gitee.io/2022/08/03/C-关键字/">一些关键字 | 小董的BLOG (gitee.io)</a>）</p>
+<p><strong>对于使用extern，如果要在多个文件之间共享const对象，则在定义该对象时也必须添加extern</strong></p>
+</li>
+</ul>
+<h3 id="对const对象的引用"><a href="#对const对象的引用" class="headerlink" title="对const对象的引用"></a>对const对象的引用</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">const</span> <span class="type">int</span> a=<span class="number">10</span>;</span><br><span class="line"><span class="type">const</span> <span class="type">int</span> &amp;b1=a;<span class="comment">//对</span></span><br><span class="line"><span class="type">int</span> &amp;b2=a;<span class="comment">//错，引用的类型必须与引用对象类型一致</span></span><br></pre></td></tr></table></figure>
+<p>假设第三行操作合法，则可以通过b2改变a的值，这显然是不正确的</p>
+<ul>
+<li><p>若初始化引用的对象为表达式，<strong>只要该表达式的结果能转化成引用的类型即可</strong></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> a=<span class="number">10</span>;</span><br><span class="line"><span class="type">const</span> <span class="type">int</span> &amp;b=a;</span><br><span class="line"><span class="comment">//允许将const int型引用绑定到普通的int对象上（其他普通变量也可以视情况转化）</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//因此，可以有以下操作</span></span><br><span class="line"><span class="type">int</span> a=<span class="number">10</span>;</span><br><span class="line"><span class="type">int</span> &amp;b1=a;</span><br><span class="line"><span class="type">const</span> <span class="type">int</span> &amp;b2=a;</span><br><span class="line"><span class="comment">//可以通过b1改变a的值，但不允许通过b2改变a的值</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="指向const对象的指针和const指针"><a href="#指向const对象的指针和const指针" class="headerlink" title="指向const对象的指针和const指针"></a>指向const对象的指针和const指针</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//指向const对象的指针</span></span><br><span class="line"><span class="type">const</span> <span class="type">int</span> a=<span class="number">10</span>,b=<span class="number">20</span>;</span><br><span class="line"><span class="type">int</span> *p=&amp;a;</span><br><span class="line">*p=b; <span class="comment">//错误，不可修改p指向的对象的值</span></span><br><span class="line">p=&amp;b; <span class="comment">//合法，并没有更改a的值，只是更改了一般指针p的值</span></span><br></pre></td></tr></table></figure>
+<p>说明一下，上述中的<code>int *p=&amp;a;</code>也可以改为<code>const int *p=&amp;a;</code><strong>且二者完全一致</strong>，原因与后文中的顶/底层const有关</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//const指针</span></span><br><span class="line"><span class="type">int</span> a=<span class="number">10</span>,b=<span class="number">20</span>;</span><br><span class="line"><span class="type">int</span> *<span class="type">const</span> p=&amp;a;</span><br><span class="line">p=&amp;b; <span class="comment">//错误，const指针一旦初始化便会一直指向初始化时的对象</span></span><br><span class="line">*p=b; <span class="comment">//正确，因为指针指向的值为普通int型，可以改变</span></span><br></pre></td></tr></table></figure>
+<p>将指针本身定义为const型（不太好用语言描述感觉），即一旦初始化完成，该指针便无法再指向其他对象。</p>
+<p>下面还是一个const指针的说明：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//const指针</span></span><br><span class="line"><span class="type">const</span> <span class="type">int</span> a=<span class="number">10</span>,b=<span class="number">20</span>;</span><br><span class="line"><span class="type">const</span> <span class="type">int</span> *<span class="type">const</span> p=&amp;a;</span><br><span class="line"><span class="comment">//此时p和*p都是无法改变的</span></span><br></pre></td></tr></table></figure>
+<p>当使用const指针指向的值也是const类型时，const指针本身必须再次使用一次const，因为要保持类型的一致</p>
+<h3 id="顶-底层const"><a href="#顶-底层const" class="headerlink" title="顶/底层const"></a>顶/底层const</h3><p>对于指针，指针本身是一个对象，而它也指向了另一个对象，<strong>因此用顶层const表示指针本身是个const类型，用底层const表示指针所指的对象时一个const型</strong>。一般来说，顶层const可以表示任意对象。</p>
+<ul>
+<li><p>当const + 类型 时，意为使这个类型的值为常量，如</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">const</span> <span class="type">int</span> *p;</span><br></pre></td></tr></table></figure>
+<p>定义一个指针变量，该变量所指的值为int型，因此该值（*p）不可被修改，但是p可以被修改。</p>
+</li>
+<li><p>当const + 变量 时，意为使该变量为常量，如：</p>
+</li>
+<li><p>```c++<br>int* const p;</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">  指针变量p为常量，因此其指向的地址无法被改变，但是地址中的值(*p)可以被改变。</span><br><span class="line"></span><br><span class="line">## 7、constexpr类型</span><br><span class="line"></span><br><span class="line">* 常量表达式：指值不会改变**并且在编译过程就能得到结果的表达式**；字面值、用常量表达式初始化的const对象也是常量表达式。</span><br><span class="line"></span><br><span class="line">  ```c</span><br><span class="line">  const int i = 10;			//字面值是常量表达式</span><br><span class="line">  const int j = i+1;			//j是常量表达式</span><br><span class="line">  int k = i;					//k不是const对象，所以k不是是常量表达式</span><br><span class="line">  const int m = get_val(); 	//m的值直到运行时才能获得，所以m不是常量表达是</span><br></pre></td></tr></table></figure>
+<p>从上面我们可以看出，使用const进行声明时，我们需要<strong>人为的验证</strong>赋给const对象的初始值是不是常量表达是，在复杂系统中，有时候很难分辨，而使用constexpr进行声明时，可以由<strong>编译器来验证</strong>变量是不是常量表达式</p>
+</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">constexpr</span> <span class="type">int</span> <span class="title">func</span><span class="params">(<span class="type">int</span> n)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">return</span> n;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="type">int</span> n=<span class="number">10</span>;</span><br><span class="line">	<span class="type">const</span> <span class="type">int</span> m=<span class="number">10</span>;</span><br><span class="line">	<span class="keyword">constexpr</span> <span class="type">int</span> i = <span class="built_in">func1</span>(<span class="number">10</span>);<span class="comment">//正确，i是一个常量表达式</span></span><br><span class="line">	<span class="keyword">constexpr</span> <span class="type">int</span> j = <span class="built_in">func1</span>(n);<span class="comment">//错误,n为变量，不是字面值</span></span><br><span class="line">	<span class="keyword">constexpr</span> <span class="type">int</span> k = <span class="built_in">func1</span>(m+<span class="number">1</span>);<span class="comment">//正确，k是一个常量表达式</span></span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="const和constexpr的区别"><a href="#const和constexpr的区别" class="headerlink" title="const和constexpr的区别"></a>const和constexpr的区别</h3><ul>
+<li>对于修饰对象来说，const并未区分出编译期常量和运行期常量，constexpr限定在了编译期常量</li>
+<li>在constexpr声明中如果定义了一个指针，限定符constexpr仅对指针有效，与指针所指的对象无关。</li>
+<li>constexpr将它所定义的对象置为顶层const</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">const</span> <span class="type">int</span>*p1=<span class="literal">nullptr</span>;  			<span class="comment">//p1是一个指向常量的指针</span></span><br><span class="line"><span class="keyword">constexpr</span> <span class="type">int</span>*p2=<span class="literal">nullptr</span>;		<span class="comment">//p2是一个指向整数的常量指针</span></span><br><span class="line"><span class="keyword">constexpr</span> <span class="type">const</span> <span class="type">int</span>*p3=<span class="literal">nullptr</span>; </span><br><span class="line"><span class="comment">//p3是一个指向常量的常量指针，由于constexpr只对指针有效，需要再加一个底层const才可以限制指针指向的对象</span></span><br></pre></td></tr></table></figure>
+<h2 id="8、处理类型"><a href="#8、处理类型" class="headerlink" title="8、处理类型"></a>8、处理类型</h2><h3 id="（1）类型别名"><a href="#（1）类型别名" class="headerlink" title="（1）类型别名"></a>（1）类型别名</h3><p>类型别名是一个<strong>名字</strong>，<strong>是某种类型的同义词</strong>。有两种办法可用于定义类型别名：</p>
+<ul>
+<li><p>使用关键字typedef，详见<u>一些关键字 | 小董的BLOG</u> </p>
+</li>
+<li><p>使用别名声明：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> INT =<span class="type">int</span>;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="类型别名与指针、常量"><a href="#类型别名与指针、常量" class="headerlink" title="类型别名与指针、常量"></a>类型别名与指针、常量</h4><p>有以下代码：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> abc=<span class="type">char</span>*;</span><br><span class="line"><span class="type">char</span> a=<span class="number">10</span>;</span><br><span class="line"><span class="type">const</span> abc p=&amp;a;<span class="comment">//此处等同于char *const p=&amp;a;而不是 const char *p=&amp;a;</span></span><br><span class="line"><span class="comment">//也就是说此处是常量指针，而不是指向常量的指针，因此：</span></span><br><span class="line">*p=<span class="number">20</span>;<span class="comment">//合法</span></span><br></pre></td></tr></table></figure>
+<p>感觉可以直接理解为这里的const为顶层const型</p>
+<h3 id="（2）auto类型说明符"><a href="#（2）auto类型说明符" class="headerlink" title="（2）auto类型说明符"></a>（2）auto类型说明符</h3><p>这里auto和C中用法有所出入，在C++11新标准中，auto用于让编译器通过初始值来推算变量的类型</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> a=<span class="number">1</span>,b=<span class="number">2</span>;</span><br><span class="line"><span class="keyword">auto</span> c=a+b;</span><br></pre></td></tr></table></figure>
+<p>此时c的类型就为int</p>
+<ul>
+<li>auto定义的变量必须有初始值</li>
+<li>参与初始化的各对象类型必须相同，否则会报错</li>
+</ul>
+<h4 id="在复合类型与常量参与的情况下："><a href="#在复合类型与常量参与的情况下：" class="headerlink" title="在复合类型与常量参与的情况下："></a>在复合类型与常量参与的情况下：</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">const</span> <span class="type">int</span> a=<span class="number">1</span>; &amp;a1=a;</span><br><span class="line"><span class="keyword">auto</span> b=a; <span class="comment">//b为int型</span></span><br><span class="line"><span class="keyword">auto</span> c=a1;<span class="comment">//c为int型</span></span><br><span class="line"><span class="keyword">auto</span> d=&amp;a;<span class="comment">//d为指向常量的指针</span></span><br><span class="line"><span class="type">const</span> <span class="keyword">auto</span> e=a; <span class="comment">//顶层const需专门声明</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>auto一般会忽略顶层const</p>
+</li>
+<li><p>对一个常量对象取地址是一种底层const</p>
+</li>
+</ul>
+<h3 id="（3）decltype类型指示符"><a href="#（3）decltype类型指示符" class="headerlink" title="（3）decltype类型指示符"></a>（3）decltype类型指示符</h3><p>当我们定义一个变量时希望用一个表达式返回的类型定义该变量，但是又不想用该表达式的结果的值初始化变量，为满足这一要求，C++11新标准引入了decltype，它的作用是选择并返回操作数的数据类型，在此过程中，编译器分析表达式的类型，却不实际计算它的值。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> a=<span class="number">1</span>;</span><br><span class="line"><span class="keyword">decltype</span>(a) b=<span class="number">2</span>;</span><br></pre></td></tr></table></figure>
+<p>decltype()内的参数可以为变量、函数、甚至引用</p>
+<h4 id="decltype和引用："><a href="#decltype和引用：" class="headerlink" title="decltype和引用："></a>decltype和引用：</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> a=<span class="number">1</span>,&amp;a1=a,*p=&amp;a;</span><br><span class="line"><span class="type">int</span> b=<span class="number">2</span>;</span><br><span class="line"><span class="keyword">decltype</span>(a1) c=b;<span class="comment">//c为int&amp;，也就是引用类型</span></span><br><span class="line"><span class="keyword">decltype</span>(a1+<span class="number">0</span>) d=<span class="number">1</span>; <span class="comment">//d为int型，原因是a1+0的结果为int型</span></span><br><span class="line"><span class="keyword">decltype</span>(*p) e=b; <span class="comment">//*p的值按道理来说是1，书上讲这里讲为int&amp;型，也就是与c一样</span></span><br></pre></td></tr></table></figure>
+<p>当decltype传入的参数添加上一对以上的括号后，例如decltype((a))，<strong>结果永远为引用</strong></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2022/09/07/C++-1/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -335,566 +918,9 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2022/08/30/freertos%E4%BB%BB%E5%8A%A1%E9%80%9A%E7%9F%A5%E4%B8%8E%E4%BF%A1%E5%8F%B7%E9%87%8F/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/zoe.gif">
-      <meta itemprop="name" content="dhk">
-      <meta itemprop="description" content="记录一些学习日常">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="小董的BLOG">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/08/30/freertos%E4%BB%BB%E5%8A%A1%E9%80%9A%E7%9F%A5%E4%B8%8E%E4%BF%A1%E5%8F%B7%E9%87%8F/" class="post-title-link" itemprop="url">FreeRTOS任务间的交互方法</a>
-        </h2>
-
-        <div class="post-meta">
-		  
-		  
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2022-08-30 15:56:18 / 修改时间：21:46:12" itemprop="dateCreated datePublished" datetime="2022-08-30T15:56:18+08:00">2022-08-30</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="说在前面"><a href="#说在前面" class="headerlink" title="说在前面"></a>说在前面</h1><p>本来是打算在<a target="_blank" rel="noopener" href="https://www.dhksblog.top/2022/08/25/FreeRTOS-3/">FreeRTOS在CubeMX中的使用</a>就把这些内容给讲了的，但是学习的过程中发现网络上很多教程都存在着一些差异，所以为了更系统地学习，同时也方便日后查阅，就单独开一篇文章总结一下相关内容</p>
-<p><strong>注：本文所有例程均经过测试且可以正常运行</strong></p>
-<h1 id="1、队列"><a href="#1、队列" class="headerlink" title="1、队列"></a>1、队列</h1><p>FreeRTOS中的队列<strong>是一种用于实现【任务与任务】，【任务与中断】以及【中断与任务】之间的通信机制。</strong>此外，任务从队列读数据或者写入数据到队列时，都可能被阻塞。这个特性使得任务可以被设计成基于事件驱动的运行模式，大大提高了CPU的执行效率。队列是实现FreeRTOS中其他特性的基础组件，像软件定时器，信号量，互斥锁都是基于队列而实现的。</p>
-<p>在操作系统里面，直接使用全局变量传输数据十分危险，看似正常运行，但不知道啥时候就会因为寄存器或者内存等等原因引起崩溃，所以引入消息，队列的概念。</p>
-<h2 id="队列的基本特性"><a href="#队列的基本特性" class="headerlink" title="队列的基本特性"></a>队列的基本特性</h2><p>队列是一种FIFO操作的数据结构，入队操作就是把一个新的元素放进队尾(tail)，出队操作就是从队头(front)取出一个元素。FreeRTOS中也支持把一个元素放到队头的操作，这个操作会<strong>覆盖</strong>之前队头的元素。</p>
-<h2 id="入队策略"><a href="#入队策略" class="headerlink" title="入队策略"></a>入队策略</h2><p>队列在设计的时候，主要有两种元素入队存储策略：Queue by copy 和 Queue by reference。FreeRTOS的队列使用的是Queue by copy存储策略，考虑到这种策略实现起来更加简单，灵活，且安全。</p>
-<ul>
-<li>Queue by copy：数据入队的时候，队列中存储的是此数据的一份拷贝</li>
-<li>Queue by reference：数据队列的时候，队列中存储的是数据的指针，而非数据本身</li>
-</ul>
-<h2 id="入队堵塞"><a href="#入队堵塞" class="headerlink" title="入队堵塞"></a>入队堵塞</h2><p>一个任务在尝试写入数据到队列时，可以指定一个阻塞时间，即任务在<strong>等待队列有空余空间（非满）可写前最长等待阻塞时间</strong>。当队列中有空间可写入时，任务会自动从阻塞态转换为就绪态。如果在等待时间内队列一直是满的，则等待时间到期后，任务也会自动从阻塞态转换为就绪态，但是它会返回一个写入失败的结果。</p>
-<p>队列可能有多个writerTask，所以在等待队列有空闲空间时，可能会有多个任务阻塞。<strong>当队列有空闲空间可写时，调度器会从所有阻塞的任务中选取优先级最高的那个任务让其进入到就绪态</strong>。<strong>如果最高优先级的不止一个，则让等待最久的那个进入到就绪态。</strong></p>
-<h2 id="出队堵塞"><a href="#出队堵塞" class="headerlink" title="出队堵塞"></a><strong>出队堵塞</strong></h2><p>一个任务在尝试从队列中读取数据时，可以指定一个阻塞时间，即任务在等待队列有元素可读前最长等待阻塞时间。当队列中有元素可读时，任务会自动从阻塞态转换为就绪态。<strong>如果在等待时间内队列一直没有数据可读，则等待时间到期后，任务也会自动从阻塞态转换为就绪态，但是它会返回一个读取失败的结果</strong>。</p>
-<p>队列可能有多个reader Task，所以在等待队列有数据可读时，可能会有多个任务阻塞。<strong>当队列有数据可读时，调度器会从所有阻塞的任务中选取优先级最高的那个任务让其进入到就绪态。如果最高优先级的不止一个，则让等待最久的那个进入到就绪态。</strong></p>
-<h2 id="相关API函数"><a href="#相关API函数" class="headerlink" title="相关API函数"></a>相关API函数</h2><ul>
-<li><p>队列创建（若使用cubemx则只用点点点，不用再用函数创建，所有创建类函数同理）</p>
-<p>使用xQueueCreate()内核函数来创建一个队列。队列的1存储空间从FreeRTOS heap中分配。在使用xQueueCreate()创建队列时，如果FreeRTOS heap中没有足够的存储空间分配给当前队列，则函数返回NULL。如果创建成功，则返回队列的句柄(QueueHandle_t类型)</p>
-</li>
-</ul>
-<div class="table-container">
-<table>
-<thead>
-<tr>
-<th style="text-align:center">函数</th>
-<th style="text-align:center">QueueHandle_t xQueueCreate( UBaseType_t uxQueueLength, UBaseType_t uxItemSize );</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">参数</td>
-<td style="text-align:center"><strong>uxQueueLength</strong>：指定队列的长度，即最多可以存放的元素个数<br><strong>uxItemSize</strong>：队列中存储的元素的大小（占用的字节数）</td>
-</tr>
-<tr>
-<td style="text-align:center">返回值</td>
-<td style="text-align:center">返回NULL代表创建失败，没有足够的堆空间来创建当前队列；创建成功则返回队列的句柄</td>
-</tr>
-</tbody>
-</table>
-</div>
-<ul>
-<li><p>元素入队</p>
-<p>使用xQueueSendToBack()函数来向队尾存放一个元素，使用xQueueSend()函数来向队首存放一个元素，两个函数用法一样</p>
-</li>
-</ul>
-<div class="table-container">
-<table>
-<thead>
-<tr>
-<th style="text-align:center">函数</th>
-<th style="text-align:center">BaseType_t xQueueSendToBack( QueueHandle_t xQueue,<br>                                                                        const void * pvItemToQueue,<br>                                                       TickType_t xTicksToWait );</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">参数</td>
-<td style="text-align:center"><strong>xQueue</strong>：目标队列的句柄<br><strong>pvItemToQueue</strong>：入队元素的指针。队列将存储此指针指向的数据的备份<br><strong>xTicksToWait</strong>：指定等待队列有空间可以容纳新元素入队的最长等待（阻塞）时间</td>
-</tr>
-<tr>
-<td style="text-align:center">返回值</td>
-<td style="text-align:center">当元素成功入队时返回pdPASS，因为队列满而无法入队时返回errQUEUE_FULL（超时后）</td>
-</tr>
-</tbody>
-</table>
-</div>
-<ul>
-<li><p>查询队列元素个数</p>
-<p>使用内核函数uxQueueMessagesWaiting()来获取队列中有多少个元素</p>
-</li>
-</ul>
-<div class="table-container">
-<table>
-<thead>
-<tr>
-<th style="text-align:center">函数</th>
-<th style="text-align:center">UBaseType_t uxQueueMessagesWaiting( QueueHandle_t xQueue );</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">参数</td>
-<td style="text-align:center"><strong>xQueue</strong>：队列的句柄</td>
-</tr>
-<tr>
-<td style="text-align:center">返回值</td>
-<td style="text-align:center">队列中的元素个数，返回0代表队列为空</td>
-</tr>
-</tbody>
-</table>
-</div>
-<p>按键例程：</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">task1</span><span class="params">(<span class="type">void</span> <span class="type">const</span> * argument)</span> <span class="comment">//低优先级任务</span></span><br><span class="line">&#123;</span><br><span class="line">  BaseType_t result; </span><br><span class="line">  <span class="type">uint8_t</span> dat[]=<span class="string">&quot;666\r\n&quot;</span>;</span><br><span class="line">  <span class="comment">/* Infinite loop */</span></span><br><span class="line">  <span class="keyword">for</span>(;;)</span><br><span class="line">  &#123;</span><br><span class="line">	<span class="keyword">if</span>(HAL_GPIO_ReadPin(key_1_GPIO_Port,key_1_Pin == GPIO_PIN_SET)) <span class="comment">//检测按键</span></span><br><span class="line">	&#123;</span><br><span class="line">		result= xQueueSendToBack(myQueue01Handle,dat,portMAX_DELAY); <span class="comment">//将元素dat放至队尾</span></span><br><span class="line">		<span class="keyword">if</span>(result==pdPASS) <span class="comment">//放置成功返回pdPASS</span></span><br><span class="line">		&#123;</span><br><span class="line">			HAL_GPIO_WritePin(led_g_GPIO_Port,led_g_Pin,GPIO_PIN_RESET);<span class="comment">//点亮绿灯</span></span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">   	osDelay(<span class="number">5</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125; </span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">task2</span><span class="params">(<span class="type">void</span> <span class="type">const</span> * argument)</span> <span class="comment">//高优先级任务</span></span><br><span class="line">&#123;</span><br><span class="line">  BaseType_t result;</span><br><span class="line">  <span class="type">uint8_t</span> datbuf[<span class="number">10</span>]; <span class="comment">//随便定义个缓冲区就可以，用于存放取出的元素</span></span><br><span class="line">  <span class="comment">/* Infinite loop */</span></span><br><span class="line">  <span class="keyword">for</span>(;;)</span><br><span class="line">  &#123;</span><br><span class="line">	result=xQueueReceive(myQueue01Handle,datbuf,portMAX_DELAY);<span class="comment">//取出元素放入datbuf中</span></span><br><span class="line">	<span class="keyword">if</span>(result==pdPASS)<span class="comment">//读取成功返回pdPASS</span></span><br><span class="line">	&#123;</span><br><span class="line">		HAL_GPIO_WritePin(led_r_GPIO_Port,led_r_Pin,GPIO_PIN_RESET);<span class="comment">//点亮红灯</span></span><br><span class="line">	&#125;</span><br><span class="line">	osDelay(<span class="number">10</span>);</span><br><span class="line">  &#125;    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h1 id="2、任务通知"><a href="#2、任务通知" class="headerlink" title="2、任务通知"></a>2、任务通知</h1><p><em>在网上找了很多博客对于任务通知介绍的函数都不一样，我自己也实验了很多，就把我试验过的可行的函数都总结一遍，可以根据具体的需要选择相关函数（其实函数功能基本差不多，但是原理不一样）</em></p>
-<p>每个RTOS任务都有一个32位的通知值，任务创建时，这个值被初始化为0。RTOS任务通知相当于直接向任务发送一个事件，接收到通知的任务可以解除阻塞状态，<strong>前提是这个阻塞事件是因等待通知而引起的</strong>。发送通知的同时，也可以可选的改变接收任务的通知值。</p>
-<p>相对于用前必须分别创建队列、二进制信号量、计数信号量或事件组的情况，使用任务通知显然更灵活。更好的是，相比于使用信号量解除任务阻塞，使用任务通知可以快45%、使用更少的RAM。</p>
-<p><strong>下面介绍的函数大类都可以实现任务通知的功能，可以根据需要选择</strong></p>
-<h2 id="一、xTask函数"><a href="#一、xTask函数" class="headerlink" title="一、xTask函数"></a>一、xTask函数</h2><h3 id="发送函数（1）"><a href="#发送函数（1）" class="headerlink" title="发送函数（1）"></a>发送函数（1）</h3><div class="table-container">
-<table>
-<thead>
-<tr>
-<th style="text-align:center">函数</th>
-<th style="text-align:center">BaseType_t xTaskNotify( TaskHandle_txTaskToNotify,<br>                          uint32_t ulValue,<br>                           eNotifyAction eAction);</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">参数</td>
-<td style="text-align:center">xTaskToNotify：被通知的任务句柄<br>ulValue： 通知更新值<br> eAction:枚举类型，指明更新通知值的方法</td>
-</tr>
-<tr>
-<td style="text-align:center">返回值</td>
-<td style="text-align:center">成功则返回pdPASS</td>
-</tr>
-</tbody>
-</table>
-</div>
-<p>eAction具体说明：</p>
-<div class="table-container">
-<table>
-<thead>
-<tr>
-<th style="text-align:center">枚举成员</th>
-<th style="text-align:center">作用</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">eNoAction</td>
-<td style="text-align:center">发送通知但不更新通知值，意味着ulValue未使用</td>
-</tr>
-<tr>
-<td style="text-align:center">eSetBits</td>
-<td style="text-align:center">被通知任务值赋值按位或赋值ulValue</td>
-</tr>
-<tr>
-<td style="text-align:center">elncrement</td>
-<td style="text-align:center">被通知任务的通知值++</td>
-</tr>
-<tr>
-<td style="text-align:center">eSetValueWithOverwrite</td>
-<td style="text-align:center">被通知任务值赋值为ulValue</td>
-</tr>
-<tr>
-<td style="text-align:center">eSetValueWithoutOverwrite</td>
-<td style="text-align:center">如果被通知的任务还没取走上一个通知的情况下，又向被通知任务发送一个新的通知，则新通知值被丢弃，且xTaskNotify()会返回pdFALSE</td>
-</tr>
-</tbody>
-</table>
-</div>
-<img src="/images/loading.png" data-original="/2022/08/30/freertos%E4%BB%BB%E5%8A%A1%E9%80%9A%E7%9F%A5%E4%B8%8E%E4%BF%A1%E5%8F%B7%E9%87%8F/eaction.jpg" class title="This is an image"> 
-<h3 id="发送函数（2）"><a href="#发送函数（2）" class="headerlink" title="发送函数（2）"></a>发送函数（2）</h3><div class="table-container">
-<table>
-<thead>
-<tr>
-<th style="text-align:center">函数</th>
-<th style="text-align:center">BaseType_t xTaskNotifyGive(TaskHandle_t xTaskToNotify );</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">参数</td>
-<td style="text-align:center">xTaskToNotify：被通知的任务句柄</td>
-</tr>
-<tr>
-<td style="text-align:center">返回值</td>
-<td style="text-align:center">成功则返回pdPASS</td>
-</tr>
-</tbody>
-</table>
-</div>
-<p>其实这是一个宏，本质上相当于xTaskNotify( ( xTaskToNotify ), ( 0 ), <strong>eIncrement</strong> )在这种情况下，应该使用API函数ulTaskNotifyTake()来等待通知，而不应该使用API函数xTaskNotifyWait()</p>
-<p>此函数不可以在中断服务例程中调用，中断保护等价函数为vTaskNotifyGiveFromISR()</p>
-<h3 id="接收函数（1）"><a href="#接收函数（1）" class="headerlink" title="接收函数（1）"></a>接收函数（1）</h3><p><u><strong>注意，此处讲到的接收函数应与上面讲到的发送函数配对，例如：使用发送函数（1），接收通知也要使用接收函数（1）</strong></u></p>
-<div class="table-container">
-<table>
-<thead>
-<tr>
-<th style="text-align:center">函数</th>
-<th style="text-align:center">BaseType_t xTaskNotifyWait( uint32_tulBits  ToClearOnEntry,<br>                                                      uint32_tulBits  ToClearOnExit,<br>                                                          uint32_t*  pulNotificationValue,<br>                                    TickType_t  xTicksToWait );</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">参数</td>
-<td style="text-align:center">见下方</td>
-</tr>
-<tr>
-<td style="text-align:center">返回值</td>
-<td style="text-align:center">成功则返回pdPASS</td>
-</tr>
-</tbody>
-</table>
-</div>
-<p>关于参数：</p>
-<ul>
-<li>ulBitsToClearOnEntry：在使用通知之前，先将任务的通知值与参数ulBitsToClearOnEntry的按位取反值按位与操作。设置参数ulBitsToClearOnEntry为0xFFFFFFFF(ULONG_MAX)，表示清零任务通知值。<ul>
-<li><strong>但是在实际调试过程中感觉给0x00和0xFFFFFFFF在使用上没有区别，所以就给0xFFFFFFFF就可以</strong></li>
-</ul>
-</li>
-</ul>
-<img src="/images/loading.png" data-original="/2022/08/30/freertos%E4%BB%BB%E5%8A%A1%E9%80%9A%E7%9F%A5%E4%B8%8E%E4%BF%A1%E5%8F%B7%E9%87%8F/qufan1.jpg" class title="This is an image"> 
-<ul>
-<li>*ulBitsToClearOnExit：在函数xTaskNotifyWait()退出前，将任务的通知值与参数ulBitsToClearOnExit的按位取反值按位与操作。设置参数ulBitsToClearOnExit为0xFFFFFFFF(ULONG_MAX)，表示清零任务通知值。<ul>
-<li><strong>使用同上，默认0xFFFFFFFF就可以</strong></li>
-</ul>
-</li>
-</ul>
-<img src="/images/loading.png" data-original="/2022/08/30/freertos%E4%BB%BB%E5%8A%A1%E9%80%9A%E7%9F%A5%E4%B8%8E%E4%BF%A1%E5%8F%B7%E9%87%8F/qufan2.jpg" class title="This is an image"> 
-<ul>
-<li>pulNotificationValue：用于向外回传任务的通知值。这个通知值在参数ulBitsToClearOnExit起作用前将通知值拷贝到<em>pulNotificationValue中（<em>*需额外定义一个缓冲区</em></em>）。如果不需要返回任务的通知值，这里设置成NULL。</li>
-<li>xTicksToWait：因等待通知而进入阻塞状态的最大时间。时间单位为系统节拍周期。宏pdMS_TO_TICKS用于将指定的毫秒时间转化为相应的系统节拍数。</li>
-</ul>
-<h3 id="接收函数（2）"><a href="#接收函数（2）" class="headerlink" title="接收函数（2）"></a>接收函数（2）</h3><div class="table-container">
-<table>
-<thead>
-<tr>
-<th style="text-align:center">函数</th>
-<th style="text-align:center">uint32_t ulTaskNotifyTake( BaseType_t  xClearCountOnExit,<br>                                TickType_t   xTicksToWait );</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">参数</td>
-<td style="text-align:center">xClearCountOnExit：如果该参数为pdFALSE，则API函数xTaskNotifyTake()退出前，将任务的通知值减1；如果该参数设置为pdTRUE，则API函数xTaskNotifyTake()退出前，将任务通知值清零。<br>xTicksToWait：因等待通知而进入阻塞状态的最大时间</td>
-</tr>
-<tr>
-<td style="text-align:center">返回值</td>
-<td style="text-align:center">成功则返回pdPASS</td>
-</tr>
-</tbody>
-</table>
-</div>
-<h3 id="上例程！老规矩按键-led"><a href="#上例程！老规矩按键-led" class="headerlink" title="上例程！老规矩按键+led"></a>上例程！老规矩按键+led</h3><p>发送函数（1）+接收函数（1）</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> event1 0x0001&lt;&lt;1</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> event2 0x0001&lt;&lt;2</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">task1</span><span class="params">(<span class="type">void</span> <span class="type">const</span> * argument)</span> <span class="comment">//低优先级</span></span><br><span class="line">&#123;</span><br><span class="line">	BaseType_t result;</span><br><span class="line">  <span class="keyword">for</span>(;;)</span><br><span class="line">  &#123;</span><br><span class="line">		<span class="keyword">if</span>(HAL_GPIO_ReadPin(key_1_GPIO_Port,key_1_Pin) == GPIO_PIN_SET)<span class="comment">//按键检测</span></span><br><span class="line">		&#123;</span><br><span class="line">			result=  xTaskNotify(task2Handle,event1,<span class="number">4</span>);<span class="comment">//直接数字代替枚举成员</span></span><br><span class="line">			<span class="keyword">if</span>(result==pdPASS)</span><br><span class="line">			&#123;</span><br><span class="line">				HAL_GPIO_WritePin(led_g_GPIO_Port,led_g_Pin,GPIO_PIN_RESET);<span class="comment">//绿灯</span></span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">if</span>(HAL_GPIO_ReadPin(key_2_GPIO_Port,key_2_Pin) == GPIO_PIN_SET)<span class="comment">//按键检测</span></span><br><span class="line">		&#123;</span><br><span class="line">			result=  xTaskNotify(task2Handle,event2,<span class="number">4</span>);<span class="comment">//直接数字代替枚举成员</span></span><br><span class="line">			<span class="keyword">if</span>(result==pdPASS)</span><br><span class="line">			&#123;</span><br><span class="line">				HAL_GPIO_WritePin(led_b_GPIO_Port,led_b_Pin,GPIO_PIN_RESET);<span class="comment">//蓝灯</span></span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		osDelay(<span class="number">100</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">task2</span><span class="params">(<span class="type">void</span> <span class="type">const</span> * argument)</span><span class="comment">//高优先级</span></span><br><span class="line">&#123;</span><br><span class="line">	BaseType_t result;</span><br><span class="line">	<span class="type">uint32_t</span> ulNotifiedValue; <span class="comment">//存放任务通知值的缓冲区</span></span><br><span class="line">  <span class="keyword">for</span>(;;)</span><br><span class="line">  &#123;</span><br><span class="line">		result=xTaskNotifyWait(<span class="number">0xFFFFFFFF</span>, <span class="number">0xFFFFFFFF</span>,&amp;ulNotifiedValue, portMAX_DELAY);</span><br><span class="line">		<span class="keyword">if</span>(result==pdPASS)</span><br><span class="line">		&#123;</span><br><span class="line">			HAL_GPIO_WritePin(led_r_GPIO_Port,led_r_Pin,GPIO_PIN_RESET);<span class="comment">//红灯</span></span><br><span class="line">		&#125;</span><br><span class="line">      	<span class="keyword">if</span>(ulNotifiedValue&amp;event1)</span><br><span class="line">		&#123;</span><br><span class="line">			HAL_GPIO_WritePin(led_r_GPIO_Port,led_r_Pin,GPIO_PIN_SET);</span><br><span class="line">			HAL_GPIO_WritePin(led_b_GPIO_Port,led_b_Pin,GPIO_PIN_SET);</span><br><span class="line">			HAL_GPIO_WritePin(led_g_GPIO_Port,led_g_Pin,GPIO_PIN_SET);<span class="comment">//全灭</span></span><br><span class="line">		&#125;</span><br><span class="line">        <span class="keyword">if</span>(ulNotifiedValue&amp;event2)</span><br><span class="line">		&#123;</span><br><span class="line">			HAL_GPIO_WritePin(led_r_GPIO_Port,led_r_Pin,GPIO_PIN_RESET);</span><br><span class="line">			HAL_GPIO_WritePin(led_b_GPIO_Port,led_b_Pin,GPIO_PIN_RESET);</span><br><span class="line">			HAL_GPIO_WritePin(led_g_GPIO_Port,led_g_Pin,GPIO_PIN_RESET);<span class="comment">//全亮</span></span><br><span class="line">		&#125;</span><br><span class="line"> <span class="comment">/* </span></span><br><span class="line"><span class="comment"> 整体逻辑：</span></span><br><span class="line"><span class="comment"> 按键1按下-&gt;绿灯亮-&gt;红灯亮-&gt;全灭</span></span><br><span class="line"><span class="comment"> 按键2按下-&gt;蓝灯亮-&gt;红灯亮-&gt;全灭</span></span><br><span class="line"><span class="comment"> </span></span><br><span class="line"><span class="comment"> 这里对于通知值的判断可以让用户知道是哪个任务通知函数触发了这次任务接收，感觉非常好用！！！</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">		osDelay(<span class="number">10</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>总结：</p>
-<p>发送函数（2）+接收函数（2）就不单独写了，基本同理，只是接收函数（2）无法对通知值进行判断，但是整体更方便快捷</p>
-<h2 id="二、os函数"><a href="#二、os函数" class="headerlink" title="二、os函数"></a>二、os函数</h2><h3 id="向指定任务发送任务通知"><a href="#向指定任务发送任务通知" class="headerlink" title="向指定任务发送任务通知"></a>向指定任务发送任务通知</h3><div class="table-container">
-<table>
-<thead>
-<tr>
-<th style="text-align:center"><strong>函数</strong></th>
-<th style="text-align:center"><strong>int32_t osSignalSet (osThreadId thread_id, int32_t signal)</strong></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">参数</td>
-<td style="text-align:center"><strong>thread_id：</strong> 接收通知的任务ID<br><strong>signal：</strong>任务通知值（按位操作数字）</td>
-</tr>
-<tr>
-<td style="text-align:center">返回值</td>
-<td style="text-align:center">错误码</td>
-</tr>
-</tbody>
-</table>
-</div>
-<h3 id="等待任务通知"><a href="#等待任务通知" class="headerlink" title="等待任务通知"></a>等待任务通知</h3><div class="table-container">
-<table>
-<thead>
-<tr>
-<th style="text-align:center"><strong>函数</strong></th>
-<th style="text-align:center"><strong>osEvent osSignalWait (int32_t signals, uint32_t millisec)</strong></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">参数</td>
-<td style="text-align:center">signals： 接收完成后等待被清零的数据位(0x0001\</td>
-<td>0x0002=0x003)<br><strong>millisec：</strong> 等待超时时间，单位为系统节拍周期</td>
-</tr>
-<tr>
-<td style="text-align:center">返回值</td>
-<td style="text-align:center">错误码</td>
-</tr>
-</tbody>
-</table>
-</div>
-<h3 id="例程，按键-led"><a href="#例程，按键-led" class="headerlink" title="例程，按键+led"></a>例程，按键+led</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> event1 0x0001</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">task1</span><span class="params">(<span class="type">void</span> <span class="type">const</span> * argument)</span> <span class="comment">//低优先级任务</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="comment">/* USER CODE BEGIN led_G */</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">/* Infinite loop */</span></span><br><span class="line">  <span class="keyword">for</span>(;;)</span><br><span class="line">  &#123;</span><br><span class="line">		<span class="keyword">if</span>(HAL_GPIO_ReadPin(key_1_GPIO_Port,key_1_Pin == GPIO_PIN_SET))</span><br><span class="line">		&#123;</span><br><span class="line">			osSignalSet(task2Handle,event1);</span><br><span class="line">		&#125;	</span><br><span class="line">		osDelay(<span class="number">10</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">/* USER CODE END led_G */</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">task2</span><span class="params">(<span class="type">void</span> <span class="type">const</span> * argument)</span> <span class="comment">//高优先级任务</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="comment">/* USER CODE BEGIN led_B */</span></span><br><span class="line">	osEvent event;	</span><br><span class="line">  <span class="comment">/* Infinite loop */</span></span><br><span class="line">  <span class="keyword">for</span>(;;)</span><br><span class="line">  &#123;</span><br><span class="line">	event = osSignalWait(event1,osWaitForever);  </span><br><span class="line">	<span class="keyword">if</span>(event.status == osEventSignal)  </span><br><span class="line">	&#123;</span><br><span class="line">		HAL_GPIO_WritePin(led_g_GPIO_Port,led_g_Pin,GPIO_PIN_RESET);</span><br><span class="line">	&#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>这里task2可以不用额外在循环中添加堵塞，因为wait函数本身自带堵塞，<strong>其堵塞的解除是在osSignalSet函数的作用之后的瞬间，也就是说在执行完osSignalSet(task2Handle,event1)后task2会直接抢占task1</strong></p>
-<p><strong>而xTask函数不同于os函数，xTask函数是在task1执行完后才会进入task2，这点请务必记住，二者通知原理不同，所以根据使用情况选择使用xTask函数还是os函数</strong></p>
-<h1 id="3、信号量"><a href="#3、信号量" class="headerlink" title="3、信号量"></a>3、信号量</h1><p>信号量同样是一种任务之间交互的函数，但是就我按照网上教程使用过后感觉。。。不如队列和任务通知，可能是我目前的一些工程量还没到使用到信号量的程度？而且在使用过程中也遇到了一些迷惑的地方，所以目前不准备深究，等到实在要用的时候再说吧😋，感兴趣的同学可以去<a target="_blank" rel="noopener" href="https://freertos.blog.csdn.net/article/details/50835613">(19条消息) FreeRTOS系列第19篇—-FreeRTOS信号量_研究是为了理解的博客-CSDN博客_freertos 信号</a>看看，讲的很详细了可以说，我大部分内容也是跟着这个学的。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2022/08/28/C%E8%AF%AD%E8%A8%80%E4%BA%8C%E7%BA%A7%E7%9F%A5%E8%AF%86%E7%82%B9/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/zoe.gif">
-      <meta itemprop="name" content="dhk">
-      <meta itemprop="description" content="记录一些学习日常">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="小董的BLOG">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/08/28/C%E8%AF%AD%E8%A8%80%E4%BA%8C%E7%BA%A7%E7%9F%A5%E8%AF%86%E7%82%B9/" class="post-title-link" itemprop="url">C语言二级查漏补缺（自用）</a>
-        </h2>
-
-        <div class="post-meta">
-		  
-		  
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2022-08-28 20:33:07" itemprop="dateCreated datePublished" datetime="2022-08-28T20:33:07+08:00">2022-08-28</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-09-28 14:01:38" itemprop="dateModified" datetime="2022-09-28T14:01:38+08:00">2022-09-28</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <ul>
-<li>一个Ｃ语言的源程序（扩展名为．ｃ）在经过编译器编译后，首先生成一个汇编语言程序，然后由编译程序再将汇编语言程序翻译成机器指令程序，即目标程序（扩展名为．ｏｂｊ）。目标程序不可以直接运行，它要和库函数或其他目标程序连接成可执行文件（扩展名为．ｅｘｅ）后方可运行</li>
-</ul>
-<p>.obj文件不可直接运行</p>
-<ul>
-<li><p>算法的５个特性为：</p>
-<ul>
-<li>有穷性</li>
-<li>确定性</li>
-<li>可行性</li>
-<li>有零个或多个输入（可以无输入）</li>
-<li>有１个或多个输出（必须有输出）</li>
-</ul>
-</li>
-<li><p>逗号运算符</p>
-<p>在C语言中逗号“,”也是一种运算符，称为逗号运算符。 其功能是把两个表达式连接起来组成一个表达式， 称为逗号表达式。其一般形式为：<br>  表达式1, 表达式2<br>其求值过程是分别求两个表达式的值，并以表达式<strong>2(即最右边的一个表达式)</strong>的值作为整个逗号表达式的值。</p>
-</li>
-</ul>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> x=<span class="number">2</span>;</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;%d&quot;</span>,(x++,<span class="number">2</span>*x)); <span class="number">6</span></span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;%d&quot;</span>,x); <span class="number">3</span></span><br></pre></td></tr></table></figure>
-<p>​        <strong>逗号仅计算结果，并不具有赋值作用</strong>（但是x++有赋值作用）</p>
-<ul>
-<li><p>算术运算符优先级</p>
-<p>优先级的次序如下（由高到低）：（）、++、—、＊、／、％、＋、－</p>
-<p>以上所列的运算符，<strong>只有单目运算符正“＋”和负“－”的结合性是从右到左，其余运算符的结合性都是从左到右</strong></p>
-<ul>
-<li>%对象必须为整型</li>
-</ul>
-</li>
-<li><p>运算库函数</p>
-<ul>
-<li>abs：绝对值</li>
-<li>fabs：双字节型绝对值</li>
-<li>pow：x的y次方</li>
-<li>exp：求10的x次方</li>
-<li>sqrt：x的平方根</li>
-</ul>
-</li>
-</ul>
-<p>BCCAA <strong>A</strong>DBB<strong>D</strong> DAC</p>
-<ul>
-<li>数字的默认类型为整型</li>
-</ul>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;%lf&quot;</span>,<span class="number">1</span>/<span class="number">2</span>); <span class="comment">//0.000000</span></span><br></pre></td></tr></table></figure>
-<ul>
-<li><p>c的基本数据类型：单精度型、双精度型、字符型、整型、枚举型</p>
-</li>
-<li><p>c负整数补码：所得反码还要+1</p>
-</li>
-</ul>
-<h1 id="三、顺序结构"><a href="#三、顺序结构" class="headerlink" title="三、顺序结构"></a>三、顺序结构</h1><ul>
-<li><p>格式字符：</p>
-<ul>
-<li>%i同%d</li>
-<li>%o 八进制</li>
-<li>%g/G 系统决定采用什么格式（f或e）使输出宽度最小</li>
-<li>%p 输出变量地址</li>
-</ul>
-<p>%m.ns，输出占ｍ列，但只取字符串中左边ｎ个字符。这ｎ个字符输出在ｍ列的右边，<strong>左边补空格</strong></p>
-<p>%-m.ns，ｎ个字符<strong>输出在ｍ列范围的左边，右边补空格</strong>。若ｎ＞ｍ，则ｍ自动取ｎ值，即保证ｎ个字符正常输出。</p>
-</li>
-</ul>
-<p>B<strong>BA</strong>BD DACD<strong>D</strong> <strong>C</strong>C<strong>A</strong></p>
-<p>BDCBD DACDB DCB    34页</p>
-<ul>
-<li><p>八进制格式输出开头不带0</p>
-</li>
-<li><p>逗号优先级低于赋值</p>
-</li>
-</ul>
-<h1 id="四、选择结构"><a href="#四、选择结构" class="headerlink" title="四、选择结构"></a>四、选择结构</h1><ul>
-<li><p>逻辑或运算的短路性</p>
-<p>如果||前的表达式为真，则不会进行||后的表达式运算(&amp;&amp;以此类推)</p>
-</li>
-</ul>
-<p>DBADD <strong>A</strong>A<strong>A</strong>A<strong>A</strong> AC</p>
-<p>DBADD DACAB AC    54页</p>
-<h1 id="五、循环结构"><a href="#五、循环结构" class="headerlink" title="五、循环结构"></a>五、循环结构</h1><ul>
-<li>while((ch=getchar())!=’\n’);符合语法</li>
-</ul>
-<p>AA<strong>AD</strong>C DBBC<strong>C</strong> B<strong>CA</strong></p>
-<p>AACBC DBBCB BBC    75页</p>
-<h1 id="六、字符型数据"><a href="#六、字符型数据" class="headerlink" title="六、字符型数据"></a>六、字符型数据</h1><ul>
-<li><p>转义字符</p>
-<p>\f:换页</p>
-<p>\ddd: 1~3位八进制数对应字符例如’\123’</p>
-<p>\xhh: 1~2位16进制数对应字符例如’\x12’</p>
-</li>
-</ul>
-<p>BA<em><u>A</u></em>DD DBCB</p>
-<p>BA<u><em>C</em></u>DD D<strong>C</strong>CB    85页</p>
-<p>3忽略</p>
-<ul>
-<li>default后无break也会执行（？）</li>
-</ul>
-<h1 id="七、函数"><a href="#七、函数" class="headerlink" title="七、函数"></a>七、函数</h1><p><strong>C</strong>DD<strong>CB</strong> D<strong>D</strong>D<strong>A</strong>D C</p>
-<p>BDDDC DADCD C    102页</p>
-<ul>
-<li>简单变量作实参时与形参数据的传输方式为单向值传递</li>
-<li>return语句中带有++时，返回之后并且作用之后才会++</li>
-</ul>
-<h1 id="八、指针"><a href="#八、指针" class="headerlink" title="八、指针"></a>八、指针</h1><ul>
-<li><p>有<code>int a,*p1=&amp;a;</code>由于&amp;和<em>运算优先级相同，&amp; </em>p1则从右至左运算，则&amp; *p1等同于&amp;a</p>
-<p><em>&amp;a则是等同于 </em>p1等同于a</p>
-</li>
-<li><p><strong><code>*</code>的优先级高于+、-,因此<code>*p1</code>=<code>*p1</code>+1是将a+1的值存进p内存储的地址所指向的内容中，也就是相当于a=a+1；但是a的地址是不变的。</strong></p>
-</li>
-</ul>
-<p>具体对指针的一些理解已添加在<a target="_blank" rel="noopener" href="https://dhkkk.gitee.io/2022/07/31/C-指针/">指针相关复习 | 小董的BLOG (gitee.io)</a>中</p>
-<p>DADBB A<u><em>D</em></u>BDB BCC</p>
-<p>DADDB A<u><strong><em>C</em></strong></u>BDB BCC  116页</p>
-<p>7忽略（第一次全对捏）</p>
-<h1 id="九、数组"><a href="#九、数组" class="headerlink" title="九、数组"></a>九、数组</h1><p>CDDBC CBBCD ACA<strong>B</strong></p>
-<p>CDDBC CBBCD ACAC   146页</p>
-<h1 id="十、字符串"><a href="#十、字符串" class="headerlink" title="十、字符串"></a>十、字符串</h1><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;stdio.h&quot;</span></span></span><br><span class="line"><span class="type">void</span> <span class="title function_">swap</span><span class="params">(<span class="type">char</span> *x, <span class="type">char</span> *y)</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">while</span>(*x==<span class="string">&#x27;*&#x27;</span>) x++;</span><br><span class="line">	<span class="keyword">while</span>(*y=*x) <span class="comment">//将x所指向的字符赋值给y，直到遇到&#x27;/0&#x27;为止，这样写是正确的</span></span><br><span class="line">	&#123;</span><br><span class="line">		x++;y++;	</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">char</span> s[<span class="number">30</span>]=<span class="string">&quot;******a*b***&quot;</span>,t[<span class="number">30</span>];</span><br><span class="line">	swap(s,t);</span><br><span class="line">	<span class="built_in">puts</span>(t);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>AADCC <strong>DA</strong>BB<strong>D</strong> C<strong>A</strong></p>
-<p>AADCC CBBBA CB              173页  6、10、12</p>
-<p><strong>strcpy会覆盖原来的整个字符串，而strncpy只会覆盖n个字节原来的字符串，剩下的保留</strong></p>
-<h1 id="十一、对函数的进一步讨论"><a href="#十一、对函数的进一步讨论" class="headerlink" title="十一、对函数的进一步讨论"></a>十一、对函数的进一步讨论</h1><ul>
-<li><p>传入main的参数</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">main(<span class="type">int</span> argc, <span class="type">char</span> *argv[])</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<p>当我们对一个名为test的c文件进行编译时，在终端输入： test  ok  good后：</p>
-<ul>
-<li>argc值为3，即存入argv的字符串个数</li>
-<li>argv[0]存放</li>
-</ul>
-<ul>
-<li>对指向函数的指针变量进行加减法无意义</li>
-</ul>
-<p>CDCD<strong>D</strong> BBCB</p>
-<p>CDCDC BBCB 184页</p>
-<h1 id="十二、用户标识符的作用域和存储类"><a href="#十二、用户标识符的作用域和存储类" class="headerlink" title="十二、用户标识符的作用域和存储类"></a>十二、用户标识符的作用域和存储类</h1><p>ACDB<strong>A</strong> A<strong>C</strong>CC<strong><u>D</u></strong> <strong>C</strong></p>
-<p>ACDBB ADCCA D  195页</p>
-<ul>
-<li>若全局变量和某一函数中局部变量同名，则在函数内全局变量被屏蔽</li>
-</ul>
-<h1 id="十三、编译预处理和动态存储分配"><a href="#十三、编译预处理和动态存储分配" class="headerlink" title="十三、编译预处理和动态存储分配"></a>十三、编译预处理和动态存储分配</h1><p>详见<a target="_blank" rel="noopener" href="https://dhkkk.gitee.io/2022/08/03/C-关键字/">一些关键字 | 小董的BLOG (gitee.io)</a></p>
-<p><strong>AACD</strong>C A<strong>D</strong>AA</p>
-<p>DBBBC ACAA</p>
-<p>define只作替换！！！！</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> D1(a) (2*a)</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> D2(a) (2*(a))</span></span><br><span class="line"><span class="comment">//计算结果最好也用括号括起来,小型计算不括问题应该不大</span></span><br><span class="line">  <span class="type">int</span> <span class="title function_">main</span> <span class="params">()</span></span><br><span class="line">  &#123;</span><br><span class="line">     <span class="type">int</span> b = D1(<span class="number">3</span>+<span class="number">4</span>);</span><br><span class="line">     <span class="type">int</span> c = D2(<span class="number">3</span>+<span class="number">4</span>);</span><br><span class="line">     <span class="built_in">printf</span>(<span class="string">&quot;%d&quot;</span>, b);  <span class="comment">//输出等价于2*3+4=10 ※※※※※※※※※※※※※</span></span><br><span class="line">     <span class="built_in">printf</span>(<span class="string">&quot;%d&quot;</span>, c);  <span class="comment">//2*(3+4)=14</span></span><br><span class="line">     <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
-<h1 id="十四、结构体、共用体和用户自定义型"><a href="#十四、结构体、共用体和用户自定义型" class="headerlink" title="十四、结构体、共用体和用户自定义型"></a>十四、结构体、共用体和用户自定义型</h1><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> &#123;</span><span class="type">int</span> a;<span class="type">int</span> b;&#125;a;<span class="comment">//合法</span></span><br></pre></td></tr></table></figure>
-<p>关于动态链表详见<a target="_blank" rel="noopener" href="https://dhkkk.gitee.io/2022/08/01/C-结构体/">结构体复习 | 小董的BLOG (gitee.io)</a></p>
-<p>AABB×    <strong>C</strong>CBDD    BC</p>
-<p>ADBBA    DCBCD    BD    6题看题不仔细捏</p>
-<h1 id="十五、位运算"><a href="#十五、位运算" class="headerlink" title="十五、位运算"></a>十五、位运算</h1><p>长度不同的数据进行位运算时先将最低位对齐，然后将短的一方扩充</p>
-<p>D<strong>C</strong>DAA    BCD</p>
-<p>DADAA    BCD</p>
-<p>看清楚输出的格式声明</p>
-<p>240</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/16/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/16/">16</a><span class="page-number current">17</span><a class="page-number" href="/page/18/">18</a><span class="space">&hellip;</span><a class="page-number" href="/page/21/">21</a><a class="extend next" rel="next" href="/page/18/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/16/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/16/">16</a><span class="page-number current">17</span><a class="page-number" href="/page/18/">18</a><span class="space">&hellip;</span><a class="page-number" href="/page/22/">22</a><a class="extend next" rel="next" href="/page/18/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -961,13 +987,13 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">62</span>
+          <span class="site-state-item-count">64</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
-        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-count">11</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -1078,11 +1104,11 @@
         pbOptions.networks = "Wechat,QQZone,Weibo,Douban,Twitter,Facebook";
       new needShareButton('#needsharebutton-postbottom', pbOptions);
   </script>
-<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script><script>
+<script>
             window.imageLazyLoadSetting = {
                 isSPA: false,
                 preloadRatio: 1,
                 processImages: null,
             };
-        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(e.href.match(t)||e.href.match(r))&&(e.href=a.dataset.original)})});</script><script>!function(n){n.imageLazyLoadSetting.processImages=o;var e=n.imageLazyLoadSetting.isSPA,i=n.imageLazyLoadSetting.preloadRatio||1,r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]"));function o(){e&&(r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")));for(var t,a=0;a<r.length;a++)0<=(t=(t=r[a]).getBoundingClientRect()).bottom&&0<=t.left&&t.top<=(n.innerHeight*i||document.documentElement.clientHeight*i)&&function(){var t,e,n,i,o=r[a];t=o,e=function(){r=r.filter(function(t){return o!==t})},n=new Image,i=t.getAttribute("data-original"),n.onload=function(){t.src=i,e&&e()},t.src!==i&&(n.src=i)}()}o(),n.addEventListener("scroll",function(){var t,e;t=o,e=n,clearTimeout(t.tId),t.tId=setTimeout(function(){t.call(e)},500)})}(this);</script></body>
+        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(e.href.match(t)||e.href.match(r))&&(e.href=a.dataset.original)})});</script><script>!function(n){n.imageLazyLoadSetting.processImages=o;var e=n.imageLazyLoadSetting.isSPA,i=n.imageLazyLoadSetting.preloadRatio||1,r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]"));function o(){e&&(r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")));for(var t,a=0;a<r.length;a++)0<=(t=(t=r[a]).getBoundingClientRect()).bottom&&0<=t.left&&t.top<=(n.innerHeight*i||document.documentElement.clientHeight*i)&&function(){var t,e,n,i,o=r[a];t=o,e=function(){r=r.filter(function(t){return o!==t})},n=new Image,i=t.getAttribute("data-original"),n.onload=function(){t.src=i,e&&e()},t.src!==i&&(n.src=i)}()}o(),n.addEventListener("scroll",function(){var t,e;t=o,e=n,clearTimeout(t.tId),t.tId=setTimeout(function(){t.call(e)},500)})}(this);</script><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script></body>
 </html>

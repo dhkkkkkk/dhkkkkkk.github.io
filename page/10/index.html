@@ -197,6 +197,509 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2023/05/18/lzz-%E7%AC%AC%E5%9B%9B%E7%AB%A0-%E4%BC%A0%E6%84%9F%E5%99%A8%E6%8A%80%E6%9C%AF/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/zoe.gif">
+      <meta itemprop="name" content="dhk">
+      <meta itemprop="description" content="记录一些学习日常">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小董的BLOG">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/05/18/lzz-%E7%AC%AC%E5%9B%9B%E7%AB%A0-%E4%BC%A0%E6%84%9F%E5%99%A8%E6%8A%80%E6%9C%AF/" class="post-title-link" itemprop="url">lzz-第四章 传感器技术(考试复习自用)</a>
+        </h2>
+
+        <div class="post-meta">
+		  
+		  
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2023-05-18 22:07:41" itemprop="dateCreated datePublished" datetime="2023-05-18T22:07:41+08:00">2023-05-18</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2024-02-25 15:31:05" itemprop="dateModified" datetime="2024-02-25T15:31:05+08:00">2024-02-25</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="1、传感器概述"><a href="#1、传感器概述" class="headerlink" title="1、传感器概述"></a>1、传感器概述</h1><p>输出信号多为易处理电信号（电压、电流、频率）</p>
+<p>由<strong><u>敏感元件、传感元件及测量转换电路</u></strong>组成</p>
+<img src="/images/loading.png" data-original="/2023/05/18/lzz-%E7%AC%AC%E5%9B%9B%E7%AB%A0-%E4%BC%A0%E6%84%9F%E5%99%A8%E6%8A%80%E6%9C%AF/1.jpg" class title="This is an image"> 
+<p>例：</p>
+<ul>
+<li>敏感元件：对<strong>压力敏感</strong>（可变形）的弹性敏感元件</li>
+<li>传感元件：弹性敏感元件上粘贴的电阻应变片，<strong>将敏感元件变形量转化为电参数</strong>（电阻值变化）</li>
+<li>测量转换电路：将<strong>传感元件电阻值变化转化、放大、显示</strong></li>
+</ul>
+<h2 id="分类"><a href="#分类" class="headerlink" title="分类"></a><u>分类</u></h2><p>命名： 被测量+测量原理</p>
+<h3 id="按被测量分"><a href="#按被测量分" class="headerlink" title="按被测量分"></a>按被测量分</h3><ul>
+<li>位移</li>
+<li>力、力矩</li>
+<li>振动</li>
+<li>加速度</li>
+<li>温度</li>
+</ul>
+<h3 id="按测量原理"><a href="#按测量原理" class="headerlink" title="按测量原理"></a>按测量原理</h3><ul>
+<li>电阻</li>
+<li>电容</li>
+<li>电感</li>
+<li>光栅</li>
+<li>热电偶</li>
+<li>超声波</li>
+<li>红外</li>
+</ul>
+<h1 id="2、位置测量传感器"><a href="#2、位置测量传感器" class="headerlink" title="2、位置测量传感器"></a>2、<u>位置测量传感器</u></h1><p>通过接近开关检测</p>
+<h2 id="技术指标"><a href="#技术指标" class="headerlink" title="技术指标"></a>技术指标</h2><ul>
+<li><p>检测距离</p>
+</li>
+<li><p>复位距离</p>
+<p>最远可检测距离</p>
+</li>
+<li><p>差动距离</p>
+<p>复位距离-检测距离</p>
+</li>
+<li><p>响应时间</p>
+<img src="/images/loading.png" data-original="/2023/05/18/lzz-%E7%AC%AC%E5%9B%9B%E7%AB%A0-%E4%BC%A0%E6%84%9F%E5%99%A8%E6%8A%80%E6%9C%AF/2.jpg" class title="This is an image"> 
+</li>
+</ul>
+<h2 id="涡流式接近开关"><a href="#涡流式接近开关" class="headerlink" title="涡流式接近开关"></a><u>涡流式接近开关</u></h2><p>由LC高频振荡器和放大处理电路组成</p>
+<h3 id="原理："><a href="#原理：" class="headerlink" title="原理："></a>原理：</h3><p>振荡感应头产生电磁场，<strong>作用于金属物体</strong>后在其内部产生涡流，涡流产生磁场反作用于振荡电路使振荡能力衰减，进而控制接近开关的<strong><u>关断和导通</u></strong></p>
+<h3 id="特点："><a href="#特点：" class="headerlink" title="特点："></a>特点：</h3><p>不与被测物体接触，提高了检测的可靠性与使用寿命</p>
+<h2 id="电容式接近开关"><a href="#电容式接近开关" class="headerlink" title="电容式接近开关"></a><u>电容式接近开关</u></h2><p><strong>测量头与被测物形成电容，接入后级RC振荡器，当电容量增加时，振荡器开始振荡，后级电路将其转化为开关信号</strong>（不止可以检测金属）</p>
+<h2 id="霍尔接近开关"><a href="#霍尔接近开关" class="headerlink" title="霍尔接近开关"></a>霍尔接近开关</h2><p>检测磁性物体的靠近，灵敏度高，能感受到很小的磁场变化</p>
+<h2 id="光电式接近开关"><a href="#光电式接近开关" class="headerlink" title="光电式接近开关"></a>光电式接近开关</h2><ul>
+<li>遮断式</li>
+<li>反射式<ul>
+<li>定区域</li>
+<li>反射镜式</li>
+<li>漫反射型</li>
+</ul>
+</li>
+</ul>
+<h2 id="光幕"><a href="#光幕" class="headerlink" title="光幕"></a>光幕</h2><ul>
+<li>保护预警</li>
+<li>截面积</li>
+<li>三维尺寸</li>
+</ul>
+<h2 id="热释电接近开关"><a href="#热释电接近开关" class="headerlink" title="热释电接近开关"></a>热释电接近开关</h2><p>感知人或动物发射的红信号</p>
+<ul>
+<li>报警器：菲涅尔透镜</li>
+<li>人体感应</li>
+</ul>
+<h1 id="3、位移测量传感器"><a href="#3、位移测量传感器" class="headerlink" title="3、位移测量传感器"></a>3、<u>位移测量传感器</u></h1><h2 id="电感式位移传感器"><a href="#电感式位移传感器" class="headerlink" title="电感式位移传感器"></a><u>电感式位移传感器</u></h2><p>基于电磁感应原理，将输入量转化为电感变化量</p>
+<h3 id="按原理分类"><a href="#按原理分类" class="headerlink" title="按原理分类"></a>按原理分类</h3><ul>
+<li>自感型<ul>
+<li>可变磁阻型</li>
+<li>涡流式</li>
+</ul>
+</li>
+<li>互感型</li>
+</ul>
+<h3 id="按检测方式"><a href="#按检测方式" class="headerlink" title="按检测方式"></a>按检测方式</h3><ul>
+<li>变气隙式</li>
+<li>变面积式</li>
+<li>螺线管式</li>
+</ul>
+<img src="/images/loading.png" data-original="/2023/05/18/lzz-%E7%AC%AC%E5%9B%9B%E7%AB%A0-%E4%BC%A0%E6%84%9F%E5%99%A8%E6%8A%80%E6%9C%AF/3.jpg" class title="This is an image"> 
+<h3 id="应用"><a href="#应用" class="headerlink" title="应用"></a>应用</h3><ul>
+<li>位移、厚度、振动</li>
+<li>表面温度、电解质浓度、材质</li>
+<li>破损</li>
+</ul>
+<h3 id="特点"><a href="#特点" class="headerlink" title="特点"></a><u>特点</u></h3><ul>
+<li>非接触测量，不易受介质影响</li>
+<li>结构简单，方便，灵敏度高，分辨率高</li>
+<li>频率响应范围宽，适合动态测量</li>
+</ul>
+<h2 id="电容式位移传感器"><a href="#电容式位移传感器" class="headerlink" title="电容式位移传感器"></a><u>电容式位移传感器</u></h2><h3 id="分类-1"><a href="#分类-1" class="headerlink" title="分类"></a>分类</h3><ul>
+<li><p>变极距型</p>
+<p>灵敏度高</p>
+</li>
+<li><p>变面积型</p>
+<p>灵敏度低</p>
+</li>
+<li><p>变介电常数型</p>
+</li>
+</ul>
+<h2 id="霍尔位移传感器"><a href="#霍尔位移传感器" class="headerlink" title="霍尔位移传感器"></a>霍尔位移传感器</h2><ul>
+<li>纯金属不适用</li>
+<li>常用半导体</li>
+<li>厚度越小，灵敏度越高</li>
+</ul>
+<h2 id="光栅位移传感器"><a href="#光栅位移传感器" class="headerlink" title="光栅位移传感器"></a><u>光栅位移传感器</u></h2><p>利用光衍射产生干涉条纹，<strong>精度非常高，响应快，量程大</strong></p>
+<ul>
+<li><p>主光栅与被测物体相连</p>
+</li>
+<li><p>用光电器件记录莫尔条纹通过某点的数量来计算主光栅移动的距离</p>
+</li>
+</ul>
+<h3 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h3><ul>
+<li>精度高</li>
+<li>动态测量范围广</li>
+<li>无接触测量，容易自动化和数字化</li>
+</ul>
+<h1 id="4、旋转变压器"><a href="#4、旋转变压器" class="headerlink" title="4、旋转变压器"></a>4、旋转变压器</h1><p>输出电压随被测角位移变化而变化，为模拟式测量</p>
+<p>由定子和转子组成，分为单极和多极型</p>
+<h1 id="5、感应同步器"><a href="#5、感应同步器" class="headerlink" title="5、感应同步器"></a>5、感应同步器</h1><p>分为直线型和圆型，精度高、工作可靠、抗干扰强、维护简单、寿命长、成本低</p>
+<h2 id="特点-1"><a href="#特点-1" class="headerlink" title="特点"></a>特点</h2><ul>
+<li>精度高</li>
+<li>工作可靠，抗干扰</li>
+<li>寿命长</li>
+<li>测距长</li>
+<li>成本低</li>
+</ul>
+<h1 id="6、编码器"><a href="#6、编码器" class="headerlink" title="6、编码器"></a>6、编码器</h1><h2 id="增量式"><a href="#增量式" class="headerlink" title="增量式"></a>增量式</h2><p>测量相对某个基准点的相对位置增量，不能直径检测绝对量</p>
+<h3 id="AB相作用"><a href="#AB相作用" class="headerlink" title="AB相作用"></a>AB相作用</h3><ul>
+<li>一定时间内的脉冲数——角位移</li>
+<li>脉冲频率——转速</li>
+<li>相位关系——方向</li>
+</ul>
+<h3 id="Z相"><a href="#Z相" class="headerlink" title="Z相"></a>Z相</h3><ul>
+<li>定位</li>
+<li>计圈数</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2023/05/17/lzz-%E7%AC%AC%E4%B8%89%E7%AB%A0-%E4%BC%BA%E6%9C%8D%E6%8A%80%E6%9C%AF/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/zoe.gif">
+      <meta itemprop="name" content="dhk">
+      <meta itemprop="description" content="记录一些学习日常">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小董的BLOG">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/05/17/lzz-%E7%AC%AC%E4%B8%89%E7%AB%A0-%E4%BC%BA%E6%9C%8D%E6%8A%80%E6%9C%AF/" class="post-title-link" itemprop="url">lzz-第三章 伺服技术(考试复习自用)</a>
+        </h2>
+
+        <div class="post-meta">
+		  
+		  
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2023-05-17 22:12:51" itemprop="dateCreated datePublished" datetime="2023-05-17T22:12:51+08:00">2023-05-17</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2024-02-25 15:30:59" itemprop="dateModified" datetime="2024-02-25T15:30:59+08:00">2024-02-25</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="1、伺服系统"><a href="#1、伺服系统" class="headerlink" title="1、伺服系统"></a>1、伺服系统</h1><h2 id="伺服系统定义"><a href="#伺服系统定义" class="headerlink" title="伺服系统定义"></a>伺服系统定义</h2><p>以机械参数（位移、速度、加速度、力矩等）作为<strong><u>被控制量</u></strong>的一种<u><strong>自动控制系统</strong></u></p>
+<h2 id="一般组成"><a href="#一般组成" class="headerlink" title="一般组成"></a>一般组成</h2><img src="/images/loading.png" data-original="/2023/05/17/lzz-%E7%AC%AC%E4%B8%89%E7%AB%A0-%E4%BC%BA%E6%9C%8D%E6%8A%80%E6%9C%AF/1.jpg" class title="伺服系统组成"> 
+<h2 id="分类"><a href="#分类" class="headerlink" title="分类"></a><u>分类</u></h2><h3 id="按控制原理分"><a href="#按控制原理分" class="headerlink" title="按控制原理分"></a>按控制原理分</h3><ul>
+<li>开环</li>
+<li>半闭环（不检测工作台信息）</li>
+<li>全闭环</li>
+</ul>
+<h3 id="驱动方式"><a href="#驱动方式" class="headerlink" title="驱动方式"></a>驱动方式</h3><ul>
+<li>电气伺服</li>
+<li>气压伺服</li>
+<li>液压伺服</li>
+</ul>
+<h3 id="被测控制量"><a href="#被测控制量" class="headerlink" title="被测控制量"></a>被测控制量</h3><ul>
+<li>速度控制</li>
+<li>位置控制</li>
+<li>扭矩控制</li>
+<li>同步控制</li>
+</ul>
+<h3 id="执行元件"><a href="#执行元件" class="headerlink" title="执行元件"></a>执行元件</h3><p><strong>开环大多用步进电机，半闭环与闭环多用直流伺服电机</strong></p>
+<ul>
+<li>步进伺服</li>
+<li>直流伺服</li>
+<li>交流伺服</li>
+</ul>
+<h2 id="要求"><a href="#要求" class="headerlink" title="要求"></a>要求</h2><ul>
+<li>快速性</li>
+<li>精确性</li>
+<li>稳定性</li>
+</ul>
+<h1 id="2、执行元件"><a href="#2、执行元件" class="headerlink" title="2、执行元件"></a>2、执行元件</h1><p>将输入的各种形式的能量转化为机械能</p>
+<h2 id="各执行元件特点"><a href="#各执行元件特点" class="headerlink" title="各执行元件特点"></a><u>各执行元件特点</u></h2><h3 id="电气式"><a href="#电气式" class="headerlink" title="电气式"></a>电气式</h3><p>优点：</p>
+<ul>
+<li>操作简单</li>
+<li>可定位伺服</li>
+<li>响应快，易与CPU连接</li>
+<li>体积小，动力大，无污染</li>
+</ul>
+<p>缺点：</p>
+<ul>
+<li>瞬时输出功率大</li>
+<li>过载能力差，易受外部影响</li>
+</ul>
+<h3 id="气压式"><a href="#气压式" class="headerlink" title="气压式"></a>气压式</h3><p>优点：</p>
+<ul>
+<li>成本低</li>
+<li>无泄漏污染</li>
+<li>速度快，操作较简单</li>
+</ul>
+<p>缺点：</p>
+<ul>
+<li>功率小</li>
+<li>体积大</li>
+<li>工作不平稳</li>
+<li>噪声大</li>
+<li>难以伺服</li>
+</ul>
+<h3 id="液压式"><a href="#液压式" class="headerlink" title="液压式"></a>液压式</h3><p>优点：</p>
+<ul>
+<li>输出功率大</li>
+<li>速度快</li>
+<li>平稳</li>
+<li>可定位伺服，响应快</li>
+</ul>
+<p>缺点：</p>
+<ul>
+<li>体积大</li>
+<li>液压油要求严格</li>
+<li>易泄露，有污染</li>
+</ul>
+<h2 id="要求-1"><a href="#要求-1" class="headerlink" title="要求"></a>要求</h2><ul>
+<li>惯量小，动力大</li>
+<li>体积小，重量轻</li>
+<li>便于使用</li>
+<li><strong>快速性能好，加减速扭矩大，频率性能好</strong></li>
+<li>可靠，寿命长</li>
+</ul>
+<h1 id="3、步进电机概述"><a href="#3、步进电机概述" class="headerlink" title="3、步进电机概述"></a>3、步进电机概述</h1><p>步进电机式一种将脉冲信号转化为直线位移或角位移的数字/模拟变换器</p>
+<h2 id="特点"><a href="#特点" class="headerlink" title="特点"></a><u>特点</u></h2><ul>
+<li><strong>输出转角与输入脉冲严格成正比，且在<u>方向上同步</u></strong></li>
+<li><strong>输出转角精度高，有步距角误差，但无累计误差</strong></li>
+<li><strong>可实现平滑无级调速</strong></li>
+<li>不易受干扰</li>
+<li>启停时间段</li>
+</ul>
+<h2 id="种类"><a href="#种类" class="headerlink" title="种类"></a><u>种类</u></h2><h3 id="运动形式"><a href="#运动形式" class="headerlink" title="运动形式"></a>运动形式</h3><ul>
+<li>旋转式</li>
+<li>直线式</li>
+</ul>
+<h3 id="励磁相数"><a href="#励磁相数" class="headerlink" title="励磁相数"></a>励磁相数</h3><p>3、4、5、6相</p>
+<h3 id="转子结构"><a href="#转子结构" class="headerlink" title="转子结构"></a><u>转子结构</u></h3><ul>
+<li>反应式（可变磁阻式）</li>
+<li>永磁式</li>
+<li>混合式</li>
+</ul>
+<h2 id="工作原理"><a href="#工作原理" class="headerlink" title="工作原理"></a><u>工作原理</u></h2><h3 id="三相单三拍"><a href="#三相单三拍" class="headerlink" title="三相单三拍"></a>三相单三拍</h3><p>A——B——C</p>
+<ul>
+<li>三相：为三相绕组</li>
+<li>单：每拍只有一相绕组通电</li>
+<li>三拍：一个循环周期三个脉冲</li>
+</ul>
+<p>一拍<strong>30°</strong></p>
+<h3 id="三相-单双-六拍"><a href="#三相-单双-六拍" class="headerlink" title="三相(单双)六拍"></a>三相(单双)六拍</h3><p>A——AB——B——BC——C——CA</p>
+<ul>
+<li>单双：每拍为一相/两相绕组交替通电</li>
+<li>六拍：一个循环周期六个脉冲</li>
+</ul>
+<p>一拍<strong>15°</strong></p>
+<h3 id="三相双三拍"><a href="#三相双三拍" class="headerlink" title="三相双三拍"></a>三相双三拍</h3><p>AB——BC——CA</p>
+<p>一拍15°</p>
+<p><strong><u>三相双三拍和三相单双六拍比三相单三拍稳定</u></strong></p>
+<h2 id="环形分配方式"><a href="#环形分配方式" class="headerlink" title="环形分配方式"></a><u>环形分配方式</u></h2><ul>
+<li><p><strong>五相十拍电机为2-3相励磁，而不是1-2相：</strong></p>
+<p><strong>AB-ABC-BC-BCD-CD…</strong></p>
+</li>
+<li><p><strong>六相六拍为3相励磁：</strong></p>
+<p><strong>ABC-BCD-CDE-DEF-EFA-FAB</strong></p>
+</li>
+<li><p><strong>六相十二拍为2-3相励磁</strong></p>
+</li>
+</ul>
+<h2 id="主要性能指标"><a href="#主要性能指标" class="headerlink" title="主要性能指标"></a><u>主要性能指标</u></h2><ul>
+<li><p><strong>步距角</strong></p>
+<p><strong>我国0.36°~90°，常用15、6、3.2、1.8、1.5、0.72（k=1）</strong></p>
+</li>
+<li><p><strong>静态步距误差（步距角精度）</strong></p>
+<p>步距角越小，分辨力越高</p>
+</li>
+<li><p><strong>转速</strong></p>
+<p>频率越高，转速越大</p>
+<p>步距角越大（1/KPZ 越大），转速越大</p>
+</li>
+</ul>
+<h2 id="静态特性"><a href="#静态特性" class="headerlink" title="静态特性"></a>静态特性</h2><ul>
+<li><p>静态</p>
+<p>通电时转子保持不动的定位状态</p>
+</li>
+<li><p>静转矩</p>
+<p>静态下的电磁转矩</p>
+</li>
+<li><p>失调角</p>
+<p>静态下在转子上加一负载转矩，转子转过一个角度后稳定下来，该角度为失调角</p>
+</li>
+<li><p>矩-角特性</p>
+<p>静转矩与失调角的对应关系</p>
+</li>
+<li><p>最大静转矩</p>
+<p>矩-角特性上的最大值</p>
+</li>
+</ul>
+<h2 id="起动频率和连续运行频率"><a href="#起动频率和连续运行频率" class="headerlink" title="起动频率和连续运行频率"></a>起动频率和连续运行频率</h2><ul>
+<li><p>起动频率</p>
+<p>一定负载下能不失步地起动的最高脉冲频率</p>
+</li>
+<li><p>连续运行频率</p>
+<p>启动后逐渐升速所能达到的不失步频率</p>
+</li>
+</ul>
+<h2 id="动态特性"><a href="#动态特性" class="headerlink" title="动态特性"></a>动态特性</h2><ul>
+<li><p>动态转矩</p>
+<p>运行时的转矩</p>
+</li>
+<li><p>动态稳定区</p>
+<p><strong>通电绕组切换时不引起丢步的区域</strong></p>
+</li>
+<li><p>起动转矩</p>
+<p><strong>它表示步进电机所能承受的极限负载转矩（电机单相励磁时）</strong></p>
+</li>
+<li><p>矩-频特性</p>
+<p><strong>动态转矩与脉冲频率的关系，频率越大，动态转矩越小</strong></p>
+</li>
+</ul>
+<h1 id="4、步进电机控制"><a href="#4、步进电机控制" class="headerlink" title="4、步进电机控制"></a>4、步进电机控制</h1><h2 id="环形分配"><a href="#环形分配" class="headerlink" title="环形分配"></a><u>环形分配</u></h2><ul>
+<li>小规模集成电路</li>
+<li>专用器件</li>
+<li>软件分配</li>
+</ul>
+<h2 id="功率放大器"><a href="#功率放大器" class="headerlink" title="功率放大器"></a><u>功率放大器</u></h2><p>环形分配输出的信号放大到能驱动电机运行</p>
+<h3 id="要求-2"><a href="#要求-2" class="headerlink" title="要求"></a><u>要求</u></h3><ul>
+<li>幅值足够，波形良好</li>
+<li>功耗低，效率高</li>
+</ul>
+<h2 id="细分驱动"><a href="#细分驱动" class="headerlink" title="细分驱动"></a>细分驱动</h2><p>将一个步距角细分成若干步</p>
+<p>优点</p>
+<ul>
+<li>使步距角减小</li>
+<li>运行平稳</li>
+<li>减小振荡</li>
+</ul>
+<p>缺点</p>
+<ul>
+<li>细分后步距角精度不高</li>
+<li>功放驱动电路复杂</li>
+</ul>
+<h1 id="5、直流伺服电机"><a href="#5、直流伺服电机" class="headerlink" title="5、直流伺服电机"></a>5、直流伺服电机</h1><h2 id="种类-1"><a href="#种类-1" class="headerlink" title="种类"></a><u>种类</u></h2><p><strong>永磁式和它激式有线性的机械特性，有良好的起动、制动和调速性能</strong></p>
+<ul>
+<li>永磁式</li>
+<li>它激式</li>
+<li>串激式</li>
+<li>并激式</li>
+</ul>
+<h2 id="伺服系统组成"><a href="#伺服系统组成" class="headerlink" title="伺服系统组成"></a>伺服系统组成</h2><p>直流电动机、反馈装置、直流电源、控制驱动电路</p>
+<h2 id="电机组成"><a href="#电机组成" class="headerlink" title="电机组成"></a><u>电机组成</u></h2><ul>
+<li><p>定子</p>
+<p>为直流线圈通电激磁或用永磁体产生磁场</p>
+</li>
+<li><p>转子</p>
+<p>转子上有多相线圈，通直流电时在定子磁场下产生转矩</p>
+</li>
+<li><p>换向机构</p>
+<p>包括电刷和换向片，<strong>电刷与电源相连，换向片与电枢绕组相连，使转子在旋转时电磁转矩总是保持恒定方向</strong></p>
+</li>
+</ul>
+<h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a><u>原理</u></h2><p>转子上均匀分配多匝绕组，绕组越密集，总电磁力越大，电磁转矩越接近恒定</p>
+<h2 id="直流电机驱动调速"><a href="#直流电机驱动调速" class="headerlink" title="直流电机驱动调速"></a><u>直流电机驱动调速</u></h2><p>用于<strong>控制电枢电压的大小与极性</strong>，常用<strong>可控硅法和PWM法</strong></p>
+<p>PWM法中，低电平时电枢电感储存的能量通过续流二极管继续使电机转动</p>
+<h3 id="PWM与PFM"><a href="#PWM与PFM" class="headerlink" title="PWM与PFM"></a>PWM与PFM</h3><ul>
+<li>PWM：脉冲频率不变，调整脉冲宽度</li>
+<li>PFM：脉冲宽度不变，调整脉冲频率</li>
+</ul>
+<h1 id="6、交流伺服电机"><a href="#6、交流伺服电机" class="headerlink" title="6、交流伺服电机"></a>6、交流伺服电机</h1><h2 id="原理-1"><a href="#原理-1" class="headerlink" title="原理"></a>原理</h2><p>定子上装有四组空间差90°的两个绕组，控制、励磁绕组</p>
+<ul>
+<li><strong>控制绕组的控制电压与电源电压频率相同，相位相同或相反</strong></li>
+<li><strong>励磁绕组串联电容C，适当选择电容大小使控制绕组和励磁绕组电流相位差接近90°，从而产生转子旋转方向的磁场</strong></li>
+</ul>
+<h2 id="变频器（交流变频调速）分类"><a href="#变频器（交流变频调速）分类" class="headerlink" title="变频器（交流变频调速）分类"></a>变频器（交流变频调速）分类</h2><h3 id="按变频方式"><a href="#按变频方式" class="headerlink" title="按变频方式"></a>按变频方式</h3><ul>
+<li><p>交-直-交</p>
+</li>
+<li><p>交-交</p>
+<p>只适用于低速</p>
+</li>
+</ul>
+<h3 id="按能量处理方式"><a href="#按能量处理方式" class="headerlink" title="按能量处理方式"></a>按能量处理方式</h3><ul>
+<li>电流型</li>
+<li>电压性</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2023/05/16/lzz-%E7%AC%AC%E4%BA%8C%E7%AB%A0-%E6%9C%BA%E6%A2%B0%E4%BC%A0%E5%8A%A8%E9%83%A8%E4%BB%B6%E9%80%89%E6%8B%A9/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -518,508 +1021,9 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2023/05/16/%E7%BB%AA%E8%AE%BA/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/zoe.gif">
-      <meta itemprop="name" content="dhk">
-      <meta itemprop="description" content="记录一些学习日常">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="小董的BLOG">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/05/16/%E7%BB%AA%E8%AE%BA/" class="post-title-link" itemprop="url">lzz——绪论(考试复习自用)</a>
-        </h2>
-
-        <div class="post-meta">
-		  
-		  
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2023-05-16 22:00:03" itemprop="dateCreated datePublished" datetime="2023-05-16T22:00:03+08:00">2023-05-16</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-02-25 15:32:13" itemprop="dateModified" datetime="2024-02-25T15:32:13+08:00">2024-02-25</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="1、什么是机电一体化"><a href="#1、什么是机电一体化" class="headerlink" title="1、什么是机电一体化"></a>1、什么是机电一体化</h1><h2 id="组成"><a href="#组成" class="headerlink" title="组成"></a>组成</h2><ul>
-<li>机械工程</li>
-<li>电气工程</li>
-<li>计算机/控制工程</li>
-</ul>
-<h2 id="基础"><a href="#基础" class="headerlink" title="基础"></a>基础</h2><p>产品和过程</p>
-<h2 id="主体"><a href="#主体" class="headerlink" title="主体"></a>主体</h2><p>机械</p>
-<h2 id="核心"><a href="#核心" class="headerlink" title="核心"></a>核心</h2><p>微电子、计算机控制技术</p>
-<h1 id="2、产品分类"><a href="#2、产品分类" class="headerlink" title="2、产品分类"></a>2、产品分类</h1><h2 id="按照结合程度"><a href="#按照结合程度" class="headerlink" title="按照结合程度"></a>按照结合程度</h2><h3 id="机械电子化产品"><a href="#机械电子化产品" class="headerlink" title="机械电子化产品"></a>机械电子化产品</h3><ul>
-<li>机械电子化<ul>
-<li>机械<strong><u>本身主要功能</u></strong>被取代    相机</li>
-<li><strong><u>信息处理机构</u></strong>被电子元件替代     电子表</li>
-<li><strong><u>控制机构</u></strong>被替代     缝纫机凸轮</li>
-<li>微电子技术增加功能   数控机床</li>
-</ul>
-</li>
-</ul>
-<h3 id="机电融合产品"><a href="#机电融合产品" class="headerlink" title="机电融合产品"></a>机电融合产品</h3><p>工业机器人、复印机</p>
-<h2 id="按使用领域"><a href="#按使用领域" class="headerlink" title="按使用领域"></a>按使用领域</h2><ul>
-<li>生产</li>
-<li>运输</li>
-<li>储存</li>
-<li>社会服务</li>
-<li>家用</li>
-<li>科研</li>
-</ul>
-<h1 id="3、机电一体化目的"><a href="#3、机电一体化目的" class="headerlink" title="3、机电一体化目的"></a><u>3、机电一体化目的</u></h1><p>使产品<u><strong>高附加值化</strong></u></p>
-<ul>
-<li>功能</li>
-<li>效率</li>
-<li>可靠性</li>
-<li>省材料、能源</li>
-<li>结构轻薄小巧</li>
-</ul>
-<p>以满足人们生活和生产的<strong><u>多样化</u>、<u>省力化</u>、<u>自动化需要</u></strong></p>
-<h1 id="4、机电一体化系统基本组成"><a href="#4、机电一体化系统基本组成" class="headerlink" title="4、机电一体化系统基本组成"></a><u>4、机电一体化系统基本组成</u></h1><h2 id="五大要素与对应功能"><a href="#五大要素与对应功能" class="headerlink" title="五大要素与对应功能"></a><u>五大要素与对应功能</u></h2><ul>
-<li>计算机——控制  CPU</li>
-<li>动力源——动力  电能</li>
-<li>传感器——检测  直线光栅</li>
-<li>机构——整体结构功能  机械本体、齿轮传动、导向机构</li>
-<li>执行元件——操作  电机</li>
-</ul>
-<h3 id="机械本体"><a href="#机械本体" class="headerlink" title="机械本体"></a>机械本体</h3><p>包括机身、框架、机械连接</p>
-<h3 id="动力源"><a href="#动力源" class="headerlink" title="动力源"></a>动力源</h3><h3 id="传感器"><a href="#传感器" class="headerlink" title="传感器"></a>传感器</h3><p>传感器及其信号检测电路，提供控制所需信息</p>
-<h3 id="计算机"><a href="#计算机" class="headerlink" title="计算机"></a>计算机</h3><h3 id="执行元件"><a href="#执行元件" class="headerlink" title="执行元件"></a>执行元件</h3><p>实现机电一体化系统<u><strong>主功能</strong></u></p>
-<h2 id="主功能"><a href="#主功能" class="headerlink" title="主功能"></a><u>主功能</u></h2><ul>
-<li>变化（加工）</li>
-<li>传递（运输）</li>
-<li>存储</li>
-</ul>
-<p><u><strong>完成对物质、能量、信息（工业三大要素）的变换、传递、存储</strong></u></p>
-<h1 id="5、技术体系"><a href="#5、技术体系" class="headerlink" title="5、技术体系"></a>5、<u>技术体系</u></h1><ul>
-<li><p><strong>检测与传感技术</strong></p>
-<p>物理到电，处理电信号，实现自动控制的<strong><u>关键环节</u></strong></p>
-</li>
-<li><p><strong>计算机与信息处理</strong></p>
-<p><u>信息处理、人工智能，是促进机电一体化发展的<strong>最活跃因素</strong></u></p>
-</li>
-<li><p><strong>自动控制</strong></p>
-<p>基本控制理论，<u><strong>提高产品精度、效率</strong></u></p>
-</li>
-<li><p><strong>伺服传动</strong></p>
-<p>执行元件、驱动装置，对各项性能起到<strong><u>决定性影响</u></strong></p>
-</li>
-<li><p><strong>机械技术</strong></p>
-<p>机械结构设计、制造</p>
-</li>
-</ul>
-<h2 id="主要学科"><a href="#主要学科" class="headerlink" title="主要学科"></a>主要学科</h2><ul>
-<li>机械学</li>
-<li>控制论</li>
-<li>电子学</li>
-<li>计算机科学</li>
-</ul>
-<h1 id="6、发展趋势"><a href="#6、发展趋势" class="headerlink" title="6、发展趋势"></a>6、<u>发展趋势</u></h1><ul>
-<li>绿色化</li>
-<li>智能化</li>
-<li>网络化</li>
-<li>微型化</li>
-<li>模块化</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2023/02/09/%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/zoe.gif">
-      <meta itemprop="name" content="dhk">
-      <meta itemprop="description" content="记录一些学习日常">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="小董的BLOG">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/02/09/%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE/" class="post-title-link" itemprop="url">常用的数据通信协议</a>
-        </h2>
-
-        <div class="post-meta">
-		  
-		  
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2023-02-09 22:05:44" itemprop="dateCreated datePublished" datetime="2023-02-09T22:05:44+08:00">2023-02-09</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2023-02-19 00:13:16" itemprop="dateModified" datetime="2023-02-19T00:13:16+08:00">2023-02-19</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>最近又用到了iic，但是原理又有些忘记了，刚好就趁这个机会整理一下一些常用的通信协议，主要是针对协议层和寄存器的整理，均以32为例，32有关内容大部分来自《STM32中文参考手册V10》，方便日后查阅温习。</p>
-<h1 id="串口协议"><a href="#串口协议" class="headerlink" title="串口协议"></a>串口协议</h1><p>因为也不是初学，同步异步和各种标准就不赘述了,主要讲异步</p>
-<h2 id="协议层内容"><a href="#协议层内容" class="headerlink" title="协议层内容"></a>协议层内容</h2><p>串口通讯的数据包由发送设备通过自身的 TXD 接口传输到接收设备的 RXD 接口。在串口通讯 的协议层中，规定了数据包的内容，它由启始位、主体数据、校验位以及停止位组成，通讯双方的数据包格式要约定一致才能正常收发数据</p>
-<p>以32为例，每一帧数据由：</p>
-<ul>
-<li>起始位，为1位逻辑0</li>
-<li>数据内容，8或9位</li>
-<li>校验位，奇偶校验，准确来说包含在数据内容里，如果需要使用校验，则其为数据内容的最后1位</li>
-<li>停止位，常为1or2位逻辑1</li>
-</ul>
-<p>组成，通信的双方对数据帧格式约定一致才可正常收发数据</p>
-<h2 id="奇偶校验"><a href="#奇偶校验" class="headerlink" title="奇偶校验"></a>奇偶校验</h2><p>奇偶校验位分为奇校验和偶校验两种，是一种简单的数据误码校验方法。<strong>奇校验是指每帧数据中，包括数据位和奇偶校验位的全部位中1的个数必须为奇数；偶校验是指每帧数据中，包括数据位和奇偶校验位的全部位中1的个数必须为偶数。</strong></p>
-<h2 id="波特率"><a href="#波特率" class="headerlink" title="波特率"></a>波特率</h2><p>波特率指数据信号对载波的调制速率，它用单位时间内载波调制状态改变次数来表示，单位为波特。而比特率指单位时间内传输的比特数，单位 bit/s(bps)。对于 USART 波特率与比特率相等，波特率越大，传输速率越快。</p>
-<p>而STM32的USART的发送器和接收器使用相同的波特率，计算公式为：</p>
-<img src="/images/loading.png" data-original="/2023/02/09/%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE/1.jpg" class title="image1"> 
-<p>其中：</p>
-<ul>
-<li>fck为USART的时钟，而不同的USART挂载在不同的时钟总线上，例如USART1就是挂载在APB2总线上</li>
-<li><strong>USARTDIV是一个存放在波特率寄存器（USART_BRR）中的一个无符号定点数</strong>：</li>
-</ul>
-<img src="/images/loading.png" data-original="/2023/02/09/%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE/2.jpg" class title="image2">
-<p>​    其中， DIV_Mantissa[15:4] 位定义 USARTDIV 的整数部分，DIV_Fraction[3:0] 位定义 USARTDIV 的小数部分</p>
-<p>​    对于小数部分，寄存器中存储的值为<strong>实际小数*16</strong>，若不为整数则取近似值；整数部分则直接取16进制</p>
-<p>​    例如，假设USARTDIV值为39.0625，则：DIV_Mantissa=39=0x27，DIV_Fraction=0.0625<em>16=1=0x01=0x1,最终USART_BRR存储的值为：0x0271，<em>*此结果是当fck为72MHz时比特率为115200bps的配置值。</em></em></p>
-<h2 id="通信的起始和停止"><a href="#通信的起始和停止" class="headerlink" title="通信的起始和停止"></a>通信的起始和停止</h2><ul>
-<li>空闲帧：在双方没有发送或接收数据时，此时数据帧可以被视作1个完全由1组成的完整数据帧</li>
-<li>断开帧：被视作全为0的帧</li>
-</ul>
-<h2 id="相关寄存器"><a href="#相关寄存器" class="headerlink" title="相关寄存器"></a>相关寄存器</h2><img src="/images/loading.png" data-original="/2023/02/09/%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE/3.jpg" class title="image3">
-<p>一些比较常用的就不写了</p>
-<h3 id="功能引脚"><a href="#功能引脚" class="headerlink" title="功能引脚"></a>功能引脚</h3><ul>
-<li><p>SW_RX：只用于单线和智能卡模式，属于内部引脚，没有具体外部引脚</p>
-</li>
-<li><p>nRTS：请求以发送 (Request To Send)，n 表示低电平有效。如果使能 RTS 流控制，<strong>当 USART 接 收器准备好接收新数据时就会将 nRTS 变成低电平</strong>；当接收寄存器已满时，nRTS 将被设置为高 电平。<strong>该引脚只适用于硬件流控制</strong></p>
-</li>
-<li><p>nCTS：清除以发送 (Clear To Send)，n 表示低电平有效。如果使能 CTS 流控制，发送器在发送下 一帧数据<strong>之前</strong>会检测 nCTS 引脚，<strong>如果为低电平，表示可以发送数据，如果为高电平则在发送完当前数据帧之后停止发送（也就是下一帧不会被发送）</strong>。该引脚<strong>只适用于硬件流控制</strong>。</p>
-<p>| STM32F10x | USART1 | USART2 | USART3 |<br>| :———-: | :——: | :——: | :——: |<br>|   nCTS    |  PA11  |  PA0   |  PB13  |<br>|   nRTS    |  PA12  |  PA1   |  PB14  |</p>
-</li>
-</ul>
-<h3 id="数据寄存器DR"><a href="#数据寄存器DR" class="headerlink" title="数据寄存器DR"></a>数据寄存器DR</h3><p>USART 数据寄存器 (USART_DR) 只有低 9 位有效，并且第 9 位数据是否有效要取决于 USART 控制寄存器 1(USART_CR1) 的 M 位设置，当 M 位为 0 时表示 8 位数据字长，当 M 位为 1 表示 9 位数据字长，我们一般使用 8 位数据字长。</p>
-<p>USART_DR 包含了已发送的数据或者接收到的数据。<strong>USART_DR 实际是包含了两个寄存器，一 个专门用于发送的可写 TDR，一个专门用于接收的可读 RDR。</strong>当进行发送操作时，往 USART_DR 写入数据会自动存储在 TDR 内；当进行读取操作时，向 USART_DR 读取数据会自动提取 RDR 数据。</p>
-<p>TDR 和 RDR 都是<strong>介于系统总线和移位寄存器之间</strong>。串行通信是一个位一个位传输的，<strong>发送时把 TDR 内容转移到发送移位寄存器，然后把移位寄存器数据每一位发送出去，接收时把接收到的每一位顺序保存在接收移位寄存器内然后才转移到 RDR</strong></p>
-<h3 id="控制器CR、SR"><a href="#控制器CR、SR" class="headerlink" title="控制器CR、SR"></a>控制器CR、SR</h3><img src="/images/loading.png" data-original="/2023/02/09/%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE/4.jpg" class title="image4">
-<h4 id="发送器"><a href="#发送器" class="headerlink" title="发送器"></a>发送器</h4><p>USART_CR1分为两部分，一部分为上面一排，用于配置串口的有唤醒单元、中断控制等等，另一部分为图中下面一排，用于控制USART的发送器</p>
-<ul>
-<li><strong>UE：</strong>首先，若要<strong>激活该USART</strong>，需要先将USART_CR1寄存器上的UE位置位</li>
-<li><strong>M：</strong>M用于<strong>定义字长</strong>，8or9</li>
-<li><strong>STOP[1:0] ：</strong>若要<strong>控制帧的停止位长度</strong>，可以通过 USART 控制寄存器 2(USART_CR2) 的 STOP[1:0] 位控制</li>
-<li><strong>TE：</strong>当USART_CR1发送使能位 TE 置 1 之后<strong>（发送使能）</strong>，发送器开始会先发送一个空闲帧 (一个数据帧长度的高电平)，接下 来就可以往 USART_DR 寄存器写入要发送的数据。</li>
-<li><strong>TC：</strong>在写入最后一个数据后，需要等待 USART 状态寄存器 (USART_SR) 的 TC 位为 1，<strong>表示数据传输完成</strong></li>
-<li><strong>TCIE：</strong>如果 USART_CR1 寄存器的 TCIE 位置 1，<strong>TC置位后将产生中断</strong>。</li>
-<li><strong>TXE：</strong>由硬件设置，置位则表明：数据已经从TDR移送到<strong>移位寄存器</strong>，且TDR已清空，数据发送已经开始，下一个数据可以被写进TDR。</li>
-<li><strong>TXEIE：</strong>如果被设置，TXE的置位会产生一个中断</li>
-</ul>
-<p>其他的位不太常用，需要的话再下来查</p>
-<h4 id="接收器"><a href="#接收器" class="headerlink" title="接收器"></a>接收器</h4><ul>
-<li><strong>RE：</strong>USART接收使能，使能后开始等待接收数据帧起始位，对于起始位的侦测有一套严格的侦测方法，但是我没怎么看懂/吹口哨，STM32中文参考手册中有详细讲，感兴趣可以去看下</li>
-<li><strong>RXNE：</strong>与接收器的TXE相似，表示当前数据已被读取（包括有关的错误标志），<strong>数据已经进入RDR</strong>，随时可以被读取</li>
-<li><strong>RXNEIE：</strong>RXNE对应中断</li>
-</ul>
-<p>有关一些错误标志我也不整理了，感觉基本比较少遇到</p>
-<h4 id="校验控制"><a href="#校验控制" class="headerlink" title="校验控制"></a>校验控制</h4><p>将 USART_CR1 寄存器的 PCE 位置 1 就可以启动奇偶校验控制，奇偶校验由硬件自动完成。启 动了奇偶校验控制之后，在发送数据帧时会自动添加校验位，接收数据时自动验证校验位。接收 数据时如果出现奇偶校验位验证失败，会见 USART_SR 寄存器的 PE 位置 1，并可以产生奇偶校验中断。</p>
-<p>偶校验PS位为0，奇校验为1</p>
-<h4 id="中断事件"><a href="#中断事件" class="headerlink" title="中断事件"></a>中断事件</h4><div class="table-container">
-<table>
-<thead>
-<tr>
-<th style="text-align:center">中断事件</th>
-<th style="text-align:center">事件标志位（该位引起中断）</th>
-<th style="text-align:center">中断使能控制位</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">发送数据寄存器TDR为空</td>
-<td style="text-align:center">TXE</td>
-<td style="text-align:center">IXEIE</td>
-</tr>
-<tr>
-<td style="text-align:center">CTS 标志</td>
-<td style="text-align:center">CTS</td>
-<td style="text-align:center">CTSIE</td>
-</tr>
-<tr>
-<td style="text-align:center">发送完成</td>
-<td style="text-align:center">TC</td>
-<td style="text-align:center">TCIE</td>
-</tr>
-<tr>
-<td style="text-align:center">准备好读取接收到的数据（接收移位寄存器为空）</td>
-<td style="text-align:center">RXNE</td>
-<td style="text-align:center">RXNEIE</td>
-</tr>
-<tr>
-<td style="text-align:center">检测到上溢错误</td>
-<td style="text-align:center">ORE</td>
-<td style="text-align:center">RXNEIE</td>
-</tr>
-<tr>
-<td style="text-align:center">测到空闲线路</td>
-<td style="text-align:center">IDLE</td>
-<td style="text-align:center">IDLEIE</td>
-</tr>
-<tr>
-<td style="text-align:center">奇偶校验错误</td>
-<td style="text-align:center">PE</td>
-<td style="text-align:center">PEIE</td>
-</tr>
-<tr>
-<td style="text-align:center">断路标志</td>
-<td style="text-align:center">LBD</td>
-<td style="text-align:center">LBDIE</td>
-</tr>
-<tr>
-<td style="text-align:center">多缓冲通信中的噪声标志、上溢错误和帧错误</td>
-<td style="text-align:center">NF/ORE/FE</td>
-<td style="text-align:center">EIE</td>
-</tr>
-</tbody>
-</table>
-</div>
-<h1 id="IIC协议"><a href="#IIC协议" class="headerlink" title="IIC协议"></a>IIC协议</h1><p>I2C 通讯协议 (Inter － Integrated Circuit) 是由 Phiilps 公司开发的，由于它引脚少，硬件实现简单， 可扩展性强，不需要 USART、CAN 等通讯协议的外部收发设备，现在被广泛地使用在系统内多 个集成电路 (IC) 间的通讯</p>
-<h2 id="物理层"><a href="#物理层" class="headerlink" title="物理层"></a>物理层</h2><p>物理层不是本篇重点，就简单讲一下。</p>
-<img src="/images/loading.png" data-original="/2023/02/09/%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE/5.jpg" class title="image5">
-<p>IIC是一个支持多设备的总线，在一个IIC通讯总线中，可以连接多个通讯设备，它们都可以是主机或从机（主机可以简单理解为发送数据的一端，从机则为接收一端）</p>
-<p>一个 IIC总线只使用两条总线线路，一条双向串行数据线 (SDA) ，一条串行时钟线 (SCL)。 数据线即用来表示数据，时钟线用于数据收发同步，且每个连接到总线的设备都有一个独立的地址，主机可以利用这个地址进行不同设备之间的访问。</p>
-<h2 id="协议层"><a href="#协议层" class="headerlink" title="协议层"></a>协议层</h2><h3 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h3><p>在IIC总线空闲（初始）时，SCL和SDA都为高电平</p>
-<h3 id="特殊信号"><a href="#特殊信号" class="headerlink" title="特殊信号"></a>特殊信号</h3><img src="/images/loading.png" data-original="/2023/02/09/%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE/6.jpg" class title="image6">
-<p>I2C 总线在传送数据过程中共有三种类型信号， 它们分别是：<strong>开始信号、结束信号和应答信号</strong></p>
-<ul>
-<li><p>起始信号：SCL 为<strong>高电平</strong>时，SDA 由<strong>高电平向低电平跳变</strong>，开始传送数据。</p>
-</li>
-<li><p>停止信号：SCL 为<strong>高电平</strong>时，<strong>SDA 由低电平向高电平跳变</strong>，结束传送数据。</p>
-</li>
-<li><p>应答信号：接收数据的设备<strong>在接收到8位数据后</strong>，<strong>向发送数据的设备发出特定的低电平脉冲</strong>，表示已收到数据。应答信号的出现次数与数据长度有关，每接收8位数据后接收端都会向发送端发出一个应答信号</p>
-<ul>
-<li>有效应答位：SCL为高电平时，SDA为低电平</li>
-<li>非应答位：~，SDA为高电平</li>
-</ul>
-<p><strong>当一个字节按数据位从高位到低位的顺序传输完后，紧接着从设备将拉低SDA线，回传给主设备一个应答位ACK， 此时才认为一个数据帧真正地被传输完成</strong> </p>
-</li>
-</ul>
-<p>为确保稳定性，每次电平转换的时间要&gt;4.7us</p>
-<h3 id="数据有效性"><a href="#数据有效性" class="headerlink" title="数据有效性"></a>数据有效性</h3><img src="/images/loading.png" data-original="/2023/02/09/%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE/7.jpg" class title="image7">
-<p>为了不将刚刚讲到的起始、停止信号误识别为数据内容，IIC协议规定了在数据传输过程中，<strong>当SCL=1高电平时，数据线SDA必须保持稳定状态，不允许有电平跳变</strong>，而起始、停止信号则刚好是在SCL=1高电平时在SDA上发生电平跳变，这样起始、停止信号就和数据传输很好的区分开了。并且当<strong>SCL=1时，数据线SDA的任何电平变换会看做是总线的起始信号或者停止信号而不是数据内容。</strong>只有在时钟线上的信号为低电平期间，数据线上的高电平或低电平状态才允许变化，因为SCL为低时，SDA的数据是无效的，不读取的。</p>
-<p>这样就可以理解为，当SCL=1高电平时为读取SDA也就是数据的过程，每一次SCL的高电平读取1位SDA数据，在SCL=0低电平时，SDA可以改变，为下一次SCL高电平的读取做准备</p>
-<h3 id="地址"><a href="#地址" class="headerlink" title="地址"></a>地址</h3><p>多数IIC设备的地址为7位或10位，通常位7位。在地址最后还要加上1位的读/写地址，<strong>所以设备地址为8位</strong></p>
-<p>对于读/写地址位：</p>
-<ul>
-<li>0表示主设备向从设备<strong>写数据</strong></li>
-<li>1表示主设备从从设备<strong>读数据</strong></li>
-</ul>
-<p>例如，对于手势识别模块PAJ7620，当我们要向模块发送数据时，就要先向该模块的地址发送指定数据内容将其读/写地址位设置为0.次数该设备才可以接收主设备写来的数据</p>
-<h3 id="整体流程"><a href="#整体流程" class="headerlink" title="整体流程"></a>整体流程</h3><ul>
-<li>主机先产生<strong>起始信号</strong></li>
-<li>紧接着发送一个<strong>设备地址</strong>，该设备地址由7位从机地址+1位数据方向位组成，此时方向位为0</li>
-<li>主机将地址发送到总线上的过程中，总线上的其他设备会同时将地址逐位<strong>与自己的地址相比较</strong>，当7位从机地址匹配成功后，根据第八位数据方向位将该设备确定为发送/接收器。</li>
-<li>由于地址数据也算作一帧数据，所以在设备匹配成功后，从机将会发送1个应答信号</li>
-<li>对于PAJ7620，此时需要对其寄存器进行初始化，初始化成功后从机会返回1个应答信号</li>
-<li>此后主机、从机之间便可正常通讯</li>
-<li>若要停止该通信，需要主机发送<strong>1个停止信号</strong></li>
-<li>若要改变数据传输方向，在从机初始化完成后，主机需要再重新产生1个起始信号；之后发送设备地址，此时方向位应为1；最后主机将自身SDA的IO口设置为输入模式；</li>
-</ul>
-<h2 id="STM32的IIC硬件"><a href="#STM32的IIC硬件" class="headerlink" title="STM32的IIC硬件"></a>STM32的IIC硬件</h2><p>STM32 的 I2C 外设可用作通讯的主机及从机，支持 100Kbit/s 和 400Kbit/s 的速率，支持 7 位、10 位设备地址，支持 DMA 数据传输，并具有数据校验功能</p>
-<div class="table-container">
-<table>
-<thead>
-<tr>
-<th style="text-align:center">STM32F10x</th>
-<th style="text-align:center">IIC1</th>
-<th style="text-align:center">IIC2</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">SCL</td>
-<td style="text-align:center">PB6/PB8（重映射）</td>
-<td style="text-align:center">PB10</td>
-</tr>
-<tr>
-<td style="text-align:center">SDA</td>
-<td style="text-align:center">PB7/PB9（重映射）</td>
-<td style="text-align:center">PB11</td>
-</tr>
-</tbody>
-</table>
-</div>
-<img src="/images/loading.png" data-original="/2023/02/09/%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE/8.jpg" class title="image8">
-<h3 id="时钟逻辑"><a href="#时钟逻辑" class="headerlink" title="时钟逻辑"></a>时钟逻辑</h3><p>STM32 的I2C外设都挂载在APB1总线上，使用APB1的时钟源 PCLK1，具体的SCL时钟计算不细讲了</p>
-<h3 id="数据控制逻辑"><a href="#数据控制逻辑" class="headerlink" title="数据控制逻辑"></a>数据控制逻辑</h3><p>I2C 的 SDA 信号主要连接到数据移位寄存器上，数据移位寄存器的数据来源及目标是数据寄存器 (DR)、地址寄存器 (OAR)、PEC 寄存器以及 SDA 数据线。</p>
-<h4 id="数据寄存器DR-1"><a href="#数据寄存器DR-1" class="headerlink" title="数据寄存器DR"></a>数据寄存器DR</h4><p>当向外发送数据的时候，数据移位寄存器以DR为数据源，把数据一位一位地通过 SDA 信号线发送出去；当从外部接收数据的时候，数据移位寄存器把 SDA 信号线采样到的数据一位一位地存储到DR中。 </p>
-<h4 id="帧错误校验计算PEC"><a href="#帧错误校验计算PEC" class="headerlink" title="帧错误校验计算PEC"></a>帧错误校验计算PEC</h4><p>若使能了数据校验，接收到的数据会经过 PCE 计算器运算，运算结果存储在“PEC 寄存器”中。 </p>
-<h4 id="比较器"><a href="#比较器" class="headerlink" title="比较器"></a>比较器</h4><p>当 STM32 的 I2C 工作在<strong>从机模式</strong>的时候，接收到设备地址信号时，数据移位寄存器会把接收到 的地址与 STM32 的自身的“I2C 地址寄存器”的值作比较，以便响应主机的寻址。STM32 的自 身 I2C 地址可通过修改“自身地址寄存器”修改，<strong>支持同时使用两个 I2C 设备地址，两个地址分别存储在 OAR1 和 OAR2 中</strong></p>
-<h3 id="整体控制逻辑"><a href="#整体控制逻辑" class="headerlink" title="整体控制逻辑"></a>整体控制逻辑</h3><p>整体控制逻辑负责协调整个 I2C 外设，控制逻辑的工作模式根据我们配置的“控制寄存器 (CR1/CR2)”的参数而改变。在外设工作时，控制逻辑会根据外设的工作状态修改“状态寄存器 (SR1 和 SR2)”，我们只要读取这些寄存器相关的寄存器位，就可以了解 I2C 的工作状态。除此之外，控制逻辑还根据要求，负责控制产生 I2C 中断信号、DMA 请求及各种 I2C 的通讯信号 (起始、停止、响应信号等)。</p>
-<h3 id="硬件通讯过程"><a href="#硬件通讯过程" class="headerlink" title="硬件通讯过程"></a>硬件通讯过程</h3><h4 id="发送器-1"><a href="#发送器-1" class="headerlink" title="发送器"></a>发送器</h4><img src="/images/loading.png" data-original="/2023/02/09/%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE/9.jpg" class title="image9">
-<p>发送流程：</p>
-<ul>
-<li>当发生起始信号后，它产生事件“EV5”，并会对 SR1 寄存器的“SB” 位置 1，表示起始信号已经发送</li>
-<li>紧接着发送设备地址并等待应答信号，若有从机应答，则产生事件“EV6”及“EV8”，这 时 SR1 寄存器的“ADDR”位及“TXE”位被置 1，<strong>ADDR 为 1 表示地址已经发送，TXE 为 1 表示数据寄存器为空</strong></li>
-<li>以上步骤正常执行并对 ADDR 位清零后，我们往 I2C 的“数据寄存器 DR”写入要发送的数据，这时 TXE 位会被重置 0，表示数据寄存器非空，I2C 外设通过 SDA 信号线一位位把数据发送 出去后，又会产生“EV8”事件，即 TXE 位被置 1，重复这个过程，就可以发送多个字节数据了</li>
-<li>发送数据完成后，控制 I2C 设备产生一个停止信号 (P)，这个时候会产生 EV8_2 事件，SR1 的 TXE 位及 BTF 位都被置 1，表示通讯结束</li>
-</ul>
-<h4 id="接收器-1"><a href="#接收器-1" class="headerlink" title="接收器"></a>接收器</h4><img src="/images/loading.png" data-original="/2023/02/09/%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE/10.jpg" class title="image10">
-<p>可以参考发送器，应该可以推测出来</p>
-<h2 id="软件IIC和硬件IIC的选择"><a href="#软件IIC和硬件IIC的选择" class="headerlink" title="软件IIC和硬件IIC的选择"></a>软件IIC和硬件IIC的选择</h2><p>由硬件处理IIC可以减轻CPU的负担，但是配置和使用起来都较为复杂；软件模拟IIC由于是由CPU控制整个通讯时序和引脚状态，CPU占用会更多，但是相对的使用起来会比较方便，且便于移植。</p>
-<h1 id="SPI协议"><a href="#SPI协议" class="headerlink" title="SPI协议"></a>SPI协议</h1><p>SPI 协议是由摩托罗拉公司提出的通讯协议 (Serial Peripheral Interface)，即串行外围设备接口，是 一种高速全双工的通信总线。它被广泛地使用在 ADC、LCD 等设备与 MCU 间，要求通讯速率 较高的场合。</p>
-<h2 id="物理层-1"><a href="#物理层-1" class="headerlink" title="物理层"></a>物理层</h2><img src="/images/loading.png" data-original="/2023/02/09/%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE/11.jpg" class title="image11">
-<p>SPI使用3条总线和片选线，3 条总线分别为 SCK、MOSI、MISO；片选线（也称为 NSS、CS）用于主机片选设备：</p>
-<ul>
-<li><p>片选信号线：当有多个 SPI 从设备与 SPI 主机相连时，设备的其它信号线 SCK、MOSI 及 MIS O 同时并联到相同的 SPI 总线上，<strong>即无论有多少个从设备，都共同只使用这 3 条总线</strong>；而每个从设备都有独立的这一条 NSS 信号线，本信号线独占主机的一个引脚，<strong>即有多少个从设备，就 有多少条片选信号线。</strong></p>
-<p>当主机要选择从设备时， 把该从设备的 NSS 信号线设置为低电平，该从设备即被选中，即片选有效，接着主机开始与被选中的从设备进行 SPI 通讯。<strong>所以 SPI 通讯以 NSS 线置低电平为开始信号，以 NSS 线被拉高作为结束信号。</strong></p>
-</li>
-<li><p>SCK时钟线：用于通讯数据同步。它由通讯主机产生，决定了通讯的速率</p>
-</li>
-<li><p>MOSI：主设备输出/从设备输入引脚。</p>
-</li>
-<li><p>MISO：主设备输入/从设备输出引脚。</p>
-</li>
-</ul>
-<p>需要注意的是，不同于串口中，主机的TX对应从机的RX，SPI中主机和从机的MOSI和MISO是<strong>一一对应的</strong></p>
-<h2 id="协议层-1"><a href="#协议层-1" class="headerlink" title="协议层"></a>协议层</h2><h3 id="时钟极性与相位"><a href="#时钟极性与相位" class="headerlink" title="时钟极性与相位"></a>时钟极性与相位</h3><p>对于STM32，SPI_CR寄存器中有CPOL和CPHA位，其中CPOL位控制时钟极性，CPHA控制时钟相位。</p>
-<ul>
-<li>CPOL时钟极性：<ul>
-<li>置0：SCK在空闲时为低电平</li>
-<li>置1：SCK在空闲时为高电平</li>
-</ul>
-</li>
-<li>CPHA时钟相位：<ul>
-<li>置0：将SCK时钟第一边沿用作数据位采样</li>
-<li>置1：将SCK时钟第二边沿用作数据采样</li>
-</ul>
-</li>
-</ul>
-<p>因此，基于不同配置的CPOL和CPHA，SPI一共有四种通讯时序：</p>
-<div class="table-container">
-<table>
-<thead>
-<tr>
-<th style="text-align:center">CPOL \ CPHA</th>
-<th style="text-align:center">0</th>
-<th style="text-align:center">1</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">0</td>
-<td style="text-align:center">检测上升沿</td>
-<td style="text-align:center">检测下降沿</td>
-</tr>
-<tr>
-<td style="text-align:center">1</td>
-<td style="text-align:center">检测下降沿</td>
-<td style="text-align:center">检测上升沿</td>
-</tr>
-</tbody>
-</table>
-</div>
-<img src="/images/loading.png" data-original="/2023/02/09/%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE/12.jpg" class title="image12">
-<h3 id="起始信号和停止信号"><a href="#起始信号和停止信号" class="headerlink" title="起始信号和停止信号"></a>起始信号和停止信号</h3><p>通讯的开始与结束由片选信号线控制，当主机要选择从设备时， 把该从设备的 NSS 信号线设置为低电平，该从设备即被选中，即片选有效，接着主机开始与被选中的从设备进行 SPI 通讯。<strong>所以 SPI 通讯以 NSS 线置低电平为开始信号，以 NSS 线被拉高作为结束信号。</strong></p>
-<h3 id="数据位切换"><a href="#数据位切换" class="headerlink" title="数据位切换"></a>数据位切换</h3><p>由上图可以观察出，数据位根据时钟配置不同，采样点也不同</p>
-<ul>
-<li>当CPHA时钟相位为0时，SCK第一个信号边沿用于采集数据，第二个信号边沿用于切换数据位，为下一次采样做准备</li>
-<li>当CPHA时钟相位为1时，SCK第一个信号边沿用于数据位切换，第二个信号边沿用于采集数据</li>
-</ul>
-<p>同时，每个数据帧根据寄存器SPI_CR1寄存器的DFF的配置可以配置为8位或16位</p>
-<h2 id="STM32的SPI硬件"><a href="#STM32的SPI硬件" class="headerlink" title="STM32的SPI硬件"></a>STM32的SPI硬件</h2><img src="/images/loading.png" data-original="/2023/02/09/%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE/13.jpg" class title="image13">
-<p>具体的寄存器每一位的功能请参考<a target="_blank" rel="noopener" href="https://blog.csdn.net/k666499436/article/details/124882583?ops_request_misc=%7B%22request%5Fid%22%3A%22167673150616800182736214%22%2C%22scm%22%3A%2220140713.130102334..%22%7D&amp;request_id=167673150616800182736214&amp;biz_id=0&amp;utm_medium=distribute.pc_search_result.none-task-blog-2~all~baidu_landing_v2~default-6-124882583-null-null.142^v73^insert_down3,201^v4^add_ask,239^v2^insert_chatgpt&amp;utm_term=spi协议stm32&amp;spm=1018.2226.3001.4187">STM32SPI协议通信详解_rivencode的博客-CSDN博客_stm32spi通信</a>，讲的很详细，这里我主要讲一下主机模式下的发送流程：</p>
-<img src="/images/loading.png" data-original="/2023/02/09/%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE/14.jpg" class title="主机发送流程">
-<ul>
-<li><p>NSS片选线产生信号，选择设备</p>
-</li>
-<li><p>第一次发送时，发送缓冲区为空，因此表示其为空的TXE标志在最开始会一直为高电平</p>
-</li>
-<li><p>第一次发送时，第一帧数据0xF1在时钟信号产生的同时被存入发送缓冲区中，等待被发出，此时TXE为0，表示发送缓冲区非空</p>
-</li>
-<li><p><strong>1个时钟周期之后</strong>，0xF1从发送缓冲区被移入移位寄存器，同时把第0位数据从移位寄存器发出，此时发送寄存器被清空，TXE硬件置1</p>
-<p><strong>与此同时，</strong>从机端也发送了1位数据至接收缓冲区中</p>
-</li>
-<li><p>在这之后，<strong>第二帧数据（不是第二位！）</strong>在1个时钟周期后被存入发送缓冲区中等待下一次的转移。发送缓冲区非空，TXE置0</p>
-</li>
-<li><p>与此同时，每过1个时钟周期，主机端移位寄存器发送出1位数据，接收缓冲区存入1位数据，1帧数据在8个时钟周期后被完全发送出。同时主机也收到1帧完整数据，此时RXNE标志置位，此时第一帧数据正式发送完毕</p>
-</li>
-<li><p>此后数据从上述第四点开始循环</p>
-</li>
-</ul>
-<p>假如我们使能了 TXE 或 RXNE 中断，TXE 或 RXNE 置 1 时会产生 SPI 中断信号，进入同一个中断服务函数，到 SPI 中断服务程序后，可通过检查寄存器位来了解是哪一个事件，再分别进行处理。也可以使用 DMA 方式来收发接收缓冲区中的数据。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/9/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><span class="page-number current">10</span><a class="page-number" href="/page/11/">11</a><span class="space">&hellip;</span><a class="page-number" href="/page/21/">21</a><a class="extend next" rel="next" href="/page/11/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/9/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><span class="page-number current">10</span><a class="page-number" href="/page/11/">11</a><span class="space">&hellip;</span><a class="page-number" href="/page/22/">22</a><a class="extend next" rel="next" href="/page/11/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1086,13 +1090,13 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">62</span>
+          <span class="site-state-item-count">64</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
-        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-count">11</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -1203,11 +1207,11 @@
         pbOptions.networks = "Wechat,QQZone,Weibo,Douban,Twitter,Facebook";
       new needShareButton('#needsharebutton-postbottom', pbOptions);
   </script>
-<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script><script>
+<script>
             window.imageLazyLoadSetting = {
                 isSPA: false,
                 preloadRatio: 1,
                 processImages: null,
             };
-        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(e.href.match(t)||e.href.match(r))&&(e.href=a.dataset.original)})});</script><script>!function(n){n.imageLazyLoadSetting.processImages=o;var e=n.imageLazyLoadSetting.isSPA,i=n.imageLazyLoadSetting.preloadRatio||1,r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]"));function o(){e&&(r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")));for(var t,a=0;a<r.length;a++)0<=(t=(t=r[a]).getBoundingClientRect()).bottom&&0<=t.left&&t.top<=(n.innerHeight*i||document.documentElement.clientHeight*i)&&function(){var t,e,n,i,o=r[a];t=o,e=function(){r=r.filter(function(t){return o!==t})},n=new Image,i=t.getAttribute("data-original"),n.onload=function(){t.src=i,e&&e()},t.src!==i&&(n.src=i)}()}o(),n.addEventListener("scroll",function(){var t,e;t=o,e=n,clearTimeout(t.tId),t.tId=setTimeout(function(){t.call(e)},500)})}(this);</script></body>
+        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(e.href.match(t)||e.href.match(r))&&(e.href=a.dataset.original)})});</script><script>!function(n){n.imageLazyLoadSetting.processImages=o;var e=n.imageLazyLoadSetting.isSPA,i=n.imageLazyLoadSetting.preloadRatio||1,r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]"));function o(){e&&(r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")));for(var t,a=0;a<r.length;a++)0<=(t=(t=r[a]).getBoundingClientRect()).bottom&&0<=t.left&&t.top<=(n.innerHeight*i||document.documentElement.clientHeight*i)&&function(){var t,e,n,i,o=r[a];t=o,e=function(){r=r.filter(function(t){return o!==t})},n=new Image,i=t.getAttribute("data-original"),n.onload=function(){t.src=i,e&&e()},t.src!==i&&(n.src=i)}()}o(),n.addEventListener("scroll",function(){var t,e;t=o,e=n,clearTimeout(t.tId),t.tId=setTimeout(function(){t.call(e)},500)})}(this);</script><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script></body>
 </html>

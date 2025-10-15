@@ -30,7 +30,7 @@
 <meta property="og:description" content="常用激活函数sigmoid指一类S型的两端饱和函数，常见的有logistic和Tanh及其变种 logistic \sigma(x)&#x3D;\frac{1}{1+e^{-x}}由于最大导数只有0.25，两端饱和严重，输出始终为正，导致梯度下降变慢，现在深度学习隐藏层中已很少使用 Tanh \sigma(x)&#x3D;\frac{e^x-e^{-x}}{e^x+e^{-x}}零中心化，优于logistic ReL">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-10-05T07:14:37.000Z">
-<meta property="article:modified_time" content="2025-10-05T07:41:08.070Z">
+<meta property="article:modified_time" content="2025-10-15T07:46:38.129Z">
 <meta property="article:author" content="dhk">
 <meta property="article:tag" content="深度学习">
 <meta name="twitter:card" content="summary">
@@ -225,10 +225,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2025-10-05 15:14:37 / 修改时间：15:41:08" itemprop="dateCreated datePublished" datetime="2025-10-05T15:14:37+08:00">2025-10-05</time>
+              <time title="创建时间：2025-10-05 15:14:37" itemprop="dateCreated datePublished" datetime="2025-10-05T15:14:37+08:00">2025-10-05</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-10-15 15:46:38" itemprop="dateModified" datetime="2025-10-15T15:46:38+08:00">2025-10-15</time>
+              </span>
 
           
 
@@ -277,9 +283,9 @@ out^{(l)}=f(\omega x)=in^{(l+1)}</script><p>其中，l上标指网络层数，f�
 <script type="math/tex; mode=display">
 out^{l+1}=f_{l+1}(\omega^{(l+1)} out^{(l)})
 \\
-\frac{\part L}{\part out^{(l)}}= \frac{\part L}{\part out^{(l+1)}}
-\cdot \frac{\part out^{l+1}}{\part f_{l+1}}
-\cdot \frac{\part f_{l+1}}{\part out^{(l)}}= \delta^{(l+1)} \cdot f_{(l+1)}' \cdot \omega^{(l+1)}</script><p>注意此处最后一导是对l层该神经元的输出偏导，所以结果是l+1层的权重。（我对激活函数的理解与标准公式中梯度的位置不太一样，但其实最终结果都是一样的。即：</p>
+\frac{\partial L}{\partial out^{(l)}}= \frac{\partial L}{\partial out^{(l+1)}}
+\cdot \frac{\partial out^{l+1}}{\partial f_{l+1}}
+\cdot \frac{\partial f_{l+1}}{\partial out^{(l)}}= \delta^{(l+1)} \cdot f_{(l+1)}' \cdot \omega^{(l+1)}</script><p>注意此处最后一导是对l层该神经元的输出偏导，所以结果是l+1层的权重。（我对激活函数的理解与标准公式中梯度的位置不太一样，但其实最终结果都是一样的。即：</p>
 <script type="math/tex; mode=display">
 \frac{\partial L}{\partial \omega_{(l)}}=\frac{\partial L}{\partial out^{(last)}} \\ \cdot f_{(last)}'\cdot \omega^{(last)}\cdot...
 \cdot  \cdot f_{(l+1)}' \cdot \omega^{(l+1)} \cdot
@@ -404,13 +410,13 @@ z=\frac{1}{y}=\frac{1}{e^{(-(2x+1)+1)}+1}</script><p>其计算图为：</p>
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">62</span>
+          <span class="site-state-item-count">64</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
-        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-count">11</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -574,11 +580,11 @@ z=\frac{1}{y}=\frac{1}{e^{(-(2x+1)+1)}+1}</script><p>其计算图为：</p>
         pbOptions.networks = "Wechat,QQZone,Weibo,Douban,Twitter,Facebook";
       new needShareButton('#needsharebutton-postbottom', pbOptions);
   </script>
-<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script><script>
+<script>
             window.imageLazyLoadSetting = {
                 isSPA: false,
                 preloadRatio: 1,
                 processImages: null,
             };
-        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(e.href.match(t)||e.href.match(r))&&(e.href=a.dataset.original)})});</script><script>!function(n){n.imageLazyLoadSetting.processImages=o;var e=n.imageLazyLoadSetting.isSPA,i=n.imageLazyLoadSetting.preloadRatio||1,r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]"));function o(){e&&(r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")));for(var t,a=0;a<r.length;a++)0<=(t=(t=r[a]).getBoundingClientRect()).bottom&&0<=t.left&&t.top<=(n.innerHeight*i||document.documentElement.clientHeight*i)&&function(){var t,e,n,i,o=r[a];t=o,e=function(){r=r.filter(function(t){return o!==t})},n=new Image,i=t.getAttribute("data-original"),n.onload=function(){t.src=i,e&&e()},t.src!==i&&(n.src=i)}()}o(),n.addEventListener("scroll",function(){var t,e;t=o,e=n,clearTimeout(t.tId),t.tId=setTimeout(function(){t.call(e)},500)})}(this);</script></body>
+        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(e.href.match(t)||e.href.match(r))&&(e.href=a.dataset.original)})});</script><script>!function(n){n.imageLazyLoadSetting.processImages=o;var e=n.imageLazyLoadSetting.isSPA,i=n.imageLazyLoadSetting.preloadRatio||1,r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]"));function o(){e&&(r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")));for(var t,a=0;a<r.length;a++)0<=(t=(t=r[a]).getBoundingClientRect()).bottom&&0<=t.left&&t.top<=(n.innerHeight*i||document.documentElement.clientHeight*i)&&function(){var t,e,n,i,o=r[a];t=o,e=function(){r=r.filter(function(t){return o!==t})},n=new Image,i=t.getAttribute("data-original"),n.onload=function(){t.src=i,e&&e()},t.src!==i&&(n.src=i)}()}o(),n.addEventListener("scroll",function(){var t,e;t=o,e=n,clearTimeout(t.tId),t.tId=setTimeout(function(){t.call(e)},500)})}(this);</script><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script></body>
 </html>
