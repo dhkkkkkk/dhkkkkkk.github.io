@@ -197,6 +197,168 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2024/04/15/ROS-2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/zoe.gif">
+      <meta itemprop="name" content="dhk">
+      <meta itemprop="description" content="记录一些学习日常">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小董的BLOG">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/04/15/ROS-2/" class="post-title-link" itemprop="url">ROS的话题与服务</a>
+        </h2>
+
+        <div class="post-meta">
+		  
+		  
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2024-04-15 15:01:43" itemprop="dateCreated datePublished" datetime="2024-04-15T15:01:43+08:00">2024-04-15</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2024-04-19 18:59:44" itemprop="dateModified" datetime="2024-04-19T18:59:44+08:00">2024-04-19</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="1-话题中的发布者与订阅者"><a href="#1-话题中的发布者与订阅者" class="headerlink" title="1.话题中的发布者与订阅者"></a>1.话题中的发布者与订阅者</h1><ul>
+<li><p>使用<code>rqt_graph</code>可以查看当前的节点关系图，如图为乌龟例程的键盘输入控制节点图</p>
+<img src="/images/loading.png" data-original="/2024/04/15/ROS-2/1.jpg" class title="This is an image"> 
+<p>其中teleop_turtle节点创建了一个发布者，turtlesim节点创建了一个订阅者；一个发布键盘控制的命令，一个订阅命令实现🐢的移动，此时的话题是/turtlel/cmd_vel。</p>
+</li>
+</ul>
+<h2 id="创建Publisher（发布者）"><a href="#创建Publisher（发布者）" class="headerlink" title="创建Publisher（发布者）"></a>创建Publisher（发布者）</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"> <span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sstream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;ros/ros.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;std_msgs/String.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span> **argv)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">// ROS节点初始化，一个cpp对应一个节点，节点名为talker，在当前运行的ROS中独一无二</span></span><br><span class="line">    ros::<span class="built_in">init</span>(argc, argv, <span class="string">&quot;talker&quot;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 创建节点句柄，方便对talker节点的使用</span></span><br><span class="line">    ros::NodeHandle n;</span><br><span class="line"></span><br><span class="line"> <span class="comment">/* 创建一个Publisher，发布名为chatter（chatter才是话题名字！！）的话题，消息类型为std_msgs::String</span></span><br><span class="line"><span class="comment">ros::声明命名空间，chatter_pub为话题变量（？自己的理解），其发布的内容为String类型消息，1000为队列大小，advertise类似cpp容器之类的东西？*/</span></span><br><span class="line">   </span><br><span class="line">    ros::Publisher chatter_pub = n.<span class="built_in">advertise</span>&lt;std_msgs::String&gt;(<span class="string">&quot;chatter&quot;</span>, <span class="number">1000</span>);</span><br><span class="line">	</span><br><span class="line">    <span class="comment">// 设置循环的频率，单位Hz</span></span><br><span class="line">    <span class="function">ros::Rate <span class="title">loop_rate</span><span class="params">(<span class="number">10</span>)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="type">int</span> count = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span> (ros::<span class="built_in">ok</span>())<span class="comment">//节点未发送异常则持续循环</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// 初始化std_msgs::String类型的消息</span></span><br><span class="line">        std_msgs::String msg;</span><br><span class="line">        std::stringstream ss;</span><br><span class="line">        ss &lt;&lt; <span class="string">&quot;hello world &quot;</span> &lt;&lt; count;</span><br><span class="line">        msg.data = ss.<span class="built_in">str</span>();<span class="comment">//将流的内容全部返回到msg的data中，std_msgs::String对象只有data这一个成员</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">// </span></span><br><span class="line">        <span class="built_in">ROS_INFO</span>(<span class="string">&quot;%s&quot;</span>, msg.data.<span class="built_in">c_str</span>());<span class="comment">//打印内容，只是打印而已</span></span><br><span class="line">        chatter_pub.<span class="built_in">publish</span>(msg);<span class="comment">//发布消息，发布后Master会找订阅该话题的节点</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">// 循环等待回调函数</span></span><br><span class="line">        ros::<span class="built_in">spinOnce</span>();</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 按照循环频率延时</span></span><br><span class="line">        loop_rate.<span class="built_in">sleep</span>();<span class="comment">//节点休眠，时长与前设置的循环频率有关</span></span><br><span class="line">        ++count;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="创建Subscriber（订阅者）"><a href="#创建Subscriber（订阅者）" class="headerlink" title="创建Subscriber（订阅者）"></a>创建Subscriber（订阅者）</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 该例程将订阅chatter话题，消息类型String</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"> </span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;ros/ros.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;std_msgs/String.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 接收到订阅的消息后，会进入消息回调函数，传入的参数为一个消息指针（记住吧，感觉形式怪怪的）</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">chatterCallback</span><span class="params">(<span class="type">const</span> std_msgs::String::ConstPtr&amp; msg)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">// 将接收到的消息打印出来</span></span><br><span class="line">    <span class="built_in">ROS_INFO</span>(<span class="string">&quot;I heard: [%s]&quot;</span>, msg-&gt;data.<span class="built_in">c_str</span>());<span class="comment">//注意形式</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span> **argv)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">// 初始化ROS节点</span></span><br><span class="line">    ros::<span class="built_in">init</span>(argc, argv, <span class="string">&quot;listener&quot;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 创建节点句柄</span></span><br><span class="line">    ros::NodeHandle n;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 创建一个Subscriber，订阅名为chatter的topic，注册回调函数chatterCallback，注意这里要注册回调函数，消息类型与订阅者无关</span></span><br><span class="line">    ros::Subscriber sub = n.<span class="built_in">subscribe</span>(<span class="string">&quot;chatter&quot;</span>, <span class="number">1000</span>, chatterCallback);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 循环等待回调函数</span></span><br><span class="line">    ros::<span class="built_in">spin</span>();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>然后在该<strong>功能包</strong>中的CmakeLsit.txt中：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">add_executable(talker src/talker.cpp)</span><br><span class="line">target_link_libraries(talker $&#123;catkin_LIBRARIES&#125;)</span><br><span class="line">##add_dependencies(talker $&#123;PROJECT_NAME&#125;_generate_messages_cpp)不需</span><br><span class="line"></span><br><span class="line">add_executable(listener src/talker.cpp)</span><br><span class="line">target_link_libraries(listener $&#123;catkin_LIBRARIES&#125;)</span><br><span class="line">##add_dependencies(listener $&#123;PROJECT_NAME&#125;_generate_messages_cpp)不需</span><br></pre></td></tr></table></figure>
+<p>其中：</p>
+<ul>
+<li><code>add_ex...</code>：为设置需编译的代码和可执行文件。第一个参数为期望生成可执行文件的<strong>名字</strong>，一般与节点名相同，方便使用；第二个参数为要编译的文件。</li>
+<li><code>target...</code>：设置链接库。第一个参数为需链接的可执行文件名（同上的名字）；第二个为要链接的库</li>
+<li><code>add_de...</code>：设置依赖。为可执行文件添加能动态产生消息代码的依赖。<strong>但是先版本好像已不需要添加这个</strong></li>
+</ul>
+<h2 id="自定义消息类型"><a href="#自定义消息类型" class="headerlink" title="自定义消息类型"></a>自定义消息类型</h2><p>前两节中使用的消息类型为ROS元功能包定义的std_msgs（标准数据类型）中预定义的String类型，除此之外，用户可以自定义msg文件，使用自定义的类型，流程如下：</p>
+<h3 id="1-编写msg文件"><a href="#1-编写msg文件" class="headerlink" title="1.编写msg文件"></a>1.编写msg文件</h3><p>在本功能包中创建msg文件夹（与src平行），并创建person.msg</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">string name</span><br><span class="line">uint8 sex</span><br><span class="line">uint8 age</span><br><span class="line"></span><br><span class="line">uint8 unknown=0</span><br><span class="line">uint8 male=1</span><br><span class="line">uint8 female=2</span><br></pre></td></tr></table></figure>
+<h3 id="2-修改本功能包下的package-xml"><a href="#2-修改本功能包下的package-xml" class="headerlink" title="2.修改本功能包下的package.xml"></a>2.修改本功能包下的package.xml</h3><p>添加：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;build_depend&gt;message_generation&lt;/build_depend&gt;</span><br><span class="line">&lt;exec_depend&gt;message_runtime&lt;/exec_depend&gt;</span><br></pre></td></tr></table></figure>
+<p>保证msg文件能转化为cpp,py等语言的源文件，第一行为编译依赖；第二行为执行依赖</p>
+<h3 id="3-修改本功能包下的CMakeLists-txt"><a href="#3-修改本功能包下的CMakeLists-txt" class="headerlink" title="3.修改本功能包下的CMakeLists.txt"></a>3.修改本功能包下的<strong>CMakeLists.txt</strong></h3><ul>
+<li><p>在<strong><u>已有</u></strong>的find_package中：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">find_package(catkin REQUIRED COMPONENTS</span><br><span class="line">   roscpp</span><br><span class="line">   rospy</span><br><span class="line">   std_msgs</span><br><span class="line">   message_generation</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>在<strong><u>已有</u></strong>的catkin_package中增加：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">catkin_package(</span><br><span class="line">  ...</span><br><span class="line">	CATKIN_DEPENDS roscpp rospy std_msgs message_runtime</span><br><span class="line">  ...)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>找到被注释或已有的add_message_files()语句：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">add_message_files(</span><br><span class="line">  FILES</span><br><span class="line">  person.msg</span><br><span class="line"> )</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>找到被注释或已有的genreate_message()语句：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">generate_messages(</span><br><span class="line">DEPENDENCIES</span><br><span class="line">std_msgs</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="3-编译"><a href="#3-编译" class="headerlink" title="3.编译"></a>3.编译</h3><p>编译成功后，对于C++而言，编译器帮我们自动编写一个头文件：<code>sensor.h</code>，文件位于<code>workspace/devel/include</code>中，通过引用头文件就可以使用这个自定义数据了。</p>
+<ul>
+<li><p>引用格式：<code>#include &quot;learning_communication/person.h&quot;</code>/前为该msg文件（不是.h文件）所在的功能包的名字</p>
+</li>
+<li><p>使用格式：<code>learning_communication::person</code></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">learning_communication::person msg;</span><br><span class="line">std::stringstream ss;</span><br><span class="line">ss &lt;&lt; <span class="string">&quot;dhk&quot;</span>;</span><br><span class="line">msg.name=ss.<span class="built_in">str</span>();</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="将自定义消息用于刚刚的话题中"><a href="#将自定义消息用于刚刚的话题中" class="headerlink" title="将自定义消息用于刚刚的话题中"></a>将自定义消息用于刚刚的话题中</h2><h3 id="发布者"><a href="#发布者" class="headerlink" title="发布者"></a>发布者</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sstream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;ros/ros.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;std_msgs/String.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;learning_communication/person.h&quot;</span></span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span> **argv)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">// ROS节点初始化</span></span><br><span class="line">    ros::<span class="built_in">init</span>(argc, argv, <span class="string">&quot;talker&quot;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 创建节点句柄</span></span><br><span class="line">    ros::NodeHandle n;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 创建一个Publisher，发布名为chatter的topic，消息类型为自定义消息类型</span></span><br><span class="line">    ros::Publisher chatter_pub = n.<span class="built_in">advertise</span>&lt;learning_communication::person&gt;(<span class="string">&quot;chatter&quot;</span>, <span class="number">1000</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 设置循环的频率</span></span><br><span class="line">    <span class="function">ros::Rate <span class="title">loop_rate</span><span class="params">(<span class="number">10</span>)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="type">int</span> count = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span> (ros::<span class="built_in">ok</span>())</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// 初始化std_msgs::String类型的消息</span></span><br><span class="line">        learning_communication::person msg;</span><br><span class="line">        std::stringstream ss;</span><br><span class="line">        ss &lt;&lt; <span class="string">&quot;dhk&quot;</span> &lt;&lt; count;</span><br><span class="line">        msg.name = ss.<span class="built_in">str</span>();</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 发布消息</span></span><br><span class="line">        <span class="built_in">ROS_INFO</span>(<span class="string">&quot;%s&quot;</span>, msg.name.<span class="built_in">c_str</span>());<span class="comment">//c_str()通用于string类型</span></span><br><span class="line">        chatter_pub.<span class="built_in">publish</span>(msg);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 循环等待回调函数</span></span><br><span class="line">        ros::<span class="built_in">spinOnce</span>();</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 按照循环频率延时</span></span><br><span class="line">        loop_rate.<span class="built_in">sleep</span>();</span><br><span class="line">        ++count;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="订阅者"><a href="#订阅者" class="headerlink" title="订阅者"></a>订阅者</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;ros/ros.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;std_msgs/String.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;learning_communication/person.h&quot;</span></span></span><br><span class="line"><span class="comment">// 接收到订阅的消息后，会进入消息回调函数</span></span><br><span class="line"><span class="comment">//ConstPtr&amp;为通用类型，直接cv就行</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">chatterCallback</span><span class="params">(<span class="type">const</span> learning_communication::person::ConstPtr&amp; msg)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">// 将接收到的消息打印出来</span></span><br><span class="line">    <span class="built_in">ROS_INFO</span>(<span class="string">&quot;I heard: [%s]&quot;</span>, msg-&gt;name.<span class="built_in">c_str</span>());</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span> **argv)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">// 初始化ROS节点</span></span><br><span class="line">    ros::<span class="built_in">init</span>(argc, argv, <span class="string">&quot;listener&quot;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 创建节点句柄</span></span><br><span class="line">    ros::NodeHandle n;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 创建一个Subscriber，订阅名为chatter的topic，注册回调函数chatterCallback</span></span><br><span class="line">    ros::Subscriber sub = n.<span class="built_in">subscribe</span>(<span class="string">&quot;chatter&quot;</span>, <span class="number">1000</span>, chatterCallback);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 循环等待回调函数</span></span><br><span class="line">    ros::<span class="built_in">spin</span>();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<img src="/images/loading.png" data-original="/2024/04/15/ROS-2/2.jpg" class title="This is an image"> 
+<p>如图，talker节点发布了名为chatter的话题，被listener节点订阅。</p>
+<h1 id="2-服务中的服务端与客户端"><a href="#2-服务中的服务端与客户端" class="headerlink" title="2.服务中的服务端与客户端"></a>2.服务中的服务端与客户端</h1><p>服务（service）为节点之间通信的一种方式，由客户端（Client）发布请求（Request），服务端（Server）处理后返回应答（Response）</p>
+<h2 id="自定义服务数据"><a href="#自定义服务数据" class="headerlink" title="自定义服务数据"></a>自定义服务数据</h2><h3 id="1-编写srv文件"><a href="#1-编写srv文件" class="headerlink" title="1.编写srv文件"></a>1.编写srv文件</h3><p>同话题中的自定义消息一样，服务数据可以通过<strong>srv文件</strong>进行定义，且同msg文件一样放置在具体功能包文件夹中，但由于文件包含<strong>请求</strong>与<strong>应答两个数据域</strong>，因此要特别分割一下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">int64 a</span><br><span class="line">int64 b</span><br><span class="line">---</span><br><span class="line">int64 sum</span><br></pre></td></tr></table></figure>
+<p>上为请求域，下为应答域</p>
+<h3 id="2-修改package-xml"><a href="#2-修改package-xml" class="headerlink" title="2.修改package.xml"></a>2.修改package.xml</h3><p>内容同自定义订阅消息中的操作</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;build_depend&gt;message_generation&lt;/build_depend&gt;</span><br><span class="line">&lt;exec_depend&gt;message_runtime&lt;/exec_depend&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="3-修改CMakeLists-txt"><a href="#3-修改CMakeLists-txt" class="headerlink" title="3.修改CMakeLists.txt"></a>3.修改CMakeLists.txt</h3><p>找到被注释或已有的add_service_files()语句：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">add_service_files(</span><br><span class="line">  FILES</span><br><span class="line">  AddTwoInts.srv</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<p>其他操作同自定义订阅消息</p>
+<h2 id="创建Server"><a href="#创建Server" class="headerlink" title="创建Server"></a>创建Server</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;ros/ros.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;learning_communication/AddTwoInts.h&quot;</span><span class="comment">//记得添加头文件</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// service回调函数，第一参数为请求域req，第二参数为应答域res，不同域要分别声明</span></span><br><span class="line"><span class="function"><span class="type">bool</span> <span class="title">add</span><span class="params">(learning_communication::AddTwoInts::Request  &amp;req,</span></span></span><br><span class="line"><span class="params"><span class="function">         learning_communication::AddTwoInts::Response &amp;res)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">// 将输入参数中的请求数据相加，结果放到应答变量中</span></span><br><span class="line">    res.sum = req.a + req.b;</span><br><span class="line">    <span class="built_in">ROS_INFO</span>(<span class="string">&quot;request: x=%ld, y=%ld&quot;</span>, (<span class="type">long</span> <span class="type">int</span>)req.a, (<span class="type">long</span> <span class="type">int</span>)req.b);</span><br><span class="line">    <span class="built_in">ROS_INFO</span>(<span class="string">&quot;sending back response: [%ld]&quot;</span>, (<span class="type">long</span> <span class="type">int</span>)res.sum);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span> **argv)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">// ROS节点初始化</span></span><br><span class="line">    ros::<span class="built_in">init</span>(argc, argv, <span class="string">&quot;add_two_ints_server&quot;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 创建节点句柄</span></span><br><span class="line">    ros::NodeHandle n;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 创建一个名为add_two_ints的server，注册回调函数add()</span></span><br><span class="line">    ros::ServiceServer service = n.<span class="built_in">advertiseService</span>(<span class="string">&quot;add_two_ints&quot;</span>, add);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 等待回调函数</span></span><br><span class="line">    <span class="built_in">ROS_INFO</span>(<span class="string">&quot;Ready to add two ints.&quot;</span>);</span><br><span class="line">    ros::<span class="built_in">spin</span>();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h2 id="创建Client"><a href="#创建Client" class="headerlink" title="创建Client"></a>创建Client</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;cstdlib&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;ros/ros.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;learning_communication/AddTwoInts.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span> **argv)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">// ROS节点初始化</span></span><br><span class="line">    ros::<span class="built_in">init</span>(argc, argv, <span class="string">&quot;add_two_ints_client&quot;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 从终端命令行获取两个加数，为main的输入参数</span></span><br><span class="line">    <span class="keyword">if</span> (argc != <span class="number">3</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">ROS_INFO</span>(<span class="string">&quot;usage: add_two_ints_client X Y&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 创建节点句柄</span></span><br><span class="line">    ros::NodeHandle n;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 创建一个client，请求add_two_int的service，两文件在此处联系</span></span><br><span class="line">    <span class="comment">// service消息类型是learning_communication::AddTwoInts</span></span><br><span class="line">    ros::ServiceClient client = n.<span class="built_in">serviceClient</span>&lt;learning_communication::AddTwoInts&gt;(<span class="string">&quot;add_two_ints&quot;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 创建learning_communication::AddTwoInts类型的service消息</span></span><br><span class="line">    learning_communication::AddTwoInts srv;</span><br><span class="line">    srv.request.a = <span class="built_in">atoll</span>(argv[<span class="number">1</span>]);</span><br><span class="line">    srv.request.b = <span class="built_in">atoll</span>(argv[<span class="number">2</span>]);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 发布service请求，等待加法运算的应答结果</span></span><br><span class="line">   <span class="comment">//这里输入参数为1个，但是回调是两个，回调的写法应该是固定格式？</span></span><br><span class="line">    <span class="keyword">if</span> (client.<span class="built_in">call</span>(srv))</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">ROS_INFO</span>(<span class="string">&quot;Sum: %ld&quot;</span>, (<span class="type">long</span> <span class="type">int</span>)srv.response.sum);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">ROS_ERROR</span>(<span class="string">&quot;Failed to call service add_two_ints&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h2 id="编译功能包"><a href="#编译功能包" class="headerlink" title="编译功能包"></a>编译功能包</h2><p>在CMakeLists.txt中添加相关内容</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">add_executable(add_two_ints_server src/server.cpp)</span><br><span class="line">target_link_libraries(add_two_ints_server $&#123;catkin_LIBRARIES&#125;)</span><br><span class="line"></span><br><span class="line">add_executable(add_two_ints_client src/client.cpp)</span><br><span class="line">target_link_libraries(add_two_ints_client $&#123;catkin_LIBRARIES&#125;)</span><br></pre></td></tr></table></figure>
+<p>这里要注意add_executable第一个参数为期望的可执行文件名，可以不与节点名相同，但我喜欢相同（哼）</p>
+<h2 id="运行"><a href="#运行" class="headerlink" title="运行"></a>运行</h2><img src="/images/loading.png" data-original="/2024/04/15/ROS-2/3.jpg" class title="This is an image"> 
+<p>这里要注意</p>
+<ul>
+<li>运行节点时不要运行成cpp文件</li>
+<li>Client节点需添加2个初始参数</li>
+</ul>
+<h1 id="话题与服务的区别"><a href="#话题与服务的区别" class="headerlink" title="话题与服务的区别"></a>话题与服务的区别</h1><ul>
+<li>话题中建立两节点关系的阶段是在listener中订阅相关话题并注册回调函数；而服务中建立两节点关系的阶段是在client中请求名为xx的服务。因此顺序应该为：<ul>
+<li>话题：先编写talker，再写listener</li>
+<li>服务：先编写server，再写client</li>
+</ul>
+</li>
+<li>两种通信的具体顺序：</li>
+<li>话题<ul>
+<li>创建发布者，话题，并规定话题的消息形式</li>
+<li>发布消息</li>
+<li>创建订阅者，并订阅话题，注册回调函数，等待回调函数运行</li>
+</ul>
+</li>
+<li>服务<ul>
+<li>创建服务端，服务名，并注册服务回调函数</li>
+<li>创建客户端，并请求相关服务名的服务，此时规定服务的消息形式</li>
+<li>客户端请求服务并输入相关内容，服务端回调函数进行处理时客户端堵塞，等待服务完成，服务完成后客户端内与回调函数相关的参数已改变</li>
+</ul>
+</li>
+<li><strong>需要注意的是，话题的回调函数只在订阅文件生效，不是反馈；而服务的回调函数会生效于客户端，是真正的反馈</strong></li>
+</ul>
+<h1 id="ROS命名规则"><a href="#ROS命名规则" class="headerlink" title="ROS命名规则"></a>ROS命名规则</h1><ul>
+<li>基础名称：dhk</li>
+<li>全局名称：/xx/dhk</li>
+<li>相对名称：xx/dhk</li>
+<li>私有名称：~xx/dhk</li>
+</ul>
+<p>起始为/的都为全局名称</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2024/04/10/ROS-1/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -689,229 +851,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2024/02/19/linux%E6%9D%82/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/zoe.gif">
-      <meta itemprop="name" content="dhk">
-      <meta itemprop="description" content="记录一些学习日常">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="小董的BLOG">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/02/19/linux%E6%9D%82/" class="post-title-link" itemprop="url">linux、ROS杂</a>
-        </h2>
-
-        <div class="post-meta">
-		  
-		  
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2024-02-19 17:06:26" itemprop="dateCreated datePublished" datetime="2024-02-19T17:06:26+08:00">2024-02-19</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-04-19 16:28:13" itemprop="dateModified" datetime="2024-04-19T16:28:13+08:00">2024-04-19</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="Ubuntu网络图标消失"><a href="#Ubuntu网络图标消失" class="headerlink" title="Ubuntu网络图标消失"></a>Ubuntu网络图标消失</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo service network-manager stop</span><br><span class="line">sudo rm /var/lib/NetworkManager/NetworkManager.state </span><br><span class="line">sudo service network-manager start</span><br></pre></td></tr></table></figure>
-<h1 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h1><div class="table-container">
-<table>
-<thead>
-<tr>
-<th>ls</th>
-<th>查看当前目录</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>cd</td>
-<td>进入目标路径</td>
-</tr>
-<tr>
-<td>pwd</td>
-<td>查看当前路径</td>
-</tr>
-<tr>
-<td>mkdir</td>
-<td>创建目录</td>
-</tr>
-<tr>
-<td>rmdir/rm</td>
-<td>删除目录</td>
-</tr>
-<tr>
-<td>touch</td>
-<td>创建空文件</td>
-</tr>
-<tr>
-<td>echo</td>
-<td>将内容回显到标准输出，可重定向</td>
-</tr>
-<tr>
-<td>file</td>
-<td>查看文件类型</td>
-</tr>
-<tr>
-<td>more/less</td>
-<td>查看文件内容，空格翻页，q退出。（less更灵活，/..搜索字符串）</td>
-</tr>
-<tr>
-<td>head/tail</td>
-<td>查看文件头部/尾部</td>
-</tr>
-<tr>
-<td>cat</td>
-<td>将一个或多个文件输出到标准输出，可重定向</td>
-</tr>
-<tr>
-<td>cat -n</td>
-<td>从1开始对输出行进行编号，-s：将多行空白合并</td>
-</tr>
-<tr>
-<td>tar</td>
-<td>-c文件打包；-x解包；-A合并；-f指定文件，加在最后；-C到指定目录</td>
-</tr>
-<tr>
-<td><em>cvf xvf ..-C..</em></td>
-<td>-j调用bzip2；-z调用gzip；-Z调用compress；-t列出列表;-v详细信息</td>
-</tr>
-<tr>
-<td>mv</td>
-<td>文件改名、移动。路径相同则改名，不同则移动</td>
-</tr>
-<tr>
-<td>cp</td>
-<td>文件复制</td>
-</tr>
-<tr>
-<td>clear</td>
-<td>清屏</td>
-</tr>
-<tr>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td></td>
-</tr>
-</tbody>
-</table>
-</div>
-<ul>
-<li><p>find [路径] -name “”</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">无路径默认桌面</span><br><span class="line">find -name &quot;*1*&quot;	名字含1的文件</span><br><span class="line">find -name &quot;*.txt&quot;	为后缀的文件</span><br><span class="line">find -name &quot;1*&quot;	以1为开头的文件</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>tar</p>
-<p>打/解包文件，解包后文件存放路径为当且文件夹</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">tar -cvf test.tar 1 2</span><br><span class="line">tar -xvf test.tar</span><br></pre></td></tr></table></figure>
-<p>tar下的压缩与解压</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">tar -zcvf test.gz 1 2</span><br><span class="line">tar -zxvf test.gz</span><br><span class="line">tar -zxvf test.gz -C 指定路径（必须存在）</span><br><span class="line"></span><br><span class="line">tar -jcvf test.bz2 1 2</span><br><span class="line">tar -jxvf test.bz2</span><br><span class="line">tar -jxvf test.bz2 -C 指定路径（必须存在）</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>软件安装</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># 1. 安装软件</span><br><span class="line">sudo apt install 软件包</span><br><span class="line"># 2. 卸载软件</span><br><span class="line">sudo apt remove 软件名</span><br><span class="line"># 3. 更新已安装的包</span><br><span class="line">sudo apt upgrade</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>which 提示文件/命令所在位置</p>
-</li>
-</ul>
-<h2 id="杀死进程"><a href="#杀死进程" class="headerlink" title="杀死进程"></a>杀死进程</h2><ul>
-<li>xkill    强制关闭窗口</li>
-<li>kill (pid号)     pid号用ps -aux查询</li>
-<li>pkill (程序名)</li>
-</ul>
-<h1 id="ROS无法定位软件包"><a href="#ROS无法定位软件包" class="headerlink" title="ROS无法定位软件包"></a>ROS无法定位软件包</h1><p><a target="_blank" rel="noopener" href="https://fishros.org.cn/forum/topic/149/e-无法定位软件包/3">E：无法定位软件包 | 鱼香ROS (fishros.org.cn)</a></p>
-<p>版本对应or源的问题，ubuntu20对应noetic</p>
-<h1 id="ROS-TF乌龟程序报错"><a href="#ROS-TF乌龟程序报错" class="headerlink" title="ROS TF乌龟程序报错"></a>ROS TF乌龟程序报错</h1><p><code>sudo apt install python-is-python3</code>升级python版本</p>
-<h1 id="view-frames意外停止"><a href="#view-frames意外停止" class="headerlink" title="view_frames意外停止"></a><strong>view_frames</strong>意外停止</h1><ul>
-<li><code>sudo apt-get install vim</code></li>
-<li><code>sudo vim /opt/ros/noetic/lib/tf/view_frames</code> </li>
-<li>89行处，修改为 <code>m = r.search(vstr.decode(&#39;utf-8&#39;))</code> </li>
-</ul>
-<h2 id="Vim的输入模式"><a href="#Vim的输入模式" class="headerlink" title="Vim的输入模式"></a>Vim的输入模式</h2><p>在输入模式下，Vim 可以对文件执行写操作，类似于在 Windows 系统的文档中输入内容。</p>
-<p>使 Vim 进行输入模式的方式是在命令模式状态下输入 i、I、a、A、o、O 等插入命令（各指令的具体功能如表 3 所示），<strong>当编辑文件完成后按 Esc 键即可返回命令模式。</strong></p>
-<div class="table-container">
-<table>
-<thead>
-<tr>
-<th>快捷键</th>
-<th>功能描述</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>i</td>
-<td><strong>在当前光标所在位置插入随后输入的文本，光标后的文本相应向右移动</strong></td>
-</tr>
-<tr>
-<td>I</td>
-<td>在光标所在行的行首插入随后输入的文本，行首是该行的第一个非空白字符，相当于光标移动到行首执行 i 命令</td>
-</tr>
-<tr>
-<td>o</td>
-<td>在光标所在行的下面插入新的一行。光标停在空行首，等待输入文本</td>
-</tr>
-<tr>
-<td>O</td>
-<td>在光标所在行的上面插入新的一行。光标停在空行的行首，等待输入文本</td>
-</tr>
-<tr>
-<td>a</td>
-<td>在当前光标所在位置之后插入随后输入的文本</td>
-</tr>
-<tr>
-<td>A</td>
-<td>在光标所在行的行尾插入随后输入的文本，相当于光标移动到行尾再执行a命令</td>
-</tr>
-</tbody>
-</table>
-</div>
-<h2 id="退出vim"><a href="#退出vim" class="headerlink" title="退出vim"></a>退出vim</h2><p><strong>按esc</strong>后，输入如下，一般<code>:wq</code>就行</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">:q  </span><br><span class="line">//退出</span><br><span class="line"></span><br><span class="line">:q! </span><br><span class="line">//退出且不保存（:quit!的缩写）</span><br><span class="line"></span><br><span class="line">:wq</span><br><span class="line">//保存并退出</span><br><span class="line"></span><br><span class="line">:wq!</span><br><span class="line">//保存并退出即使文件没有写入权限（强制保存退出）</span><br><span class="line"></span><br><span class="line">:x</span><br><span class="line">//保存并退出（类似:wq，但是只有在有更改的情况下才保存）</span><br><span class="line"></span><br><span class="line">:exit</span><br><span class="line">//保存并退出（和:x相同）</span><br><span class="line"></span><br><span class="line">:qa</span><br><span class="line">//退出所有(:quitall的缩写)</span><br><span class="line"></span><br><span class="line">:cq</span><br><span class="line">//退出且不保存（即便有错误）</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   
   <nav class="pagination">
     <a class="extend prev" rel="prev" href="/page/7/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><span class="page-number current">8</span><a class="page-number" href="/page/9/">9</a><span class="space">&hellip;</span><a class="page-number" href="/page/22/">22</a><a class="extend next" rel="next" href="/page/9/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
@@ -981,7 +920,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">64</span>
+          <span class="site-state-item-count">65</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1098,11 +1037,11 @@
         pbOptions.networks = "Wechat,QQZone,Weibo,Douban,Twitter,Facebook";
       new needShareButton('#needsharebutton-postbottom', pbOptions);
   </script>
-<script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script><script>
             window.imageLazyLoadSetting = {
                 isSPA: false,
                 preloadRatio: 1,
                 processImages: null,
             };
-        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(e.href.match(t)||e.href.match(r))&&(e.href=a.dataset.original)})});</script><script>!function(n){n.imageLazyLoadSetting.processImages=o;var e=n.imageLazyLoadSetting.isSPA,i=n.imageLazyLoadSetting.preloadRatio||1,r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]"));function o(){e&&(r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")));for(var t,a=0;a<r.length;a++)0<=(t=(t=r[a]).getBoundingClientRect()).bottom&&0<=t.left&&t.top<=(n.innerHeight*i||document.documentElement.clientHeight*i)&&function(){var t,e,n,i,o=r[a];t=o,e=function(){r=r.filter(function(t){return o!==t})},n=new Image,i=t.getAttribute("data-original"),n.onload=function(){t.src=i,e&&e()},t.src!==i&&(n.src=i)}()}o(),n.addEventListener("scroll",function(){var t,e;t=o,e=n,clearTimeout(t.tId),t.tId=setTimeout(function(){t.call(e)},500)})}(this);</script><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script></body>
+        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(e.href.match(t)||e.href.match(r))&&(e.href=a.dataset.original)})});</script><script>!function(n){n.imageLazyLoadSetting.processImages=o;var e=n.imageLazyLoadSetting.isSPA,i=n.imageLazyLoadSetting.preloadRatio||1,r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]"));function o(){e&&(r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")));for(var t,a=0;a<r.length;a++)0<=(t=(t=r[a]).getBoundingClientRect()).bottom&&0<=t.left&&t.top<=(n.innerHeight*i||document.documentElement.clientHeight*i)&&function(){var t,e,n,i,o=r[a];t=o,e=function(){r=r.filter(function(t){return o!==t})},n=new Image,i=t.getAttribute("data-original"),n.onload=function(){t.src=i,e&&e()},t.src!==i&&(n.src=i)}()}o(),n.addEventListener("scroll",function(){var t,e;t=o,e=n,clearTimeout(t.tId),t.tId=setTimeout(function(){t.call(e)},500)})}(this);</script></body>
 </html>

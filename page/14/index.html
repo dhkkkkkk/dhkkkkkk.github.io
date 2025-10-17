@@ -197,6 +197,149 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2022/11/18/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E7%BA%BF%E6%80%A7%E8%A1%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/zoe.gif">
+      <meta itemprop="name" content="dhk">
+      <meta itemprop="description" content="记录一些学习日常">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小董的BLOG">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/11/18/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E7%BA%BF%E6%80%A7%E8%A1%A8/" class="post-title-link" itemprop="url">数据结构_链表</a>
+        </h2>
+
+        <div class="post-meta">
+		  
+		  
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-11-18 19:26:17" itemprop="dateCreated datePublished" datetime="2022-11-18T19:26:17+08:00">2022-11-18</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-11-20 14:08:09" itemprop="dateModified" datetime="2022-11-20T14:08:09+08:00">2022-11-20</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="1-链表的概念"><a href="#1-链表的概念" class="headerlink" title="1.链表的概念"></a>1.链表的概念</h1><p>通过多个<strong>节点</strong>将多个数据元素组成一个链表。</p>
+<ul>
+<li>节点：数据元素的存储映像， 由<strong>数据域和指针域</strong>两部分组成。</li>
+</ul>
+<p><strong>优点</strong></p>
+<ul>
+<li>数据元素的个数可以自由扩充</li>
+<li>插入、删除等操作不必移动数据，只需修改链接指针，修改效率较高</li>
+</ul>
+<p><strong>缺点</strong></p>
+<ul>
+<li>存储密度小</li>
+<li>存取效率不高，必须采用顺序存取，即存取数据元素时，只能按链表的顺序进行访问（顺藤摸瓜）</li>
+</ul>
+<h1 id="2-创建一个单向列表"><a href="#2-创建一个单向列表" class="headerlink" title="2.创建一个单向列表"></a>2.创建一个单向列表</h1><p>单向列表即每个节点之间的联系是单向的，仅通过一个指针链接。</p>
+<p>创建列表有两种方法：前插法和后插法。</p>
+<h2 id="前插法"><a href="#前插法" class="headerlink" title="前插法"></a>前插法</h2><p>新的节点链接到上一节点的开头</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"> <span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">list</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">	<span class="type">int</span> num; 	<span class="comment">//数据域</span></span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">list</span> *<span class="title">last</span>;</span>	<span class="comment">//指针域</span></span><br><span class="line">&#125;test;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">setlist</span><span class="params">(test* linkhead, <span class="type">int</span> data)</span></span><br><span class="line">&#123;</span><br><span class="line">   test *tmp=(test*)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(test));<span class="comment">//分配动态内存，防止生成野指针</span></span><br><span class="line">   tmp-&gt;num=data;</span><br><span class="line">   tmp-&gt;last=linkhead-&gt;last;</span><br><span class="line">   linkhead-&gt;last=tmp;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">   <span class="type">int</span> a[<span class="number">3</span>]=&#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>&#125;;</span><br><span class="line">   <span class="type">int</span> i;</span><br><span class="line">   test* head=(test*)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(test));</span><br><span class="line">   head-&gt;last=<span class="literal">NULL</span>;</span><br><span class="line">   <span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;<span class="number">3</span>;++i)</span><br><span class="line">   &#123;</span><br><span class="line">      setlist(head,a[i]);</span><br><span class="line">   &#125;</span><br><span class="line">   test* p= head-&gt;last;</span><br><span class="line">   <span class="keyword">while</span>(p!=<span class="literal">NULL</span>)</span><br><span class="line">   &#123;</span><br><span class="line">      <span class="built_in">printf</span>(<span class="string">&quot;%d &quot;</span>,p-&gt;num);</span><br><span class="line">      p=p-&gt;next;</span><br><span class="line">    &#125;</span><br><span class="line">   <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>前插法创建链表的步骤为（以创建两个节点为例）:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">setlist</span><span class="params">(test* linkhead, <span class="type">int</span> data)</span></span><br><span class="line">&#123;</span><br><span class="line">   <span class="comment">//开辟一个新节点</span></span><br><span class="line">   test *tmp=(test*)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(test));</span><br><span class="line">   <span class="comment">//写入需要的数据</span></span><br><span class="line">   tmp-&gt;num=data;</span><br><span class="line">   <span class="comment">//将节点的指针域指向linkhead的指针域</span></span><br><span class="line">   tmp-&gt;last=linkhead-&gt;last;</span><br><span class="line">   <span class="comment">//将linkhead的指针域指向新节点首地址</span></span><br><span class="line">   linkhead-&gt;last=tmp;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>也就是说，创建第一个节点时，该节点的指针域先指向NULL后，linkhead指针域再指向该节点首地址。</p>
+<p>当刚创建第二个节点时，情况如下：</p>
+<img src="/images/loading.png" data-original="/2022/11/18/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E7%BA%BF%E6%80%A7%E8%A1%A8/1.jpg" class title="This is an image"> 
+<p>当执行<code>tmp-&gt;last=linkhead-&gt;last;</code>时，由于linkhead的指针域此时指向tmp(1)（这里的1指第一块节点的内存空间）的首地址，<strong>所以tmp(2)的指针域会通过linkhead直接也指向tmp(1)的首地址:</strong></p>
+<img src="/images/loading.png" data-original="/2022/11/18/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E7%BA%BF%E6%80%A7%E8%A1%A8/2.jpg" class title="This is an image"> 
+<p>这样之后，两个节点就通过指针链接在了一起，且tmp(2)在tmp(1)之前。</p>
+<p>由此可以看出，前插法的原理就是以linkhead为媒介来链接节点，<strong>linkhead本身是不存储数据的</strong></p>
+<p>最后，执行<code>linkhead-&gt;last=tmp;</code>，<strong>将linkhead指针域指向第二个节点首地址，以供第三个节点的指针域找到第二个节点。</strong></p>
+<img src="/images/loading.png" data-original="/2022/11/18/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E7%BA%BF%E6%80%A7%E8%A1%A8/3.jpg" class title="This is an image"> 
+<p>以此类推，假如现在创建了4个节点，那情况就应该像这样：</p>
+<img src="/images/loading.png" data-original="/2022/11/18/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E7%BA%BF%E6%80%A7%E8%A1%A8/4.jpg" class title="This is an image"> 
+<p>在例程中，由于前插法得到的链表顺序为最后输入的数据开始，所以最后打印的结果为3 2 1</p>
+<h2 id="尾插法"><a href="#尾插法" class="headerlink" title="尾插法"></a>尾插法</h2><p>相对于前插法，尾插法使用起来逻辑会更加清晰，因为其链接顺序是在每一个节点后，所以尾插法要更容易理解一些。</p>
+<p>在<a target="_blank" rel="noopener" href="https://dhkkk.gitee.io/2022/08/01/C-结构体/">结构体复习 | 小董的BLOG (gitee.io)</a>中讲到的列表就是使用的尾插法，核心代码如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">list</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">	<span class="type">int</span> num;</span><br><span class="line">	<span class="type">char</span> name[<span class="number">30</span>];</span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">list</span> *<span class="title">next</span>;</span></span><br><span class="line">&#125;test;</span><br><span class="line"></span><br><span class="line">test *<span class="title function_">creat</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">	test *linkhead,*linkend,*tmp;</span><br><span class="line">	<span class="type">int</span> i;</span><br><span class="line">	<span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;<span class="number">3</span>;i++)</span><br><span class="line">	&#123;</span><br><span class="line">		tmp=(test*)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(test));<span class="comment">//分配动态内存</span></span><br><span class="line">		<span class="built_in">scanf</span>(<span class="string">&quot;%d %s&quot;</span>,&amp;tmp-&gt;num,tmp-&gt;name);</span><br><span class="line">		<span class="keyword">if</span>(i==<span class="number">0</span>)</span><br><span class="line">		&#123;</span><br><span class="line">			linkhead=tmp;<span class="comment">//第一次先将当前节点赋给链头链尾</span></span><br><span class="line">			linkend=tmp;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span><span class="comment">//若不是第一次，先将当前节点存入上一个节点的next中，再将linkend更新为当前节点以供下一次访问</span></span><br><span class="line">		&#123;                                                                <span class="comment">//当前节点的next</span></span><br><span class="line">			linkend-&gt;next=tmp;<span class="comment">//通过linkend直接指向内存中的一个struct list变量使其指向tmp的内存</span></span><br><span class="line">			linkend=tmp;</span><br><span class="line">         <span class="comment">//以第二个节点为例，先将第linkend（也就是tmp(1)）的指针域指向二个节点首地址</span></span><br><span class="line">         <span class="comment">//再将linkend指向tmp(2)，以供后面的节点重复23、24行的操作</span></span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	linkend-&gt;next=<span class="literal">NULL</span>;</span><br><span class="line">	<span class="keyword">return</span> linkhead;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如果说前插法是通过linkhead为媒介进行链接，那尾插法就是通过linkend为媒介链接各节点。</p>
+<h1 id="3-双向链表的创建"><a href="#3-双向链表的创建" class="headerlink" title="3.双向链表的创建"></a>3.双向链表的创建</h1><p>同样分为使用前插法和后插法，但是尾插法会简单很多，所以先讲一下尾插法</p>
+<h2 id="尾插法创建双向链表"><a href="#尾插法创建双向链表" class="headerlink" title="尾插法创建双向链表"></a>尾插法创建双向链表</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"> <span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">list</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">	<span class="type">int</span> num;</span><br><span class="line">	<span class="type">char</span> name[<span class="number">30</span>];</span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">list</span> *<span class="title">last</span>;</span>	<span class="comment">//存放上一节点</span></span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">list</span> *<span class="title">next</span>;</span>	<span class="comment">//存放下一节点</span></span><br><span class="line">&#125;test;</span><br><span class="line"></span><br><span class="line">test *<span class="title function_">creat</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">	test *linkhead,*linkend,*tmp;</span><br><span class="line">	<span class="type">int</span> i;</span><br><span class="line">	<span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;<span class="number">3</span>;i++)</span><br><span class="line">	&#123;</span><br><span class="line">		tmp=(test*)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(test)); </span><br><span class="line">		<span class="built_in">scanf</span>(<span class="string">&quot;%d %s&quot;</span>,&amp;tmp-&gt;num,tmp-&gt;name);</span><br><span class="line">		<span class="keyword">if</span>(i==<span class="number">0</span>)</span><br><span class="line">		&#123;</span><br><span class="line">			linkhead=tmp;</span><br><span class="line">			linkend=tmp;</span><br><span class="line">			linkhead-&gt;last=<span class="literal">NULL</span>; <span class="comment">//因为链头没有上一节点，固其last指针域指向NULL</span></span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span></span><br><span class="line">		&#123;</span><br><span class="line">			tmp-&gt;last=linkend;	<span class="comment">//把上一节点地址存入本节点的last指针中</span></span><br><span class="line">			linkend-&gt;next=tmp;</span><br><span class="line">			linkend=tmp;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	linkend-&gt;next=<span class="literal">NULL</span>;</span><br><span class="line">	<span class="keyword">return</span> linkhead;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>尾插法由于其创建链表的方式为顺序创建，因此只需在原有的基础上添加存放上一节点的指针就行了</p>
+<p>使用双向链表会增加内存，但是就可以通过任意节点找到其他节点了。</p>
+<h2 id="使用前插法创建双向链表"><a href="#使用前插法创建双向链表" class="headerlink" title="使用前插法创建双向链表"></a>使用前插法创建双向链表</h2><p>使用前插法的话会稍微麻烦一些，而且理解起来也会有点绕，感觉用尾插法好一些。</p>
+<p>（这是我自己写的方法，感觉有点绕）</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line"> <span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">list</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">	<span class="type">int</span> num; 	<span class="comment">//数据域</span></span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">list</span> *<span class="title">last</span>;</span>	</span><br><span class="line">   <span class="class"><span class="keyword">struct</span> <span class="title">list</span> *<span class="title">next</span>;</span>	</span><br><span class="line">&#125;test;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> time=<span class="number">1</span>;</span><br><span class="line">test* <span class="title function_">InsertList</span><span class="params">(test *head,<span class="type">int</span> val)</span></span><br><span class="line">&#123;</span><br><span class="line">   test *tmp,*end;</span><br><span class="line">   tmp=(test *)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span> (test));</span><br><span class="line">	<span class="keyword">if</span>(time==<span class="number">1</span>) <span class="comment">//建立第一个节点时将该节点作为链尾</span></span><br><span class="line">	&#123;</span><br><span class="line">		tmp-&gt;num=val;</span><br><span class="line">		tmp-&gt;last=head-&gt;last;</span><br><span class="line">		head-&gt;last=tmp;	</span><br><span class="line">		end=tmp;	<span class="comment">//end作为链尾将一直指向第一个建立的节点，后续不再改变end</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">	&#123;</span><br><span class="line">		tmp-&gt;num=val;</span><br><span class="line">		tmp-&gt;last=head-&gt;last;</span><br><span class="line">		head-&gt;last-&gt;next=tmp;	<span class="comment">//将上一个节点的next指针指向当前节点（有点套娃的感觉）</span></span><br><span class="line">		head-&gt;last=tmp;</span><br><span class="line">		tmp-&gt;next=<span class="literal">NULL</span>; <span class="comment">//每个节点的next先清零，为了让最后一个节点指向null</span></span><br><span class="line">	&#125;</span><br><span class="line">	++time;</span><br><span class="line">	<span class="keyword">return</span> end;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">   <span class="type">int</span> a[<span class="number">3</span>]=&#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>&#125;;</span><br><span class="line">   <span class="type">int</span> i;</span><br><span class="line">   test *linkhead, *linkend;</span><br><span class="line">   linkhead=(test *)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span> (test));</span><br><span class="line">   linkhead-&gt;last=<span class="literal">NULL</span>;</span><br><span class="line">   <span class="keyword">for</span>(i=<span class="number">2</span>;i&gt;=<span class="number">0</span>;--i) <span class="comment">//由于是前插法，所以输入倒序输入</span></span><br><span class="line">   &#123;</span><br><span class="line">      linkend=InsertList(linkhead,a[i]);</span><br><span class="line">   &#125;</span><br><span class="line">   test *p1,*p2;</span><br><span class="line">   p1=linkhead-&gt;last;</span><br><span class="line">   p2=linkend;</span><br><span class="line">   <span class="keyword">while</span>(p1!=<span class="literal">NULL</span>)</span><br><span class="line">   &#123;</span><br><span class="line">      <span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>,p1-&gt;num);</span><br><span class="line">      p1=p1-&gt;last;      </span><br><span class="line">   &#125;</span><br><span class="line">   <span class="keyword">while</span>(p2!=<span class="literal">NULL</span>)</span><br><span class="line">   &#123;</span><br><span class="line">      <span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>,p2-&gt;num);</span><br><span class="line">      p2=p2-&gt;next;      </span><br><span class="line">   &#125;</span><br><span class="line">	system(<span class="string">&quot;pause&quot;</span>);</span><br><span class="line">   <span class="keyword">return</span> <span class="number">0</span>;   </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<img src="/images/loading.png" data-original="/2022/11/18/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E7%BA%BF%E6%80%A7%E8%A1%A8/5.jpg" class title="This is an image"> 
+<p>在写这个双向链表时我遇见了个问题：对于linkend变量，我在主函数中定义后，像通过像linkhead一样的方式对linkend进行改变，但是始终无法实现：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">InsertList</span><span class="params">(test *head,test *end;<span class="type">int</span> val)</span></span><br><span class="line">&#123;</span><br><span class="line">   test *tmp,*end;</span><br><span class="line">   tmp=(test *)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span> (test));</span><br><span class="line">	<span class="keyword">if</span>(time==<span class="number">1</span>) </span><br><span class="line">	&#123;</span><br><span class="line">		tmp-&gt;num=val;</span><br><span class="line">		tmp-&gt;last=head-&gt;last;</span><br><span class="line">		head-&gt;last=tmp;	</span><br><span class="line">		end=tmp;	</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">	&#123;</span><br><span class="line">		tmp-&gt;num=val;</span><br><span class="line">		tmp-&gt;last=head-&gt;last;</span><br><span class="line">		head-&gt;last-&gt;next=tmp;	</span><br><span class="line">		head-&gt;last=tmp;</span><br><span class="line">		tmp-&gt;next=<span class="literal">NULL</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	++time;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">   test *linkhead, *linkend;</span><br><span class="line">   linkhead=(test *)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span> (test));</span><br><span class="line">   linkhead-&gt;last=<span class="literal">NULL</span>;</span><br><span class="line">	...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如果在主函数中没有对linkend分配内存，linkend将成为一个野指针，无法指向字符值常量。</p>
+<p>但是如果分配了内存，由于linkhead是通过last成员来寻找链表，但是linkend却无法像linkhead一样正常实现功能，在经过整整一天的查找资料＆调试后，终于发现了原因：</p>
+<p>当一个函数的形参是结构体指针时，<strong>这个形参本身的地址（不是所指向的地址）和实参的地址（也不是所指向的地址）是不同的</strong>。用例程举例：</p>
+<ul>
+<li><strong>&amp;linkend≠&amp;end，</strong>因此，<strong>在函数中改变形参end所指向的内容是完全不会影响实参linkend的，因为此时这两位可以理解成两个变量</strong></li>
+</ul>
+<p>那这时大家肯定会有个疑惑：那linkhead为什么就可以实现想要链表功能呢？</p>
+<p>我们仔细看InsertList函数中的内容，你肯定会发现，函数中没有出现直接操作linkhead的操作，只有操作linkhead成员的操作，<strong>这里就引出了一个折磨了我半天的知识点</strong>：</p>
+<ul>
+<li><p>对于一个结构体指针形参，形参名的地址和实参名的地址是不能划等号的，<strong>但是形参成员的地址和实参成员的地址是完全相同的</strong>，用例程举个例子</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&amp;linkend≠&amp;end</span><br><span class="line">linkend-&gt;next=end-&gt;next      (=是等于的意思，不是赋值的意思)</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>其实这里的解释有点类似于在<a target="_blank" rel="noopener" href="https://dhkkk.gitee.io/2022/08/01/C-结构体/">结构体复习 | 小董的BLOG (gitee.io)</a>最后我对一重指针的解释：</p>
+<ul>
+<li><strong>假如有两个并列的指针指向同一个变量，你不能通过改变其中一个指针的指向来影响另一个指针的指向</strong></li>
+</ul>
+<p>那么这时又引出了一个问题，形参end和实参linkend指向哪里？</p>
+<p>先说一下结论：<strong>linkend和end都指向linkend的第一个成员num的地址。</strong></p>
+<p>也就是说，<strong>形参end和实参linkend作为两个不同的指针变量，他们指向了同一个地址</strong>（也许可以通过这一特性来写一个链表？但是我不想写了😋）</p>
+<p>其实这个知识点符合我们对形参和指针变量的认知，所以这里比较重要的点其实是：</p>
+<ul>
+<li>不同于数组，<strong>结构体指针名地址≠第一个成员的地址，但指针名指向第一个成员的地址</strong>，可以理解为，结构体指针名指向一块内存，该内存是由若干个结构体成员组成的，这些成员的类型在定义结构体时确定。</li>
+</ul>
+<p>这也加深了我对<code>end=(LNode*)malloc(sizeof (LNode));</code>的理解，<strong>其实就是一个指针指向了一块内存，但是可以通过结构体的方式访问这块内存中的成员</strong></p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><ul>
+<li><strong>当一个函数的参数是结构体指针时，操作这个函数的形参名不会影响实参，同时这个形参名的作用域只限于函数体；但是操作这个形参的任何成员等同于直接操作实参的对应成员，因为它们本身的地址是相同的</strong></li>
+<li><strong>结构体指针名指向第一个成员的地址</strong></li>
+</ul>
+<p><strong>所以，结构体指针并不一定要指向一个明确的结构体，当他指向一块内存时，可以通过直接赋值结构体指针成员的方式操作这块内存</strong>（这块内存其实就是一个隐式的，没有具体名字的结构体）</p>
+<p>一些感想：好久没有遇到过这么折磨的问题了，一开始完全没有头绪，网络上对于这方面的讲解也是几乎没有，还好找到了这篇博客启发了我<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_36733983/article/details/92184983?ops_request_misc=%7B%22request%5Fid%22%3A%22166891705416800213084052%22%2C%22scm%22%3A%2220140713.130102334.pc%5Fall.%22%7D&amp;request_id=166891705416800213084052&amp;biz_id=0&amp;utm_medium=distribute.pc_search_result.none-task-blog-2~all~first_rank_ecpm_v1~rank_v31_ecpm-1-92184983-null-null.142^v65^pc_rank_34_queryrelevant25,201^v3^add_ask,213^v2^t3_esquery_v3&amp;utm_term=C 指针作为参数的作用域&amp;spm=1018.2226.3001.4187">C语言理解指针作为形参作用</a>（博客中用的C++，但是原理是完全相同的）</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2022/11/09/matlab/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1378,87 +1521,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2022/10/30/C-%E6%9D%82%E9%A1%B9/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/zoe.gif">
-      <meta itemprop="name" content="dhk">
-      <meta itemprop="description" content="记录一些学习日常">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="小董的BLOG">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/10/30/C-%E6%9D%82%E9%A1%B9/" class="post-title-link" itemprop="url">C_杂项</a>
-        </h2>
-
-        <div class="post-meta">
-		  
-		  
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2022-10-30 19:41:19" itemprop="dateCreated datePublished" datetime="2022-10-30T19:41:19+08:00">2022-10-30</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2023-02-10 23:20:56" itemprop="dateModified" datetime="2023-02-10T23:20:56+08:00">2023-02-10</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="位域结构体"><a href="#位域结构体" class="headerlink" title="位域结构体"></a>位域结构体</h1><p>有时候，信息存储的时候，并不需要一个完整的字节，而只需占几个或一个二进制位就能满足需求。例如存放一个bool类型的变量，只需要true或者false即可，这种情况下，只需要0或者1一位二进制位即可。为了节省存储空间，并使处理简便，C语言又提供了一种数据结构，称为“位域”或“位段”。<strong>所谓“位域”是把一个字节中的二进位划分为几个不同的区域，并说明每个区域的位数。</strong>每个域有一个域名，允许在程序中按域名进行操作。<strong>这样就可以把几个不同的对象用一个字节的二进制位域来表示。</strong></p>
-<p>格式：</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> _<span class="title">net_pro_cdu</span>  </span></span><br><span class="line"><span class="class">&#123;</span> </span><br><span class="line">    <span class="type">unsigned</span>  <span class="type">char</span> acs:<span class="number">4</span> </span><br><span class="line">    <span class="type">unsigned</span>  <span class="type">char</span> :<span class="number">0</span>  </span><br><span class="line">    <span class="type">unsigned</span>  <span class="type">char</span> ace:<span class="number">4</span>  </span><br><span class="line">    <span class="type">unsigned</span>  <span class="type">char</span> dve:<span class="number">4</span> </span><br><span class="line">&#125; Ncdu;</span><br></pre></td></tr></table></figure>
-<p>注意：</p>
-<ul>
-<li>无位域名的位域不能使用，仅用来填充、调整尾置（如第四行）</li>
-<li>位大小不能超过定义用的类型（如上述例子位数不能超过8）</li>
-</ul>
-<h1 id="volatile关键字"><a href="#volatile关键字" class="headerlink" title="volatile关键字"></a>volatile关键字</h1><p>声明一个变量是易变的，可以防止编译器对程序一些变量运算的过度优化。</p>
-<h1 id="for循环执行顺序"><a href="#for循环执行顺序" class="headerlink" title="for循环执行顺序"></a>for循环执行顺序</h1><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="type">int</span> i =<span class="number">0</span>; i&lt;<span class="number">5</span>;i++)&#123;</span><br><span class="line">     <span class="comment">// 循环体</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>执行顺序解抛<br>执行的顺序如下：<br>第一步 ： i=0  初始化值<br>第二步 ： i&lt;5 进行条件判断，如果为真，则继续执行<br>第三步 ： 执行循环体的内容<br>第四步 ： i++ 变量i自增<br>第五步 ： 回到第二步，条件判断为真，则执行循环体内容，再到i++一直循环，<br>直到第二步的判断条件为假，则退出该循环</p>
-<p>原文链接：<a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_44080187/article/details/123429045">https://blog.csdn.net/weixin_44080187/article/details/123429045</a></p>
-<h1 id="union类型"><a href="#union类型" class="headerlink" title="union类型"></a>union类型</h1><h2 id="长度问题"><a href="#长度问题" class="headerlink" title="长度问题"></a>长度问题</h2><p>实例化为变量后，这个变量的长度是这个union中最长的数据类型的长度</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">union</span> <span class="title">DEMO</span>&#123;</span> </span><br><span class="line">     <span class="type">char</span> status;</span><br><span class="line">     <span class="type">int</span> a; </span><br><span class="line">     <span class="type">int</span> serial[<span class="number">4</span>]; </span><br><span class="line">&#125;demo；<span class="comment">//大小为16字节</span></span><br></pre></td></tr></table></figure>
-<h2 id="数据访问"><a href="#数据访问" class="headerlink" title="数据访问"></a>数据访问</h2><p>对于union成员，地址相同，存储有点像并列一样的存储（？我是这么理解的），一个成员变化一定会影响其他成员</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   
   <nav class="pagination">
     <a class="extend prev" rel="prev" href="/page/13/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/13/">13</a><span class="page-number current">14</span><a class="page-number" href="/page/15/">15</a><span class="space">&hellip;</span><a class="page-number" href="/page/22/">22</a><a class="extend next" rel="next" href="/page/15/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
@@ -1528,7 +1590,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">64</span>
+          <span class="site-state-item-count">65</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1645,11 +1707,11 @@
         pbOptions.networks = "Wechat,QQZone,Weibo,Douban,Twitter,Facebook";
       new needShareButton('#needsharebutton-postbottom', pbOptions);
   </script>
-<script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script><script>
             window.imageLazyLoadSetting = {
                 isSPA: false,
                 preloadRatio: 1,
                 processImages: null,
             };
-        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(e.href.match(t)||e.href.match(r))&&(e.href=a.dataset.original)})});</script><script>!function(n){n.imageLazyLoadSetting.processImages=o;var e=n.imageLazyLoadSetting.isSPA,i=n.imageLazyLoadSetting.preloadRatio||1,r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]"));function o(){e&&(r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")));for(var t,a=0;a<r.length;a++)0<=(t=(t=r[a]).getBoundingClientRect()).bottom&&0<=t.left&&t.top<=(n.innerHeight*i||document.documentElement.clientHeight*i)&&function(){var t,e,n,i,o=r[a];t=o,e=function(){r=r.filter(function(t){return o!==t})},n=new Image,i=t.getAttribute("data-original"),n.onload=function(){t.src=i,e&&e()},t.src!==i&&(n.src=i)}()}o(),n.addEventListener("scroll",function(){var t,e;t=o,e=n,clearTimeout(t.tId),t.tId=setTimeout(function(){t.call(e)},500)})}(this);</script><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script></body>
+        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(e.href.match(t)||e.href.match(r))&&(e.href=a.dataset.original)})});</script><script>!function(n){n.imageLazyLoadSetting.processImages=o;var e=n.imageLazyLoadSetting.isSPA,i=n.imageLazyLoadSetting.preloadRatio||1,r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]"));function o(){e&&(r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")));for(var t,a=0;a<r.length;a++)0<=(t=(t=r[a]).getBoundingClientRect()).bottom&&0<=t.left&&t.top<=(n.innerHeight*i||document.documentElement.clientHeight*i)&&function(){var t,e,n,i,o=r[a];t=o,e=function(){r=r.filter(function(t){return o!==t})},n=new Image,i=t.getAttribute("data-original"),n.onload=function(){t.src=i,e&&e()},t.src!==i&&(n.src=i)}()}o(),n.addEventListener("scroll",function(){var t,e;t=o,e=n,clearTimeout(t.tId),t.tId=setTimeout(function(){t.call(e)},500)})}(this);</script></body>
 </html>

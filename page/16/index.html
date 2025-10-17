@@ -197,6 +197,141 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2022/10/11/C++-5/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/zoe.gif">
+      <meta itemprop="name" content="dhk">
+      <meta itemprop="description" content="记录一些学习日常">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小董的BLOG">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/10/11/C++-5/" class="post-title-link" itemprop="url">C++的语句与函数</a>
+        </h2>
+
+        <div class="post-meta">
+		  
+		  
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-10-11 16:00:25" itemprop="dateCreated datePublished" datetime="2022-10-11T16:00:25+08:00">2022-10-11</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-10-30 19:06:41" itemprop="dateModified" datetime="2022-10-30T19:06:41+08:00">2022-10-30</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="try语句与异常处理"><a href="#try语句与异常处理" class="headerlink" title="try语句与异常处理"></a>try语句与异常处理</h1><p>通常的异常处理包括三部分：</p>
+<ul>
+<li>throw表达式：使用throw表达式表示当前程序遇到了某个问题（异常声明）</li>
+<li>try语句块：与catch配合用于处理各类异常声明</li>
+<li>一套异常类：用于传递具体的异常信息（异常声明的含义）</li>
+</ul>
+<h2 id="例程"><a href="#例程" class="headerlink" title="例程"></a>例程</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;windows.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdexcept&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> std::vector;</span><br><span class="line"><span class="keyword">using</span> std::string;</span><br><span class="line"><span class="keyword">using</span> std::cin;</span><br><span class="line"><span class="keyword">using</span> std::cout;</span><br><span class="line"><span class="keyword">using</span> std::endl;</span><br><span class="line"><span class="keyword">using</span> std::runtime_error;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="type">int</span> a,b;</span><br><span class="line">    cin&gt;&gt;a&gt;&gt;b;</span><br><span class="line">    <span class="keyword">try</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span>(a!=b) <span class="keyword">throw</span> <span class="built_in">runtime_error</span>(<span class="string">&quot;ERROR!!!&quot;</span>);</span><br><span class="line">        cout&lt;&lt;<span class="string">&quot;good&quot;</span>&lt;&lt;endl;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">catch</span>(runtime_error err)</span><br><span class="line">    &#123;</span><br><span class="line">        cout&lt;&lt;err.<span class="built_in">what</span>();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">system</span>(<span class="string">&quot;pause&quot;</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="throw表达式"><a href="#throw表达式" class="headerlink" title="throw表达式"></a>throw表达式</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(a!=b) <span class="keyword">throw</span> <span class="built_in">runtime_error</span>(<span class="string">&quot;ERROR!!!&quot;</span>);</span><br></pre></td></tr></table></figure>
+<p>格式：throw+异常类+初始化异常类对象</p>
+<ul>
+<li><p>该初始化的对象只用于提供一些关于异常的辅助信息（用户自行定义）</p>
+</li>
+<li><p>异常类为一系列在库中定义的类型，使用时需要声明其命名空间，以下是几种常用的异常类，在头文件stdexcept中</p>
+<p>|    exception    |                  一般错误                  |<br>| :——————-: | :————————————————————: |<br>|  runtime_error  |           运行时才能检测出的任务           |<br>|   range_error   | 运行时：生成结果超出有意义的值域范围的错误 |<br>| overflow_error  |            运行时：计算上溢错误            |<br>| underflow_error |            运行时：计算下溢错误            |<br>|   logic_error   |                程序逻辑错误                |<br>|  domain_error   |       逻辑错误：参数对应的结果不存在       |<br>|  invalid_error  |             逻辑错误：无效参数             |<br>|  length_error   |         逻辑错误：超出对象类型长度         |<br>|  out_of_range   |           逻辑错误：超出有效范围           |</p>
+<ul>
+<li><p>除exception外其他类型都<strong>必须</strong>用一个字符串初始化，而exception则不允许这种初始化</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">if</span>(a!=b) <span class="keyword">throw</span> <span class="built_in">exception</span>();</span><br><span class="line">	cout&lt;&lt;<span class="string">&quot;good&quot;</span>&lt;&lt;endl;</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">catch</span>(exception)</span><br><span class="line">&#123;</span><br><span class="line">   cout&lt;&lt;<span class="string">&quot;ERROR!!&quot;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="try语句块"><a href="#try语句块" class="headerlink" title="try语句块"></a>try语句块</h2><p>格式：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span></span><br><span class="line">&#123; &#125;<span class="comment">//程序正常逻辑，异常类在此throw出 </span></span><br><span class="line"><span class="built_in">catch</span>(异常声明)</span><br><span class="line">&#123;&#125;</span><br><span class="line"><span class="built_in">catch</span>(异常声明)</span><br><span class="line">&#123;&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>当try内一旦提出异常类时，就不再执行该throw表达式后的内容；反之，若没有throw任何异常，则不会触发任何catch语句，程序正常执行完try语句。</li>
+<li>catch括号中需定义一个对象，类型为触发的异常类，这些异常类只有一个子函数what，用于输出初始化时的字符串（不能用于exception类）</li>
+</ul>
+<p>当有多个try语句块嵌套时，当最内部try提出了一个异常，会由内到外执行catch，若最终都没有对应catch，则程序转到terminate的标准库函数，该函数行为与系统有关，通常执行该函数会导致程序非正常退出。</p>
+<h1 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h1><h2 id="参数传递"><a href="#参数传递" class="headerlink" title="参数传递"></a>参数传递</h2><ul>
+<li>形参实参之间的转递为值拷贝</li>
+<li>C++中建议用引用类型的形参代替指针形参，引用类型同样可以达到修改值的内容，并且可以避免拷贝，因为引用是与实参绑定的。</li>
+</ul>
+<h2 id="数组的传递"><a href="#数组的传递" class="headerlink" title="数组的传递"></a>数组的传递</h2><p>以下三种对形参的定义是等价的：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">a</span><span class="params">(<span class="type">const</span> <span class="type">int</span>*)</span></span>;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">b</span><span class="params">(<span class="type">const</span> <span class="type">int</span>[])</span></span>;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">c</span><span class="params">(<span class="type">const</span> <span class="type">int</span>[<span class="number">10</span>])</span></span>;</span><br></pre></td></tr></table></figure>
+<p>编译器在编译时只会检查传入的参数类型是否为const int*型，甚至不会检查传入数组的长度是否超出形参大小。</p>
+<h3 id="数组的引用形参"><a href="#数组的引用形参" class="headerlink" title="数组的引用形参"></a>数组的引用形参</h3><p>可以使用数组的引用作为形参：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">test</span><span class="params">(<span class="type">int</span> (&amp;arr)[<span class="number">10</span>])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">   <span class="keyword">for</span>(<span class="keyword">auto</span> elem : arr)</span><br><span class="line">      cout&lt;&lt;elem&lt;&lt;endl;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>使用数组的引用作为形参需要注意：</p>
+<ul>
+<li>初始化时必须使用括号括起&amp;arr</li>
+<li>输入的实参<strong>必须为一个int [10]类型</strong>的对象</li>
+</ul>
+<h2 id="函数的返回类型"><a href="#函数的返回类型" class="headerlink" title="函数的返回类型"></a>函数的返回类型</h2><h3 id="返回引用"><a href="#返回引用" class="headerlink" title="返回引用"></a>返回引用</h3><p>函数返回引用可以理解为返回的为一个地址</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">char</span> <span class="title">test1</span><span class="params">(string s ,string::size_type num)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">   <span class="keyword">return</span> s[num];</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">char</span> &amp;<span class="title">test2</span><span class="params">(string &amp;s ,string::size_type num)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">   <span class="keyword">return</span> s[num];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">   <span class="function">srting <span class="title">s</span><span class="params">(<span class="string">&quot;test&quot;</span>)</span></span>;</span><br><span class="line">   cout&lt;&lt;<span class="built_in">test1</span>(s,<span class="number">0</span>)&lt;&lt;endl; <span class="comment">//t</span></span><br><span class="line">   <span class="built_in">test2</span>(s,<span class="number">0</span>)=<span class="string">&#x27;a&#x27;</span>;</span><br><span class="line">   cout&lt;&lt;s[<span class="number">0</span>]&lt;&lt;endl;       <span class="comment">//a</span></span><br><span class="line">   <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>当一个函数的返回值为引用时，该返回值为左值而非右值，因此可以像使用其他左值一样使用这个返回值</p>
+<p>（注：左值≠地址，它仍然是一个值）</p>
+<ul>
+<li><p><strong>不可返回局部变量的引用</strong>，由于局部变量在函数完成后会被释放，因此在函数完成后引用会找不到它的对象。例如上一个例程，如果把test2()函数改为：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">char</span> &amp;<span class="title">test2</span><span class="params">(string s ,string::size_type num)</span><span class="comment">//此处形参不再是引用</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">   <span class="keyword">return</span> s[num];</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">   <span class="function">srting <span class="title">s</span><span class="params">(<span class="string">&quot;test&quot;</span>)</span></span>;</span><br><span class="line">   <span class="built_in">test2</span>(s,<span class="number">0</span>)=<span class="string">&#x27;a&#x27;</span>;</span><br><span class="line">   cout&lt;&lt;s[<span class="number">0</span>]&lt;&lt;endl;      <span class="comment">//t</span></span><br><span class="line">   <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>该函数的返回值为对s的引用，但s本身为一个局部变量，在函数完成时已经被释放，因此该引用是无效的（但是这样<strong>返回形参的引用</strong>编译器并不会报错，而返回<strong>函数内定义的局部变量</strong>的引用会报错）</p>
+<p>但如果形参定义为引用，由于引用本身是不占用存储空间的，所以’a’可以通过引用直接向s[0]赋值</p>
+</li>
+</ul>
+<h3 id="返回数组指针"><a href="#返回数组指针" class="headerlink" title="返回数组指针"></a>返回数组指针</h3><ul>
+<li><p>尾置返回类型</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">auto</span> <span class="title">func</span><span class="params">(<span class="type">int</span> i)</span> -&gt; <span class="title">int</span><span class="params">(*)</span>[10]</span></span><br></pre></td></tr></table></figure>
+<p>声明函数的返回值为一个含有十个整数的数组的指针</p>
+</li>
+<li><p>使用decltype</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> test[<span class="number">5</span>]=&#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>&#125;;</span><br><span class="line"><span class="keyword">decltype</span>(test) *<span class="built_in">func</span>()</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">return</span> &amp;test;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;	</span><br><span class="line">	cout&lt;&lt;*(*func+<span class="number">1</span>); <span class="comment">//输出2</span></span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>decltype(test)的结果是一个数组，因此函数前要用*声明返回值为指针</li>
+<li>使用此方法返回的是一个数组的整体地址，而不是首地址，类型为int*[5]，因此一次解引用的结果才是首地址</li>
+</ul>
+</li>
+</ul>
+<h2 id="内联函数"><a href="#内联函数" class="headerlink" title="内联函数"></a>内联函数</h2><p>正常的调用函数一般比等价的表达式要慢（保存寄存器、拷贝等操作），因此对于规模较小的函数可以定义为内联函数类型：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">inline</span> <span class="type">int</span> <span class="title">fuc</span><span class="params">(<span class="type">int</span> a,<span class="type">int</span> b)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">return</span> a+b;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="constexpr函数"><a href="#constexpr函数" class="headerlink" title="constexpr函数"></a>constexpr函数</h2><p>将函数隐式地定义为内联函数，但函数内只能有一条return语句，且返回值必须为字面值</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2022/10/03/C++-4/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -537,138 +672,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2022/09/15/C++-3/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/zoe.gif">
-      <meta itemprop="name" content="dhk">
-      <meta itemprop="description" content="记录一些学习日常">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="小董的BLOG">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/09/15/C++-3/" class="post-title-link" itemprop="url">C++字符串、向量和数组</a>
-        </h2>
-
-        <div class="post-meta">
-		  
-		  
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2022-09-15 19:34:35" itemprop="dateCreated datePublished" datetime="2022-09-15T19:34:35+08:00">2022-09-15</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2023-01-12 14:45:43" itemprop="dateModified" datetime="2023-01-12T14:45:43+08:00">2023-01-12</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="字符串、向量和数组"><a href="#字符串、向量和数组" class="headerlink" title="字符串、向量和数组"></a>字符串、向量和数组</h1><h2 id="1、using声明"><a href="#1、using声明" class="headerlink" title="1、using声明"></a>1、using声明</h2><p>作用：使用using声明命名空间的相关成员后，后续不需再声明</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> std::cin;</span><br><span class="line"><span class="type">int</span> i;</span><br><span class="line">cin&gt;&gt;i;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>每个名字都需要独立的using声明</li>
-</ul>
-<h2 id="2、string类型"><a href="#2、string类型" class="headerlink" title="2、string类型"></a>2、string类型</h2><ul>
-<li>使用前需包含头文件<code>&lt;string&gt;</code>(没有.h)，且需声明string定义于命名空间中</li>
-</ul>
-<h3 id="初始化string类型的方法"><a href="#初始化string类型的方法" class="headerlink" title="初始化string类型的方法"></a>初始化string类型的方法</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">string s1;</span><br><span class="line">string s2=s1;</span><br><span class="line"><span class="function">string <span class="title">s3</span><span class="params">(<span class="string">&quot;value&quot;</span>)</span></span>;</span><br><span class="line">string s3 =<span class="string">&quot;value&quot;</span>;</span><br><span class="line"><span class="function">string <span class="title">s4</span><span class="params">(n,<span class="string">&#x27;c&#x27;</span>)</span></span>;<span class="comment">//此处只能为字符</span></span><br></pre></td></tr></table></figure>
-<h3 id="读写string对象"><a href="#读写string对象" class="headerlink" title="读写string对象"></a>读写string对象</h3><p>当要将标准输入内容读取到一个string对象时，string对象会自动忽略开头的空白（空格、换行等），从第一个真正的字符开始，直到遇到遇到下一个空白（但读取结束的标准是换行）</p>
-<h3 id="使用getline函数读取一整行"><a href="#使用getline函数读取一整行" class="headerlink" title="使用getline函数读取一整行"></a>使用getline函数读取一整行</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">string s;</span><br><span class="line"><span class="built_in">getline</span>(cin,s);</span><br></pre></td></tr></table></figure>
-<p>getline只有当读取到换行符时才会结束，并且这个换行符会被丢弃。</p>
-<h3 id="相加问题"><a href="#相加问题" class="headerlink" title="相加问题"></a>相加问题</h3><p>string对象可以相加，string对象也可以与字面值相加，<strong>但字面值不能与字面值相加！</strong></p>
-<h3 id="单独处理字符"><a href="#单独处理字符" class="headerlink" title="单独处理字符"></a>单独处理字符</h3><p>C++11提供了一种语句：范围for</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">string <span class="built_in">str</span>(<span class="string">&quot;something&quot;</span>);</span><br><span class="line"><span class="keyword">for</span>(auto c:<span class="built_in">str</span>)	cout&lt;&lt;c&lt;&lt;endl;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>每次循环中，都会把序列中的<strong>基础元素</strong>存入c中</li>
-</ul>
-<p>还可以通过引用等方式单独改变字符</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">string <span class="title">str</span><span class="params">(<span class="string">&quot;something&quot;</span>)</span></span>;</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">auto</span> &amp;c:str)	c=<span class="built_in">toupper</span>(c);<span class="comment">//大写转换函数</span></span><br></pre></td></tr></table></figure>
-<h3 id="下标问题"><a href="#下标问题" class="headerlink" title="下标问题"></a>下标问题</h3><p>C++支持对字符串使用下标运算符<code>[]</code>访问字符串的单个字符，规则同python，但貌似C++不支持截取。</p>
-<h2 id="3、vector类型"><a href="#3、vector类型" class="headerlink" title="3、vector类型"></a>3、vector类型</h2><p>要想使用vector，需包含<code>&lt;vector&gt;</code>头文件。<strong>类型vector表示对象的集合</strong></p>
-<p>实例化：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">vector&lt;<span class="type">int</span>&gt; a;</span><br><span class="line">vector&lt;vector&lt;<span class="type">int</span>&gt;&gt; b;</span><br></pre></td></tr></table></figure>
-<h3 id="定义与初始化"><a href="#定义与初始化" class="headerlink" title="定义与初始化"></a>定义与初始化</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">vector&lt;<span class="type">int</span>&gt; a;</span><br><span class="line"><span class="function">vector&lt;<span class="type">int</span>&gt; <span class="title">a</span><span class="params">(b)</span></span>; <span class="comment">//a包含b中所有元素的副本 a和b的类型需相同</span></span><br><span class="line">vector&lt;<span class="type">int</span>&gt; a=b;</span><br><span class="line"><span class="function">vector&lt;<span class="type">int</span>&gt; <span class="title">a</span><span class="params">(n,val)</span></span>; <span class="comment">//a中有n个重复的val</span></span><br><span class="line"><span class="function">vector&lt;<span class="type">int</span>&gt; <span class="title">a</span><span class="params">(n)</span></span>; <span class="comment">//包含n个对象</span></span><br><span class="line">vector&lt;<span class="type">int</span>&gt; a&#123;A,B,C&#125;;</span><br><span class="line">vector&lt;<span class="type">int</span>&gt; a=&#123;A,B,C&#125;;</span><br></pre></td></tr></table></figure>
-<h3 id="向vector对象尾部添加元素"><a href="#向vector对象尾部添加元素" class="headerlink" title="向vector对象尾部添加元素"></a>向vector对象尾部添加元素</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">vector&lt;<span class="type">int</span>&gt; a;</span><br><span class="line">a.<span class="built_in">push_back</span>(<span class="number">1</span>);<span class="comment">//a=&#123;1&#125;</span></span><br></pre></td></tr></table></figure>
-<h3 id="其他函数"><a href="#其他函数" class="headerlink" title="其他函数"></a>其他函数</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">a.<span class="built_in">empty</span>(); <span class="comment">//如果a不含元素则返回真</span></span><br><span class="line">a.<span class="built_in">size</span>(); <span class="comment">//返回元素个数</span></span><br></pre></td></tr></table></figure>
-<p>其他的类函数参考书p91</p>
-<h3 id="索引"><a href="#索引" class="headerlink" title="索引"></a>索引</h3><p>vector对象同样支持使用下标运算符进行单个元素的索引，但不能通过下标添加元素。</p>
-<h2 id="4、迭代器"><a href="#4、迭代器" class="headerlink" title="4、迭代器"></a>4、迭代器</h2><p>迭代器（iterator）是一种可以遍历容器元素的数据类型。迭代器是一个变量，相当于容器和操纵容器的算法之间的中介。<strong>C++更趋向于使用迭代器而不是数组下标操作</strong>，因为标准库为每一种标准容器（如vector、map和list等）定义了一种迭代器类型，而只有少数容器（如vector）支持数组下标操作访问容器元素。可以通过迭代器指向你想访问容器的元素地址，通过*x打印出元素值。这和我们所熟知的指针极其类似。</p>
-<p>C语言有指针，指针用起来十分灵活高效。<br>C++语言有迭代器，迭代器相对于指针而言功能更为丰富。</p>
-<h3 id="迭代器的使用"><a href="#迭代器的使用" class="headerlink" title="迭代器的使用"></a>迭代器的使用</h3><p>可以看出，迭代器的基本使用和指针极其相似</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	vector&lt;string&gt; v&#123;<span class="string">&quot;aaaa&quot;</span>,<span class="string">&quot;bbbb&quot;</span>&#125;;</span><br><span class="line">	<span class="keyword">auto</span> i=v.<span class="built_in">begin</span>();</span><br><span class="line">	cout&lt;&lt;*(i+<span class="number">1</span>); <span class="comment">//bbbb</span></span><br><span class="line">	<span class="built_in">system</span>(<span class="string">&quot;pause&quot;</span>);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="迭代器运算符"><a href="#迭代器运算符" class="headerlink" title="迭代器运算符"></a>迭代器运算符</h3><ul>
-<li><p>获得迭代器所指元素</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">*iter  <span class="keyword">or</span>  iter-&gt;mem</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>获取迭代器长度</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">i.<span class="built_in">end</span>()-i.<span class="built_in">begin</span>()</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<h3 id="迭代器类型"><a href="#迭代器类型" class="headerlink" title="迭代器类型"></a>迭代器类型</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">vector&lt;string&gt; v&#123;<span class="string">&quot;aaaa&quot;</span>,<span class="string">&quot;bbbb&quot;</span>&#125;;</span><br><span class="line"><span class="keyword">auto</span> i=v.<span class="built_in">begin</span>();</span><br><span class="line"><span class="comment">//vector&lt;string&gt;::iterator i; 类型</span></span><br><span class="line"></span><br><span class="line"><span class="function">string <span class="title">str</span><span class="params">(<span class="string">&quot;12345&quot;</span>)</span></span>;</span><br><span class="line"><span class="keyword">auto</span> i=str.<span class="built_in">begin</span>();</span><br><span class="line"><span class="comment">//string::iterator i; 类型</span></span><br><span class="line"></span><br><span class="line">对应的只读类型</span><br><span class="line"><span class="comment">//vector&lt;string&gt;::const_iterator v;</span></span><br><span class="line"><span class="comment">//string::const_iterator str;</span></span><br></pre></td></tr></table></figure>
-<h3 id="当需要对迭代器进行遍历时，需注意for循环的条件3："><a href="#当需要对迭代器进行遍历时，需注意for循环的条件3：" class="headerlink" title="当需要对迭代器进行遍历时，需注意for循环的条件3："></a>当需要对迭代器进行遍历时，需注意for循环的条件3：</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	vector&lt;<span class="type">int</span>&gt; v&#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>,<span class="number">8</span>,<span class="number">9</span>,<span class="number">10</span>&#125;;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">auto</span> i=v.<span class="built_in">begin</span>(); i !=v.<span class="built_in">end</span>(); ++i)<span class="comment">//应使用++i，这是因为end为元素10之后的位置	</span></span><br><span class="line">	&#123;</span><br><span class="line">		*i=*i*<span class="number">2</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">auto</span> a:v) cout&lt;&lt;a&lt;&lt;endl;</span><br><span class="line">	<span class="built_in">system</span>(<span class="string">&quot;pause&quot;</span>);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="5、数组"><a href="#5、数组" class="headerlink" title="5、数组"></a>5、数组</h2><p>大部分规定与C相同。</p>
-<ul>
-<li><p>定义数组时不允许用auto关键字由初始值推断类型。</p>
-</li>
-<li><p>可使用decltype(数组名)定义数组类型。</p>
-</li>
-<li><p><strong>数组不是类类型，因此没有成员函数。</strong></p>
-<p>因此C++11引入了begin、end函数来查询数组相关元素的<strong>地址</strong></p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> a[]=&#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>&#125;;</span><br><span class="line"><span class="type">int</span> *p=<span class="built_in">begin</span>(a);</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<p>注意：end()和vector类型的子函数.end()不同，end()函数返回的是数组最后一个元素的地址，而vector类型的end子函数返回的是最后一个元素的后一位地址</p>
-<h3 id="单个元素类型"><a href="#单个元素类型" class="headerlink" title="单个元素类型"></a>单个元素类型</h3><p>通常对数组的单个类型定义为size_t型，该类型为一种机器相关的无符号类型，它被设计得足够大以便能表示内存中任意对象的大小</p>
-<p><strong>要使用该类型，应包含cstddef头文件</strong></p>
-<h3 id="C与C-的字符串风格"><a href="#C与C-的字符串风格" class="headerlink" title="C与C++的字符串风格"></a>C与C++的字符串风格</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">char</span> a[<span class="number">10</span>]=<span class="string">&quot;dhk&quot;</span>; <span class="comment">//C风格</span></span><br><span class="line"><span class="function">string <span class="title">a</span><span class="params">(<span class="string">&quot;dhk&quot;</span>)</span></span>;	<span class="comment">//C++风格</span></span><br></pre></td></tr></table></figure>
-<p>在C中，通常我们要对字符串进行一些例如比较、拷贝、连接等的操作时，通常使用的是标准库中的相关字符串长度，相较于C++中string类型的变量可以对存放字符串的变量直接进行运算等操作，C的字符串风格更加繁琐，且极容易在数组的内存方面引发严重问题</p>
-<h4 id="混用规则："><a href="#混用规则：" class="headerlink" title="混用规则："></a>混用规则：</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">string <span class="title">a</span><span class="params">(<span class="string">&quot;dhk&quot;</span>)</span></span>;</span><br><span class="line"><span class="type">char</span> *str=a;<span class="comment">//错误，a的类型为string，而str类型为char*，冲突</span></span><br><span class="line"><span class="type">char</span> *str=a.<span class="built_in">c_str</span>();<span class="comment">//正确。c_str()函数返回的是C风格字符串（一个地址）</span></span><br></pre></td></tr></table></figure>
-<p>上述用法相当于是<strong>又</strong>在内存中创建了一个”dhk”字符串，而用于找到该字符串的指针一旦改变，该字符串就将不能再被找到，因此通常对存放该类型的指针进行const操作。其规则类似C中的<code>char *str=&quot;dhk&quot;</code>所遵循的规则。</p>
-<h3 id="使用数组初始化vector类型"><a href="#使用数组初始化vector类型" class="headerlink" title="使用数组初始化vector类型"></a>使用数组初始化vector类型</h3><p>C++不允许用一个数组为另一个数组赋初值，也不允许通过vector类型对象为一个数组初始化，但是允许通过数组为vector对象初始化。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> a[]=&#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>&#125;;</span><br><span class="line"><span class="function">vector&lt;<span class="type">int</span>&gt; <span class="title">v</span><span class="params">(begin(a),end(a))</span></span>;</span><br></pre></td></tr></table></figure>
-<h2 id="6、多维数组"><a href="#6、多维数组" class="headerlink" title="6、多维数组"></a>6、多维数组</h2><p>一些基础内容同C，详见<u>二维数组复习 | 小董的BLOG (gitee.io)</u></p>
-<p>多维数组可以理解为数组的数组例如<code>int a[3][4]</code>可以理解为a数组包含三个元素，而这三个元素都为大小为4的数组</p>
-<h3 id="下标引用"><a href="#下标引用" class="headerlink" title="下标引用"></a>下标引用</h3><h3 id="使用范围for语句和下标引用处理多维数组"><a href="#使用范围for语句和下标引用处理多维数组" class="headerlink" title="使用范围for语句和下标引用处理多维数组"></a>使用范围for语句和下标引用处理多维数组</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> a[<span class="number">3</span>][<span class="number">4</span>]=&#123;<span class="number">0</span>&#125;;</span><br><span class="line"><span class="type">size_t</span> x=<span class="number">0</span>;</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">auto</span> &amp;row : a)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">auto</span> &amp;col : row)</span><br><span class="line">	&#123;</span><br><span class="line">		col=x;</span><br><span class="line">		x++;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   
   <nav class="pagination">
     <a class="extend prev" rel="prev" href="/page/15/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/15/">15</a><span class="page-number current">16</span><a class="page-number" href="/page/17/">17</a><span class="space">&hellip;</span><a class="page-number" href="/page/22/">22</a><a class="extend next" rel="next" href="/page/17/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
@@ -738,7 +741,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">64</span>
+          <span class="site-state-item-count">65</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -855,11 +858,11 @@
         pbOptions.networks = "Wechat,QQZone,Weibo,Douban,Twitter,Facebook";
       new needShareButton('#needsharebutton-postbottom', pbOptions);
   </script>
-<script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script><script>
             window.imageLazyLoadSetting = {
                 isSPA: false,
                 preloadRatio: 1,
                 processImages: null,
             };
-        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(e.href.match(t)||e.href.match(r))&&(e.href=a.dataset.original)})});</script><script>!function(n){n.imageLazyLoadSetting.processImages=o;var e=n.imageLazyLoadSetting.isSPA,i=n.imageLazyLoadSetting.preloadRatio||1,r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]"));function o(){e&&(r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")));for(var t,a=0;a<r.length;a++)0<=(t=(t=r[a]).getBoundingClientRect()).bottom&&0<=t.left&&t.top<=(n.innerHeight*i||document.documentElement.clientHeight*i)&&function(){var t,e,n,i,o=r[a];t=o,e=function(){r=r.filter(function(t){return o!==t})},n=new Image,i=t.getAttribute("data-original"),n.onload=function(){t.src=i,e&&e()},t.src!==i&&(n.src=i)}()}o(),n.addEventListener("scroll",function(){var t,e;t=o,e=n,clearTimeout(t.tId),t.tId=setTimeout(function(){t.call(e)},500)})}(this);</script><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script></body>
+        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(e.href.match(t)||e.href.match(r))&&(e.href=a.dataset.original)})});</script><script>!function(n){n.imageLazyLoadSetting.processImages=o;var e=n.imageLazyLoadSetting.isSPA,i=n.imageLazyLoadSetting.preloadRatio||1,r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]"));function o(){e&&(r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")));for(var t,a=0;a<r.length;a++)0<=(t=(t=r[a]).getBoundingClientRect()).bottom&&0<=t.left&&t.top<=(n.innerHeight*i||document.documentElement.clientHeight*i)&&function(){var t,e,n,i,o=r[a];t=o,e=function(){r=r.filter(function(t){return o!==t})},n=new Image,i=t.getAttribute("data-original"),n.onload=function(){t.src=i,e&&e()},t.src!==i&&(n.src=i)}()}o(),n.addEventListener("scroll",function(){var t,e;t=o,e=n,clearTimeout(t.tId),t.tId=setTimeout(function(){t.call(e)},500)})}(this);</script></body>
 </html>
