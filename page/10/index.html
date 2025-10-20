@@ -197,6 +197,433 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2023/06/18/bobo-s-question/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/zoe.gif">
+      <meta itemprop="name" content="dhk">
+      <meta itemprop="description" content="记录一些学习日常">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小董的BLOG">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/06/18/bobo-s-question/" class="post-title-link" itemprop="url">机器人控制(考试复习自用)</a>
+        </h2>
+
+        <div class="post-meta">
+		  
+		  
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2023-06-18 16:43:22" itemprop="dateCreated datePublished" datetime="2023-06-18T16:43:22+08:00">2023-06-18</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2024-02-25 15:32:01" itemprop="dateModified" datetime="2024-02-25T15:32:01+08:00">2024-02-25</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="第一章"><a href="#第一章" class="headerlink" title="第一章"></a>第一章</h1><ul>
+<li>工业机器人特征<ul>
+<li>适用性</li>
+<li>通用性</li>
+</ul>
+</li>
+<li>操作型机器人工作任务<ul>
+<li>点位</li>
+<li>连续</li>
+<li>装配</li>
+</ul>
+</li>
+<li><strong><u>机器人控制方法</u></strong><ul>
+<li><strong>运动学</strong></li>
+<li><strong>轨迹追踪</strong></li>
+<li><strong>参数识别</strong></li>
+<li><strong>力控制</strong></li>
+<li><strong>鲁棒</strong></li>
+<li><strong>自适应</strong></li>
+<li>最短时间</li>
+<li>柔性控制</li>
+<li>协调控制</li>
+</ul>
+</li>
+</ul>
+<h1 id="第二章-运动学"><a href="#第二章-运动学" class="headerlink" title="第二章 运动学"></a>第二章 运动学</h1><ul>
+<li><p><strong>工业机器人坐标系</strong></p>
+<ul>
+<li>直角</li>
+<li>圆柱</li>
+<li>关节</li>
+<li>基</li>
+</ul>
+</li>
+<li><p><strong><u>坐标变换</u></strong></p>
+<ul>
+<li>旋转？</li>
+<li>左乘右乘？</li>
+<li>齐次坐标<ul>
+<li>怎么写？</li>
+<li>各列意义？</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong><u>正运动学</u></strong><ul>
+<li>已知？求？</li>
+<li>位置雅可比公式</li>
+<li>力雅可比公式</li>
+</ul>
+</li>
+</ul>
+<h1 id="第三章-动力学"><a href="#第三章-动力学" class="headerlink" title="第三章 动力学"></a>第三章 动力学</h1><ul>
+<li><p><strong>逆动力学缺点</strong></p>
+</li>
+<li><p><strong>动力学的本质</strong></p>
+</li>
+<li><p><strong><u>拉格朗日法</u></strong></p>
+<ul>
+<li><p><strong><u>基础公式</u></strong></p>
+<ul>
+<li>拉格朗日运动方程式</li>
+<li>L=？分别是？</li>
+<li>转动动能公式？</li>
+<li>两次偏导，分别对？</li>
+<li>一次求导，对？</li>
+</ul>
+</li>
+<li><p><strong><u>计算步骤</u></strong></p>
+<ul>
+<li><p>求T，平动+转动</p>
+<p><strong>线速度由质心决定，转动惯量由物体长度决定</strong></p>
+</li>
+<li><p>求U</p>
+</li>
+<li><p>求L</p>
+</li>
+<li><p>两次偏导一次求导</p>
+</li>
+<li><p>代入化简</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>牛顿-欧拉法</p>
+<ul>
+<li>平动牛顿运动方程+转动欧拉方程</li>
+<li>作用</li>
+<li>具体方法<ul>
+<li>从基坐标开始，计算各杆件运动</li>
+<li>从末端开始，计算关节、作用在杆的力矩、力</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h1 id="第四章-基底参数"><a href="#第四章-基底参数" class="headerlink" title="第四章 基底参数"></a>第四章 基底参数</h1><ul>
+<li><strong>需明确的10个参数</strong><ul>
+<li>5*2</li>
+</ul>
+</li>
+<li><strong>给出方程不能确定的7个参数</strong><ul>
+<li>3*2+1</li>
+</ul>
+</li>
+<li><strong><u>逐次识别法</u></strong></li>
+<li><strong>实际参数识别</strong><ul>
+<li><strong>角度和力矩</strong>由传感器识别</li>
+<li><strong>角速度和角加速度</strong>由微分获得，<strong>精度差</strong></li>
+</ul>
+</li>
+</ul>
+<h1 id="第五章-轨迹追踪控制"><a href="#第五章-轨迹追踪控制" class="headerlink" title="第五章 轨迹追踪控制"></a>第五章 轨迹追踪控制</h1><ul>
+<li><p><strong><u>机械臂运动方程</u></strong></p>
+<ul>
+<li>写法</li>
+</ul>
+</li>
+<li><p><strong><u>PD控制</u></strong></p>
+<ul>
+<li><strong>控制律</strong>(两负一正)</li>
+<li><strong>框图</strong></li>
+<li><u>特点</u></li>
+<li>PID控制<ul>
+<li>引入I的作用</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>稳定性证明的两个定理</p>
+</li>
+<li><p>慢速机器人</p>
+<ul>
+<li>什么比重小</li>
+<li>什么比重大</li>
+</ul>
+</li>
+<li><p>直接驱动型机器人</p>
+<ul>
+<li>非线性项（离心、科式）大</li>
+<li><strong>PD无法完全补偿，产生轨迹误差，因此引入动态控制</strong></li>
+</ul>
+</li>
+<li><p><strong><u>动态控制</u></strong></p>
+<ul>
+<li><strong><u>定义</u></strong><ul>
+<li>直接通过方程式推定非线性项，不作为扰动看待</li>
+<li>把计算值作为前馈或反馈消去非线性项</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong><u>逆动力学</u></strong></p>
+<ul>
+<li><p><strong><u>定义</u></strong></p>
+<p>给定运动求力矩；正确模型化，参数正确最重要</p>
+</li>
+</ul>
+</li>
+<li><h4 id="前馈动态控制器"><a href="#前馈动态控制器" class="headerlink" title="前馈动态控制器"></a><strong><u>前馈动态控制器</u></strong></h4><ul>
+<li><p><strong>逆动力学具体写法</strong></p>
+<ul>
+<li>“^”意义</li>
+</ul>
+</li>
+<li><p><strong>控制律</strong></p>
+</li>
+<li><p><strong>框图</strong></p>
+</li>
+<li><p><strong>缺点</strong></p>
+<p>误差：</p>
+<ul>
+<li>模型误差</li>
+<li>质量变化</li>
+<li>扰动</li>
+</ul>
+<p>导致计算力矩和实际力矩出现偏差后，<strong>会产生更大的轨迹误差</strong></p>
+</li>
+</ul>
+</li>
+<li><h4 id="前馈-PD反馈（控制t"><a href="#前馈-PD反馈（控制t" class="headerlink" title="前馈+PD反馈（控制t)"></a><u><strong>前馈+PD反馈</strong></u>（控制t)</h4><p>可抑制轨迹误差和模型误差带来的扰动</p>
+<ul>
+<li><strong>控制律</strong></li>
+<li><strong>框图</strong></li>
+</ul>
+</li>
+<li><h4 id="计算力矩法（控制逆动力学输入）"><a href="#计算力矩法（控制逆动力学输入）" class="headerlink" title="计算力矩法（控制逆动力学输入）"></a><strong><u>计算力矩法</u></strong>（控制逆动力学输入）</h4><ul>
+<li><p><strong>控制律</strong></p>
+</li>
+<li><p><strong>框图</strong></p>
+</li>
+<li><p>实际应用</p>
+<ul>
+<li>控制周期与采样周期</li>
+<li>计算周期比私服周期长？</li>
+<li>普遍适用性</li>
+</ul>
+<p><strong>优点</strong></p>
+<p><strong>末端操作器位姿变化但<u>最优增益未变</u></strong>&lt;/u&gt;</p>
+</li>
+</ul>
+</li>
+<li><h4 id="加速度分解控制（PD正反馈）"><a href="#加速度分解控制（PD正反馈）" class="headerlink" title="加速度分解控制（PD正反馈）"></a><strong><u>加速度分解控制</u></strong>（PD正反馈）</h4><p>与计算力矩法的不同？</p>
+<ul>
+<li><strong>控制律</strong></li>
+<li><strong>框图</strong></li>
+</ul>
+</li>
+</ul>
+<h1 id="第六章-机器人力控制"><a href="#第六章-机器人力控制" class="headerlink" title="第六章 机器人力控制"></a>第六章 机器人力控制</h1><ul>
+<li><p><strong>定义</strong></p>
+</li>
+<li><p><strong>分类</strong></p>
+<ul>
+<li>大类</li>
+<li>操作量种类</li>
+</ul>
+</li>
+<li><p><strong>臂与环境建模</strong></p>
+<ul>
+<li>控制律</li>
+<li>框图</li>
+</ul>
+</li>
+<li><p><strong>基于位置控制的力控制系统</strong></p>
+<ul>
+<li><p>运动方程</p>
+</li>
+<li><p>框图</p>
+</li>
+<li><p><strong>分类</strong></p>
+<ul>
+<li><p><strong>刚度控制</strong></p>
+<ul>
+<li><strong>稳定条件</strong></li>
+<li>K是什么，有什么用</li>
+<li>K^-1作用</li>
+</ul>
+</li>
+<li><p><strong>阻尼控制</strong></p>
+</li>
+<li><p><strong>阻抗控制</strong></p>
+<p>组成</p>
+</li>
+<li><p><strong>假想的柔顺控制</strong></p>
+<p>关节独立的速度控制系统</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>基于力矩控制的力控制系统</strong></p>
+<ul>
+<li>分类<ul>
+<li>无动力学补偿<ul>
+<li>分类</li>
+</ul>
+</li>
+<li>有动力学补偿<ul>
+<li>分类</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>位置控制和力控制比较</strong></p>
+<ul>
+<li><p>位置</p>
+<p>面向对象？</p>
+<p>优点？</p>
+<p>缺点？</p>
+</li>
+<li><p>力矩控制</p>
+</li>
+</ul>
+</li>
+</ul>
+<h1 id="第七章-鲁棒控制"><a href="#第七章-鲁棒控制" class="headerlink" title="第七章 鲁棒控制"></a>第七章 鲁棒控制</h1><ul>
+<li>摩擦+外部扰动的动力学方程<ul>
+<li>M为什么矩阵？</li>
+</ul>
+</li>
+<li><strong><u>模型的不确定性</u></strong><ul>
+<li>产生原因</li>
+<li>不确定性的表达式</li>
+</ul>
+</li>
+<li><strong>分类</strong><ul>
+<li><strong>基于逆动力学的鲁棒控制</strong><ul>
+<li>公称模型公式<ul>
+<li>原版</li>
+<li>简洁版</li>
+</ul>
+</li>
+<li>闭环系统公式</li>
+</ul>
+</li>
+<li><strong>基于被动特性的鲁棒控制</strong>（-Kr)<ul>
+<li>公称模型</li>
+<li>需考虑的内容</li>
+</ul>
+</li>
+<li><strong>采用李雅普诺夫方法的鲁棒控制</strong>（+Kr）<ul>
+<li>原理</li>
+<li>公称模型</li>
+<li>闭环系统<ul>
+<li>如何将不确定量的影响加入到模型中</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h1 id="第八章-自适应控制"><a href="#第八章-自适应控制" class="headerlink" title="第八章 自适应控制"></a>第八章 自适应控制</h1><ul>
+<li><p><strong>与鲁棒控制的联系</strong></p>
+</li>
+<li><p><strong><u>分类</u></strong></p>
+<ul>
+<li>自调整控制器<ul>
+<li>原理</li>
+<li>框图</li>
+</ul>
+</li>
+<li>模型参照型自适应控制<ul>
+<li>原理</li>
+<li>框图</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>应用</strong></p>
+<p>处理非线性项（有哪些？）</p>
+</li>
+<li><p>不适用场景</p>
+</li>
+<li><p>线性近似是什么？</p>
+</li>
+</ul>
+<h1 id="第九章-最短时间控制"><a href="#第九章-最短时间控制" class="headerlink" title="第九章 最短时间控制"></a>第九章 最短时间控制</h1><ul>
+<li>如何缩短工作时间</li>
+<li>最优控制是什么？</li>
+<li>勾配法是什么？使用要求</li>
+<li>最优控制算法步骤</li>
+</ul>
+<h1 id="第十章-柔性机械臂控制"><a href="#第十章-柔性机械臂控制" class="headerlink" title="第十章 柔性机械臂控制"></a>第十章 柔性机械臂控制</h1><ul>
+<li>为什么使用柔性机械臂</li>
+<li>截断是什么</li>
+<li><strong>鲁棒稳定化控制</strong><ul>
+<li>溢出是什么</li>
+<li>观测溢出？</li>
+<li>解决溢出的对策</li>
+</ul>
+</li>
+<li>不确定量<ul>
+<li>分类</li>
+</ul>
+</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2023/05/29/PLC/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -668,307 +1095,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2023/05/17/lzz-%E7%AC%AC%E4%B8%89%E7%AB%A0-%E4%BC%BA%E6%9C%8D%E6%8A%80%E6%9C%AF/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/zoe.gif">
-      <meta itemprop="name" content="dhk">
-      <meta itemprop="description" content="记录一些学习日常">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="小董的BLOG">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/05/17/lzz-%E7%AC%AC%E4%B8%89%E7%AB%A0-%E4%BC%BA%E6%9C%8D%E6%8A%80%E6%9C%AF/" class="post-title-link" itemprop="url">lzz-第三章 伺服技术(考试复习自用)</a>
-        </h2>
-
-        <div class="post-meta">
-		  
-		  
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2023-05-17 22:12:51" itemprop="dateCreated datePublished" datetime="2023-05-17T22:12:51+08:00">2023-05-17</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-02-25 15:30:59" itemprop="dateModified" datetime="2024-02-25T15:30:59+08:00">2024-02-25</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="1、伺服系统"><a href="#1、伺服系统" class="headerlink" title="1、伺服系统"></a>1、伺服系统</h1><h2 id="伺服系统定义"><a href="#伺服系统定义" class="headerlink" title="伺服系统定义"></a>伺服系统定义</h2><p>以机械参数（位移、速度、加速度、力矩等）作为<strong><u>被控制量</u></strong>的一种<u><strong>自动控制系统</strong></u></p>
-<h2 id="一般组成"><a href="#一般组成" class="headerlink" title="一般组成"></a>一般组成</h2><img src="/images/loading.png" data-original="/2023/05/17/lzz-%E7%AC%AC%E4%B8%89%E7%AB%A0-%E4%BC%BA%E6%9C%8D%E6%8A%80%E6%9C%AF/1.jpg" class title="伺服系统组成"> 
-<h2 id="分类"><a href="#分类" class="headerlink" title="分类"></a><u>分类</u></h2><h3 id="按控制原理分"><a href="#按控制原理分" class="headerlink" title="按控制原理分"></a>按控制原理分</h3><ul>
-<li>开环</li>
-<li>半闭环（不检测工作台信息）</li>
-<li>全闭环</li>
-</ul>
-<h3 id="驱动方式"><a href="#驱动方式" class="headerlink" title="驱动方式"></a>驱动方式</h3><ul>
-<li>电气伺服</li>
-<li>气压伺服</li>
-<li>液压伺服</li>
-</ul>
-<h3 id="被测控制量"><a href="#被测控制量" class="headerlink" title="被测控制量"></a>被测控制量</h3><ul>
-<li>速度控制</li>
-<li>位置控制</li>
-<li>扭矩控制</li>
-<li>同步控制</li>
-</ul>
-<h3 id="执行元件"><a href="#执行元件" class="headerlink" title="执行元件"></a>执行元件</h3><p><strong>开环大多用步进电机，半闭环与闭环多用直流伺服电机</strong></p>
-<ul>
-<li>步进伺服</li>
-<li>直流伺服</li>
-<li>交流伺服</li>
-</ul>
-<h2 id="要求"><a href="#要求" class="headerlink" title="要求"></a>要求</h2><ul>
-<li>快速性</li>
-<li>精确性</li>
-<li>稳定性</li>
-</ul>
-<h1 id="2、执行元件"><a href="#2、执行元件" class="headerlink" title="2、执行元件"></a>2、执行元件</h1><p>将输入的各种形式的能量转化为机械能</p>
-<h2 id="各执行元件特点"><a href="#各执行元件特点" class="headerlink" title="各执行元件特点"></a><u>各执行元件特点</u></h2><h3 id="电气式"><a href="#电气式" class="headerlink" title="电气式"></a>电气式</h3><p>优点：</p>
-<ul>
-<li>操作简单</li>
-<li>可定位伺服</li>
-<li>响应快，易与CPU连接</li>
-<li>体积小，动力大，无污染</li>
-</ul>
-<p>缺点：</p>
-<ul>
-<li>瞬时输出功率大</li>
-<li>过载能力差，易受外部影响</li>
-</ul>
-<h3 id="气压式"><a href="#气压式" class="headerlink" title="气压式"></a>气压式</h3><p>优点：</p>
-<ul>
-<li>成本低</li>
-<li>无泄漏污染</li>
-<li>速度快，操作较简单</li>
-</ul>
-<p>缺点：</p>
-<ul>
-<li>功率小</li>
-<li>体积大</li>
-<li>工作不平稳</li>
-<li>噪声大</li>
-<li>难以伺服</li>
-</ul>
-<h3 id="液压式"><a href="#液压式" class="headerlink" title="液压式"></a>液压式</h3><p>优点：</p>
-<ul>
-<li>输出功率大</li>
-<li>速度快</li>
-<li>平稳</li>
-<li>可定位伺服，响应快</li>
-</ul>
-<p>缺点：</p>
-<ul>
-<li>体积大</li>
-<li>液压油要求严格</li>
-<li>易泄露，有污染</li>
-</ul>
-<h2 id="要求-1"><a href="#要求-1" class="headerlink" title="要求"></a>要求</h2><ul>
-<li>惯量小，动力大</li>
-<li>体积小，重量轻</li>
-<li>便于使用</li>
-<li><strong>快速性能好，加减速扭矩大，频率性能好</strong></li>
-<li>可靠，寿命长</li>
-</ul>
-<h1 id="3、步进电机概述"><a href="#3、步进电机概述" class="headerlink" title="3、步进电机概述"></a>3、步进电机概述</h1><p>步进电机式一种将脉冲信号转化为直线位移或角位移的数字/模拟变换器</p>
-<h2 id="特点"><a href="#特点" class="headerlink" title="特点"></a><u>特点</u></h2><ul>
-<li><strong>输出转角与输入脉冲严格成正比，且在<u>方向上同步</u></strong></li>
-<li><strong>输出转角精度高，有步距角误差，但无累计误差</strong></li>
-<li><strong>可实现平滑无级调速</strong></li>
-<li>不易受干扰</li>
-<li>启停时间段</li>
-</ul>
-<h2 id="种类"><a href="#种类" class="headerlink" title="种类"></a><u>种类</u></h2><h3 id="运动形式"><a href="#运动形式" class="headerlink" title="运动形式"></a>运动形式</h3><ul>
-<li>旋转式</li>
-<li>直线式</li>
-</ul>
-<h3 id="励磁相数"><a href="#励磁相数" class="headerlink" title="励磁相数"></a>励磁相数</h3><p>3、4、5、6相</p>
-<h3 id="转子结构"><a href="#转子结构" class="headerlink" title="转子结构"></a><u>转子结构</u></h3><ul>
-<li>反应式（可变磁阻式）</li>
-<li>永磁式</li>
-<li>混合式</li>
-</ul>
-<h2 id="工作原理"><a href="#工作原理" class="headerlink" title="工作原理"></a><u>工作原理</u></h2><h3 id="三相单三拍"><a href="#三相单三拍" class="headerlink" title="三相单三拍"></a>三相单三拍</h3><p>A——B——C</p>
-<ul>
-<li>三相：为三相绕组</li>
-<li>单：每拍只有一相绕组通电</li>
-<li>三拍：一个循环周期三个脉冲</li>
-</ul>
-<p>一拍<strong>30°</strong></p>
-<h3 id="三相-单双-六拍"><a href="#三相-单双-六拍" class="headerlink" title="三相(单双)六拍"></a>三相(单双)六拍</h3><p>A——AB——B——BC——C——CA</p>
-<ul>
-<li>单双：每拍为一相/两相绕组交替通电</li>
-<li>六拍：一个循环周期六个脉冲</li>
-</ul>
-<p>一拍<strong>15°</strong></p>
-<h3 id="三相双三拍"><a href="#三相双三拍" class="headerlink" title="三相双三拍"></a>三相双三拍</h3><p>AB——BC——CA</p>
-<p>一拍15°</p>
-<p><strong><u>三相双三拍和三相单双六拍比三相单三拍稳定</u></strong></p>
-<h2 id="环形分配方式"><a href="#环形分配方式" class="headerlink" title="环形分配方式"></a><u>环形分配方式</u></h2><ul>
-<li><p><strong>五相十拍电机为2-3相励磁，而不是1-2相：</strong></p>
-<p><strong>AB-ABC-BC-BCD-CD…</strong></p>
-</li>
-<li><p><strong>六相六拍为3相励磁：</strong></p>
-<p><strong>ABC-BCD-CDE-DEF-EFA-FAB</strong></p>
-</li>
-<li><p><strong>六相十二拍为2-3相励磁</strong></p>
-</li>
-</ul>
-<h2 id="主要性能指标"><a href="#主要性能指标" class="headerlink" title="主要性能指标"></a><u>主要性能指标</u></h2><ul>
-<li><p><strong>步距角</strong></p>
-<p><strong>我国0.36°~90°，常用15、6、3.2、1.8、1.5、0.72（k=1）</strong></p>
-</li>
-<li><p><strong>静态步距误差（步距角精度）</strong></p>
-<p>步距角越小，分辨力越高</p>
-</li>
-<li><p><strong>转速</strong></p>
-<p>频率越高，转速越大</p>
-<p>步距角越大（1/KPZ 越大），转速越大</p>
-</li>
-</ul>
-<h2 id="静态特性"><a href="#静态特性" class="headerlink" title="静态特性"></a>静态特性</h2><ul>
-<li><p>静态</p>
-<p>通电时转子保持不动的定位状态</p>
-</li>
-<li><p>静转矩</p>
-<p>静态下的电磁转矩</p>
-</li>
-<li><p>失调角</p>
-<p>静态下在转子上加一负载转矩，转子转过一个角度后稳定下来，该角度为失调角</p>
-</li>
-<li><p>矩-角特性</p>
-<p>静转矩与失调角的对应关系</p>
-</li>
-<li><p>最大静转矩</p>
-<p>矩-角特性上的最大值</p>
-</li>
-</ul>
-<h2 id="起动频率和连续运行频率"><a href="#起动频率和连续运行频率" class="headerlink" title="起动频率和连续运行频率"></a>起动频率和连续运行频率</h2><ul>
-<li><p>起动频率</p>
-<p>一定负载下能不失步地起动的最高脉冲频率</p>
-</li>
-<li><p>连续运行频率</p>
-<p>启动后逐渐升速所能达到的不失步频率</p>
-</li>
-</ul>
-<h2 id="动态特性"><a href="#动态特性" class="headerlink" title="动态特性"></a>动态特性</h2><ul>
-<li><p>动态转矩</p>
-<p>运行时的转矩</p>
-</li>
-<li><p>动态稳定区</p>
-<p><strong>通电绕组切换时不引起丢步的区域</strong></p>
-</li>
-<li><p>起动转矩</p>
-<p><strong>它表示步进电机所能承受的极限负载转矩（电机单相励磁时）</strong></p>
-</li>
-<li><p>矩-频特性</p>
-<p><strong>动态转矩与脉冲频率的关系，频率越大，动态转矩越小</strong></p>
-</li>
-</ul>
-<h1 id="4、步进电机控制"><a href="#4、步进电机控制" class="headerlink" title="4、步进电机控制"></a>4、步进电机控制</h1><h2 id="环形分配"><a href="#环形分配" class="headerlink" title="环形分配"></a><u>环形分配</u></h2><ul>
-<li>小规模集成电路</li>
-<li>专用器件</li>
-<li>软件分配</li>
-</ul>
-<h2 id="功率放大器"><a href="#功率放大器" class="headerlink" title="功率放大器"></a><u>功率放大器</u></h2><p>环形分配输出的信号放大到能驱动电机运行</p>
-<h3 id="要求-2"><a href="#要求-2" class="headerlink" title="要求"></a><u>要求</u></h3><ul>
-<li>幅值足够，波形良好</li>
-<li>功耗低，效率高</li>
-</ul>
-<h2 id="细分驱动"><a href="#细分驱动" class="headerlink" title="细分驱动"></a>细分驱动</h2><p>将一个步距角细分成若干步</p>
-<p>优点</p>
-<ul>
-<li>使步距角减小</li>
-<li>运行平稳</li>
-<li>减小振荡</li>
-</ul>
-<p>缺点</p>
-<ul>
-<li>细分后步距角精度不高</li>
-<li>功放驱动电路复杂</li>
-</ul>
-<h1 id="5、直流伺服电机"><a href="#5、直流伺服电机" class="headerlink" title="5、直流伺服电机"></a>5、直流伺服电机</h1><h2 id="种类-1"><a href="#种类-1" class="headerlink" title="种类"></a><u>种类</u></h2><p><strong>永磁式和它激式有线性的机械特性，有良好的起动、制动和调速性能</strong></p>
-<ul>
-<li>永磁式</li>
-<li>它激式</li>
-<li>串激式</li>
-<li>并激式</li>
-</ul>
-<h2 id="伺服系统组成"><a href="#伺服系统组成" class="headerlink" title="伺服系统组成"></a>伺服系统组成</h2><p>直流电动机、反馈装置、直流电源、控制驱动电路</p>
-<h2 id="电机组成"><a href="#电机组成" class="headerlink" title="电机组成"></a><u>电机组成</u></h2><ul>
-<li><p>定子</p>
-<p>为直流线圈通电激磁或用永磁体产生磁场</p>
-</li>
-<li><p>转子</p>
-<p>转子上有多相线圈，通直流电时在定子磁场下产生转矩</p>
-</li>
-<li><p>换向机构</p>
-<p>包括电刷和换向片，<strong>电刷与电源相连，换向片与电枢绕组相连，使转子在旋转时电磁转矩总是保持恒定方向</strong></p>
-</li>
-</ul>
-<h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a><u>原理</u></h2><p>转子上均匀分配多匝绕组，绕组越密集，总电磁力越大，电磁转矩越接近恒定</p>
-<h2 id="直流电机驱动调速"><a href="#直流电机驱动调速" class="headerlink" title="直流电机驱动调速"></a><u>直流电机驱动调速</u></h2><p>用于<strong>控制电枢电压的大小与极性</strong>，常用<strong>可控硅法和PWM法</strong></p>
-<p>PWM法中，低电平时电枢电感储存的能量通过续流二极管继续使电机转动</p>
-<h3 id="PWM与PFM"><a href="#PWM与PFM" class="headerlink" title="PWM与PFM"></a>PWM与PFM</h3><ul>
-<li>PWM：脉冲频率不变，调整脉冲宽度</li>
-<li>PFM：脉冲宽度不变，调整脉冲频率</li>
-</ul>
-<h1 id="6、交流伺服电机"><a href="#6、交流伺服电机" class="headerlink" title="6、交流伺服电机"></a>6、交流伺服电机</h1><h2 id="原理-1"><a href="#原理-1" class="headerlink" title="原理"></a>原理</h2><p>定子上装有四组空间差90°的两个绕组，控制、励磁绕组</p>
-<ul>
-<li><strong>控制绕组的控制电压与电源电压频率相同，相位相同或相反</strong></li>
-<li><strong>励磁绕组串联电容C，适当选择电容大小使控制绕组和励磁绕组电流相位差接近90°，从而产生转子旋转方向的磁场</strong></li>
-</ul>
-<h2 id="变频器（交流变频调速）分类"><a href="#变频器（交流变频调速）分类" class="headerlink" title="变频器（交流变频调速）分类"></a>变频器（交流变频调速）分类</h2><h3 id="按变频方式"><a href="#按变频方式" class="headerlink" title="按变频方式"></a>按变频方式</h3><ul>
-<li><p>交-直-交</p>
-</li>
-<li><p>交-交</p>
-<p>只适用于低速</p>
-</li>
-</ul>
-<h3 id="按能量处理方式"><a href="#按能量处理方式" class="headerlink" title="按能量处理方式"></a>按能量处理方式</h3><ul>
-<li>电流型</li>
-<li>电压性</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   
   <nav class="pagination">
     <a class="extend prev" rel="prev" href="/page/9/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><span class="page-number current">10</span><a class="page-number" href="/page/11/">11</a><span class="space">&hellip;</span><a class="page-number" href="/page/22/">22</a><a class="extend next" rel="next" href="/page/11/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
@@ -1038,7 +1164,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">65</span>
+          <span class="site-state-item-count">66</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>

@@ -5,7 +5,8 @@
     <entry>
       <title><![CDATA[数学基础]]></title>
       <url>/2025/10/17/math-base/</url>
-      <content type="html"><![CDATA[<h1 id="傅里叶变换"><a href="#傅里叶变换" class="headerlink" title="傅里叶变换"></a>傅里叶变换</h1><h2 id="核心思想"><a href="#核心思想" class="headerlink" title="核心思想"></a>核心思想</h2><p>任何信号都可以看作是若干个不同频率、不同幅值和相位的正弦波的叠加</p>
+      <content type="html"><![CDATA[<p>因为很多数学知识一段时间不用就老是会忘记，因此特开此节记录一些本领域会用到的一些数学基础知识</p>
+<h1 id="傅里叶变换"><a href="#傅里叶变换" class="headerlink" title="傅里叶变换"></a>傅里叶变换</h1><h2 id="核心思想"><a href="#核心思想" class="headerlink" title="核心思想"></a>核心思想</h2><p>任何信号都可以看作是若干个不同频率、不同幅值和相位的正弦波的叠加</p>
 <h2 id="复数与欧拉公式"><a href="#复数与欧拉公式" class="headerlink" title="复数与欧拉公式"></a>复数与欧拉公式</h2><p>对于一个复指数，有</p>
 <script type="math/tex; mode=display">
 e^{\mathrm{j}\omega_{0}t} = \cos \omega_{0}t + \mathrm{j} \sin \omega_{0}t
@@ -23,8 +24,6 @@ a f(t) + b g(t)  \Leftrightarrow a F(\omega) + b G(\omega)</script></li>
 <li><p><strong>时移性</strong></p>
 <script type="math/tex; mode=display">
 x(t−t_0) \Leftrightarrow X(\omega)e^{−j\omega t_0}</script></li>
-</ul>
-<ul>
 <li><p>频移性</p>
 <script type="math/tex; mode=display">
 e^{j\omega_0 t}x(t) \Leftrightarrow X(\omega-\omega_0)</script></li>
@@ -86,6 +85,68 @@ e^{a t}x(t) \Leftrightarrow X(s-a)</script></li>
     </entry>
     
     <entry>
+      <title><![CDATA[正逆运动学]]></title>
+      <url>/2025/10/17/robo-chapter3/</url>
+      <content type="html"><![CDATA[<h1 id="四个连杆参数"><a href="#四个连杆参数" class="headerlink" title="四个连杆参数"></a>四个连杆参数</h1><ul>
+<li><p>连杆本身</p>
+<ul>
+<li><p>连杆长度a：首尾两关节轴线距离（当两轴不平行时，公垂线只有一条）</p>
+</li>
+<li><p>扭转角α：首尾两关节轴线夹角（投影到同一平面）</p>
+</li>
+</ul>
+</li>
+<li><p>连杆连接（关节）</p>
+<ul>
+<li>连杆偏距d_i：关节i处，连杆i偏离i-1的距离</li>
+<li>关节角θ_i：关节i处，连杆i与i-1的夹角</li>
+</ul>
+</li>
+</ul>
+<p>对于转动关节，除<strong>关节角</strong>外，其他参数不变；对于移动关节，除<strong>偏距</strong>外其他参数不变</p>
+<p><u><strong>理解：将一个转动关节想象为圆柱，垂直于圆柱侧面的为连杆长度a，它的转角为关节角θ；沿着圆柱轴线的为偏距d；控制圆柱初始位姿的为扭转角α</strong></u></p>
+<h1 id="正运动学"><a href="#正运动学" class="headerlink" title="正运动学"></a>正运动学</h1><p>已知机器人各连杆参数，求末端位姿。</p>
+<p>对于机器人的两个连杆之间的变换，由四个连杆参数决定；而连杆长度a和连杆转角α由机械系统决定，不是变量，根据关节类型的不同，对于任意机器人，<strong>这个坐标系变换都是只有一个变量的函数</strong></p>
+<p>因此对于机器人末端执行器坐标系{N}相对于坐标系{0}的变换矩阵为：</p>
+<script type="math/tex; mode=display">
+^0_NT=^0_1T^1_2T^2_3T...^{N-1}_NT</script><h2 id="DH参数法（改进）"><a href="#DH参数法（改进）" class="headerlink" title="DH参数法（改进）"></a>DH参数法（改进）</h2><p>对于每个连杆的坐标系，通常选择轴线方向为Z轴，X轴沿着连杆方向（当连杆长度为0时，X轴垂直于Z_{i-1}和Zi的平面），根据右手定律确定Y轴。在改进DH参数法中，坐标系{i}与关节i固连</p>
+<p>因此，当我们要求解连杆i-1到连杆i的变换时（也就是{i-1}到{i}的变换），需要：</p>
+<ul>
+<li>a_{<strong>i-1</strong>}</li>
+<li>α_{<strong>i-1</strong>}</li>
+<li>d_i</li>
+<li>θ_i</li>
+</ul>
+<p>其中a和α表示连杆信息，d和θ表示关节信息</p>
+<p>在改进DH参数下，<strong>每个坐标系（连杆）之间的变换矩阵又包括了一个变量矩阵和三个常量矩阵的乘积</strong>，其通用形式可表示为：</p>
+<script type="math/tex; mode=display">
+^{i-1}_iT = 
+\begin{bmatrix}
+\cos\theta_i & -\sin\theta_i & 0 & a_{i-1} \\
+\sin\theta_i \cos\alpha_{i-1} & \cos\theta_i \cos\alpha_{i-1} & -\sin\alpha_{i-1} & -d_i \sin\alpha_{i-1} \\
+\sin\theta_i \sin\alpha_{i-1} & \cos\theta_i \sin\alpha_{i-1} & \cos\alpha_{i-1} & d_i \cos\alpha_{i-1} \\
+0 & 0 & 0 & 1
+\end{bmatrix}</script><p>注：标准DH和改进DH的变换矩阵不同</p>
+<h2 id="易混淆点"><a href="#易混淆点" class="headerlink" title="易混淆点"></a>易混淆点</h2><p>对于改进DH，坐标系{i}是<strong>固定在连杆i</strong>上，而不是关节i，因为坐标系用于连杆之间的坐标变换，包含了连杆本身带来的变换（a与α）与关节带来的变换（d与θ），说到底，可以直接忘记关节的概念，毕竟变换都是指连杆间的变换</p>
+<h2 id="坐标系标准命名"><a href="#坐标系标准命名" class="headerlink" title="坐标系标准命名"></a>坐标系标准命名</h2><ul>
+<li>基坐标系：机器人的基座{B}</li>
+<li>工作台坐标系：机器人工作台的坐标系{S}，可以是桌子、地面上某个通用坐标系，常根据基坐标系确定</li>
+<li>腕部坐标系：末端连杆轴的坐标系{W}</li>
+<li>工具坐标系：机器人末端坐标系{T}</li>
+<li>目标坐标系：对机器人夹持的物件等的坐标系描述{G}</li>
+</ul>
+]]></content>
+      
+        
+        <tags>
+            
+            <tag> 机器人学 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[空间描述和变换]]></title>
       <url>/2025/10/14/robo-chapter2/</url>
       <content type="html"><![CDATA[<h1 id="位姿描述与变换"><a href="#位姿描述与变换" class="headerlink" title="位姿描述与变换"></a>位姿描述与变换</h1><h2 id="姿态描述"><a href="#姿态描述" class="headerlink" title="姿态描述"></a>姿态描述</h2><p>对于空间中一个坐标系{B}相对于世界坐标系{W}的姿态，可以通过旋转矩阵R进行表示：</p>
@@ -114,7 +175,7 @@ r_{31} & r_{32} & r_{33}
 <script type="math/tex; mode=display">
 \begin{bmatrix}^AP \\ 1\end{bmatrix}=\begin{bmatrix}^A_B\mathbf{R} & ^AP_{B_{org}}\\
 000 & 1\end{bmatrix}\begin{bmatrix}^BP \\ 1\end{bmatrix}</script><p>其中4x4的T矩阵就是<strong>齐次变换矩阵</strong>，当只进行旋转或平移时，只需令旋转矩阵为E或平移矩阵为0，0，0即可</p>
-<h2 id="注意点"><a href="#注意点" class="headerlink" title="注意点"></a>注意点</h2><p>当存在多个坐标系转换时：</p>
+<h2 id="注意点"><a href="#注意点" class="headerlink" title="注意点"></a>注意点</h2><p>当存在多个坐标系转换时：（注意T的合成是右乘）</p>
 <script type="math/tex; mode=display">
 ^AP=^A_B\mathbf{T}^B_C\mathbf{T}^CP=^A_CT^CP</script><p>其中：</p>
 <script type="math/tex; mode=display">

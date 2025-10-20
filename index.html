@@ -305,7 +305,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2025-10-17 14:39:02 / 修改时间：19:39:05" itemprop="dateCreated datePublished" datetime="2025-10-17T14:39:02+08:00">2025-10-17</time>
+              <time title="创建时间：2025-10-17 14:39:02 / 修改时间：19:44:34" itemprop="dateCreated datePublished" datetime="2025-10-17T14:39:02+08:00">2025-10-17</time>
             </span>
 
           
@@ -319,7 +319,8 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="傅里叶变换"><a href="#傅里叶变换" class="headerlink" title="傅里叶变换"></a>傅里叶变换</h1><h2 id="核心思想"><a href="#核心思想" class="headerlink" title="核心思想"></a>核心思想</h2><p>任何信号都可以看作是若干个不同频率、不同幅值和相位的正弦波的叠加</p>
+          <p>因为很多数学知识一段时间不用就老是会忘记，因此特开此节记录一些本领域会用到的一些数学基础知识</p>
+<h1 id="傅里叶变换"><a href="#傅里叶变换" class="headerlink" title="傅里叶变换"></a>傅里叶变换</h1><h2 id="核心思想"><a href="#核心思想" class="headerlink" title="核心思想"></a>核心思想</h2><p>任何信号都可以看作是若干个不同频率、不同幅值和相位的正弦波的叠加</p>
 <h2 id="复数与欧拉公式"><a href="#复数与欧拉公式" class="headerlink" title="复数与欧拉公式"></a>复数与欧拉公式</h2><p>对于一个复指数，有</p>
 <script type="math/tex; mode=display">
 e^{\mathrm{j}\omega_{0}t} = \cos \omega_{0}t + \mathrm{j} \sin \omega_{0}t
@@ -337,8 +338,6 @@ a f(t) + b g(t)  \Leftrightarrow a F(\omega) + b G(\omega)</script></li>
 <li><p><strong>时移性</strong></p>
 <script type="math/tex; mode=display">
 x(t−t_0) \Leftrightarrow X(\omega)e^{−j\omega t_0}</script></li>
-</ul>
-<ul>
 <li><p>频移性</p>
 <script type="math/tex; mode=display">
 e^{j\omega_0 t}x(t) \Leftrightarrow X(\omega-\omega_0)</script></li>
@@ -407,7 +406,7 @@ e^{a t}x(t) \Leftrightarrow X(s-a)</script></li>
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2025/10/14/robo-chapter2/">
+    <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2025/10/17/robo-chapter3/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/zoe.gif">
@@ -421,7 +420,7 @@ e^{a t}x(t) \Leftrightarrow X(s-a)</script></li>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2025/10/14/robo-chapter2/" class="post-title-link" itemprop="url">空间描述和变换</a>
+            <a href="/2025/10/17/robo-chapter3/" class="post-title-link" itemprop="url">正逆运动学</a>
         </h2>
 
         <div class="post-meta">
@@ -433,14 +432,14 @@ e^{a t}x(t) \Leftrightarrow X(s-a)</script></li>
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2025-10-14 09:29:01" itemprop="dateCreated datePublished" datetime="2025-10-14T09:29:01+08:00">2025-10-14</time>
+              <time title="创建时间：2025-10-17 10:38:10" itemprop="dateCreated datePublished" datetime="2025-10-17T10:38:10+08:00">2025-10-17</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-10-17 14:39:52" itemprop="dateModified" datetime="2025-10-17T14:39:52+08:00">2025-10-17</time>
+                <time title="修改时间：2025-10-20 16:48:51" itemprop="dateModified" datetime="2025-10-20T16:48:51+08:00">2025-10-20</time>
               </span>
 
           
@@ -454,81 +453,55 @@ e^{a t}x(t) \Leftrightarrow X(s-a)</script></li>
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="位姿描述与变换"><a href="#位姿描述与变换" class="headerlink" title="位姿描述与变换"></a>位姿描述与变换</h1><h2 id="姿态描述"><a href="#姿态描述" class="headerlink" title="姿态描述"></a>姿态描述</h2><p>对于空间中一个坐标系{B}相对于世界坐标系{W}的姿态，可以通过旋转矩阵R进行表示：</p>
+          <h1 id="四个连杆参数"><a href="#四个连杆参数" class="headerlink" title="四个连杆参数"></a>四个连杆参数</h1><ul>
+<li><p>连杆本身</p>
+<ul>
+<li><p>连杆长度a：首尾两关节轴线距离（当两轴不平行时，公垂线只有一条）</p>
+</li>
+<li><p>扭转角α：首尾两关节轴线夹角（投影到同一平面）</p>
+</li>
+</ul>
+</li>
+<li><p>连杆连接（关节）</p>
+<ul>
+<li>连杆偏距d_i：关节i处，连杆i偏离i-1的距离</li>
+<li>关节角θ_i：关节i处，连杆i与i-1的夹角</li>
+</ul>
+</li>
+</ul>
+<p>对于转动关节，除<strong>关节角</strong>外，其他参数不变；对于移动关节，除<strong>偏距</strong>外其他参数不变</p>
+<p><u><strong>理解：将一个转动关节想象为圆柱，垂直于圆柱侧面的为连杆长度a，它的转角为关节角θ；沿着圆柱轴线的为偏距d；控制圆柱初始位姿的为扭转角α</strong></u></p>
+<h1 id="正运动学"><a href="#正运动学" class="headerlink" title="正运动学"></a>正运动学</h1><p>已知机器人各连杆参数，求末端位姿。</p>
+<p>对于机器人的两个连杆之间的变换，由四个连杆参数决定；而连杆长度a和连杆转角α由机械系统决定，不是变量，根据关节类型的不同，对于任意机器人，<strong>这个坐标系变换都是只有一个变量的函数</strong></p>
+<p>因此对于机器人末端执行器坐标系{N}相对于坐标系{0}的变换矩阵为：</p>
 <script type="math/tex; mode=display">
-^W_B\mathbf{R} = \begin{bmatrix}
-r_{11} & r_{12} & r_{13} \\
-r_{21} & r_{22} & r_{23} \\
-r_{31} & r_{32} & r_{33}
-\end{bmatrix}</script><p>旋转矩阵仅描述当前坐标系相对于世界坐标系的<strong>旋转姿态</strong>，<u>不包含平移信息</u>，因此可以将旋转矩阵的<strong>每一列</strong>想象成将原点重合后，当前坐标系X、Y、Z<strong>单位矢量</strong>的坐标投影。因此也有：</p>
+^0_NT=^0_1T^1_2T^2_3T...^{N-1}_NT</script><h2 id="DH参数法（改进）"><a href="#DH参数法（改进）" class="headerlink" title="DH参数法（改进）"></a>DH参数法（改进）</h2><p>对于每个连杆的坐标系，通常选择轴线方向为Z轴，X轴沿着连杆方向（当连杆长度为0时，X轴垂直于Z_{i-1}和Zi的平面），根据右手定律确定Y轴。在改进DH参数法中，坐标系{i}与关节i固连</p>
+<p>因此，当我们要求解连杆i-1到连杆i的变换时（也就是{i-1}到{i}的变换），需要：</p>
+<ul>
+<li>a_{<strong>i-1</strong>}</li>
+<li>α_{<strong>i-1</strong>}</li>
+<li>d_i</li>
+<li>θ_i</li>
+</ul>
+<p>其中a和α表示连杆信息，d和θ表示关节信息</p>
+<p>在改进DH参数下，<strong>每个坐标系（连杆）之间的变换矩阵又包括了一个变量矩阵和三个常量矩阵的乘积</strong>，其通用形式可表示为：</p>
 <script type="math/tex; mode=display">
-^W_B\mathbf{R} = \begin{bmatrix}
-\hat{X}_B \cdot \hat{X}_W & \hat{Y}_B \cdot \hat{X}_W & \hat{Z}_B \cdot \hat{X}_W \\
-\hat{X}_B \cdot \hat{Y}_W & \hat{Y}_B \cdot \hat{Y}_W & \hat{Z}_B \cdot \hat{Y}_W \\
-\hat{X}_B \cdot \hat{Z}_W & \hat{Y}_B \cdot \hat{Z}_W & \hat{Z}_B \cdot \hat{Z}_W
-\end{bmatrix}</script><p>由于这些矢量均为单位向量，因此它们的点积则直接代表了两个矢量夹角的余弦值（矢量点积的性质），但需要注意的是，<strong>对于两个坐标系而已，它们之间的互相形成的两个旋转矩阵不是相同的（互为转置）</strong></p>
-<p>由于旋转是相对的、可逆的，因此旋转矩阵为一个正交阵（逆等于转置）</p>
-<h2 id="坐标系描述"><a href="#坐标系描述" class="headerlink" title="坐标系描述"></a>坐标系描述</h2><p>当已知旋转矩阵后，只需知道坐标系{B}原点相对于参考坐标系（还是假设为世界坐标系{W}）的坐标，即可描述坐标系{B}的所有信息：</p>
-<script type="math/tex; mode=display">
-\{B\}=\{^W_B\mathbf{R},^W\mathbf{P_{B_{org}}}\}</script><p>其中P是坐标系{B}原点<strong>在{W}中的坐标向量</strong></p>
-<p>因此，一个坐标系可以通过任意另一坐标系表示出来</p>
-<h2 id="变换映射"><a href="#变换映射" class="headerlink" title="变换映射"></a>变换映射</h2><p>对于{B}中的一个矢量P，若想用参考坐标系{A}将其表示，对于单纯平移，有：</p>
-<script type="math/tex; mode=display">
-^AP=^BP+^W\mathbf{P_{B_{org}}}</script><p>对于单纯旋转，则有：</p>
-<script type="math/tex; mode=display">
-^AP=^A_B\mathbf{R}^BP</script><p>因此对于一般情况，则有：</p>
-<script type="math/tex; mode=display">
-\begin{bmatrix}^AP \\ 1\end{bmatrix}=\begin{bmatrix}^A_B\mathbf{R} & ^AP_{B_{org}}\\
-000 & 1\end{bmatrix}\begin{bmatrix}^BP \\ 1\end{bmatrix}</script><p>其中4x4的T矩阵就是<strong>齐次变换矩阵</strong>，当只进行旋转或平移时，只需令旋转矩阵为E或平移矩阵为0，0，0即可</p>
-<h2 id="注意点"><a href="#注意点" class="headerlink" title="注意点"></a>注意点</h2><p>当存在多个坐标系转换时：</p>
-<script type="math/tex; mode=display">
-^AP=^A_B\mathbf{T}^B_C\mathbf{T}^CP=^A_CT^CP</script><p>其中：</p>
-<script type="math/tex; mode=display">
-^A_CT=\begin{bmatrix}^A_B\mathbf{R}^B_C\mathbf{R} & ^AP_{B_{org}}+^A_B\mathbf{R}^BP_{C_{org} }
-\\
-000 & 1\end{bmatrix}</script><p>对于旋转映射，有：（注意顺序）</p>
-<script type="math/tex; mode=display">
-^A_C\mathbf{R}=^A_B\mathbf{R}^B_C\mathbf{R}</script><p><strong>其中需要注意的是，在A齐次变换矩阵中代表平移的映射：</strong></p>
-<script type="math/tex; mode=display">
-^AP_{C_{org}}=^AP_{B_{org}}+^A_B\mathbf{R}^BP_{C_{org}} \neq ^AP_{B_{org}}+^BP_{C_{org}}</script><p>虽然在空间上来看{C}原点在{A}中的坐标矢量感觉就是三个坐标系原点间矢量的首尾相加，<strong><u>但其实对C原点在{A}中的矢量坐标都应该统一到{A}坐标系下进行计算</u></strong>，而</p>
-<script type="math/tex; mode=display">
-^BP_{C_{org}}</script><p>是C原点在{B}下的坐标矢量，其在{A}中的表达还需要乘一个{B}相对于{A}的<strong>旋转映射</strong></p>
-<p>综上，可以推导出，在多个坐标系变换时，平移映射中只有{A}的下一个坐标系平移映射不需要乘旋转映射，其余所有平移映射都需要乘该坐标系相对于{A}的旋转映射，即：</p>
-<script type="math/tex; mode=display">
-^AP_{N_{org}}=^AP_{B_{org}}+^A_B\mathbf{R}^BP_{C_{org}}+^A_C\mathbf{R}^CP_{D_{org}}+...+^A_{N-1}\mathbf{R}^{N-1}P_{N_{org}}</script><p>但一般而言，想要直接得到各坐标系相对参考坐标系{A}的旋转矩阵是比较困难的，所以更常见的写法是：</p>
-<script type="math/tex; mode=display">
-{}^A P_{N_{org}} 
-= {}^A P_{B_{org}}
-+ {}^A_{B}\mathbf{R}
-\Big(
-{}^B P_{C_{org}}
-+ {}^B_{C}\mathbf{R}
-\big(
-{}^C P_{D_{org}}
-+ {}^C_{D}\mathbf{R}
-\big(
-{}^D P_{E_{org}}
-+ \cdots
-+ {}^{N-1}_{N}\mathbf{R}\,{}^{N}P_{N_{org}}
-\big)
-\big)
-\Big)</script><p>也就是齐次变换矩阵相乘后<strong>平移项</strong>的表达</p>
-<h2 id="逆变换"><a href="#逆变换" class="headerlink" title="逆变换"></a>逆变换</h2><p>对于求其次矩阵的逆变换，对于<strong>旋转矩阵，由于其为正交阵，因此直接取转置</strong>即可；对于平移算映射，有：</p>
-<script type="math/tex; mode=display">
-^BP_{A_{org}}=-^A_BR^T{^AP_{B_{org}}}</script><p>即最终逆变换齐次变换矩阵为：</p>
-<script type="math/tex; mode=display">
-^B_AT=\begin{bmatrix}^A_B\mathbf{R}^T & -^A_BR^T{^AP_{B_{org}}}\\
-000 & 1\end{bmatrix}</script><p>推广到N个坐标系中时，注意此时旋转算子乘积顺序是<strong>反序的</strong></p>
-<h1 id="其次变换矩阵的其他定义"><a href="#其次变换矩阵的其他定义" class="headerlink" title="其次变换矩阵的其他定义"></a>其次变换矩阵的其他定义</h1><p>对于齐次变换矩阵：</p>
-<script type="math/tex; mode=display">
-^A_BT</script><p>其本身描述了相对于坐标系{A}的{B}，同时其也可以描述不同坐标系中同一个矢量的映射关系</p>
-<p>齐次变换矩阵同时<strong>也可用于描述矢量单纯的旋转、平移变换</strong>，这时其被称为变换算子：</p>
-<script type="math/tex; mode=display">
-\begin{bmatrix}^AP_1 \\ 1\end{bmatrix}=\begin{bmatrix}\mathbf{R} & Q\\
-000 & 1\end{bmatrix}\begin{bmatrix}^AP_2 \\ 1\end{bmatrix}</script><p>其中R为旋转算子，Q为平移算子；</p>
-<p>在多次变换中，对于平移只需要进行加减即可；对于旋转变换，其顺序会影响R的值（虽然最终结果是一样的）：</p>
-<script type="math/tex; mode=display">
-R_z(30)R_x(30) \neq R_x(30)R_z(30)</script>
+^{i-1}_iT = 
+\begin{bmatrix}
+\cos\theta_i & -\sin\theta_i & 0 & a_{i-1} \\
+\sin\theta_i \cos\alpha_{i-1} & \cos\theta_i \cos\alpha_{i-1} & -\sin\alpha_{i-1} & -d_i \sin\alpha_{i-1} \\
+\sin\theta_i \sin\alpha_{i-1} & \cos\theta_i \sin\alpha_{i-1} & \cos\alpha_{i-1} & d_i \cos\alpha_{i-1} \\
+0 & 0 & 0 & 1
+\end{bmatrix}</script><p>注：标准DH和改进DH的变换矩阵不同</p>
+<h2 id="易混淆点"><a href="#易混淆点" class="headerlink" title="易混淆点"></a>易混淆点</h2><p>对于改进DH，坐标系{i}是<strong>固定在连杆i</strong>上，而不是关节i，因为坐标系用于连杆之间的坐标变换，包含了连杆本身带来的变换（a与α）与关节带来的变换（d与θ），说到底，可以直接忘记关节的概念，毕竟变换都是指连杆间的变换</p>
+<h2 id="坐标系标准命名"><a href="#坐标系标准命名" class="headerlink" title="坐标系标准命名"></a>坐标系标准命名</h2><ul>
+<li>基坐标系：机器人的基座{B}</li>
+<li>工作台坐标系：机器人工作台的坐标系{S}，可以是桌子、地面上某个通用坐标系，常根据基坐标系确定</li>
+<li>腕部坐标系：末端连杆轴的坐标系{W}</li>
+<li>工具坐标系：机器人末端坐标系{T}</li>
+<li>目标坐标系：对机器人夹持的物件等的坐标系描述{G}</li>
+</ul>
+
       
     </div>
 
@@ -612,7 +585,7 @@ R_z(30)R_x(30) \neq R_x(30)R_z(30)</script>
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">65</span>
+          <span class="site-state-item-count">66</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
