@@ -110,9 +110,9 @@ $$
 $$
 out^{l+1}=f_{l+1}(\omega^{(l+1)} out^{(l)})
 \\
-\frac{\part L}{\part out^{(l)}}= \frac{\part L}{\part out^{(l+1)}}
-\cdot \frac{\part out^{l+1}}{\part f_{l+1}}
-\cdot \frac{\part f_{l+1}}{\part out^{(l)}}= \delta^{(l+1)} \cdot f_{(l+1)}' \cdot \omega^{(l+1)}
+\frac{\partial L}{\partial out^{(l)}}= \frac{\partial L}{\partial out^{(l+1)}}
+\cdot \frac{\partial out^{l+1}}{\partial f_{l+1}}
+\cdot \frac{\partial f_{l+1}}{\partial out^{(l)}}= \delta^{(l+1)} \cdot f_{(l+1)}' \cdot \omega^{(l+1)}
 $$
 注意此处最后一导是对l层该神经元的输出偏导，所以结果是l+1层的权重。（我对激活函数的理解与标准公式中梯度的位置不太一样，但其实最终结果都是一样的。即：
 $$
