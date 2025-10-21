@@ -197,7 +197,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2022/10/14/51%E5%8D%95%E7%89%87%E6%9C%BA%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80/">
+    <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2022/09/09/C++-2/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/zoe.gif">
@@ -211,7 +211,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2022/10/14/51%E5%8D%95%E7%89%87%E6%9C%BA%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80/" class="post-title-link" itemprop="url">51单片机汇编指令查询</a>
+            <a href="/2022/09/09/C++-2/" class="post-title-link" itemprop="url">C++变量和基本类型</a>
         </h2>
 
         <div class="post-meta">
@@ -223,14 +223,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2022-10-14 10:13:19" itemprop="dateCreated datePublished" datetime="2022-10-14T10:13:19+08:00">2022-10-14</time>
+              <time title="创建时间：2022-09-09 17:16:42" itemprop="dateCreated datePublished" datetime="2022-09-09T17:16:42+08:00">2022-09-09</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-12-01 17:45:28" itemprop="dateModified" datetime="2022-12-01T17:45:28+08:00">2022-12-01</time>
+                <time title="修改时间：2022-10-30 19:11:12" itemprop="dateModified" datetime="2022-10-30T19:11:12+08:00">2022-10-30</time>
               </span>
 
           
@@ -244,103 +244,337 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="1、寻址"><a href="#1、寻址" class="headerlink" title="1、寻址"></a>1、寻址</h1><h2 id="寻址方式"><a href="#寻址方式" class="headerlink" title="寻址方式"></a>寻址方式</h2><p>寻找操作数的地址的各种方式。</p>
-<h3 id="1-立即寻址"><a href="#1-立即寻址" class="headerlink" title="1.立即寻址"></a>1.立即寻址</h3><p>直接使用操作数将操作数存入相关地址中</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">MOV R0,#26H</span><br><span class="line">MOV DPTR,#2000H</span><br></pre></td></tr></table></figure>
+          <h1 id="第二章——变量和基本类型"><a href="#第二章——变量和基本类型" class="headerlink" title="第二章——变量和基本类型"></a>第二章——变量和基本类型</h1><h2 id="说在前面"><a href="#说在前面" class="headerlink" title="说在前面"></a>说在前面</h2><p>C++这个板块是我在学习了C之后才学的，因此我只会记录一些重要的或者在C中没有的东西</p>
+<p><em>C++板块是基于C++primer的方案学习的</em></p>
+<h2 id="1、基本内置类型"><a href="#1、基本内置类型" class="headerlink" title="1、基本内置类型"></a>1、基本内置类型</h2><ul>
+<li><p>bool类型取值只为真（1）和假（0）</p>
+</li>
+<li><p>当一个算术表达式中既有无符号数（unsigned）又有int型时，int型的值会转换成无符号数。且值大于0时会正常显示，小于零时会异常显示（当int为4字节时，值为2^32 + 计算结果（负数））也就是4294967295加上</p>
+<p>(-n)。</p>
+</li>
+</ul>
+<h3 id="指定字面值类型："><a href="#指定字面值类型：" class="headerlink" title="指定字面值类型："></a>指定字面值类型：</h3><ul>
+<li>字符和字符串字面值</li>
+</ul>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">前缀</th>
+<th style="text-align:center">含义</th>
+<th style="text-align:center">代表类型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">u</td>
+<td style="text-align:center">Unicode16字符</td>
+<td style="text-align:center">char16_t</td>
+</tr>
+<tr>
+<td style="text-align:center">U</td>
+<td style="text-align:center">Unicode32字符</td>
+<td style="text-align:center">char32_t</td>
+</tr>
+<tr>
+<td style="text-align:center">L</td>
+<td style="text-align:center">宽字符（2字节）</td>
+<td style="text-align:center">wchar_t</td>
+</tr>
+<tr>
+<td style="text-align:center">u8</td>
+<td style="text-align:center">Unicode8字符</td>
+<td style="text-align:center">char</td>
+</tr>
+</tbody>
+</table>
+</div>
 <ul>
-<li>立即数可以是8位或16位</li>
-<li>立即数前必须加<code>#</code></li>
+<li>整型字面值</li>
 </ul>
-<h3 id="2-直接寻址"><a href="#2-直接寻址" class="headerlink" title="2.直接寻址"></a>2.直接寻址</h3><p>将操作数视为地址，并将该地址存储的数据转递到相关地址中。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">MOV A,30H //相当于对30H进行解引用，将30H值传入A中</span><br></pre></td></tr></table></figure>
-<h3 id="3-寄存器寻址"><a href="#3-寄存器寻址" class="headerlink" title="3.寄存器寻址"></a>3.寄存器寻址</h3><p>直接使用寄存器名字作为地址并对进行解引用</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">MOV A,R1 //*R1</span><br></pre></td></tr></table></figure>
-<h3 id="4-寄存器间接寻址"><a href="#4-寄存器间接寻址" class="headerlink" title="4.寄存器间接寻址"></a>4.寄存器间接寻址</h3><p>指定寄存器的内容为操作数的地址，该地址存储的内容才是操作数</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">MOV A,@R0 // @R0相当于**R0</span><br></pre></td></tr></table></figure>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">后缀</th>
+<th style="text-align:center">最小匹配类型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">u or U</td>
+<td style="text-align:center">unsigned</td>
+</tr>
+<tr>
+<td style="text-align:center">l or L</td>
+<td style="text-align:center">long</td>
+</tr>
+<tr>
+<td style="text-align:center">ll or LL</td>
+<td style="text-align:center">long long</td>
+</tr>
+</tbody>
+</table>
+</div>
 <ul>
-<li>需使用间址符<code>@</code></li>
-<li>对外部RAM进行读取时必须采用该方式</li>
+<li>浮点型</li>
 </ul>
-<h3 id="5-变址寻址"><a href="#5-变址寻址" class="headerlink" title="5.变址寻址"></a>5.变址寻址</h3><p>通过对基地址进行偏移获得当前操作数地址</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">MOV A,#06H</span><br><span class="line">MOVC A,@A+PC</span><br></pre></td></tr></table></figure>
-<p>由于这里（@A+PC）整体应为一个地址，所以这里要对<strong>A使用间址符取06H作为地址</strong>的偏移量，因此该两行指令的意思为：将（@A+PC）地址中存储的数据传入A中</p>
-<h3 id="6-相对寻址"><a href="#6-相对寻址" class="headerlink" title="6.相对寻址"></a>6.相对寻址</h3><p>直接以PC作为基地址，只写出相对偏移量，有两种方式：</p>
-<h4 id="无条件转移："><a href="#无条件转移：" class="headerlink" title="无条件转移："></a>无条件转移：</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SJMP 08H //使PC转移至当前PC值+08H（当前PC为下一指令地址）</span><br></pre></td></tr></table></figure>
-<h4 id="条件转移："><a href="#条件转移：" class="headerlink" title="条件转移："></a>条件转移：</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">JZ LOP //仅当（A）=0时执行，LOP为标号</span><br></pre></td></tr></table></figure>
-<h3 id="7-位寻址"><a href="#7-位寻址" class="headerlink" title="7.位寻址"></a>7.位寻址</h3><h1 id="2、指令系统"><a href="#2、指令系统" class="headerlink" title="2、指令系统"></a>2、指令系统</h1><h2 id="1-数据传送指令"><a href="#1-数据传送指令" class="headerlink" title="1.数据传送指令"></a>1.数据传送指令</h2><ul>
-<li>片内数据传送：MOV    访问内部RAM</li>
-<li>片外数据传送：MOVX    访问外部RAM</li>
-<li>程序存储器数据传送：MOVC    访问内外ROM</li>
-</ul>
-<h2 id="2-数据交换指令"><a href="#2-数据交换指令" class="headerlink" title="2.数据交换指令"></a>2.数据交换指令</h2><ul>
-<li><p>字节交换（全部）：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">XCH A,Rn</span><br><span class="line">XCH A,@Ri //寄存器区只有R0和R1可用作间接寻址</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>字节交换（低四位）：XCHD</p>
-</li>
-<li>字节交换（高低互换）：SWAP</li>
-</ul>
-<h2 id="3-堆栈操作指令"><a href="#3-堆栈操作指令" class="headerlink" title="3.堆栈操作指令"></a>3.堆栈操作指令</h2><ul>
-<li>入栈：PUSH    SP先变化再压栈</li>
-<li>出栈：POP      先出栈再变化SP</li>
-</ul>
-<h2 id="4-算术运算指令"><a href="#4-算术运算指令" class="headerlink" title="4.算术运算指令"></a>4.算术运算指令</h2><ul>
-<li>加法<ul>
-<li>不带进位： ADD</li>
-<li>带进位（Cy）：ADDC</li>
-<li>加一：INC</li>
-</ul>
-</li>
-<li>减法<ul>
-<li>不带进位：SUB</li>
-<li>带进位：SUBB</li>
-<li>减一：DEC</li>
-</ul>
-</li>
-<li>乘法：MUL</li>
-<li>除法：DIV</li>
-</ul>
-<h2 id="5-逻辑运算指令"><a href="#5-逻辑运算指令" class="headerlink" title="5.逻辑运算指令"></a>5.逻辑运算指令</h2><ul>
-<li>逻辑与：ANL</li>
-<li>逻辑或：ORL</li>
-<li>逻辑异或：XRL</li>
-<li>取反：CPL</li>
-<li>清零：CLR</li>
-<li>移位<ul>
-<li>不带进位：RL/RR 左移/右移1位</li>
-<li>带进位：RLC/RRC ~</li>
-</ul>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">后缀</th>
+<th style="text-align:center">代表的类型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">f or F</td>
+<td style="text-align:center">float</td>
+</tr>
+<tr>
+<td style="text-align:center">l or L</td>
+<td style="text-align:center">long double</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 id="2、变量"><a href="#2、变量" class="headerlink" title="2、变量"></a>2、变量</h2><ul>
+<li><p>一种初始化字符串的方法</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">std::string <span class="title">a</span><span class="params">(<span class="string">&quot;test&quot;</span>)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>字符串变量名a，内容为test</p>
 </li>
 </ul>
-<h2 id="6-位运算"><a href="#6-位运算" class="headerlink" title="6.位运算"></a>6.位运算</h2><p>该运算对象仅针对Cy和bit型对象</p>
+<h2 id="3、对象"><a href="#3、对象" class="headerlink" title="3、对象"></a>3、对象</h2><p>通常情况下，对象是指<strong>一块能存储数据并具有某种类型的内存空间</strong></p>
+<h3 id="关于初始化的问题"><a href="#关于初始化的问题" class="headerlink" title="关于初始化的问题"></a>关于初始化的问题</h3><p>在学C的时候我自己也是一直把初始化理解成赋值，但是也一直感觉怪怪的，特别是对于指针变量的初始化，感觉明显是不符合“赋值”这一操作的，今天在阅读书籍时书中也指出了初始化≠赋值，但是具体的区别目前我也不能讲的很明白，学到后面如果搞懂了再说吧。</p>
 <ul>
-<li>位传送：MOV</li>
-<li>置1：SETB</li>
-<li>清0：CLR</li>
-<li>取非：CPL</li>
-<li>取与：ANL</li>
-<li>取或：ORL</li>
+<li>定义在函数体内部的变量将不被初始化。</li>
 </ul>
-<h2 id="7-控制转移类指令"><a href="#7-控制转移类指令" class="headerlink" title="7.控制转移类指令"></a>7.控制转移类指令</h2><ul>
-<li><p>无条件转移：LJMP  3字节，直接转移至该16位地址</p>
-</li>
-<li><p>相对转移：SJMP</p>
-</li>
-<li><p>条件转移：<strong>(条件转移皆为相对PC的转移)</strong></p>
+<h3 id="列表初始化"><a href="#列表初始化" class="headerlink" title="列表初始化"></a>列表初始化</h3><p>用花括号来初始化变量，在C++中以下四种初始化都是正确的：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> a =<span class="number">1</span>;</span><br><span class="line"><span class="type">int</span> a =&#123;<span class="number">1</span>&#125;;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">a</span><span class="params">(<span class="number">1</span>)</span></span>;</span><br><span class="line"><span class="type">int</span> a&#123;<span class="number">1</span>&#125;;</span><br></pre></td></tr></table></figure>
+<h2 id="4、标识符"><a href="#4、标识符" class="headerlink" title="4、标识符"></a>4、标识符</h2><p>虽然感觉很怪异，但是<code>int _=1;</code>是合法的。</p>
+<h2 id="5、复合类型变量"><a href="#5、复合类型变量" class="headerlink" title="5、复合类型变量"></a>5、复合类型变量</h2><h3 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h3><p>为对象起另外一个名字，<strong>同时引用必须被初始化。</strong></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">a</span><span class="params">(<span class="number">1</span>)</span></span>;</span><br><span class="line"><span class="type">int</span> &amp;b=a;</span><br><span class="line">b=<span class="number">2</span>;<span class="comment">//等同于 a=2;</span></span><br></pre></td></tr></table></figure>
 <ul>
-<li><p>累加器<u><strong>判0</strong></u>：JZ/JNZ</p>
+<li>引用并非对象，可以只是理解为一个已存在变量的别名。</li>
+<li>一旦使用引用，引用对象将和引用的初始化变量绑定，无法更改，因此引用必须初始化。</li>
+<li><strong>引用只能绑定在对象上，而不能与某个字面值或某个计算结果绑定</strong>。</li>
+</ul>
+<p><strong>指向指针的引用：</strong></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> i=<span class="number">1</span>;</span><br><span class="line"><span class="type">int</span> *p;</span><br><span class="line"><span class="type">int</span> *&amp;r=p; <span class="comment">//注意这里是*&amp;r</span></span><br><span class="line">r=&amp;i;</span><br><span class="line">*r=<span class="number">0</span>;</span><br></pre></td></tr></table></figure>
+<h3 id="指针"><a href="#指针" class="headerlink" title="指针"></a>指针</h3><p>规则与C基本一样，不再赘述。</p>
+<h2 id="6、const-限定符"><a href="#6、const-限定符" class="headerlink" title="6、const 限定符"></a>6、const 限定符</h2><ul>
+<li><p>作用：定义一个变量后，它的值不能再被改变</p>
+<p>因此，const的对象必须初始化。</p>
 </li>
-<li><p>进位Cy判断：JC/JNC</p>
+<li><p>当多个文件出现了同名的const变量时，视作分别定义了独立的变量，也就是说默认情况下const对象只在本文件内有效。（当然也可以使用extern关键字，具体可见<a target="_blank" rel="noopener" href="https://dhkkk.gitee.io/2022/08/03/C-关键字/">一些关键字 | 小董的BLOG (gitee.io)</a>）</p>
+<p><strong>对于使用extern，如果要在多个文件之间共享const对象，则在定义该对象时也必须添加extern</strong></p>
 </li>
-<li><p>任意位判断：JB/JNB/JBC</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">JB bit,rel</span><br><span class="line">// bit: 判断位  rel：偏移量</span><br></pre></td></tr></table></figure>
+</ul>
+<h3 id="对const对象的引用"><a href="#对const对象的引用" class="headerlink" title="对const对象的引用"></a>对const对象的引用</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">const</span> <span class="type">int</span> a=<span class="number">10</span>;</span><br><span class="line"><span class="type">const</span> <span class="type">int</span> &amp;b1=a;<span class="comment">//对</span></span><br><span class="line"><span class="type">int</span> &amp;b2=a;<span class="comment">//错，引用的类型必须与引用对象类型一致</span></span><br></pre></td></tr></table></figure>
+<p>假设第三行操作合法，则可以通过b2改变a的值，这显然是不正确的</p>
+<ul>
+<li><p>若初始化引用的对象为表达式，<strong>只要该表达式的结果能转化成引用的类型即可</strong></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> a=<span class="number">10</span>;</span><br><span class="line"><span class="type">const</span> <span class="type">int</span> &amp;b=a;</span><br><span class="line"><span class="comment">//允许将const int型引用绑定到普通的int对象上（其他普通变量也可以视情况转化）</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//因此，可以有以下操作</span></span><br><span class="line"><span class="type">int</span> a=<span class="number">10</span>;</span><br><span class="line"><span class="type">int</span> &amp;b1=a;</span><br><span class="line"><span class="type">const</span> <span class="type">int</span> &amp;b2=a;</span><br><span class="line"><span class="comment">//可以通过b1改变a的值，但不允许通过b2改变a的值</span></span><br></pre></td></tr></table></figure>
 </li>
-<li><p>比较<strong>不相等</strong>判断（不相等为满足条件）:CJNE</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">CJNE A,#data,rel</span><br></pre></td></tr></table></figure>
+</ul>
+<h3 id="指向const对象的指针和const指针"><a href="#指向const对象的指针和const指针" class="headerlink" title="指向const对象的指针和const指针"></a>指向const对象的指针和const指针</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//指向const对象的指针</span></span><br><span class="line"><span class="type">const</span> <span class="type">int</span> a=<span class="number">10</span>,b=<span class="number">20</span>;</span><br><span class="line"><span class="type">int</span> *p=&amp;a;</span><br><span class="line">*p=b; <span class="comment">//错误，不可修改p指向的对象的值</span></span><br><span class="line">p=&amp;b; <span class="comment">//合法，并没有更改a的值，只是更改了一般指针p的值</span></span><br></pre></td></tr></table></figure>
+<p>说明一下，上述中的<code>int *p=&amp;a;</code>也可以改为<code>const int *p=&amp;a;</code><strong>且二者完全一致</strong>，原因与后文中的顶/底层const有关</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//const指针</span></span><br><span class="line"><span class="type">int</span> a=<span class="number">10</span>,b=<span class="number">20</span>;</span><br><span class="line"><span class="type">int</span> *<span class="type">const</span> p=&amp;a;</span><br><span class="line">p=&amp;b; <span class="comment">//错误，const指针一旦初始化便会一直指向初始化时的对象</span></span><br><span class="line">*p=b; <span class="comment">//正确，因为指针指向的值为普通int型，可以改变</span></span><br></pre></td></tr></table></figure>
+<p>将指针本身定义为const型（不太好用语言描述感觉），即一旦初始化完成，该指针便无法再指向其他对象。</p>
+<p>下面还是一个const指针的说明：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//const指针</span></span><br><span class="line"><span class="type">const</span> <span class="type">int</span> a=<span class="number">10</span>,b=<span class="number">20</span>;</span><br><span class="line"><span class="type">const</span> <span class="type">int</span> *<span class="type">const</span> p=&amp;a;</span><br><span class="line"><span class="comment">//此时p和*p都是无法改变的</span></span><br></pre></td></tr></table></figure>
+<p>当使用const指针指向的值也是const类型时，const指针本身必须再次使用一次const，因为要保持类型的一致</p>
+<h3 id="顶-底层const"><a href="#顶-底层const" class="headerlink" title="顶/底层const"></a>顶/底层const</h3><p>对于指针，指针本身是一个对象，而它也指向了另一个对象，<strong>因此用顶层const表示指针本身是个const类型，用底层const表示指针所指的对象时一个const型</strong>。一般来说，顶层const可以表示任意对象。</p>
+<ul>
+<li><p>当const + 类型 时，意为使这个类型的值为常量，如</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">const</span> <span class="type">int</span> *p;</span><br></pre></td></tr></table></figure>
+<p>定义一个指针变量，该变量所指的值为int型，因此该值（*p）不可被修改，但是p可以被修改。</p>
+</li>
+<li><p>当const + 变量 时，意为使该变量为常量，如：</p>
+</li>
+<li><p>```c++<br>int* const p;</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">  指针变量p为常量，因此其指向的地址无法被改变，但是地址中的值(*p)可以被改变。</span><br><span class="line"></span><br><span class="line">## 7、constexpr类型</span><br><span class="line"></span><br><span class="line">* 常量表达式：指值不会改变**并且在编译过程就能得到结果的表达式**；字面值、用常量表达式初始化的const对象也是常量表达式。</span><br><span class="line"></span><br><span class="line">  ```c</span><br><span class="line">  const int i = 10;			//字面值是常量表达式</span><br><span class="line">  const int j = i+1;			//j是常量表达式</span><br><span class="line">  int k = i;					//k不是const对象，所以k不是是常量表达式</span><br><span class="line">  const int m = get_val(); 	//m的值直到运行时才能获得，所以m不是常量表达是</span><br></pre></td></tr></table></figure>
+<p>从上面我们可以看出，使用const进行声明时，我们需要<strong>人为的验证</strong>赋给const对象的初始值是不是常量表达是，在复杂系统中，有时候很难分辨，而使用constexpr进行声明时，可以由<strong>编译器来验证</strong>变量是不是常量表达式</p>
+</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">constexpr</span> <span class="type">int</span> <span class="title">func</span><span class="params">(<span class="type">int</span> n)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">return</span> n;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="type">int</span> n=<span class="number">10</span>;</span><br><span class="line">	<span class="type">const</span> <span class="type">int</span> m=<span class="number">10</span>;</span><br><span class="line">	<span class="keyword">constexpr</span> <span class="type">int</span> i = <span class="built_in">func1</span>(<span class="number">10</span>);<span class="comment">//正确，i是一个常量表达式</span></span><br><span class="line">	<span class="keyword">constexpr</span> <span class="type">int</span> j = <span class="built_in">func1</span>(n);<span class="comment">//错误,n为变量，不是字面值</span></span><br><span class="line">	<span class="keyword">constexpr</span> <span class="type">int</span> k = <span class="built_in">func1</span>(m+<span class="number">1</span>);<span class="comment">//正确，k是一个常量表达式</span></span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="const和constexpr的区别"><a href="#const和constexpr的区别" class="headerlink" title="const和constexpr的区别"></a>const和constexpr的区别</h3><ul>
+<li>对于修饰对象来说，const并未区分出编译期常量和运行期常量，constexpr限定在了编译期常量</li>
+<li>在constexpr声明中如果定义了一个指针，限定符constexpr仅对指针有效，与指针所指的对象无关。</li>
+<li>constexpr将它所定义的对象置为顶层const</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">const</span> <span class="type">int</span>*p1=<span class="literal">nullptr</span>;  			<span class="comment">//p1是一个指向常量的指针</span></span><br><span class="line"><span class="keyword">constexpr</span> <span class="type">int</span>*p2=<span class="literal">nullptr</span>;		<span class="comment">//p2是一个指向整数的常量指针</span></span><br><span class="line"><span class="keyword">constexpr</span> <span class="type">const</span> <span class="type">int</span>*p3=<span class="literal">nullptr</span>; </span><br><span class="line"><span class="comment">//p3是一个指向常量的常量指针，由于constexpr只对指针有效，需要再加一个底层const才可以限制指针指向的对象</span></span><br></pre></td></tr></table></figure>
+<h2 id="8、处理类型"><a href="#8、处理类型" class="headerlink" title="8、处理类型"></a>8、处理类型</h2><h3 id="（1）类型别名"><a href="#（1）类型别名" class="headerlink" title="（1）类型别名"></a>（1）类型别名</h3><p>类型别名是一个<strong>名字</strong>，<strong>是某种类型的同义词</strong>。有两种办法可用于定义类型别名：</p>
+<ul>
+<li><p>使用关键字typedef，详见<u>一些关键字 | 小董的BLOG</u> </p>
+</li>
+<li><p>使用别名声明：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> INT =<span class="type">int</span>;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="类型别名与指针、常量"><a href="#类型别名与指针、常量" class="headerlink" title="类型别名与指针、常量"></a>类型别名与指针、常量</h4><p>有以下代码：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> abc=<span class="type">char</span>*;</span><br><span class="line"><span class="type">char</span> a=<span class="number">10</span>;</span><br><span class="line"><span class="type">const</span> abc p=&amp;a;<span class="comment">//此处等同于char *const p=&amp;a;而不是 const char *p=&amp;a;</span></span><br><span class="line"><span class="comment">//也就是说此处是常量指针，而不是指向常量的指针，因此：</span></span><br><span class="line">*p=<span class="number">20</span>;<span class="comment">//合法</span></span><br></pre></td></tr></table></figure>
+<p>感觉可以直接理解为这里的const为顶层const型</p>
+<h3 id="（2）auto类型说明符"><a href="#（2）auto类型说明符" class="headerlink" title="（2）auto类型说明符"></a>（2）auto类型说明符</h3><p>这里auto和C中用法有所出入，在C++11新标准中，auto用于让编译器通过初始值来推算变量的类型</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> a=<span class="number">1</span>,b=<span class="number">2</span>;</span><br><span class="line"><span class="keyword">auto</span> c=a+b;</span><br></pre></td></tr></table></figure>
+<p>此时c的类型就为int</p>
+<ul>
+<li>auto定义的变量必须有初始值</li>
+<li>参与初始化的各对象类型必须相同，否则会报错</li>
+</ul>
+<h4 id="在复合类型与常量参与的情况下："><a href="#在复合类型与常量参与的情况下：" class="headerlink" title="在复合类型与常量参与的情况下："></a>在复合类型与常量参与的情况下：</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">const</span> <span class="type">int</span> a=<span class="number">1</span>; &amp;a1=a;</span><br><span class="line"><span class="keyword">auto</span> b=a; <span class="comment">//b为int型</span></span><br><span class="line"><span class="keyword">auto</span> c=a1;<span class="comment">//c为int型</span></span><br><span class="line"><span class="keyword">auto</span> d=&amp;a;<span class="comment">//d为指向常量的指针</span></span><br><span class="line"><span class="type">const</span> <span class="keyword">auto</span> e=a; <span class="comment">//顶层const需专门声明</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>auto一般会忽略顶层const</p>
+</li>
+<li><p>对一个常量对象取地址是一种底层const</p>
+</li>
+</ul>
+<h3 id="（3）decltype类型指示符"><a href="#（3）decltype类型指示符" class="headerlink" title="（3）decltype类型指示符"></a>（3）decltype类型指示符</h3><p>当我们定义一个变量时希望用一个表达式返回的类型定义该变量，但是又不想用该表达式的结果的值初始化变量，为满足这一要求，C++11新标准引入了decltype，它的作用是选择并返回操作数的数据类型，在此过程中，编译器分析表达式的类型，却不实际计算它的值。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> a=<span class="number">1</span>;</span><br><span class="line"><span class="keyword">decltype</span>(a) b=<span class="number">2</span>;</span><br></pre></td></tr></table></figure>
+<p>decltype()内的参数可以为变量、函数、甚至引用</p>
+<h4 id="decltype和引用："><a href="#decltype和引用：" class="headerlink" title="decltype和引用："></a>decltype和引用：</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> a=<span class="number">1</span>,&amp;a1=a,*p=&amp;a;</span><br><span class="line"><span class="type">int</span> b=<span class="number">2</span>;</span><br><span class="line"><span class="keyword">decltype</span>(a1) c=b;<span class="comment">//c为int&amp;，也就是引用类型</span></span><br><span class="line"><span class="keyword">decltype</span>(a1+<span class="number">0</span>) d=<span class="number">1</span>; <span class="comment">//d为int型，原因是a1+0的结果为int型</span></span><br><span class="line"><span class="keyword">decltype</span>(*p) e=b; <span class="comment">//*p的值按道理来说是1，书上讲这里讲为int&amp;型，也就是与c一样</span></span><br></pre></td></tr></table></figure>
+<p>当decltype传入的参数添加上一对以上的括号后，例如decltype((a))，<strong>结果永远为引用</strong></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2022/09/07/C++-1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/zoe.gif">
+      <meta itemprop="name" content="dhk">
+      <meta itemprop="description" content="记录一些学习日常">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小董的BLOG">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/09/07/C++-1/" class="post-title-link" itemprop="url">初识c++</a>
+        </h2>
+
+        <div class="post-meta">
+		  
+		  
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-09-07 10:38:09" itemprop="dateCreated datePublished" datetime="2022-09-07T10:38:09+08:00">2022-09-07</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-10-30 19:11:45" itemprop="dateModified" datetime="2022-10-30T19:11:45+08:00">2022-10-30</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="输入与输出"><a href="#输入与输出" class="headerlink" title="输入与输出"></a>输入与输出</h1><ul>
+<li><p><strong>iostream库</strong></p>
+<p>在C++中没有专门定义的输入输出（IO）语句，而是使用了一个全面的<strong>标准库</strong>来提供IO机制等功能，也就是iostream库。而在iostream库中包含了两个基础<strong>类型</strong>：</p>
+<ul>
+<li>istream(in stream)：输入流</li>
+<li>ostream(out stream)：输出流</li>
+</ul>
+</li>
+<li><p>流的</p>
+</li>
+<li><p><strong>IO对象</strong></p>
+<p>在标准库中定义了4个IO对象，分别为1个istream型，3个ostream型：</p>
+<ul>
+<li>instream型：<ul>
+<li>cin(发音see in)：标准输入对象</li>
+</ul>
+</li>
+<li>ostream型：<ul>
+<li>cout：标准输出对象</li>
+<li>cerr：输出警告和错误信息</li>
+<li>clog：输出程序运行时的一般性消息</li>
+</ul>
 </li>
 </ul>
 </li>
-<li><p>减1<strong>不为0</strong>判断转移：DJNZ</p>
+</ul>
+<h2 id="输入输出例程："><a href="#输入输出例程：" class="headerlink" title="输入输出例程："></a>输入输出例程：</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;iostream&quot;</span></span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="type">int</span> a,b;</span><br><span class="line">	std::cin&gt;&gt;a&gt;&gt;b;<span class="comment">//输入</span></span><br><span class="line">	std::cout&lt;&lt;a+b&lt;&lt;std::endl;<span class="comment">//输出</span></span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>下面针对这个例程讲解：</p>
+<ul>
+<li><p>前缀std::</p>
+<p>这个前缀指出cin、cout、endl都是定义在名为std的命名空间中的。使用命名空间可以避免与用户定义的名字冲突。且标准库的所有名字都是定义在std中的。</p>
+</li>
+<li><h3 id="从输入流读取数据："><a href="#从输入流读取数据：" class="headerlink" title="从输入流读取数据："></a>从输入流<strong>读取</strong>数据：</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> a,b;</span><br><span class="line">std::cin&gt;&gt;a&gt;&gt;b;<span class="comment">//输入</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li><p><strong>输入运算符（&gt;&gt;)</strong></p>
+<p>该运算符接收两个运算对象：</p>
+<ul>
+<li><p>左侧：必须为一个ostream型的对象</p>
+</li>
+<li><p>右侧：存放输入的值的变量</p>
+</li>
+</ul>
+<p>返回值（计算结果）： ostream型的对象（左侧运算对象）</p>
+<p>也就是说下面几种写法是一个意思：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">std::cin&gt;&gt;a&gt;&gt;b;</span><br><span class="line">/****************************/</span><br><span class="line">(std::cin&gt;&gt;a)&gt;&gt;b;</span><br><span class="line">/****************************/</span><br><span class="line">std:cin&gt;&gt;a;</span><br><span class="line">std:cin&gt;&gt;b;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><h3 id="向输出流写入数据："><a href="#向输出流写入数据：" class="headerlink" title="向输出流写入数据："></a>向输出流<strong>写入</strong>数据：</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">std::cout&lt;&lt;a+b&lt;&lt;std::endl;<span class="comment">//输出</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li><p><strong>输出运算符（&lt;&lt;)</strong></p>
+<p>该运算符接收两个运算对象：</p>
+<ul>
+<li>左侧：必须为一个istream型的对象</li>
+<li>右侧：要打印的值</li>
+</ul>
+<p>返回值（计算结果）： 写入给定值的ostream型的对象</p>
+<p>也就是说下面几种写法是一个意思：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">std::cout&lt;&lt;a+b&lt;&lt;std::endl;</span><br><span class="line"><span class="comment">/****************************/</span></span><br><span class="line">(std::cout&lt;&lt;a+b)&lt;&lt;std::endl;</span><br><span class="line"><span class="comment">/****************************/</span></span><br><span class="line">std::cout&lt;&lt;a+b;</span><br><span class="line">std::cout&lt;&lt;std::endl;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>endl操纵符</strong> <em>(小写L,不是1)</em></p>
+<p>endl也是被定义在std中的一个特殊值，写入endl的效果是结束当前行（类似c中的\n)，并将与设备相关联的缓冲区中的内容刷到设备中。</p>
+<p>缓冲刷新操作可以保证目前为止程序中所产生的所有输出都真正的写入到了输出流中，而不仅停留在内存中等待写入流。</p>
+</li>
+<li><p><strong>关于数据缓冲区</strong></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;iostream&quot;</span></span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="type">int</span> a,b=<span class="number">1</span>,c;</span><br><span class="line">	<span class="keyword">while</span>(std::cin&gt;&gt;a)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="comment">//while (getchar()!= &#x27;\n&#x27;);</span></span><br><span class="line">		std::cout&lt;&lt;<span class="string">&quot;times:&quot;</span>&lt;&lt;b++&lt;&lt;std::endl;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>当使用一个istream对象为<strong>条件</strong>时，其效果就是检测输入流当前的状态，如果流是有效的，此时istream对象使条件为真，当遇到以下情况时为假：</p>
+<ul>
+<li>无效输入：例如上方输入不为int型（与a类型不符合）</li>
+<li>当输入流遇到文件结束符，对于window系统，<strong>输入文件结束符的方法是ctrl+z+\n</strong></li>
+</ul>
+<p>在上方程序中（当注释掉第七行时），当输入4 ‘\0’ 5时，time也会对应输出2次，即1 ‘\n’ 2 。这是因为当输入一次性输入两个数时，第一个数存进a，第二个数会被存在数据缓冲区中等待下一次读取输入流的操作；若想清除缓冲区（或者说是清零），只需添加第7行即可。</p>
+</li>
+</ul>
 </li>
 </ul>
 
@@ -362,7 +596,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2022/10/11/C++-5/">
+    <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2022/08/30/freertos%E4%BB%BB%E5%8A%A1%E9%80%9A%E7%9F%A5%E4%B8%8E%E4%BF%A1%E5%8F%B7%E9%87%8F/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/zoe.gif">
@@ -376,7 +610,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2022/10/11/C++-5/" class="post-title-link" itemprop="url">C++的语句与函数</a>
+            <a href="/2022/08/30/freertos%E4%BB%BB%E5%8A%A1%E9%80%9A%E7%9F%A5%E4%B8%8E%E4%BF%A1%E5%8F%B7%E9%87%8F/" class="post-title-link" itemprop="url">FreeRTOS任务间的交互方法</a>
         </h2>
 
         <div class="post-meta">
@@ -387,16 +621,10 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
+              
 
-              <time title="创建时间：2022-10-11 16:00:25" itemprop="dateCreated datePublished" datetime="2022-10-11T16:00:25+08:00">2022-10-11</time>
+              <time title="创建时间：2022-08-30 15:56:18 / 修改时间：21:46:12" itemprop="dateCreated datePublished" datetime="2022-08-30T15:56:18+08:00">2022-08-30</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-10-30 19:06:41" itemprop="dateModified" datetime="2022-10-30T19:06:41+08:00">2022-10-30</time>
-              </span>
 
           
 
@@ -409,166 +637,286 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="try语句与异常处理"><a href="#try语句与异常处理" class="headerlink" title="try语句与异常处理"></a>try语句与异常处理</h1><p>通常的异常处理包括三部分：</p>
+          <h1 id="说在前面"><a href="#说在前面" class="headerlink" title="说在前面"></a>说在前面</h1><p>本来是打算在<a target="_blank" rel="noopener" href="https://www.dhksblog.top/2022/08/25/FreeRTOS-3/">FreeRTOS在CubeMX中的使用</a>就把这些内容给讲了的，但是学习的过程中发现网络上很多教程都存在着一些差异，所以为了更系统地学习，同时也方便日后查阅，就单独开一篇文章总结一下相关内容</p>
+<p><strong>注：本文所有例程均经过测试且可以正常运行</strong></p>
+<h1 id="1、队列"><a href="#1、队列" class="headerlink" title="1、队列"></a>1、队列</h1><p>FreeRTOS中的队列<strong>是一种用于实现【任务与任务】，【任务与中断】以及【中断与任务】之间的通信机制。</strong>此外，任务从队列读数据或者写入数据到队列时，都可能被阻塞。这个特性使得任务可以被设计成基于事件驱动的运行模式，大大提高了CPU的执行效率。队列是实现FreeRTOS中其他特性的基础组件，像软件定时器，信号量，互斥锁都是基于队列而实现的。</p>
+<p>在操作系统里面，直接使用全局变量传输数据十分危险，看似正常运行，但不知道啥时候就会因为寄存器或者内存等等原因引起崩溃，所以引入消息，队列的概念。</p>
+<h2 id="队列的基本特性"><a href="#队列的基本特性" class="headerlink" title="队列的基本特性"></a>队列的基本特性</h2><p>队列是一种FIFO操作的数据结构，入队操作就是把一个新的元素放进队尾(tail)，出队操作就是从队头(front)取出一个元素。FreeRTOS中也支持把一个元素放到队头的操作，这个操作会<strong>覆盖</strong>之前队头的元素。</p>
+<h2 id="入队策略"><a href="#入队策略" class="headerlink" title="入队策略"></a>入队策略</h2><p>队列在设计的时候，主要有两种元素入队存储策略：Queue by copy 和 Queue by reference。FreeRTOS的队列使用的是Queue by copy存储策略，考虑到这种策略实现起来更加简单，灵活，且安全。</p>
 <ul>
-<li>throw表达式：使用throw表达式表示当前程序遇到了某个问题（异常声明）</li>
-<li>try语句块：与catch配合用于处理各类异常声明</li>
-<li>一套异常类：用于传递具体的异常信息（异常声明的含义）</li>
+<li>Queue by copy：数据入队的时候，队列中存储的是此数据的一份拷贝</li>
+<li>Queue by reference：数据队列的时候，队列中存储的是数据的指针，而非数据本身</li>
 </ul>
-<h2 id="例程"><a href="#例程" class="headerlink" title="例程"></a>例程</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;windows.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdexcept&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> std::vector;</span><br><span class="line"><span class="keyword">using</span> std::string;</span><br><span class="line"><span class="keyword">using</span> std::cin;</span><br><span class="line"><span class="keyword">using</span> std::cout;</span><br><span class="line"><span class="keyword">using</span> std::endl;</span><br><span class="line"><span class="keyword">using</span> std::runtime_error;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="type">int</span> a,b;</span><br><span class="line">    cin&gt;&gt;a&gt;&gt;b;</span><br><span class="line">    <span class="keyword">try</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span>(a!=b) <span class="keyword">throw</span> <span class="built_in">runtime_error</span>(<span class="string">&quot;ERROR!!!&quot;</span>);</span><br><span class="line">        cout&lt;&lt;<span class="string">&quot;good&quot;</span>&lt;&lt;endl;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">catch</span>(runtime_error err)</span><br><span class="line">    &#123;</span><br><span class="line">        cout&lt;&lt;err.<span class="built_in">what</span>();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">system</span>(<span class="string">&quot;pause&quot;</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="throw表达式"><a href="#throw表达式" class="headerlink" title="throw表达式"></a>throw表达式</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(a!=b) <span class="keyword">throw</span> <span class="built_in">runtime_error</span>(<span class="string">&quot;ERROR!!!&quot;</span>);</span><br></pre></td></tr></table></figure>
-<p>格式：throw+异常类+初始化异常类对象</p>
-<ul>
-<li><p>该初始化的对象只用于提供一些关于异常的辅助信息（用户自行定义）</p>
-</li>
-<li><p>异常类为一系列在库中定义的类型，使用时需要声明其命名空间，以下是几种常用的异常类，在头文件stdexcept中</p>
-<p>|    exception    |                  一般错误                  |<br>| :——————-: | :————————————————————: |<br>|  runtime_error  |           运行时才能检测出的任务           |<br>|   range_error   | 运行时：生成结果超出有意义的值域范围的错误 |<br>| overflow_error  |            运行时：计算上溢错误            |<br>| underflow_error |            运行时：计算下溢错误            |<br>|   logic_error   |                程序逻辑错误                |<br>|  domain_error   |       逻辑错误：参数对应的结果不存在       |<br>|  invalid_error  |             逻辑错误：无效参数             |<br>|  length_error   |         逻辑错误：超出对象类型长度         |<br>|  out_of_range   |           逻辑错误：超出有效范围           |</p>
-<ul>
-<li><p>除exception外其他类型都<strong>必须</strong>用一个字符串初始化，而exception则不允许这种初始化</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">if</span>(a!=b) <span class="keyword">throw</span> <span class="built_in">exception</span>();</span><br><span class="line">	cout&lt;&lt;<span class="string">&quot;good&quot;</span>&lt;&lt;endl;</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">catch</span>(exception)</span><br><span class="line">&#123;</span><br><span class="line">   cout&lt;&lt;<span class="string">&quot;ERROR!!&quot;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
+<h2 id="入队堵塞"><a href="#入队堵塞" class="headerlink" title="入队堵塞"></a>入队堵塞</h2><p>一个任务在尝试写入数据到队列时，可以指定一个阻塞时间，即任务在<strong>等待队列有空余空间（非满）可写前最长等待阻塞时间</strong>。当队列中有空间可写入时，任务会自动从阻塞态转换为就绪态。如果在等待时间内队列一直是满的，则等待时间到期后，任务也会自动从阻塞态转换为就绪态，但是它会返回一个写入失败的结果。</p>
+<p>队列可能有多个writerTask，所以在等待队列有空闲空间时，可能会有多个任务阻塞。<strong>当队列有空闲空间可写时，调度器会从所有阻塞的任务中选取优先级最高的那个任务让其进入到就绪态</strong>。<strong>如果最高优先级的不止一个，则让等待最久的那个进入到就绪态。</strong></p>
+<h2 id="出队堵塞"><a href="#出队堵塞" class="headerlink" title="出队堵塞"></a><strong>出队堵塞</strong></h2><p>一个任务在尝试从队列中读取数据时，可以指定一个阻塞时间，即任务在等待队列有元素可读前最长等待阻塞时间。当队列中有元素可读时，任务会自动从阻塞态转换为就绪态。<strong>如果在等待时间内队列一直没有数据可读，则等待时间到期后，任务也会自动从阻塞态转换为就绪态，但是它会返回一个读取失败的结果</strong>。</p>
+<p>队列可能有多个reader Task，所以在等待队列有数据可读时，可能会有多个任务阻塞。<strong>当队列有数据可读时，调度器会从所有阻塞的任务中选取优先级最高的那个任务让其进入到就绪态。如果最高优先级的不止一个，则让等待最久的那个进入到就绪态。</strong></p>
+<h2 id="相关API函数"><a href="#相关API函数" class="headerlink" title="相关API函数"></a>相关API函数</h2><ul>
+<li><p>队列创建（若使用cubemx则只用点点点，不用再用函数创建，所有创建类函数同理）</p>
+<p>使用xQueueCreate()内核函数来创建一个队列。队列的1存储空间从FreeRTOS heap中分配。在使用xQueueCreate()创建队列时，如果FreeRTOS heap中没有足够的存储空间分配给当前队列，则函数返回NULL。如果创建成功，则返回队列的句柄(QueueHandle_t类型)</p>
 </li>
 </ul>
-<h2 id="try语句块"><a href="#try语句块" class="headerlink" title="try语句块"></a>try语句块</h2><p>格式：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span></span><br><span class="line">&#123; &#125;<span class="comment">//程序正常逻辑，异常类在此throw出 </span></span><br><span class="line"><span class="built_in">catch</span>(异常声明)</span><br><span class="line">&#123;&#125;</span><br><span class="line"><span class="built_in">catch</span>(异常声明)</span><br><span class="line">&#123;&#125;</span><br></pre></td></tr></table></figure>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">函数</th>
+<th style="text-align:center">QueueHandle_t xQueueCreate( UBaseType_t uxQueueLength, UBaseType_t uxItemSize );</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">参数</td>
+<td style="text-align:center"><strong>uxQueueLength</strong>：指定队列的长度，即最多可以存放的元素个数<br><strong>uxItemSize</strong>：队列中存储的元素的大小（占用的字节数）</td>
+</tr>
+<tr>
+<td style="text-align:center">返回值</td>
+<td style="text-align:center">返回NULL代表创建失败，没有足够的堆空间来创建当前队列；创建成功则返回队列的句柄</td>
+</tr>
+</tbody>
+</table>
+</div>
 <ul>
-<li>当try内一旦提出异常类时，就不再执行该throw表达式后的内容；反之，若没有throw任何异常，则不会触发任何catch语句，程序正常执行完try语句。</li>
-<li>catch括号中需定义一个对象，类型为触发的异常类，这些异常类只有一个子函数what，用于输出初始化时的字符串（不能用于exception类）</li>
-</ul>
-<p>当有多个try语句块嵌套时，当最内部try提出了一个异常，会由内到外执行catch，若最终都没有对应catch，则程序转到terminate的标准库函数，该函数行为与系统有关，通常执行该函数会导致程序非正常退出。</p>
-<h1 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h1><h2 id="参数传递"><a href="#参数传递" class="headerlink" title="参数传递"></a>参数传递</h2><ul>
-<li>形参实参之间的转递为值拷贝</li>
-<li>C++中建议用引用类型的形参代替指针形参，引用类型同样可以达到修改值的内容，并且可以避免拷贝，因为引用是与实参绑定的。</li>
-</ul>
-<h2 id="数组的传递"><a href="#数组的传递" class="headerlink" title="数组的传递"></a>数组的传递</h2><p>以下三种对形参的定义是等价的：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">a</span><span class="params">(<span class="type">const</span> <span class="type">int</span>*)</span></span>;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">b</span><span class="params">(<span class="type">const</span> <span class="type">int</span>[])</span></span>;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">c</span><span class="params">(<span class="type">const</span> <span class="type">int</span>[<span class="number">10</span>])</span></span>;</span><br></pre></td></tr></table></figure>
-<p>编译器在编译时只会检查传入的参数类型是否为const int*型，甚至不会检查传入数组的长度是否超出形参大小。</p>
-<h3 id="数组的引用形参"><a href="#数组的引用形参" class="headerlink" title="数组的引用形参"></a>数组的引用形参</h3><p>可以使用数组的引用作为形参：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">test</span><span class="params">(<span class="type">int</span> (&amp;arr)[<span class="number">10</span>])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">   <span class="keyword">for</span>(<span class="keyword">auto</span> elem : arr)</span><br><span class="line">      cout&lt;&lt;elem&lt;&lt;endl;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<p>使用数组的引用作为形参需要注意：</p>
-<ul>
-<li>初始化时必须使用括号括起&amp;arr</li>
-<li>输入的实参<strong>必须为一个int [10]类型</strong>的对象</li>
-</ul>
-<h2 id="函数的返回类型"><a href="#函数的返回类型" class="headerlink" title="函数的返回类型"></a>函数的返回类型</h2><h3 id="返回引用"><a href="#返回引用" class="headerlink" title="返回引用"></a>返回引用</h3><p>函数返回引用可以理解为返回的为一个地址</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">char</span> <span class="title">test1</span><span class="params">(string s ,string::size_type num)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">   <span class="keyword">return</span> s[num];</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">char</span> &amp;<span class="title">test2</span><span class="params">(string &amp;s ,string::size_type num)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">   <span class="keyword">return</span> s[num];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">   <span class="function">srting <span class="title">s</span><span class="params">(<span class="string">&quot;test&quot;</span>)</span></span>;</span><br><span class="line">   cout&lt;&lt;<span class="built_in">test1</span>(s,<span class="number">0</span>)&lt;&lt;endl; <span class="comment">//t</span></span><br><span class="line">   <span class="built_in">test2</span>(s,<span class="number">0</span>)=<span class="string">&#x27;a&#x27;</span>;</span><br><span class="line">   cout&lt;&lt;s[<span class="number">0</span>]&lt;&lt;endl;       <span class="comment">//a</span></span><br><span class="line">   <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>当一个函数的返回值为引用时，该返回值为左值而非右值，因此可以像使用其他左值一样使用这个返回值</p>
-<p>（注：左值≠地址，它仍然是一个值）</p>
-<ul>
-<li><p><strong>不可返回局部变量的引用</strong>，由于局部变量在函数完成后会被释放，因此在函数完成后引用会找不到它的对象。例如上一个例程，如果把test2()函数改为：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">char</span> &amp;<span class="title">test2</span><span class="params">(string s ,string::size_type num)</span><span class="comment">//此处形参不再是引用</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">   <span class="keyword">return</span> s[num];</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">   <span class="function">srting <span class="title">s</span><span class="params">(<span class="string">&quot;test&quot;</span>)</span></span>;</span><br><span class="line">   <span class="built_in">test2</span>(s,<span class="number">0</span>)=<span class="string">&#x27;a&#x27;</span>;</span><br><span class="line">   cout&lt;&lt;s[<span class="number">0</span>]&lt;&lt;endl;      <span class="comment">//t</span></span><br><span class="line">   <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>该函数的返回值为对s的引用，但s本身为一个局部变量，在函数完成时已经被释放，因此该引用是无效的（但是这样<strong>返回形参的引用</strong>编译器并不会报错，而返回<strong>函数内定义的局部变量</strong>的引用会报错）</p>
-<p>但如果形参定义为引用，由于引用本身是不占用存储空间的，所以’a’可以通过引用直接向s[0]赋值</p>
+<li><p>元素入队</p>
+<p>使用xQueueSendToBack()函数来向队尾存放一个元素，使用xQueueSend()函数来向队首存放一个元素，两个函数用法一样</p>
 </li>
 </ul>
-<h3 id="返回数组指针"><a href="#返回数组指针" class="headerlink" title="返回数组指针"></a>返回数组指针</h3><ul>
-<li><p>尾置返回类型</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">auto</span> <span class="title">func</span><span class="params">(<span class="type">int</span> i)</span> -&gt; <span class="title">int</span><span class="params">(*)</span>[10]</span></span><br></pre></td></tr></table></figure>
-<p>声明函数的返回值为一个含有十个整数的数组的指针</p>
-</li>
-<li><p>使用decltype</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> test[<span class="number">5</span>]=&#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>&#125;;</span><br><span class="line"><span class="keyword">decltype</span>(test) *<span class="built_in">func</span>()</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">return</span> &amp;test;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;	</span><br><span class="line">	cout&lt;&lt;*(*func+<span class="number">1</span>); <span class="comment">//输出2</span></span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">函数</th>
+<th style="text-align:center">BaseType_t xQueueSendToBack( QueueHandle_t xQueue,<br>                                                                        const void * pvItemToQueue,<br>                                                       TickType_t xTicksToWait );</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">参数</td>
+<td style="text-align:center"><strong>xQueue</strong>：目标队列的句柄<br><strong>pvItemToQueue</strong>：入队元素的指针。队列将存储此指针指向的数据的备份<br><strong>xTicksToWait</strong>：指定等待队列有空间可以容纳新元素入队的最长等待（阻塞）时间</td>
+</tr>
+<tr>
+<td style="text-align:center">返回值</td>
+<td style="text-align:center">当元素成功入队时返回pdPASS，因为队列满而无法入队时返回errQUEUE_FULL（超时后）</td>
+</tr>
+</tbody>
+</table>
+</div>
 <ul>
-<li>decltype(test)的结果是一个数组，因此函数前要用*声明返回值为指针</li>
-<li>使用此方法返回的是一个数组的整体地址，而不是首地址，类型为int*[5]，因此一次解引用的结果才是首地址</li>
+<li><p>查询队列元素个数</p>
+<p>使用内核函数uxQueueMessagesWaiting()来获取队列中有多少个元素</p>
+</li>
+</ul>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">函数</th>
+<th style="text-align:center">UBaseType_t uxQueueMessagesWaiting( QueueHandle_t xQueue );</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">参数</td>
+<td style="text-align:center"><strong>xQueue</strong>：队列的句柄</td>
+</tr>
+<tr>
+<td style="text-align:center">返回值</td>
+<td style="text-align:center">队列中的元素个数，返回0代表队列为空</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>按键例程：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">task1</span><span class="params">(<span class="type">void</span> <span class="type">const</span> * argument)</span> <span class="comment">//低优先级任务</span></span><br><span class="line">&#123;</span><br><span class="line">  BaseType_t result; </span><br><span class="line">  <span class="type">uint8_t</span> dat[]=<span class="string">&quot;666\r\n&quot;</span>;</span><br><span class="line">  <span class="comment">/* Infinite loop */</span></span><br><span class="line">  <span class="keyword">for</span>(;;)</span><br><span class="line">  &#123;</span><br><span class="line">	<span class="keyword">if</span>(HAL_GPIO_ReadPin(key_1_GPIO_Port,key_1_Pin == GPIO_PIN_SET)) <span class="comment">//检测按键</span></span><br><span class="line">	&#123;</span><br><span class="line">		result= xQueueSendToBack(myQueue01Handle,dat,portMAX_DELAY); <span class="comment">//将元素dat放至队尾</span></span><br><span class="line">		<span class="keyword">if</span>(result==pdPASS) <span class="comment">//放置成功返回pdPASS</span></span><br><span class="line">		&#123;</span><br><span class="line">			HAL_GPIO_WritePin(led_g_GPIO_Port,led_g_Pin,GPIO_PIN_RESET);<span class="comment">//点亮绿灯</span></span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">   	osDelay(<span class="number">5</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125; </span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">task2</span><span class="params">(<span class="type">void</span> <span class="type">const</span> * argument)</span> <span class="comment">//高优先级任务</span></span><br><span class="line">&#123;</span><br><span class="line">  BaseType_t result;</span><br><span class="line">  <span class="type">uint8_t</span> datbuf[<span class="number">10</span>]; <span class="comment">//随便定义个缓冲区就可以，用于存放取出的元素</span></span><br><span class="line">  <span class="comment">/* Infinite loop */</span></span><br><span class="line">  <span class="keyword">for</span>(;;)</span><br><span class="line">  &#123;</span><br><span class="line">	result=xQueueReceive(myQueue01Handle,datbuf,portMAX_DELAY);<span class="comment">//取出元素放入datbuf中</span></span><br><span class="line">	<span class="keyword">if</span>(result==pdPASS)<span class="comment">//读取成功返回pdPASS</span></span><br><span class="line">	&#123;</span><br><span class="line">		HAL_GPIO_WritePin(led_r_GPIO_Port,led_r_Pin,GPIO_PIN_RESET);<span class="comment">//点亮红灯</span></span><br><span class="line">	&#125;</span><br><span class="line">	osDelay(<span class="number">10</span>);</span><br><span class="line">  &#125;    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="2、任务通知"><a href="#2、任务通知" class="headerlink" title="2、任务通知"></a>2、任务通知</h1><p><em>在网上找了很多博客对于任务通知介绍的函数都不一样，我自己也实验了很多，就把我试验过的可行的函数都总结一遍，可以根据具体的需要选择相关函数（其实函数功能基本差不多，但是原理不一样）</em></p>
+<p>每个RTOS任务都有一个32位的通知值，任务创建时，这个值被初始化为0。RTOS任务通知相当于直接向任务发送一个事件，接收到通知的任务可以解除阻塞状态，<strong>前提是这个阻塞事件是因等待通知而引起的</strong>。发送通知的同时，也可以可选的改变接收任务的通知值。</p>
+<p>相对于用前必须分别创建队列、二进制信号量、计数信号量或事件组的情况，使用任务通知显然更灵活。更好的是，相比于使用信号量解除任务阻塞，使用任务通知可以快45%、使用更少的RAM。</p>
+<p><strong>下面介绍的函数大类都可以实现任务通知的功能，可以根据需要选择</strong></p>
+<h2 id="一、xTask函数"><a href="#一、xTask函数" class="headerlink" title="一、xTask函数"></a>一、xTask函数</h2><h3 id="发送函数（1）"><a href="#发送函数（1）" class="headerlink" title="发送函数（1）"></a>发送函数（1）</h3><div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">函数</th>
+<th style="text-align:center">BaseType_t xTaskNotify( TaskHandle_txTaskToNotify,<br>                          uint32_t ulValue,<br>                           eNotifyAction eAction);</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">参数</td>
+<td style="text-align:center">xTaskToNotify：被通知的任务句柄<br>ulValue： 通知更新值<br> eAction:枚举类型，指明更新通知值的方法</td>
+</tr>
+<tr>
+<td style="text-align:center">返回值</td>
+<td style="text-align:center">成功则返回pdPASS</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>eAction具体说明：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">枚举成员</th>
+<th style="text-align:center">作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">eNoAction</td>
+<td style="text-align:center">发送通知但不更新通知值，意味着ulValue未使用</td>
+</tr>
+<tr>
+<td style="text-align:center">eSetBits</td>
+<td style="text-align:center">被通知任务值赋值按位或赋值ulValue</td>
+</tr>
+<tr>
+<td style="text-align:center">elncrement</td>
+<td style="text-align:center">被通知任务的通知值++</td>
+</tr>
+<tr>
+<td style="text-align:center">eSetValueWithOverwrite</td>
+<td style="text-align:center">被通知任务值赋值为ulValue</td>
+</tr>
+<tr>
+<td style="text-align:center">eSetValueWithoutOverwrite</td>
+<td style="text-align:center">如果被通知的任务还没取走上一个通知的情况下，又向被通知任务发送一个新的通知，则新通知值被丢弃，且xTaskNotify()会返回pdFALSE</td>
+</tr>
+</tbody>
+</table>
+</div>
+<img src="/images/loading.png" data-original="/2022/08/30/freertos%E4%BB%BB%E5%8A%A1%E9%80%9A%E7%9F%A5%E4%B8%8E%E4%BF%A1%E5%8F%B7%E9%87%8F/eaction.jpg" class title="This is an image"> 
+<h3 id="发送函数（2）"><a href="#发送函数（2）" class="headerlink" title="发送函数（2）"></a>发送函数（2）</h3><div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">函数</th>
+<th style="text-align:center">BaseType_t xTaskNotifyGive(TaskHandle_t xTaskToNotify );</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">参数</td>
+<td style="text-align:center">xTaskToNotify：被通知的任务句柄</td>
+</tr>
+<tr>
+<td style="text-align:center">返回值</td>
+<td style="text-align:center">成功则返回pdPASS</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>其实这是一个宏，本质上相当于xTaskNotify( ( xTaskToNotify ), ( 0 ), <strong>eIncrement</strong> )在这种情况下，应该使用API函数ulTaskNotifyTake()来等待通知，而不应该使用API函数xTaskNotifyWait()</p>
+<p>此函数不可以在中断服务例程中调用，中断保护等价函数为vTaskNotifyGiveFromISR()</p>
+<h3 id="接收函数（1）"><a href="#接收函数（1）" class="headerlink" title="接收函数（1）"></a>接收函数（1）</h3><p><u><strong>注意，此处讲到的接收函数应与上面讲到的发送函数配对，例如：使用发送函数（1），接收通知也要使用接收函数（1）</strong></u></p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">函数</th>
+<th style="text-align:center">BaseType_t xTaskNotifyWait( uint32_tulBits  ToClearOnEntry,<br>                                                      uint32_tulBits  ToClearOnExit,<br>                                                          uint32_t*  pulNotificationValue,<br>                                    TickType_t  xTicksToWait );</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">参数</td>
+<td style="text-align:center">见下方</td>
+</tr>
+<tr>
+<td style="text-align:center">返回值</td>
+<td style="text-align:center">成功则返回pdPASS</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>关于参数：</p>
+<ul>
+<li>ulBitsToClearOnEntry：在使用通知之前，先将任务的通知值与参数ulBitsToClearOnEntry的按位取反值按位与操作。设置参数ulBitsToClearOnEntry为0xFFFFFFFF(ULONG_MAX)，表示清零任务通知值。<ul>
+<li><strong>但是在实际调试过程中感觉给0x00和0xFFFFFFFF在使用上没有区别，所以就给0xFFFFFFFF就可以</strong></li>
 </ul>
 </li>
 </ul>
-<h2 id="内联函数"><a href="#内联函数" class="headerlink" title="内联函数"></a>内联函数</h2><p>正常的调用函数一般比等价的表达式要慢（保存寄存器、拷贝等操作），因此对于规模较小的函数可以定义为内联函数类型：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">inline</span> <span class="type">int</span> <span class="title">fuc</span><span class="params">(<span class="type">int</span> a,<span class="type">int</span> b)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">return</span> a+b;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="constexpr函数"><a href="#constexpr函数" class="headerlink" title="constexpr函数"></a>constexpr函数</h2><p>将函数隐式地定义为内联函数，但函数内只能有一条return语句，且返回值必须为字面值</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2022/10/03/C++-4/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/zoe.gif">
-      <meta itemprop="name" content="dhk">
-      <meta itemprop="description" content="记录一些学习日常">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="小董的BLOG">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/10/03/C++-4/" class="post-title-link" itemprop="url">C++_表达式</a>
-        </h2>
-
-        <div class="post-meta">
-		  
-		  
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2022-10-03 21:06:48" itemprop="dateCreated datePublished" datetime="2022-10-03T21:06:48+08:00">2022-10-03</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-10-25 20:43:07" itemprop="dateModified" datetime="2022-10-25T20:43:07+08:00">2022-10-25</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="1、基础内容"><a href="#1、基础内容" class="headerlink" title="1、基础内容"></a>1、基础内容</h1><p>表达式是<strong>由一个或多个运算对象组成</strong>，对表达式求值得到的是一个<strong>结果</strong>，字面值和变量时最简单的表达式。</p>
-<h2 id="左值和右值"><a href="#左值和右值" class="headerlink" title="左值和右值"></a>左值和右值</h2><p>当一个对象被用作右值时，使用的是该对象的值；而被用作左值时，使用的时对象的内存。</p>
+<img src="/images/loading.png" data-original="/2022/08/30/freertos%E4%BB%BB%E5%8A%A1%E9%80%9A%E7%9F%A5%E4%B8%8E%E4%BF%A1%E5%8F%B7%E9%87%8F/qufan1.jpg" class title="This is an image"> 
 <ul>
-<li>赋值运算符需要一个非常量左值为其左侧运算对象</li>
-<li>取地址符作用于一个左值运算对象，返回一个指向该运算对象的指针，该指针为右值</li>
-<li>解引用求值结果为左值</li>
+<li>*ulBitsToClearOnExit：在函数xTaskNotifyWait()退出前，将任务的通知值与参数ulBitsToClearOnExit的按位取反值按位与操作。设置参数ulBitsToClearOnExit为0xFFFFFFFF(ULONG_MAX)，表示清零任务通知值。<ul>
+<li><strong>使用同上，默认0xFFFFFFFF就可以</strong></li>
 </ul>
-<h2 id="求值顺序"><a href="#求值顺序" class="headerlink" title="求值顺序"></a>求值顺序</h2><p>部分运算符是没有明确指明执行顺序的，例如&lt;&lt;运算符：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cout&lt;&lt;i&lt;&lt;<span class="string">&quot;&quot;</span>&lt;&lt;++i;</span><br></pre></td></tr></table></figure>
-<p>++i和i没有明确的先后关系，因此编译器可能做出任何行为。</p>
-<p>当多个函数会影响同一对象时，当同时调用这些函数时，调用函数的顺序也没有明确的先后关系。</p>
-<h1 id="2、算术运算符"><a href="#2、算术运算符" class="headerlink" title="2、算术运算符"></a>2、算术运算符</h1><h2 id="bool类型"><a href="#bool类型" class="headerlink" title="bool类型"></a>bool类型</h2><p>bool类型原则不应参与运算，在运算时会自动转化为int型的1，只要计算结果不为0，都将返回ture</p>
-<h2 id="优先级"><a href="#优先级" class="headerlink" title="优先级"></a>优先级</h2><p>C++大部分同优先级运算都满足从左至右的规律，赋值则相反</p>
-<h2 id="递增运算"><a href="#递增运算" class="headerlink" title="递增运算"></a>递增运算</h2><p>C++中，<strong>非必要不使用</strong>后置递增/减符（i++/i—)，因为前置运算为将对象本身作为左值返回，而后置则要额外的空间存储原始值，并将这个额外存储的原始值副本作为右值返回，因此，使用后置操作会消耗更多内存，这在相对复杂的工作中是消耗巨大的。</p>
-<h2 id="位操作"><a href="#位操作" class="headerlink" title="位操作"></a>位操作</h2><p>关于符号位的处理没有明确规定，因此位运算最好用来处理无符号类型</p>
-<h1 id="3、类型转换"><a href="#3、类型转换" class="headerlink" title="3、类型转换"></a>3、类型转换</h1><p>C++的类型转换格式不同于C：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cast-name&lt;类型&gt;(表达式)</span><br></pre></td></tr></table></figure>
-<p>最常用的cast-name为<code>static_cast</code>和<code>const_cast</code></p>
-<h3 id="static-cast"><a href="#static-cast" class="headerlink" title="static_cast"></a>static_cast</h3><p>任何有明确定义的类型转换（除了底层const）都可以使用static_cast</p>
-<p>例：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> *p = &amp;d;<span class="comment">//d不能为常量（底层const）</span></span><br><span class="line"><span class="type">double</span> *dp = <span class="built_in">static_cast</span>&lt;<span class="type">double</span>*&gt;(p);</span><br></pre></td></tr></table></figure>
-<h3 id="const-cast"><a href="#const-cast" class="headerlink" title="const_cast"></a>const_cast</h3><p><strong>专用</strong>于改变底层const，其作用为改变const性质</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">const</span> <span class="type">char</span>* pc;</span><br><span class="line"><span class="type">char</span> *p=<span class="built_in">const_cast</span>&lt;<span class="type">char</span>*&gt;(pc);</span><br></pre></td></tr></table></figure>
-<p>需要注意，可以有以下用法：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">char</span>* pc;</span><br><span class="line"><span class="type">char</span> *p=<span class="built_in">const_cast</span>&lt;<span class="type">const</span> <span class="type">char</span>*&gt;(pc);</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<img src="/images/loading.png" data-original="/2022/08/30/freertos%E4%BB%BB%E5%8A%A1%E9%80%9A%E7%9F%A5%E4%B8%8E%E4%BF%A1%E5%8F%B7%E9%87%8F/qufan2.jpg" class title="This is an image"> 
+<ul>
+<li>pulNotificationValue：用于向外回传任务的通知值。这个通知值在参数ulBitsToClearOnExit起作用前将通知值拷贝到<em>pulNotificationValue中（<em>*需额外定义一个缓冲区</em></em>）。如果不需要返回任务的通知值，这里设置成NULL。</li>
+<li>xTicksToWait：因等待通知而进入阻塞状态的最大时间。时间单位为系统节拍周期。宏pdMS_TO_TICKS用于将指定的毫秒时间转化为相应的系统节拍数。</li>
+</ul>
+<h3 id="接收函数（2）"><a href="#接收函数（2）" class="headerlink" title="接收函数（2）"></a>接收函数（2）</h3><div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">函数</th>
+<th style="text-align:center">uint32_t ulTaskNotifyTake( BaseType_t  xClearCountOnExit,<br>                                TickType_t   xTicksToWait );</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">参数</td>
+<td style="text-align:center">xClearCountOnExit：如果该参数为pdFALSE，则API函数xTaskNotifyTake()退出前，将任务的通知值减1；如果该参数设置为pdTRUE，则API函数xTaskNotifyTake()退出前，将任务通知值清零。<br>xTicksToWait：因等待通知而进入阻塞状态的最大时间</td>
+</tr>
+<tr>
+<td style="text-align:center">返回值</td>
+<td style="text-align:center">成功则返回pdPASS</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h3 id="上例程！老规矩按键-led"><a href="#上例程！老规矩按键-led" class="headerlink" title="上例程！老规矩按键+led"></a>上例程！老规矩按键+led</h3><p>发送函数（1）+接收函数（1）</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> event1 0x0001&lt;&lt;1</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> event2 0x0001&lt;&lt;2</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">task1</span><span class="params">(<span class="type">void</span> <span class="type">const</span> * argument)</span> <span class="comment">//低优先级</span></span><br><span class="line">&#123;</span><br><span class="line">	BaseType_t result;</span><br><span class="line">  <span class="keyword">for</span>(;;)</span><br><span class="line">  &#123;</span><br><span class="line">		<span class="keyword">if</span>(HAL_GPIO_ReadPin(key_1_GPIO_Port,key_1_Pin) == GPIO_PIN_SET)<span class="comment">//按键检测</span></span><br><span class="line">		&#123;</span><br><span class="line">			result=  xTaskNotify(task2Handle,event1,<span class="number">4</span>);<span class="comment">//直接数字代替枚举成员</span></span><br><span class="line">			<span class="keyword">if</span>(result==pdPASS)</span><br><span class="line">			&#123;</span><br><span class="line">				HAL_GPIO_WritePin(led_g_GPIO_Port,led_g_Pin,GPIO_PIN_RESET);<span class="comment">//绿灯</span></span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">if</span>(HAL_GPIO_ReadPin(key_2_GPIO_Port,key_2_Pin) == GPIO_PIN_SET)<span class="comment">//按键检测</span></span><br><span class="line">		&#123;</span><br><span class="line">			result=  xTaskNotify(task2Handle,event2,<span class="number">4</span>);<span class="comment">//直接数字代替枚举成员</span></span><br><span class="line">			<span class="keyword">if</span>(result==pdPASS)</span><br><span class="line">			&#123;</span><br><span class="line">				HAL_GPIO_WritePin(led_b_GPIO_Port,led_b_Pin,GPIO_PIN_RESET);<span class="comment">//蓝灯</span></span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		osDelay(<span class="number">100</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">task2</span><span class="params">(<span class="type">void</span> <span class="type">const</span> * argument)</span><span class="comment">//高优先级</span></span><br><span class="line">&#123;</span><br><span class="line">	BaseType_t result;</span><br><span class="line">	<span class="type">uint32_t</span> ulNotifiedValue; <span class="comment">//存放任务通知值的缓冲区</span></span><br><span class="line">  <span class="keyword">for</span>(;;)</span><br><span class="line">  &#123;</span><br><span class="line">		result=xTaskNotifyWait(<span class="number">0xFFFFFFFF</span>, <span class="number">0xFFFFFFFF</span>,&amp;ulNotifiedValue, portMAX_DELAY);</span><br><span class="line">		<span class="keyword">if</span>(result==pdPASS)</span><br><span class="line">		&#123;</span><br><span class="line">			HAL_GPIO_WritePin(led_r_GPIO_Port,led_r_Pin,GPIO_PIN_RESET);<span class="comment">//红灯</span></span><br><span class="line">		&#125;</span><br><span class="line">      	<span class="keyword">if</span>(ulNotifiedValue&amp;event1)</span><br><span class="line">		&#123;</span><br><span class="line">			HAL_GPIO_WritePin(led_r_GPIO_Port,led_r_Pin,GPIO_PIN_SET);</span><br><span class="line">			HAL_GPIO_WritePin(led_b_GPIO_Port,led_b_Pin,GPIO_PIN_SET);</span><br><span class="line">			HAL_GPIO_WritePin(led_g_GPIO_Port,led_g_Pin,GPIO_PIN_SET);<span class="comment">//全灭</span></span><br><span class="line">		&#125;</span><br><span class="line">        <span class="keyword">if</span>(ulNotifiedValue&amp;event2)</span><br><span class="line">		&#123;</span><br><span class="line">			HAL_GPIO_WritePin(led_r_GPIO_Port,led_r_Pin,GPIO_PIN_RESET);</span><br><span class="line">			HAL_GPIO_WritePin(led_b_GPIO_Port,led_b_Pin,GPIO_PIN_RESET);</span><br><span class="line">			HAL_GPIO_WritePin(led_g_GPIO_Port,led_g_Pin,GPIO_PIN_RESET);<span class="comment">//全亮</span></span><br><span class="line">		&#125;</span><br><span class="line"> <span class="comment">/* </span></span><br><span class="line"><span class="comment"> 整体逻辑：</span></span><br><span class="line"><span class="comment"> 按键1按下-&gt;绿灯亮-&gt;红灯亮-&gt;全灭</span></span><br><span class="line"><span class="comment"> 按键2按下-&gt;蓝灯亮-&gt;红灯亮-&gt;全灭</span></span><br><span class="line"><span class="comment"> </span></span><br><span class="line"><span class="comment"> 这里对于通知值的判断可以让用户知道是哪个任务通知函数触发了这次任务接收，感觉非常好用！！！</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">		osDelay(<span class="number">10</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>总结：</p>
+<p>发送函数（2）+接收函数（2）就不单独写了，基本同理，只是接收函数（2）无法对通知值进行判断，但是整体更方便快捷</p>
+<h2 id="二、os函数"><a href="#二、os函数" class="headerlink" title="二、os函数"></a>二、os函数</h2><h3 id="向指定任务发送任务通知"><a href="#向指定任务发送任务通知" class="headerlink" title="向指定任务发送任务通知"></a>向指定任务发送任务通知</h3><div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center"><strong>函数</strong></th>
+<th style="text-align:center"><strong>int32_t osSignalSet (osThreadId thread_id, int32_t signal)</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">参数</td>
+<td style="text-align:center"><strong>thread_id：</strong> 接收通知的任务ID<br><strong>signal：</strong>任务通知值（按位操作数字）</td>
+</tr>
+<tr>
+<td style="text-align:center">返回值</td>
+<td style="text-align:center">错误码</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h3 id="等待任务通知"><a href="#等待任务通知" class="headerlink" title="等待任务通知"></a>等待任务通知</h3><div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center"><strong>函数</strong></th>
+<th style="text-align:center"><strong>osEvent osSignalWait (int32_t signals, uint32_t millisec)</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">参数</td>
+<td style="text-align:center">signals： 接收完成后等待被清零的数据位(0x0001\</td>
+<td>0x0002=0x003)<br><strong>millisec：</strong> 等待超时时间，单位为系统节拍周期</td>
+</tr>
+<tr>
+<td style="text-align:center">返回值</td>
+<td style="text-align:center">错误码</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h3 id="例程，按键-led"><a href="#例程，按键-led" class="headerlink" title="例程，按键+led"></a>例程，按键+led</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> event1 0x0001</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">task1</span><span class="params">(<span class="type">void</span> <span class="type">const</span> * argument)</span> <span class="comment">//低优先级任务</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="comment">/* USER CODE BEGIN led_G */</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">/* Infinite loop */</span></span><br><span class="line">  <span class="keyword">for</span>(;;)</span><br><span class="line">  &#123;</span><br><span class="line">		<span class="keyword">if</span>(HAL_GPIO_ReadPin(key_1_GPIO_Port,key_1_Pin == GPIO_PIN_SET))</span><br><span class="line">		&#123;</span><br><span class="line">			osSignalSet(task2Handle,event1);</span><br><span class="line">		&#125;	</span><br><span class="line">		osDelay(<span class="number">10</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">/* USER CODE END led_G */</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">task2</span><span class="params">(<span class="type">void</span> <span class="type">const</span> * argument)</span> <span class="comment">//高优先级任务</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="comment">/* USER CODE BEGIN led_B */</span></span><br><span class="line">	osEvent event;	</span><br><span class="line">  <span class="comment">/* Infinite loop */</span></span><br><span class="line">  <span class="keyword">for</span>(;;)</span><br><span class="line">  &#123;</span><br><span class="line">	event = osSignalWait(event1,osWaitForever);  </span><br><span class="line">	<span class="keyword">if</span>(event.status == osEventSignal)  </span><br><span class="line">	&#123;</span><br><span class="line">		HAL_GPIO_WritePin(led_g_GPIO_Port,led_g_Pin,GPIO_PIN_RESET);</span><br><span class="line">	&#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里task2可以不用额外在循环中添加堵塞，因为wait函数本身自带堵塞，<strong>其堵塞的解除是在osSignalSet函数的作用之后的瞬间，也就是说在执行完osSignalSet(task2Handle,event1)后task2会直接抢占task1</strong></p>
+<p><strong>而xTask函数不同于os函数，xTask函数是在task1执行完后才会进入task2，这点请务必记住，二者通知原理不同，所以根据使用情况选择使用xTask函数还是os函数</strong></p>
+<h1 id="3、信号量"><a href="#3、信号量" class="headerlink" title="3、信号量"></a>3、信号量</h1><p>信号量同样是一种任务之间交互的函数，但是就我按照网上教程使用过后感觉。。。不如队列和任务通知，可能是我目前的一些工程量还没到使用到信号量的程度？而且在使用过程中也遇到了一些迷惑的地方，所以目前不准备深究，等到实在要用的时候再说吧😋，感兴趣的同学可以去<a target="_blank" rel="noopener" href="https://freertos.blog.csdn.net/article/details/50835613">(19条消息) FreeRTOS系列第19篇—-FreeRTOS信号量_研究是为了理解的博客-CSDN博客_freertos 信号</a>看看，讲的很详细了可以说，我大部分内容也是跟着这个学的。</p>
 
       
     </div>
@@ -586,7 +934,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/15/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/15/">15</a><span class="page-number current">16</span><a class="page-number" href="/page/17/">17</a><span class="space">&hellip;</span><a class="page-number" href="/page/22/">22</a><a class="extend next" rel="next" href="/page/17/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/15/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/15/">15</a><span class="page-number current">16</span><a class="page-number" href="/page/17/">17</a><span class="space">&hellip;</span><a class="page-number" href="/page/20/">20</a><a class="extend next" rel="next" href="/page/17/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -653,7 +1001,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">66</span>
+          <span class="site-state-item-count">60</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>

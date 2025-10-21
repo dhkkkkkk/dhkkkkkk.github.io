@@ -197,7 +197,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2022/11/28/%E5%8D%95%E7%89%87%E6%9C%BA%E5%A4%8D%E4%B9%A0/">
+    <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2022/10/14/51%E5%8D%95%E7%89%87%E6%9C%BA%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/zoe.gif">
@@ -211,7 +211,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2022/11/28/%E5%8D%95%E7%89%87%E6%9C%BA%E5%A4%8D%E4%B9%A0/" class="post-title-link" itemprop="url">单片机复习(考试复习自用)</a>
+            <a href="/2022/10/14/51%E5%8D%95%E7%89%87%E6%9C%BA%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80/" class="post-title-link" itemprop="url">51单片机汇编指令查询</a>
         </h2>
 
         <div class="post-meta">
@@ -223,14 +223,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2022-11-28 22:13:02" itemprop="dateCreated datePublished" datetime="2022-11-28T22:13:02+08:00">2022-11-28</time>
+              <time title="创建时间：2022-10-14 10:13:19" itemprop="dateCreated datePublished" datetime="2022-10-14T10:13:19+08:00">2022-10-14</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-02-25 15:32:22" itemprop="dateModified" datetime="2024-02-25T15:32:22+08:00">2024-02-25</time>
+                <time title="修改时间：2022-12-01 17:45:28" itemprop="dateModified" datetime="2022-12-01T17:45:28+08:00">2022-12-01</time>
               </span>
 
           
@@ -244,403 +244,104 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="计算机基础"><a href="#计算机基础" class="headerlink" title="计算机基础"></a>计算机基础</h1><ul>
-<li><p>原码、反码、补码</p>
-<p>正数的三者相同，负数反码为原码除符号位其余取反，补码为其反码+1</p>
-<p><u><strong>负数的机器码是其原码的补码</strong></u></p>
-</li>
-<li><p>微型计算机配置高速缓冲存储器是为了解决： CPU于内存储器速度不匹配</p>
-</li>
-<li><p>ROM和RAM</p>
+          <h1 id="1、寻址"><a href="#1、寻址" class="headerlink" title="1、寻址"></a>1、寻址</h1><h2 id="寻址方式"><a href="#寻址方式" class="headerlink" title="寻址方式"></a>寻址方式</h2><p>寻找操作数的地址的各种方式。</p>
+<h3 id="1-立即寻址"><a href="#1-立即寻址" class="headerlink" title="1.立即寻址"></a>1.立即寻址</h3><p>直接使用操作数将操作数存入相关地址中</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">MOV R0,#26H</span><br><span class="line">MOV DPTR,#2000H</span><br></pre></td></tr></table></figure>
 <ul>
-<li>ROM：只读存储器，在单片机中用于存放程序，配有较大空间，<strong>掉电数据不丢失</strong></li>
-<li>RAM：随机存储器，存放临时数据，使单片机<strong>更适用于实时控制系统</strong>，<strong>掉电数据丢失</strong></li>
-<li><strong>计算机的内存容量主要指RAM</strong></li>
+<li>立即数可以是8位或16位</li>
+<li>立即数前必须加<code>#</code></li>
 </ul>
-</li>
-<li><p><u><strong>系统总线：地址总线 AB，控制总线 CB 和双向数据总线 DB。</strong></u></p>
+<h3 id="2-直接寻址"><a href="#2-直接寻址" class="headerlink" title="2.直接寻址"></a>2.直接寻址</h3><p>将操作数视为地址，并将该地址存储的数据转递到相关地址中。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">MOV A,30H //相当于对30H进行解引用，将30H值传入A中</span><br></pre></td></tr></table></figure>
+<h3 id="3-寄存器寻址"><a href="#3-寄存器寻址" class="headerlink" title="3.寄存器寻址"></a>3.寄存器寻址</h3><p>直接使用寄存器名字作为地址并对进行解引用</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">MOV A,R1 //*R1</span><br></pre></td></tr></table></figure>
+<h3 id="4-寄存器间接寻址"><a href="#4-寄存器间接寻址" class="headerlink" title="4.寄存器间接寻址"></a>4.寄存器间接寻址</h3><p>指定寄存器的内容为操作数的地址，该地址存储的内容才是操作数</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">MOV A,@R0 // @R0相当于**R0</span><br></pre></td></tr></table></figure>
 <ul>
-<li>数据总线（Data Bus―DB）双向、三态：数据总线的根数决定了一次可以传递二进制数的<strong>位数</strong>。 </li>
-<li>地址总线（Address Bus―AB）单向、三态：地址总线的位数决定了<strong>可以直接访问的存储单元(或 I/O 口)的最大可能数 量（即容量）</strong>。 </li>
-<li>控制总线（Control Bus―CB）：控制总线用来<strong>传输控制信号</strong>，数据总线和每个元件的数据线相连，为了使 CPU 能够和 其中一个元件正确通信，必须使用三态逻辑元件（特别针对输入元件）。</li>
+<li>需使用间址符<code>@</code></li>
+<li>对外部RAM进行读取时必须采用该方式</li>
+</ul>
+<h3 id="5-变址寻址"><a href="#5-变址寻址" class="headerlink" title="5.变址寻址"></a>5.变址寻址</h3><p>通过对基地址进行偏移获得当前操作数地址</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">MOV A,#06H</span><br><span class="line">MOVC A,@A+PC</span><br></pre></td></tr></table></figure>
+<p>由于这里（@A+PC）整体应为一个地址，所以这里要对<strong>A使用间址符取06H作为地址</strong>的偏移量，因此该两行指令的意思为：将（@A+PC）地址中存储的数据传入A中</p>
+<h3 id="6-相对寻址"><a href="#6-相对寻址" class="headerlink" title="6.相对寻址"></a>6.相对寻址</h3><p>直接以PC作为基地址，只写出相对偏移量，有两种方式：</p>
+<h4 id="无条件转移："><a href="#无条件转移：" class="headerlink" title="无条件转移："></a>无条件转移：</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SJMP 08H //使PC转移至当前PC值+08H（当前PC为下一指令地址）</span><br></pre></td></tr></table></figure>
+<h4 id="条件转移："><a href="#条件转移：" class="headerlink" title="条件转移："></a>条件转移：</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">JZ LOP //仅当（A）=0时执行，LOP为标号</span><br></pre></td></tr></table></figure>
+<h3 id="7-位寻址"><a href="#7-位寻址" class="headerlink" title="7.位寻址"></a>7.位寻址</h3><h1 id="2、指令系统"><a href="#2、指令系统" class="headerlink" title="2、指令系统"></a>2、指令系统</h1><h2 id="1-数据传送指令"><a href="#1-数据传送指令" class="headerlink" title="1.数据传送指令"></a>1.数据传送指令</h2><ul>
+<li>片内数据传送：MOV    访问内部RAM</li>
+<li>片外数据传送：MOVX    访问外部RAM</li>
+<li>程序存储器数据传送：MOVC    访问内外ROM</li>
+</ul>
+<h2 id="2-数据交换指令"><a href="#2-数据交换指令" class="headerlink" title="2.数据交换指令"></a>2.数据交换指令</h2><ul>
+<li><p>字节交换（全部）：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">XCH A,Rn</span><br><span class="line">XCH A,@Ri //寄存器区只有R0和R1可用作间接寻址</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>字节交换（低四位）：XCHD</p>
+</li>
+<li>字节交换（高低互换）：SWAP</li>
+</ul>
+<h2 id="3-堆栈操作指令"><a href="#3-堆栈操作指令" class="headerlink" title="3.堆栈操作指令"></a>3.堆栈操作指令</h2><ul>
+<li>入栈：PUSH    SP先变化再压栈</li>
+<li>出栈：POP      先出栈再变化SP</li>
+</ul>
+<h2 id="4-算术运算指令"><a href="#4-算术运算指令" class="headerlink" title="4.算术运算指令"></a>4.算术运算指令</h2><ul>
+<li>加法<ul>
+<li>不带进位： ADD</li>
+<li>带进位（Cy）：ADDC</li>
+<li>加一：INC</li>
+</ul>
+</li>
+<li>减法<ul>
+<li>不带进位：SUB</li>
+<li>带进位：SUBB</li>
+<li>减一：DEC</li>
+</ul>
+</li>
+<li>乘法：MUL</li>
+<li>除法：DIV</li>
+</ul>
+<h2 id="5-逻辑运算指令"><a href="#5-逻辑运算指令" class="headerlink" title="5.逻辑运算指令"></a>5.逻辑运算指令</h2><ul>
+<li>逻辑与：ANL</li>
+<li>逻辑或：ORL</li>
+<li>逻辑异或：XRL</li>
+<li>取反：CPL</li>
+<li>清零：CLR</li>
+<li>移位<ul>
+<li>不带进位：RL/RR 左移/右移1位</li>
+<li>带进位：RLC/RRC ~</li>
 </ul>
 </li>
 </ul>
-<h2 id="题"><a href="#题" class="headerlink" title="题"></a>题</h2><img src="/images/loading.png" data-original="/2022/11/28/%E5%8D%95%E7%89%87%E6%9C%BA%E5%A4%8D%E4%B9%A0/1_1.jpg" class title="This is an image"> 
-<h1 id="单片机硬件结构"><a href="#单片机硬件结构" class="headerlink" title="单片机硬件结构"></a>单片机硬件结构</h1><h2 id="CPU"><a href="#CPU" class="headerlink" title="CPU"></a>CPU</h2><p>分为运算器和控制器</p>
+<h2 id="6-位运算"><a href="#6-位运算" class="headerlink" title="6.位运算"></a>6.位运算</h2><p>该运算对象仅针对Cy和bit型对象</p>
 <ul>
-<li><p>控制器：依次取出ROM中存储单元的指令</p>
+<li>位传送：MOV</li>
+<li>置1：SETB</li>
+<li>清0：CLR</li>
+<li>取非：CPL</li>
+<li>取与：ANL</li>
+<li>取或：ORL</li>
+</ul>
+<h2 id="7-控制转移类指令"><a href="#7-控制转移类指令" class="headerlink" title="7.控制转移类指令"></a>7.控制转移类指令</h2><ul>
+<li><p>无条件转移：LJMP  3字节，直接转移至该16位地址</p>
+</li>
+<li><p>相对转移：SJMP</p>
+</li>
+<li><p>条件转移：<strong>(条件转移皆为相对PC的转移)</strong></p>
 <ul>
-<li>程序计数器：PC，16位，指向下一条指令的<strong>地址</strong>，复位后为0000H</li>
-<li>指令寄存器</li>
-<li>指令译码器</li>
-<li>定时控制电路</li>
-</ul>
+<li><p>累加器<u><strong>判0</strong></u>：JZ/JNZ</p>
 </li>
-<li><p>运算器ALU：对数据进行算术、逻辑运算</p>
-<ul>
-<li>算术逻辑运算部件ALU，负责运算，结果传回ACC，结果的状态传回PSW</li>
-<li>累加器ACC</li>
-<li><strong>程序状态寄存器PSW</strong></li>
-</ul>
+<li><p>进位Cy判断：JC/JNC</p>
+</li>
+<li><p>任意位判断：JB/JNB/JBC</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">JB bit,rel</span><br><span class="line">// bit: 判断位  rel：偏移量</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>比较<strong>不相等</strong>判断（不相等为满足条件）:CJNE</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">CJNE A,#data,rel</span><br></pre></td></tr></table></figure>
 </li>
 </ul>
-<div class="table-container">
-<table>
-<thead>
-<tr>
-<th style="text-align:center">位</th>
-<th style="text-align:center">7</th>
-<th style="text-align:center">6</th>
-<th style="text-align:center">5</th>
-<th style="text-align:center">4</th>
-<th style="text-align:center">3</th>
-<th style="text-align:center">2</th>
-<th style="text-align:center">1</th>
-<th style="text-align:center">0</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">位名</td>
-<td style="text-align:center">Cy</td>
-<td style="text-align:center">AC</td>
-<td style="text-align:center">F0</td>
-<td style="text-align:center">RS1</td>
-<td style="text-align:center">RS0</td>
-<td style="text-align:center">OV</td>
-<td style="text-align:center">F1</td>
-<td style="text-align:center">P</td>
-</tr>
-<tr>
-<td style="text-align:center">作用</td>
-<td style="text-align:center">进位/借位</td>
-<td style="text-align:center">辅助进位</td>
-<td style="text-align:center">自定义</td>
-<td style="text-align:center">寄存器选择</td>
-<td style="text-align:center">寄存器选择</td>
-<td style="text-align:center">溢出</td>
-<td style="text-align:center">自定义</td>
-<td style="text-align:center">奇偶效验</td>
-</tr>
-</tbody>
-</table>
-</div>
-<ul>
-<li>Cy：运算结果最高位有无进位/错位</li>
-<li>AC：运算结果低四位有无向高四位进位</li>
-<li>F0、F1：用户自定义</li>
-<li>RS1、RS0：一起决定当前寄存器组(00对应寄存器0组，依次增加)</li>
-<li>OV：数据是否溢出</li>
-<li>P：1的个数为奇/偶</li>
-</ul>
-<h2 id="时钟电路"><a href="#时钟电路" class="headerlink" title="时钟电路"></a>时钟电路</h2><ul>
-<li>XTAL1:片内振荡电路输入端</li>
-<li>XTAL2：输出端</li>
-</ul>
-<p>当外部信号源为单片机提供时钟时，1接地，2接信号源</p>
-<h2 id="EA"><a href="#EA" class="headerlink" title="EA"></a>EA</h2><p><strong>EA（反）</strong>为1时CPU从片内读取指令，为0时访问外部</p>
-<h2 id="并行IO口"><a href="#并行IO口" class="headerlink" title="并行IO口"></a>并行IO口</h2><h3 id="P1"><a href="#P1" class="headerlink" title="P1"></a>P1</h3><p>通用输入、输出接口</p>
-<img src="/images/loading.png" data-original="/2022/11/28/%E5%8D%95%E7%89%87%E6%9C%BA%E5%A4%8D%E4%B9%A0/p1.jpg" class title="This is an image"> 
-<h4 id="作输出时："><a href="#作输出时：" class="headerlink" title="作输出时："></a>作输出时：</h4><ul>
-<li><p><strong>输出的数据通过内部总线送入锁存器保存</strong></p>
 </li>
-<li><p>判断数据的每一位。</p>
-<p>为1时，Q=1，Q（反）=0，VT截止，Vcc向引脚输出高电平。</p>
+<li><p>减1<strong>不为0</strong>判断转移：DJNZ</p>
 </li>
-</ul>
-<p><strong>上拉电阻的作用</strong>：当VT截止时，使输出强制为1，若没有上拉电阻，输出可能由于噪音上下浮动。</p>
-<h4 id="作输入时："><a href="#作输入时：" class="headerlink" title="作输入时："></a>作输入时：</h4><ul>
-<li><strong>先向锁存器写1（准双向），使VT一直为截止状态。</strong>否则VT导通会拉低输入信号。</li>
-<li>CPU执行读指令时，2导通，<strong>数据通过2直接进入</strong>内部总线，因此内部总线信号跟随引脚变化。</li>
-</ul>
-<h3 id="P2"><a href="#P2" class="headerlink" title="P2"></a>P2</h3><img src="/images/loading.png" data-original="/2022/11/28/%E5%8D%95%E7%89%87%E6%9C%BA%E5%A4%8D%E4%B9%A0/p2.jpg" class title="This is an image"> 
-<p>有两种用途，准双向IO和高8位地址总线</p>
-<p>当用作IO时，控制信号使开关接左侧，Q输出1使VT截止。</p>
-<h3 id="P3"><a href="#P3" class="headerlink" title="P3"></a>P3</h3><img src="/images/loading.png" data-original="/2022/11/28/%E5%8D%95%E7%89%87%E6%9C%BA%E5%A4%8D%E4%B9%A0/p3.jpg" class title="This is an image"> 
-<p><strong>用户可自行操作第二功能实现相关功能，P3默认为准双向IO</strong></p>
-<p>第二功能包括：串口收发、外部中断、定时器输出等</p>
-<h3 id="P0"><a href="#P0" class="headerlink" title="P0"></a>P0</h3><img src="/images/loading.png" data-original="/2022/11/28/%E5%8D%95%E7%89%87%E6%9C%BA%E5%A4%8D%E4%B9%A0/p0.jpg" class title="This is an image"> 
-<p>可作为准双向IO，<strong>IO时必须外接上拉电阻</strong>。第二功能时提供外部存储地址低8位<strong>和P2组成16位地址</strong>，之后用作数据总线（此时锁存器会保存低八位地址）。</p>
-<p>P0具有高阻态</p>
-<h3 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h3><ul>
-<li>四个IO均为准双向，<strong>在用作输入时都应向锁存器写“1”</strong></li>
-<li>除P1外，其余端口都有第二功能：<ul>
-<li>P0：低八位地址和数据总线</li>
-<li>P2：高八位地址</li>
-<li>P3：自定义功能</li>
-</ul>
-</li>
-<li><strong>P0作为通用IO时需要外接上拉电阻！</strong></li>
-<li><strong><u>P0、P2作地址时剩下引脚不能作为IO使用；但是P3各个口独立，未用作第二功能的可以作为IO使用</u></strong></li>
-</ul>
-<h2 id="存储结构"><a href="#存储结构" class="headerlink" title="存储结构"></a>存储结构</h2><p>51单片机存储器<strong>物理</strong>上分为四个空间：</p>
-<ul>
-<li>片内<strong>程序</strong>存储器</li>
-<li>片外<strong>程序</strong>存储器</li>
-<li>片内<strong>数据</strong>存储器</li>
-<li>片外<strong>数据</strong>存储器</li>
-</ul>
-<p>从用户使用的逻辑上分为三个区域：</p>
-<ul>
-<li>片内外统一编址的程序存储器    0000H-FFFFH(64KB)</li>
-<li>片内数据存储    00-FFH 128B </li>
-<li>片外数据存储    0000H-FFFFH</li>
-</ul>
-<h3 id="程序存储器"><a href="#程序存储器" class="headerlink" title="程序存储器"></a>程序存储器</h3><p>程序存储器由ROM和EPROM构成，掉电后数据不丢失</p>
-<p>用于存放程序和程序运行时所需的常数。<strong>51片内有4K ROM，但地址线为16位，因此做多可以扩展到64KB</strong>。当PC值超过内部ROM容量时会自动转向外部寻址。\EA=1时为寻址内部ROM。</p>
-<p>MOVC指令用于访问程序存储器。</p>
-<h3 id="数据存储器"><a href="#数据存储器" class="headerlink" title="数据存储器"></a>数据存储器</h3><p>数据存储器由RAM和专用寄存器组成，掉电后数据丢失</p>
-<p>用于存放程序运算的中间结果、标志位、数据缓冲等。51片内有128+128B的数据存储器，可扩充至64KB</p>
-<p>内部数据存储器分为低128B和高128B</p>
-<img src="/images/loading.png" data-original="/2022/11/28/%E5%8D%95%E7%89%87%E6%9C%BA%E5%A4%8D%E4%B9%A0/ram.jpg" class title="This is an image"> 
-<h4 id="低128B：RAM区"><a href="#低128B：RAM区" class="headerlink" title="低128B：RAM区"></a>低128B：RAM区</h4><ul>
-<li><p><strong>通用寄存器区</strong>，供用户使用，用于临时存放8位数据</p>
-<p>通过修改程序状态寄存器PSW中的RS1和RS0实现选择，00H-1FH 128位</p>
-</li>
-<li><p><strong>位寻址区</strong>，提供地址读写数据 </p>
-<p>RAM中的20H-2FH，128位</p>
-</li>
-<li><p><strong>数据缓存区</strong></p>
-</li>
-</ul>
-<h4 id="特殊功能寄存器SFR"><a href="#特殊功能寄存器SFR" class="headerlink" title="特殊功能寄存器SFR"></a>特殊功能寄存器SFR</h4><p>包括51中有特殊功能的寄存器，如ACC、PSW、P0-P3等</p>
-<p><u><strong>不包括PC</strong></u></p>
-<h2 id="时序"><a href="#时序" class="headerlink" title="时序"></a>时序</h2><h3 id="时钟周期（振荡周期）"><a href="#时钟周期（振荡周期）" class="headerlink" title="时钟周期（振荡周期）"></a>时钟周期（振荡周期）</h3><p>也叫振荡周期，<strong>为振荡器频率的倒数</strong>，是时序中的<strong>最小单位</strong></p>
-<h3 id="状态周期"><a href="#状态周期" class="headerlink" title="状态周期"></a>状态周期</h3><p>两个振荡周期，一个完成运算，一个完成传送</p>
-<h3 id="机器周期"><a href="#机器周期" class="headerlink" title="机器周期"></a>机器周期</h3><p>执行一条指令的一个阶段的时间。<strong>是单片机的基本操作周期</strong>。1个机器周期=6个状态周期=12个振荡周期</p>
-<h3 id="指令周期"><a href="#指令周期" class="headerlink" title="指令周期"></a>指令周期</h3><p>执行一条指令的周期，通常含有1~4个机器周期。</p>
-<p>51单片机分为单周期指令、双周期指令、四周期指令，分别对应n个机器周期。<strong>只有乘法和除法是四周砌指令。</strong></p>
-<p>因此，晶振周期为12MHz时：</p>
-<ul>
-<li>振荡周期=1/12us</li>
-<li>机器周期=1us</li>
-<li>指令周期：1、2、4us</li>
-</ul>
-<h2 id="工作方式"><a href="#工作方式" class="headerlink" title="工作方式"></a>工作方式</h2><h3 id="复位方式"><a href="#复位方式" class="headerlink" title="复位方式"></a>复位方式</h3><ul>
-<li>上电复位</li>
-<li>按键复位</li>
-</ul>
-<h3 id="复位后寄存器状态"><a href="#复位后寄存器状态" class="headerlink" title="复位后寄存器状态"></a>复位后寄存器状态</h3><ul>
-<li><strong>P0~P3：0FFH（全高电平）</strong></li>
-<li><strong>PC：0000H</strong></li>
-<li><strong>SP：07H</strong></li>
-<li><strong>PSW:  00H</strong></li>
-</ul>
-<p><strong>51单片机在电复位时RAM保持不变</strong></p>
-<h3 id="低功耗模式"><a href="#低功耗模式" class="headerlink" title="低功耗模式"></a>低功耗模式</h3><ul>
-<li>休眠模式：只有外部中断工作</li>
-<li>空闲模式（待机）：只有CPU停止工作</li>
-</ul>
-<h2 id="错题"><a href="#错题" class="headerlink" title="错题"></a>错题</h2><img src="/images/loading.png" data-original="/2022/11/28/%E5%8D%95%E7%89%87%E6%9C%BA%E5%A4%8D%E4%B9%A0/1.jpg" class title="This is an image"> 
-<img src="/images/loading.png" data-original="/2022/11/28/%E5%8D%95%E7%89%87%E6%9C%BA%E5%A4%8D%E4%B9%A0/2.jpg" class title="This is an image"> 
-<img src="/images/loading.png" data-original="/2022/11/28/%E5%8D%95%E7%89%87%E6%9C%BA%E5%A4%8D%E4%B9%A0/7.jpg" class title="This is an image"> 
-<p><strong><u>由于RAM片内外访问指令一个是MOV一个是MOVX，因此其地址可以重叠。外部地址总线16位对应64KB，而内部地址可以与其重合，因此RAM最大总量是大于64KB的</u></strong></p>
-<h1 id="51指令系统"><a href="#51指令系统" class="headerlink" title="51指令系统"></a>51指令系统</h1><p><a target="_blank" rel="noopener" href="https://dhkkk.gitee.io/2022/10/14/51单片机汇编语言/">51单片机汇编指令查询 | 小董的BLOG (gitee.io)</a></p>
-<h2 id="题-1"><a href="#题-1" class="headerlink" title="题"></a>题</h2><img src="/images/loading.png" data-original="/2022/11/28/%E5%8D%95%E7%89%87%E6%9C%BA%E5%A4%8D%E4%B9%A0/3.jpg" class title="This is an image"> 
-<img src="/images/loading.png" data-original="/2022/11/28/%E5%8D%95%E7%89%87%E6%9C%BA%E5%A4%8D%E4%B9%A0/4.jpg" class title="This is an image"> 
-<p><strong>一般只有A能参与这些逻辑运算</strong></p>
-<img src="/images/loading.png" data-original="/2022/11/28/%E5%8D%95%E7%89%87%E6%9C%BA%E5%A4%8D%E4%B9%A0/5.jpg" class title="This is an image"> 
-<p><strong>经典</strong></p>
-<img src="/images/loading.png" data-original="/2022/11/28/%E5%8D%95%E7%89%87%E6%9C%BA%E5%A4%8D%E4%B9%A0/6.jpg" class title="This is an image"> 
-<p><strong>规定</strong></p>
-<h1 id="中断"><a href="#中断" class="headerlink" title="中断"></a>中断</h1><h2 id="中断请求标志寄存器"><a href="#中断请求标志寄存器" class="headerlink" title="中断请求标志寄存器"></a>中断请求标志寄存器</h2><h3 id="定时器-计数器控制寄存器TCON"><a href="#定时器-计数器控制寄存器TCON" class="headerlink" title="定时器/计数器控制寄存器TCON"></a>定时器/计数器控制寄存器TCON</h3><img src="/images/loading.png" data-original="/2022/11/28/%E5%8D%95%E7%89%87%E6%9C%BA%E5%A4%8D%E4%B9%A0/tcon.jpg" class title="This is an image"> 
-<ul>
-<li>IT 0/1:外部中断触发方式，0低电平触发，1下降沿触发</li>
-<li>IE 0/1:中断请求标志位，触发中断后硬件自动清零</li>
-<li>TF 0/1:定时器/计数器溢出中断标志位，触发中断后自动清零</li>
-<li>TR 0/1:启停定时器</li>
-</ul>
-<p>一般就只需设置IT和TR</p>
-<h3 id="串行口控制寄存器SCON"><a href="#串行口控制寄存器SCON" class="headerlink" title="串行口控制寄存器SCON"></a>串行口控制寄存器SCON</h3><img src="/images/loading.png" data-original="/2022/11/28/%E5%8D%95%E7%89%87%E6%9C%BA%E5%A4%8D%E4%B9%A0/scon.jpg" class title="This is an image"> 
-<ul>
-<li>TI:发送中断标志位，每发送完一帧数据后硬件会对其置1，<strong>需用户自行软件清零！</strong></li>
-<li>RI:接收中断标志位，规则同上。</li>
-</ul>
-<h3 id="中断允许寄存器IE"><a href="#中断允许寄存器IE" class="headerlink" title="中断允许寄存器IE"></a>中断允许寄存器IE</h3><img src="/images/loading.png" data-original="/2022/11/28/%E5%8D%95%E7%89%87%E6%9C%BA%E5%A4%8D%E4%B9%A0/ie.jpg" class title="This is an image"> 
-<ul>
-<li>EA：总中断允许位</li>
-<li>ES：串口中断允许位</li>
-<li>ET：定时器中断允许位</li>
-<li>EX：外部中断允许位</li>
-</ul>
-<p>都是置1允许</p>
-<p>若要使用某个中断，必须先开启中断允许位，复位后清零</p>
-<h3 id="总结：-1"><a href="#总结：-1" class="headerlink" title="总结："></a>总结：</h3><ul>
-<li>I开头为TCON寄存器，控制<strong>定时器</strong>中断触发的方法和标志位</li>
-<li>RI和TI为SCON寄存器，控制<strong>串口</strong>相关</li>
-<li>E开头为中断允许寄存器IE</li>
-</ul>
-<h2 id="中断优先级"><a href="#中断优先级" class="headerlink" title="中断优先级"></a>中断优先级</h2><p>由中断优先级寄存器IP控制</p>
-<img src="/images/loading.png" data-original="/2022/11/28/%E5%8D%95%E7%89%87%E6%9C%BA%E5%A4%8D%E4%B9%A0/ip.jpg" class title="This is an image"> 
-<ul>
-<li>PX:外部中断优先级设置</li>
-<li>PT:定时器中断优先级设置</li>
-<li>PS:串口中断优先级设置</li>
-</ul>
-<h2 id="中断响应过程"><a href="#中断响应过程" class="headerlink" title="中断响应过程"></a>中断响应过程</h2><h3 id="中断请求"><a href="#中断请求" class="headerlink" title="中断请求"></a>中断请求</h3><p>硬件完成，请求完成后对应标志位置1</p>
-<h3 id="中断查询"><a href="#中断查询" class="headerlink" title="中断查询"></a>中断查询</h3><p>CPU检测TCON和SCON中各标志位状态，确定是哪个中断</p>
-<h3 id="中断响应"><a href="#中断响应" class="headerlink" title="中断响应"></a>中断响应</h3><p>响应条件：</p>
-<ul>
-<li><strong>EA使能</strong></li>
-<li><strong>该中断允许位也使能</strong></li>
-<li>有中断请求</li>
-<li>无同级或高级中断正在运行</li>
-</ul>
-<h3 id="中断处理"><a href="#中断处理" class="headerlink" title="中断处理"></a>中断处理</h3><p>中断服务程序</p>
-<h3 id="中断返回"><a href="#中断返回" class="headerlink" title="中断返回"></a>中断返回</h3><p>复位置位的标志位，重新执行原程序（PC被弹出堆栈）</p>
-<h2 id="操作流程"><a href="#操作流程" class="headerlink" title="操作流程"></a>操作流程</h2><ul>
-<li>打开对应中断允许位</li>
-<li>设置触发方式</li>
-<li>开启总中断允许</li>
-<li>编写服务函数</li>
-</ul>
-<h2 id="题-2"><a href="#题-2" class="headerlink" title="题"></a>题</h2><img src="/images/loading.png" data-original="/2022/11/28/%E5%8D%95%E7%89%87%E6%9C%BA%E5%A4%8D%E4%B9%A0/zd1.jpg" class title="This is an image"> 
-<h1 id="定时器-计数器"><a href="#定时器-计数器" class="headerlink" title="定时器/计数器"></a>定时器/计数器</h1><h2 id="基本结构"><a href="#基本结构" class="headerlink" title="基本结构"></a>基本结构</h2><p>T1、T2分别由两个8位特殊功能寄存器TH和TL组成。当它对外部事件进行计数时，作为计数器使用；当对内部固<strong>定频率的机器周期进行计数时</strong>，便可以达到定时的目的。</p>
-<h2 id="两种工作模式"><a href="#两种工作模式" class="headerlink" title="两种工作模式"></a>两种工作模式</h2><ul>
-<li><p>计数器工作模式</p>
-<p>对外部事件进行计数，计数脉冲来自P3中的对应引脚。</p>
-<p>下降沿触发</p>
-<p><strong>最高频率为振荡频率的1/24，因为识别下降沿需要2个机器周期，即24个振荡周期</strong></p>
-</li>
-<li><p>定时器工作模式</p>
-<p>计数脉冲为内部时钟脉冲，也就是每个机器周期+1，<strong>因此计数频率为振荡频率的1/12</strong>，得到的时间：定时器计数值*机器周期时间</p>
-</li>
-</ul>
-<p>当设置好定时器后，定时器就将独立工作，不再占用CPU，只有溢出时才会申请中断。</p>
-<h2 id="控制寄存器"><a href="#控制寄存器" class="headerlink" title="控制寄存器"></a>控制寄存器</h2><h3 id="工作模式寄存器TMOD"><a href="#工作模式寄存器TMOD" class="headerlink" title="工作模式寄存器TMOD"></a>工作模式寄存器TMOD</h3><img src="/images/loading.png" data-original="/2022/11/28/%E5%8D%95%E7%89%87%E6%9C%BA%E5%A4%8D%E4%B9%A0/tmod.jpg" class title="This is an image"> 
-<ul>
-<li>GATE：门控位，使用外部中断引脚的高电平来启动定时器（前提是该定时器已被置位运行）</li>
-<li>C/(/T)：1为计数器模式，0为定时器模式</li>
-<li>M1，M0：同时控制定时器的工作模式，同PSW中的RS用法</li>
-</ul>
-<h3 id="控制寄存器TCON"><a href="#控制寄存器TCON" class="headerlink" title="控制寄存器TCON"></a>控制寄存器TCON</h3><p>上一节中断中已讲过，控制定时器的开启。</p>
-<h2 id="定时器的工作方式"><a href="#定时器的工作方式" class="headerlink" title="定时器的工作方式"></a>定时器的工作方式</h2><h3 id="方式0"><a href="#方式0" class="headerlink" title="方式0"></a>方式0</h3><img src="/images/loading.png" data-original="/2022/11/28/%E5%8D%95%E7%89%87%E6%9C%BA%E5%A4%8D%E4%B9%A0/mod0.jpg" class title="This is an image"> 
-<p>易得其定时时间为：(2^13 - 初值)*机器周期</p>
-<p>计算后的值低5位赋给TL，高8位赋给TH</p>
-<h3 id="方式1"><a href="#方式1" class="headerlink" title="方式1"></a>方式1</h3><p>16位计数器，其余与方式0一样。</p>
-<h3 id="方式2"><a href="#方式2" class="headerlink" title="方式2"></a>方式2</h3><p>方式2为8位定时器</p>
-<ul>
-<li>TL用作定时，TH用于保存初值。当TL溢出后，中断标志置位，<strong>同时自动将TH中的值重新装载进TL</strong>，无需用户再手动重新装入初值。</li>
-</ul>
-<p>更加精准，但计时范围小。</p>
-<h3 id="方式3"><a href="#方式3" class="headerlink" title="方式3"></a>方式3</h3><ul>
-<li>只有T0能被设置为模式3，T1若为模式3，则停止计数，保存原样。</li>
-</ul>
-<h4 id="T0为模式3时"><a href="#T0为模式3时" class="headerlink" title="T0为模式3时"></a>T0为模式3时</h4><p>TH和TL分别单独工作</p>
-<ul>
-<li>TL：使用T0的状态控制位，同方式2，但是溢出后需用户手动装入初值</li>
-<li>TH：<strong>被固定为一个内部定时器</strong>，受T1控制位的TR1控制启停，同上占用T1的中断请求TF1</li>
-</ul>
-<h4 id="T0为模式3时，T1的设置"><a href="#T0为模式3时，T1的设置" class="headerlink" title="T0为模式3时，T1的设置"></a>T0为模式3时，T1的设置</h4><p>T1仍可设置为方式0、1、2，但由于中断被占用，只能将输出送往串口</p>
-<h2 id="使用流程"><a href="#使用流程" class="headerlink" title="使用流程"></a>使用流程</h2><ul>
-<li>设置模式TMOD</li>
-<li>赋初值TL、TH</li>
-<li><p>开启中断ET、EA</p>
-</li>
-<li><p>开启定时器TR</p>
-</li>
-</ul>
-<h1 id="串口通信"><a href="#串口通信" class="headerlink" title="串口通信"></a>串口通信</h1><p>串行通信：数据的各位在同一根数据线上逐位发送、接收。</p>
-<p>串行通信按同步方式分为异步通信和同步通信</p>
-<h2 id="同步通信"><a href="#同步通信" class="headerlink" title="同步通信"></a>同步通信</h2><p>数据传输速率高，但是要求发送时钟和接收时钟严格同步</p>
-<h2 id="异步通信"><a href="#异步通信" class="headerlink" title="异步通信"></a>异步通信</h2><p>数据组成数据帧方式，收、发端相互独立、互不同步，只需规定收发数据的帧格式即可相互识别。</p>
-<h3 id="数据帧格式"><a href="#数据帧格式" class="headerlink" title="数据帧格式"></a>数据帧格式</h3><ul>
-<li>起始位：低电平有效</li>
-<li>数据位：5~8位</li>
-<li>奇偶校验位</li>
-<li>停止位：高电平有效</li>
-</ul>
-<h3 id="波特率"><a href="#波特率" class="headerlink" title="波特率"></a>波特率</h3><p>每秒传输二进制数码的位数，每位的传输时间为1/波特率</p>
-<h2 id="51单片机的串口通信"><a href="#51单片机的串口通信" class="headerlink" title="51单片机的串口通信"></a>51单片机的串口通信</h2><p>51内部有一个可编程全双工串口。</p>
-<h3 id="串口相关寄存器"><a href="#串口相关寄存器" class="headerlink" title="串口相关寄存器"></a>串口相关寄存器</h3><h4 id="串行数据缓冲器SBUF"><a href="#串行数据缓冲器SBUF" class="headerlink" title="串行数据缓冲器SBUF"></a>串行数据缓冲器SBUF</h4><p>包括发送和接收寄存器，但在逻辑上只有一个SBUF，在使用时可用作发送和接收。（物理上有两个完全独立的SBUF，但是他们地址是一样的）</p>
-<h4 id="串行控制寄存器SCON"><a href="#串行控制寄存器SCON" class="headerlink" title="串行控制寄存器SCON"></a>串行控制寄存器SCON</h4><img src="/images/loading.png" data-original="/2022/11/28/%E5%8D%95%E7%89%87%E6%9C%BA%E5%A4%8D%E4%B9%A0/scon2.jpg" class title="This is an image"> 
-<ul>
-<li><p>SM0、1工作方式选择位</p>
-<img src="/images/loading.png" data-original="/2022/11/28/%E5%8D%95%E7%89%87%E6%9C%BA%E5%A4%8D%E4%B9%A0/smod.jpg" class title="This is an image"> 
-</li>
-<li><p>SM2:多机通信控制位</p>
-</li>
-<li><p>REN：<strong>允许接收控制位</strong></p>
-</li>
-<li><p>TB8：方式2、3的<strong>发送</strong>第九位</p>
-</li>
-<li><p>RB8：方式2、3的接收第九位</p>
-</li>
-</ul>
-<h4 id="电源控制寄存器PCON"><a href="#电源控制寄存器PCON" class="headerlink" title="电源控制寄存器PCON"></a>电源控制寄存器PCON</h4><p>其中第七位SMOD为1波特率加倍</p>
-<h2 id="基础流程"><a href="#基础流程" class="headerlink" title="基础流程"></a>基础流程</h2><ul>
-<li><strong><u>配置SCON</u></strong></li>
-<li><strong><u>数据送往SBUF</u></strong></li>
-<li><strong><u>发送、接收数据</u></strong></li>
-<li><strong><u>中断置位</u></strong></li>
-</ul>
-<h2 id="题-3"><a href="#题-3" class="headerlink" title="题"></a>题</h2><img src="/images/loading.png" data-original="/2022/11/28/%E5%8D%95%E7%89%87%E6%9C%BA%E5%A4%8D%E4%B9%A0/8.jpg" class title="This is an image"> 
-<h1 id="常用的一些寄存器"><a href="#常用的一些寄存器" class="headerlink" title="常用的一些寄存器"></a>常用的一些寄存器</h1><h2 id="片内特殊功能寄存器SFR"><a href="#片内特殊功能寄存器SFR" class="headerlink" title="片内特殊功能寄存器SFR"></a>片内特殊功能寄存器SFR</h2><img src="/images/loading.png" data-original="/2022/11/28/%E5%8D%95%E7%89%87%E6%9C%BA%E5%A4%8D%E4%B9%A0/sfr.jpg" class title="This is an image"> 
-<p>大多数特殊寄存器都在这里，<strong>但不包括PC！！</strong></p>
-<h2 id="程序状态寄存器PSW"><a href="#程序状态寄存器PSW" class="headerlink" title="程序状态寄存器PSW"></a>程序状态寄存器PSW</h2><p>用于表示运算结果的状态</p>
-<div class="table-container">
-<table>
-<thead>
-<tr>
-<th style="text-align:center">位</th>
-<th style="text-align:center">7</th>
-<th style="text-align:center">6</th>
-<th style="text-align:center">5</th>
-<th style="text-align:center">4</th>
-<th style="text-align:center">3</th>
-<th style="text-align:center">2</th>
-<th style="text-align:center">1</th>
-<th style="text-align:center">0</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">位名</td>
-<td style="text-align:center">Cy</td>
-<td style="text-align:center">AC</td>
-<td style="text-align:center">F0</td>
-<td style="text-align:center">RS1</td>
-<td style="text-align:center">RS0</td>
-<td style="text-align:center">OV</td>
-<td style="text-align:center">F1</td>
-<td style="text-align:center">P</td>
-</tr>
-<tr>
-<td style="text-align:center">作用</td>
-<td style="text-align:center">进位/借位</td>
-<td style="text-align:center">辅助进位</td>
-<td style="text-align:center">自定义</td>
-<td style="text-align:center">寄存器选择</td>
-<td style="text-align:center">寄存器选择</td>
-<td style="text-align:center">溢出</td>
-<td style="text-align:center">自定义</td>
-<td style="text-align:center">奇偶效验</td>
-</tr>
-</tbody>
-</table>
-</div>
-<h2 id="中断允许寄存器IE（管理中断允许）E开头"><a href="#中断允许寄存器IE（管理中断允许）E开头" class="headerlink" title="中断允许寄存器IE（管理中断允许）E开头"></a>中断允许寄存器IE（管理中断允许）E开头</h2><p>用于管理所有中断</p>
-<img src="/images/loading.png" data-original="/2022/11/28/%E5%8D%95%E7%89%87%E6%9C%BA%E5%A4%8D%E4%B9%A0/ie.jpg" class title="This is an image"> 
-<h2 id="中断优先级寄存器IP（管理中断优先级）P开头"><a href="#中断优先级寄存器IP（管理中断优先级）P开头" class="headerlink" title="中断优先级寄存器IP（管理中断优先级）P开头"></a>中断优先级寄存器IP（管理中断优先级）P开头</h2><img src="/images/loading.png" data-original="/2022/11/28/%E5%8D%95%E7%89%87%E6%9C%BA%E5%A4%8D%E4%B9%A0/ip.jpg" class title="This is an image"> 
-<p>外部中断2位，定时器2位，串口1位，共5位</p>
-<h2 id="定时器工作模式寄存器TMOD（管理定时器工作模式）"><a href="#定时器工作模式寄存器TMOD（管理定时器工作模式）" class="headerlink" title="定时器工作模式寄存器TMOD（管理定时器工作模式）"></a>定时器工作模式寄存器TMOD（管理定时器工作模式）</h2><p>8位，下4位控制T0，上4位控制T1</p>
-<h2 id="定时器中断控制寄存器TCON（管理定时器启动、定时器和外部中断的中断标志位）"><a href="#定时器中断控制寄存器TCON（管理定时器启动、定时器和外部中断的中断标志位）" class="headerlink" title="定时器中断控制寄存器TCON（管理定时器启动、定时器和外部中断的中断标志位）"></a>定时器中断控制寄存器TCON（管理定时器启动、定时器和外部中断的中断标志位）</h2><img src="/images/loading.png" data-original="/2022/11/28/%E5%8D%95%E7%89%87%E6%9C%BA%E5%A4%8D%E4%B9%A0/tcon.jpg" class title="This is an image"> 
-<p>其中IT和IE为控制外部中断的位</p>
-<p>需要操作的位只有IT和TR，其他都会自动复位</p>
-<h2 id="串行控制寄存器SCON（管理串口中断位和串口配置）"><a href="#串行控制寄存器SCON（管理串口中断位和串口配置）" class="headerlink" title="串行控制寄存器SCON（管理串口中断位和串口配置）"></a>串行控制寄存器SCON（管理串口中断位和串口配置）</h2><img src="/images/loading.png" data-original="/2022/11/28/%E5%8D%95%E7%89%87%E6%9C%BA%E5%A4%8D%E4%B9%A0/scon2.jpg" class title="This is an image"> 
-<h2 id="电源控制寄存器PCON（波特率翻倍）"><a href="#电源控制寄存器PCON（波特率翻倍）" class="headerlink" title="电源控制寄存器PCON（波特率翻倍）"></a>电源控制寄存器PCON（波特率翻倍）</h2><p>仅串口中需使用其第七位翻倍波特率</p>
-<h1 id="题-4"><a href="#题-4" class="headerlink" title="题"></a>题</h1><ul>
-<li><p>堆栈的作用：保护现场和断点</p>
-</li>
-<li><p>JB为判断当前位，为1则跳转</p>
-</li>
-</ul>
-<img src="/images/loading.png" data-original="/2022/11/28/%E5%8D%95%E7%89%87%E6%9C%BA%E5%A4%8D%E4%B9%A0/wxz.jpg" class title="This is an image"> 
-<p>如果是A，就是直接寻址，C则为位寻址，位寻址只能操作位</p>
-<img src="/images/loading.png" data-original="/2022/11/28/%E5%8D%95%E7%89%87%E6%9C%BA%E5%A4%8D%E4%B9%A0/ct.jpg" class title="This is an image"> 
-<ul>
-<li>C/(/T)：<strong>0为定时器模式</strong></li>
 </ul>
 
       
@@ -661,7 +362,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2022/11/18/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E7%BA%BF%E6%80%A7%E8%A1%A8/">
+    <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2022/10/11/C++-5/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/zoe.gif">
@@ -675,7 +376,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2022/11/18/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E7%BA%BF%E6%80%A7%E8%A1%A8/" class="post-title-link" itemprop="url">数据结构_链表</a>
+            <a href="/2022/10/11/C++-5/" class="post-title-link" itemprop="url">C++的语句与函数</a>
         </h2>
 
         <div class="post-meta">
@@ -687,14 +388,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2022-11-18 19:26:17" itemprop="dateCreated datePublished" datetime="2022-11-18T19:26:17+08:00">2022-11-18</time>
+              <time title="创建时间：2022-10-11 16:00:25" itemprop="dateCreated datePublished" datetime="2022-10-11T16:00:25+08:00">2022-10-11</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-11-20 14:08:09" itemprop="dateModified" datetime="2022-11-20T14:08:09+08:00">2022-11-20</time>
+                <time title="修改时间：2022-10-30 19:06:41" itemprop="dateModified" datetime="2022-10-30T19:06:41+08:00">2022-10-30</time>
               </span>
 
           
@@ -708,83 +409,75 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="1-链表的概念"><a href="#1-链表的概念" class="headerlink" title="1.链表的概念"></a>1.链表的概念</h1><p>通过多个<strong>节点</strong>将多个数据元素组成一个链表。</p>
+          <h1 id="try语句与异常处理"><a href="#try语句与异常处理" class="headerlink" title="try语句与异常处理"></a>try语句与异常处理</h1><p>通常的异常处理包括三部分：</p>
 <ul>
-<li>节点：数据元素的存储映像， 由<strong>数据域和指针域</strong>两部分组成。</li>
+<li>throw表达式：使用throw表达式表示当前程序遇到了某个问题（异常声明）</li>
+<li>try语句块：与catch配合用于处理各类异常声明</li>
+<li>一套异常类：用于传递具体的异常信息（异常声明的含义）</li>
 </ul>
-<p><strong>优点</strong></p>
+<h2 id="例程"><a href="#例程" class="headerlink" title="例程"></a>例程</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;windows.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdexcept&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> std::vector;</span><br><span class="line"><span class="keyword">using</span> std::string;</span><br><span class="line"><span class="keyword">using</span> std::cin;</span><br><span class="line"><span class="keyword">using</span> std::cout;</span><br><span class="line"><span class="keyword">using</span> std::endl;</span><br><span class="line"><span class="keyword">using</span> std::runtime_error;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="type">int</span> a,b;</span><br><span class="line">    cin&gt;&gt;a&gt;&gt;b;</span><br><span class="line">    <span class="keyword">try</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span>(a!=b) <span class="keyword">throw</span> <span class="built_in">runtime_error</span>(<span class="string">&quot;ERROR!!!&quot;</span>);</span><br><span class="line">        cout&lt;&lt;<span class="string">&quot;good&quot;</span>&lt;&lt;endl;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">catch</span>(runtime_error err)</span><br><span class="line">    &#123;</span><br><span class="line">        cout&lt;&lt;err.<span class="built_in">what</span>();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">system</span>(<span class="string">&quot;pause&quot;</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="throw表达式"><a href="#throw表达式" class="headerlink" title="throw表达式"></a>throw表达式</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(a!=b) <span class="keyword">throw</span> <span class="built_in">runtime_error</span>(<span class="string">&quot;ERROR!!!&quot;</span>);</span><br></pre></td></tr></table></figure>
+<p>格式：throw+异常类+初始化异常类对象</p>
 <ul>
-<li>数据元素的个数可以自由扩充</li>
-<li>插入、删除等操作不必移动数据，只需修改链接指针，修改效率较高</li>
-</ul>
-<p><strong>缺点</strong></p>
+<li><p>该初始化的对象只用于提供一些关于异常的辅助信息（用户自行定义）</p>
+</li>
+<li><p>异常类为一系列在库中定义的类型，使用时需要声明其命名空间，以下是几种常用的异常类，在头文件stdexcept中</p>
+<p>|    exception    |                  一般错误                  |<br>| :——————-: | :————————————————————: |<br>|  runtime_error  |           运行时才能检测出的任务           |<br>|   range_error   | 运行时：生成结果超出有意义的值域范围的错误 |<br>| overflow_error  |            运行时：计算上溢错误            |<br>| underflow_error |            运行时：计算下溢错误            |<br>|   logic_error   |                程序逻辑错误                |<br>|  domain_error   |       逻辑错误：参数对应的结果不存在       |<br>|  invalid_error  |             逻辑错误：无效参数             |<br>|  length_error   |         逻辑错误：超出对象类型长度         |<br>|  out_of_range   |           逻辑错误：超出有效范围           |</p>
 <ul>
-<li>存储密度小</li>
-<li>存取效率不高，必须采用顺序存取，即存取数据元素时，只能按链表的顺序进行访问（顺藤摸瓜）</li>
-</ul>
-<h1 id="2-创建一个单向列表"><a href="#2-创建一个单向列表" class="headerlink" title="2.创建一个单向列表"></a>2.创建一个单向列表</h1><p>单向列表即每个节点之间的联系是单向的，仅通过一个指针链接。</p>
-<p>创建列表有两种方法：前插法和后插法。</p>
-<h2 id="前插法"><a href="#前插法" class="headerlink" title="前插法"></a>前插法</h2><p>新的节点链接到上一节点的开头</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"> <span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">list</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">	<span class="type">int</span> num; 	<span class="comment">//数据域</span></span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">list</span> *<span class="title">last</span>;</span>	<span class="comment">//指针域</span></span><br><span class="line">&#125;test;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">setlist</span><span class="params">(test* linkhead, <span class="type">int</span> data)</span></span><br><span class="line">&#123;</span><br><span class="line">   test *tmp=(test*)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(test));<span class="comment">//分配动态内存，防止生成野指针</span></span><br><span class="line">   tmp-&gt;num=data;</span><br><span class="line">   tmp-&gt;last=linkhead-&gt;last;</span><br><span class="line">   linkhead-&gt;last=tmp;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">   <span class="type">int</span> a[<span class="number">3</span>]=&#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>&#125;;</span><br><span class="line">   <span class="type">int</span> i;</span><br><span class="line">   test* head=(test*)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(test));</span><br><span class="line">   head-&gt;last=<span class="literal">NULL</span>;</span><br><span class="line">   <span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;<span class="number">3</span>;++i)</span><br><span class="line">   &#123;</span><br><span class="line">      setlist(head,a[i]);</span><br><span class="line">   &#125;</span><br><span class="line">   test* p= head-&gt;last;</span><br><span class="line">   <span class="keyword">while</span>(p!=<span class="literal">NULL</span>)</span><br><span class="line">   &#123;</span><br><span class="line">      <span class="built_in">printf</span>(<span class="string">&quot;%d &quot;</span>,p-&gt;num);</span><br><span class="line">      p=p-&gt;next;</span><br><span class="line">    &#125;</span><br><span class="line">   <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>前插法创建链表的步骤为（以创建两个节点为例）:</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">setlist</span><span class="params">(test* linkhead, <span class="type">int</span> data)</span></span><br><span class="line">&#123;</span><br><span class="line">   <span class="comment">//开辟一个新节点</span></span><br><span class="line">   test *tmp=(test*)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(test));</span><br><span class="line">   <span class="comment">//写入需要的数据</span></span><br><span class="line">   tmp-&gt;num=data;</span><br><span class="line">   <span class="comment">//将节点的指针域指向linkhead的指针域</span></span><br><span class="line">   tmp-&gt;last=linkhead-&gt;last;</span><br><span class="line">   <span class="comment">//将linkhead的指针域指向新节点首地址</span></span><br><span class="line">   linkhead-&gt;last=tmp;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>也就是说，创建第一个节点时，该节点的指针域先指向NULL后，linkhead指针域再指向该节点首地址。</p>
-<p>当刚创建第二个节点时，情况如下：</p>
-<img src="/images/loading.png" data-original="/2022/11/18/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E7%BA%BF%E6%80%A7%E8%A1%A8/1.jpg" class title="This is an image"> 
-<p>当执行<code>tmp-&gt;last=linkhead-&gt;last;</code>时，由于linkhead的指针域此时指向tmp(1)（这里的1指第一块节点的内存空间）的首地址，<strong>所以tmp(2)的指针域会通过linkhead直接也指向tmp(1)的首地址:</strong></p>
-<img src="/images/loading.png" data-original="/2022/11/18/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E7%BA%BF%E6%80%A7%E8%A1%A8/2.jpg" class title="This is an image"> 
-<p>这样之后，两个节点就通过指针链接在了一起，且tmp(2)在tmp(1)之前。</p>
-<p>由此可以看出，前插法的原理就是以linkhead为媒介来链接节点，<strong>linkhead本身是不存储数据的</strong></p>
-<p>最后，执行<code>linkhead-&gt;last=tmp;</code>，<strong>将linkhead指针域指向第二个节点首地址，以供第三个节点的指针域找到第二个节点。</strong></p>
-<img src="/images/loading.png" data-original="/2022/11/18/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E7%BA%BF%E6%80%A7%E8%A1%A8/3.jpg" class title="This is an image"> 
-<p>以此类推，假如现在创建了4个节点，那情况就应该像这样：</p>
-<img src="/images/loading.png" data-original="/2022/11/18/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E7%BA%BF%E6%80%A7%E8%A1%A8/4.jpg" class title="This is an image"> 
-<p>在例程中，由于前插法得到的链表顺序为最后输入的数据开始，所以最后打印的结果为3 2 1</p>
-<h2 id="尾插法"><a href="#尾插法" class="headerlink" title="尾插法"></a>尾插法</h2><p>相对于前插法，尾插法使用起来逻辑会更加清晰，因为其链接顺序是在每一个节点后，所以尾插法要更容易理解一些。</p>
-<p>在<a target="_blank" rel="noopener" href="https://dhkkk.gitee.io/2022/08/01/C-结构体/">结构体复习 | 小董的BLOG (gitee.io)</a>中讲到的列表就是使用的尾插法，核心代码如下：</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">list</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">	<span class="type">int</span> num;</span><br><span class="line">	<span class="type">char</span> name[<span class="number">30</span>];</span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">list</span> *<span class="title">next</span>;</span></span><br><span class="line">&#125;test;</span><br><span class="line"></span><br><span class="line">test *<span class="title function_">creat</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">	test *linkhead,*linkend,*tmp;</span><br><span class="line">	<span class="type">int</span> i;</span><br><span class="line">	<span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;<span class="number">3</span>;i++)</span><br><span class="line">	&#123;</span><br><span class="line">		tmp=(test*)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(test));<span class="comment">//分配动态内存</span></span><br><span class="line">		<span class="built_in">scanf</span>(<span class="string">&quot;%d %s&quot;</span>,&amp;tmp-&gt;num,tmp-&gt;name);</span><br><span class="line">		<span class="keyword">if</span>(i==<span class="number">0</span>)</span><br><span class="line">		&#123;</span><br><span class="line">			linkhead=tmp;<span class="comment">//第一次先将当前节点赋给链头链尾</span></span><br><span class="line">			linkend=tmp;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span><span class="comment">//若不是第一次，先将当前节点存入上一个节点的next中，再将linkend更新为当前节点以供下一次访问</span></span><br><span class="line">		&#123;                                                                <span class="comment">//当前节点的next</span></span><br><span class="line">			linkend-&gt;next=tmp;<span class="comment">//通过linkend直接指向内存中的一个struct list变量使其指向tmp的内存</span></span><br><span class="line">			linkend=tmp;</span><br><span class="line">         <span class="comment">//以第二个节点为例，先将第linkend（也就是tmp(1)）的指针域指向二个节点首地址</span></span><br><span class="line">         <span class="comment">//再将linkend指向tmp(2)，以供后面的节点重复23、24行的操作</span></span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	linkend-&gt;next=<span class="literal">NULL</span>;</span><br><span class="line">	<span class="keyword">return</span> linkhead;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>如果说前插法是通过linkhead为媒介进行链接，那尾插法就是通过linkend为媒介链接各节点。</p>
-<h1 id="3-双向链表的创建"><a href="#3-双向链表的创建" class="headerlink" title="3.双向链表的创建"></a>3.双向链表的创建</h1><p>同样分为使用前插法和后插法，但是尾插法会简单很多，所以先讲一下尾插法</p>
-<h2 id="尾插法创建双向链表"><a href="#尾插法创建双向链表" class="headerlink" title="尾插法创建双向链表"></a>尾插法创建双向链表</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"> <span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">list</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">	<span class="type">int</span> num;</span><br><span class="line">	<span class="type">char</span> name[<span class="number">30</span>];</span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">list</span> *<span class="title">last</span>;</span>	<span class="comment">//存放上一节点</span></span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">list</span> *<span class="title">next</span>;</span>	<span class="comment">//存放下一节点</span></span><br><span class="line">&#125;test;</span><br><span class="line"></span><br><span class="line">test *<span class="title function_">creat</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">	test *linkhead,*linkend,*tmp;</span><br><span class="line">	<span class="type">int</span> i;</span><br><span class="line">	<span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;<span class="number">3</span>;i++)</span><br><span class="line">	&#123;</span><br><span class="line">		tmp=(test*)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(test)); </span><br><span class="line">		<span class="built_in">scanf</span>(<span class="string">&quot;%d %s&quot;</span>,&amp;tmp-&gt;num,tmp-&gt;name);</span><br><span class="line">		<span class="keyword">if</span>(i==<span class="number">0</span>)</span><br><span class="line">		&#123;</span><br><span class="line">			linkhead=tmp;</span><br><span class="line">			linkend=tmp;</span><br><span class="line">			linkhead-&gt;last=<span class="literal">NULL</span>; <span class="comment">//因为链头没有上一节点，固其last指针域指向NULL</span></span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span></span><br><span class="line">		&#123;</span><br><span class="line">			tmp-&gt;last=linkend;	<span class="comment">//把上一节点地址存入本节点的last指针中</span></span><br><span class="line">			linkend-&gt;next=tmp;</span><br><span class="line">			linkend=tmp;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	linkend-&gt;next=<span class="literal">NULL</span>;</span><br><span class="line">	<span class="keyword">return</span> linkhead;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>尾插法由于其创建链表的方式为顺序创建，因此只需在原有的基础上添加存放上一节点的指针就行了</p>
-<p>使用双向链表会增加内存，但是就可以通过任意节点找到其他节点了。</p>
-<h2 id="使用前插法创建双向链表"><a href="#使用前插法创建双向链表" class="headerlink" title="使用前插法创建双向链表"></a>使用前插法创建双向链表</h2><p>使用前插法的话会稍微麻烦一些，而且理解起来也会有点绕，感觉用尾插法好一些。</p>
-<p>（这是我自己写的方法，感觉有点绕）</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line"> <span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">list</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">	<span class="type">int</span> num; 	<span class="comment">//数据域</span></span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">list</span> *<span class="title">last</span>;</span>	</span><br><span class="line">   <span class="class"><span class="keyword">struct</span> <span class="title">list</span> *<span class="title">next</span>;</span>	</span><br><span class="line">&#125;test;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> time=<span class="number">1</span>;</span><br><span class="line">test* <span class="title function_">InsertList</span><span class="params">(test *head,<span class="type">int</span> val)</span></span><br><span class="line">&#123;</span><br><span class="line">   test *tmp,*end;</span><br><span class="line">   tmp=(test *)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span> (test));</span><br><span class="line">	<span class="keyword">if</span>(time==<span class="number">1</span>) <span class="comment">//建立第一个节点时将该节点作为链尾</span></span><br><span class="line">	&#123;</span><br><span class="line">		tmp-&gt;num=val;</span><br><span class="line">		tmp-&gt;last=head-&gt;last;</span><br><span class="line">		head-&gt;last=tmp;	</span><br><span class="line">		end=tmp;	<span class="comment">//end作为链尾将一直指向第一个建立的节点，后续不再改变end</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">	&#123;</span><br><span class="line">		tmp-&gt;num=val;</span><br><span class="line">		tmp-&gt;last=head-&gt;last;</span><br><span class="line">		head-&gt;last-&gt;next=tmp;	<span class="comment">//将上一个节点的next指针指向当前节点（有点套娃的感觉）</span></span><br><span class="line">		head-&gt;last=tmp;</span><br><span class="line">		tmp-&gt;next=<span class="literal">NULL</span>; <span class="comment">//每个节点的next先清零，为了让最后一个节点指向null</span></span><br><span class="line">	&#125;</span><br><span class="line">	++time;</span><br><span class="line">	<span class="keyword">return</span> end;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">   <span class="type">int</span> a[<span class="number">3</span>]=&#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>&#125;;</span><br><span class="line">   <span class="type">int</span> i;</span><br><span class="line">   test *linkhead, *linkend;</span><br><span class="line">   linkhead=(test *)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span> (test));</span><br><span class="line">   linkhead-&gt;last=<span class="literal">NULL</span>;</span><br><span class="line">   <span class="keyword">for</span>(i=<span class="number">2</span>;i&gt;=<span class="number">0</span>;--i) <span class="comment">//由于是前插法，所以输入倒序输入</span></span><br><span class="line">   &#123;</span><br><span class="line">      linkend=InsertList(linkhead,a[i]);</span><br><span class="line">   &#125;</span><br><span class="line">   test *p1,*p2;</span><br><span class="line">   p1=linkhead-&gt;last;</span><br><span class="line">   p2=linkend;</span><br><span class="line">   <span class="keyword">while</span>(p1!=<span class="literal">NULL</span>)</span><br><span class="line">   &#123;</span><br><span class="line">      <span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>,p1-&gt;num);</span><br><span class="line">      p1=p1-&gt;last;      </span><br><span class="line">   &#125;</span><br><span class="line">   <span class="keyword">while</span>(p2!=<span class="literal">NULL</span>)</span><br><span class="line">   &#123;</span><br><span class="line">      <span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>,p2-&gt;num);</span><br><span class="line">      p2=p2-&gt;next;      </span><br><span class="line">   &#125;</span><br><span class="line">	system(<span class="string">&quot;pause&quot;</span>);</span><br><span class="line">   <span class="keyword">return</span> <span class="number">0</span>;   </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<img src="/images/loading.png" data-original="/2022/11/18/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E7%BA%BF%E6%80%A7%E8%A1%A8/5.jpg" class title="This is an image"> 
-<p>在写这个双向链表时我遇见了个问题：对于linkend变量，我在主函数中定义后，像通过像linkhead一样的方式对linkend进行改变，但是始终无法实现：</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">InsertList</span><span class="params">(test *head,test *end;<span class="type">int</span> val)</span></span><br><span class="line">&#123;</span><br><span class="line">   test *tmp,*end;</span><br><span class="line">   tmp=(test *)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span> (test));</span><br><span class="line">	<span class="keyword">if</span>(time==<span class="number">1</span>) </span><br><span class="line">	&#123;</span><br><span class="line">		tmp-&gt;num=val;</span><br><span class="line">		tmp-&gt;last=head-&gt;last;</span><br><span class="line">		head-&gt;last=tmp;	</span><br><span class="line">		end=tmp;	</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">	&#123;</span><br><span class="line">		tmp-&gt;num=val;</span><br><span class="line">		tmp-&gt;last=head-&gt;last;</span><br><span class="line">		head-&gt;last-&gt;next=tmp;	</span><br><span class="line">		head-&gt;last=tmp;</span><br><span class="line">		tmp-&gt;next=<span class="literal">NULL</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	++time;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">   test *linkhead, *linkend;</span><br><span class="line">   linkhead=(test *)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span> (test));</span><br><span class="line">   linkhead-&gt;last=<span class="literal">NULL</span>;</span><br><span class="line">	...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>如果在主函数中没有对linkend分配内存，linkend将成为一个野指针，无法指向字符值常量。</p>
-<p>但是如果分配了内存，由于linkhead是通过last成员来寻找链表，但是linkend却无法像linkhead一样正常实现功能，在经过整整一天的查找资料＆调试后，终于发现了原因：</p>
-<p>当一个函数的形参是结构体指针时，<strong>这个形参本身的地址（不是所指向的地址）和实参的地址（也不是所指向的地址）是不同的</strong>。用例程举例：</p>
-<ul>
-<li><strong>&amp;linkend≠&amp;end，</strong>因此，<strong>在函数中改变形参end所指向的内容是完全不会影响实参linkend的，因为此时这两位可以理解成两个变量</strong></li>
-</ul>
-<p>那这时大家肯定会有个疑惑：那linkhead为什么就可以实现想要链表功能呢？</p>
-<p>我们仔细看InsertList函数中的内容，你肯定会发现，函数中没有出现直接操作linkhead的操作，只有操作linkhead成员的操作，<strong>这里就引出了一个折磨了我半天的知识点</strong>：</p>
-<ul>
-<li><p>对于一个结构体指针形参，形参名的地址和实参名的地址是不能划等号的，<strong>但是形参成员的地址和实参成员的地址是完全相同的</strong>，用例程举个例子</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&amp;linkend≠&amp;end</span><br><span class="line">linkend-&gt;next=end-&gt;next      (=是等于的意思，不是赋值的意思)</span><br></pre></td></tr></table></figure>
+<li><p>除exception外其他类型都<strong>必须</strong>用一个字符串初始化，而exception则不允许这种初始化</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">if</span>(a!=b) <span class="keyword">throw</span> <span class="built_in">exception</span>();</span><br><span class="line">	cout&lt;&lt;<span class="string">&quot;good&quot;</span>&lt;&lt;endl;</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">catch</span>(exception)</span><br><span class="line">&#123;</span><br><span class="line">   cout&lt;&lt;<span class="string">&quot;ERROR!!&quot;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 </li>
 </ul>
-<p>其实这里的解释有点类似于在<a target="_blank" rel="noopener" href="https://dhkkk.gitee.io/2022/08/01/C-结构体/">结构体复习 | 小董的BLOG (gitee.io)</a>最后我对一重指针的解释：</p>
+</li>
+</ul>
+<h2 id="try语句块"><a href="#try语句块" class="headerlink" title="try语句块"></a>try语句块</h2><p>格式：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span></span><br><span class="line">&#123; &#125;<span class="comment">//程序正常逻辑，异常类在此throw出 </span></span><br><span class="line"><span class="built_in">catch</span>(异常声明)</span><br><span class="line">&#123;&#125;</span><br><span class="line"><span class="built_in">catch</span>(异常声明)</span><br><span class="line">&#123;&#125;</span><br></pre></td></tr></table></figure>
 <ul>
-<li><strong>假如有两个并列的指针指向同一个变量，你不能通过改变其中一个指针的指向来影响另一个指针的指向</strong></li>
+<li>当try内一旦提出异常类时，就不再执行该throw表达式后的内容；反之，若没有throw任何异常，则不会触发任何catch语句，程序正常执行完try语句。</li>
+<li>catch括号中需定义一个对象，类型为触发的异常类，这些异常类只有一个子函数what，用于输出初始化时的字符串（不能用于exception类）</li>
 </ul>
-<p>那么这时又引出了一个问题，形参end和实参linkend指向哪里？</p>
-<p>先说一下结论：<strong>linkend和end都指向linkend的第一个成员num的地址。</strong></p>
-<p>也就是说，<strong>形参end和实参linkend作为两个不同的指针变量，他们指向了同一个地址</strong>（也许可以通过这一特性来写一个链表？但是我不想写了😋）</p>
-<p>其实这个知识点符合我们对形参和指针变量的认知，所以这里比较重要的点其实是：</p>
+<p>当有多个try语句块嵌套时，当最内部try提出了一个异常，会由内到外执行catch，若最终都没有对应catch，则程序转到terminate的标准库函数，该函数行为与系统有关，通常执行该函数会导致程序非正常退出。</p>
+<h1 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h1><h2 id="参数传递"><a href="#参数传递" class="headerlink" title="参数传递"></a>参数传递</h2><ul>
+<li>形参实参之间的转递为值拷贝</li>
+<li>C++中建议用引用类型的形参代替指针形参，引用类型同样可以达到修改值的内容，并且可以避免拷贝，因为引用是与实参绑定的。</li>
+</ul>
+<h2 id="数组的传递"><a href="#数组的传递" class="headerlink" title="数组的传递"></a>数组的传递</h2><p>以下三种对形参的定义是等价的：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">a</span><span class="params">(<span class="type">const</span> <span class="type">int</span>*)</span></span>;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">b</span><span class="params">(<span class="type">const</span> <span class="type">int</span>[])</span></span>;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">c</span><span class="params">(<span class="type">const</span> <span class="type">int</span>[<span class="number">10</span>])</span></span>;</span><br></pre></td></tr></table></figure>
+<p>编译器在编译时只会检查传入的参数类型是否为const int*型，甚至不会检查传入数组的长度是否超出形参大小。</p>
+<h3 id="数组的引用形参"><a href="#数组的引用形参" class="headerlink" title="数组的引用形参"></a>数组的引用形参</h3><p>可以使用数组的引用作为形参：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">test</span><span class="params">(<span class="type">int</span> (&amp;arr)[<span class="number">10</span>])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">   <span class="keyword">for</span>(<span class="keyword">auto</span> elem : arr)</span><br><span class="line">      cout&lt;&lt;elem&lt;&lt;endl;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>使用数组的引用作为形参需要注意：</p>
 <ul>
-<li>不同于数组，<strong>结构体指针名地址≠第一个成员的地址，但指针名指向第一个成员的地址</strong>，可以理解为，结构体指针名指向一块内存，该内存是由若干个结构体成员组成的，这些成员的类型在定义结构体时确定。</li>
+<li>初始化时必须使用括号括起&amp;arr</li>
+<li>输入的实参<strong>必须为一个int [10]类型</strong>的对象</li>
 </ul>
-<p>这也加深了我对<code>end=(LNode*)malloc(sizeof (LNode));</code>的理解，<strong>其实就是一个指针指向了一块内存，但是可以通过结构体的方式访问这块内存中的成员</strong></p>
-<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><ul>
-<li><strong>当一个函数的参数是结构体指针时，操作这个函数的形参名不会影响实参，同时这个形参名的作用域只限于函数体；但是操作这个形参的任何成员等同于直接操作实参的对应成员，因为它们本身的地址是相同的</strong></li>
-<li><strong>结构体指针名指向第一个成员的地址</strong></li>
+<h2 id="函数的返回类型"><a href="#函数的返回类型" class="headerlink" title="函数的返回类型"></a>函数的返回类型</h2><h3 id="返回引用"><a href="#返回引用" class="headerlink" title="返回引用"></a>返回引用</h3><p>函数返回引用可以理解为返回的为一个地址</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">char</span> <span class="title">test1</span><span class="params">(string s ,string::size_type num)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">   <span class="keyword">return</span> s[num];</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">char</span> &amp;<span class="title">test2</span><span class="params">(string &amp;s ,string::size_type num)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">   <span class="keyword">return</span> s[num];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">   <span class="function">srting <span class="title">s</span><span class="params">(<span class="string">&quot;test&quot;</span>)</span></span>;</span><br><span class="line">   cout&lt;&lt;<span class="built_in">test1</span>(s,<span class="number">0</span>)&lt;&lt;endl; <span class="comment">//t</span></span><br><span class="line">   <span class="built_in">test2</span>(s,<span class="number">0</span>)=<span class="string">&#x27;a&#x27;</span>;</span><br><span class="line">   cout&lt;&lt;s[<span class="number">0</span>]&lt;&lt;endl;       <span class="comment">//a</span></span><br><span class="line">   <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>当一个函数的返回值为引用时，该返回值为左值而非右值，因此可以像使用其他左值一样使用这个返回值</p>
+<p>（注：左值≠地址，它仍然是一个值）</p>
+<ul>
+<li><p><strong>不可返回局部变量的引用</strong>，由于局部变量在函数完成后会被释放，因此在函数完成后引用会找不到它的对象。例如上一个例程，如果把test2()函数改为：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">char</span> &amp;<span class="title">test2</span><span class="params">(string s ,string::size_type num)</span><span class="comment">//此处形参不再是引用</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">   <span class="keyword">return</span> s[num];</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">   <span class="function">srting <span class="title">s</span><span class="params">(<span class="string">&quot;test&quot;</span>)</span></span>;</span><br><span class="line">   <span class="built_in">test2</span>(s,<span class="number">0</span>)=<span class="string">&#x27;a&#x27;</span>;</span><br><span class="line">   cout&lt;&lt;s[<span class="number">0</span>]&lt;&lt;endl;      <span class="comment">//t</span></span><br><span class="line">   <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>该函数的返回值为对s的引用，但s本身为一个局部变量，在函数完成时已经被释放，因此该引用是无效的（但是这样<strong>返回形参的引用</strong>编译器并不会报错，而返回<strong>函数内定义的局部变量</strong>的引用会报错）</p>
+<p>但如果形参定义为引用，由于引用本身是不占用存储空间的，所以’a’可以通过引用直接向s[0]赋值</p>
+</li>
 </ul>
-<p><strong>所以，结构体指针并不一定要指向一个明确的结构体，当他指向一块内存时，可以通过直接赋值结构体指针成员的方式操作这块内存</strong>（这块内存其实就是一个隐式的，没有具体名字的结构体）</p>
-<p>一些感想：好久没有遇到过这么折磨的问题了，一开始完全没有头绪，网络上对于这方面的讲解也是几乎没有，还好找到了这篇博客启发了我<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_36733983/article/details/92184983?ops_request_misc=%7B%22request%5Fid%22%3A%22166891705416800213084052%22%2C%22scm%22%3A%2220140713.130102334.pc%5Fall.%22%7D&amp;request_id=166891705416800213084052&amp;biz_id=0&amp;utm_medium=distribute.pc_search_result.none-task-blog-2~all~first_rank_ecpm_v1~rank_v31_ecpm-1-92184983-null-null.142^v65^pc_rank_34_queryrelevant25,201^v3^add_ask,213^v2^t3_esquery_v3&amp;utm_term=C 指针作为参数的作用域&amp;spm=1018.2226.3001.4187">C语言理解指针作为形参作用</a>（博客中用的C++，但是原理是完全相同的）</p>
+<h3 id="返回数组指针"><a href="#返回数组指针" class="headerlink" title="返回数组指针"></a>返回数组指针</h3><ul>
+<li><p>尾置返回类型</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">auto</span> <span class="title">func</span><span class="params">(<span class="type">int</span> i)</span> -&gt; <span class="title">int</span><span class="params">(*)</span>[10]</span></span><br></pre></td></tr></table></figure>
+<p>声明函数的返回值为一个含有十个整数的数组的指针</p>
+</li>
+<li><p>使用decltype</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> test[<span class="number">5</span>]=&#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>&#125;;</span><br><span class="line"><span class="keyword">decltype</span>(test) *<span class="built_in">func</span>()</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">return</span> &amp;test;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;	</span><br><span class="line">	cout&lt;&lt;*(*func+<span class="number">1</span>); <span class="comment">//输出2</span></span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>decltype(test)的结果是一个数组，因此函数前要用*声明返回值为指针</li>
+<li>使用此方法返回的是一个数组的整体地址，而不是首地址，类型为int*[5]，因此一次解引用的结果才是首地址</li>
+</ul>
+</li>
+</ul>
+<h2 id="内联函数"><a href="#内联函数" class="headerlink" title="内联函数"></a>内联函数</h2><p>正常的调用函数一般比等价的表达式要慢（保存寄存器、拷贝等操作），因此对于规模较小的函数可以定义为内联函数类型：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">inline</span> <span class="type">int</span> <span class="title">fuc</span><span class="params">(<span class="type">int</span> a,<span class="type">int</span> b)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">return</span> a+b;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="constexpr函数"><a href="#constexpr函数" class="headerlink" title="constexpr函数"></a>constexpr函数</h2><p>将函数隐式地定义为内联函数，但函数内只能有一条return语句，且返回值必须为字面值</p>
 
       
     </div>
@@ -804,7 +497,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2022/11/09/matlab/">
+    <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2022/10/03/C++-4/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/zoe.gif">
@@ -818,7 +511,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2022/11/09/matlab/" class="post-title-link" itemprop="url">matlab</a>
+            <a href="/2022/10/03/C++-4/" class="post-title-link" itemprop="url">C++_表达式</a>
         </h2>
 
         <div class="post-meta">
@@ -830,14 +523,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2022-11-09 21:25:36" itemprop="dateCreated datePublished" datetime="2022-11-09T21:25:36+08:00">2022-11-09</time>
+              <time title="创建时间：2022-10-03 21:06:48" itemprop="dateCreated datePublished" datetime="2022-10-03T21:06:48+08:00">2022-10-03</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-07-11 23:47:52" itemprop="dateModified" datetime="2024-07-11T23:47:52+08:00">2024-07-11</time>
+                <time title="修改时间：2022-10-25 20:43:07" itemprop="dateModified" datetime="2022-10-25T20:43:07+08:00">2022-10-25</time>
               </span>
 
           
@@ -851,782 +544,31 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p><strong>内容大部分来自<a target="_blank" rel="noopener" href="https://www.w3cschool.cn/matlab/matlab-5use28gb.html">MATLAB介绍_w3cschool</a>只是cv一下方便自己查阅</strong></p>
-<h1 id="基础内容"><a href="#基础内容" class="headerlink" title="基础内容"></a>基础内容</h1><h2 id="常用运算符和特殊字符"><a href="#常用运算符和特殊字符" class="headerlink" title="常用运算符和特殊字符"></a>常用运算符和特殊字符</h2><div class="table-container">
-<table>
-<thead>
-<tr>
-<th style="text-align:center">运算符</th>
-<th style="text-align:center">目的</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center"><strong>+</strong></td>
-<td style="text-align:center">加；加法运算符</td>
-</tr>
-<tr>
-<td style="text-align:center"><strong>-</strong></td>
-<td style="text-align:center">减；减法运算符</td>
-</tr>
-<tr>
-<td style="text-align:center"><strong>*</strong></td>
-<td style="text-align:center">标量和矩阵乘法运算符</td>
-</tr>
-<tr>
-<td style="text-align:center"><strong>.*</strong></td>
-<td style="text-align:center">数组乘法运算符</td>
-</tr>
-<tr>
-<td style="text-align:center"><strong>^</strong></td>
-<td style="text-align:center">标量和矩阵求幂运算符</td>
-</tr>
-<tr>
-<td style="text-align:center"><strong>.^</strong></td>
-<td style="text-align:center">数组求幂运算符</td>
-</tr>
-<tr>
-<td style="text-align:center"><strong>\</strong></td>
-<td style="text-align:center">矩阵左除</td>
-</tr>
-<tr>
-<td style="text-align:center"><strong>/</strong></td>
-<td style="text-align:center">矩阵右除</td>
-</tr>
-<tr>
-<td style="text-align:center"><strong>.\</strong></td>
-<td style="text-align:center">阵列左除</td>
-</tr>
-<tr>
-<td style="text-align:center"><strong>./</strong></td>
-<td style="text-align:center">阵列右除</td>
-</tr>
-<tr>
-<td style="text-align:center"><strong>:</strong></td>
-<td style="text-align:center">向量生成；子阵提取</td>
-</tr>
-<tr>
-<td style="text-align:center"><strong>( )</strong></td>
-<td style="text-align:center">下标运算；参数定义</td>
-</tr>
-<tr>
-<td style="text-align:center"><strong>[ ]</strong></td>
-<td style="text-align:center">矩阵生成</td>
-</tr>
-<tr>
-<td style="text-align:center"><strong>.</strong></td>
-<td style="text-align:center">点乘运算，常与其他运算符联合使用</td>
-</tr>
-<tr>
-<td style="text-align:center"><strong>…</strong></td>
-<td style="text-align:center">续行标志；行连续运算符</td>
-</tr>
-<tr>
-<td style="text-align:center"><strong>,</strong></td>
-<td style="text-align:center">分行符（该行结果不显示）</td>
-</tr>
-<tr>
-<td style="text-align:center"><strong>;</strong></td>
-<td style="text-align:center"><strong>语句结束；分行符（该行结果显示）</strong></td>
-</tr>
-<tr>
-<td style="text-align:center"><strong>%</strong></td>
-<td style="text-align:center"><strong>注释标志</strong></td>
-</tr>
-<tr>
-<td style="text-align:center"><strong>_</strong></td>
-<td style="text-align:center">引用符号和转置运算符</td>
-</tr>
-<tr>
-<td style="text-align:center"><strong>._</strong></td>
-<td style="text-align:center">非共轭转置运算符</td>
-</tr>
-<tr>
-<td style="text-align:center"><strong>=</strong></td>
-<td style="text-align:center">赋值运算符</td>
-</tr>
-</tbody>
-</table>
-</div>
-<h2 id="特殊变量和常量"><a href="#特殊变量和常量" class="headerlink" title="特殊变量和常量"></a>特殊变量和常量</h2><div class="table-container">
-<table>
-<thead>
-<tr>
-<th style="text-align:center">Name</th>
-<th style="text-align:center">Meaning</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center"><strong>ans</strong></td>
-<td style="text-align:center">默认的变量名，以应答最近依次操作运算结果</td>
-</tr>
-<tr>
-<td style="text-align:center"><strong>eps</strong></td>
-<td style="text-align:center">浮点数的相对误差</td>
-</tr>
-<tr>
-<td style="text-align:center"><strong>i,j</strong></td>
-<td style="text-align:center">虚数单位，定义为 i2 = j2 = -1</td>
-</tr>
-<tr>
-<td style="text-align:center"><strong>Inf</strong></td>
-<td style="text-align:center">代表无穷大</td>
-</tr>
-<tr>
-<td style="text-align:center"><strong>NaN</strong></td>
-<td style="text-align:center">代表不定值（不是数字）</td>
-</tr>
-<tr>
-<td style="text-align:center"><strong>pi</strong></td>
-<td style="text-align:center">圆周率</td>
-</tr>
-</tbody>
-</table>
-</div>
-<h2 id="matlab命名变量"><a href="#matlab命名变量" class="headerlink" title="matlab命名变量"></a>matlab命名变量</h2><ul>
-<li>名称为字母开头，后可接任意数量的下划线、字母、数字</li>
-<li>区分大小写</li>
-</ul>
-<h2 id="保存工作进度"><a href="#保存工作进度" class="headerlink" title="保存工作进度"></a>保存工作进度</h2><p>MATLAB使用save命令保存工作区中的所有变量，然后作为一个扩展名为.mat的文件，在当前目录中。</p>
-<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">save myfile</span><br><span class="line">load myfile</span><br></pre></td></tr></table></figure>
-<h1 id="变量"><a href="#变量" class="headerlink" title="变量"></a>变量</h1><h2 id="显示已使用的变量"><a href="#显示已使用的变量" class="headerlink" title="显示已使用的变量"></a>显示已使用的变量</h2><figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">who</span><br><span class="line">whos</span><br><span class="line">clear <span class="comment">%删除所有（或指定）的变量%</span></span><br></pre></td></tr></table></figure>
-<h2 id="延伸行"><a href="#延伸行" class="headerlink" title="延伸行"></a>延伸行</h2><ul>
-<li>使用<code>...</code>将当前行延伸至下一行</li>
-</ul>
-<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">initial_velocity = <span class="number">0</span>;</span><br><span class="line">acceleration = <span class="number">9.8</span>;</span><br><span class="line">time = <span class="number">20</span>;</span><br><span class="line">final_velocity = initial_velocity ...</span><br><span class="line">    + acceleration * time</span><br></pre></td></tr></table></figure>
-<h2 id="格式命令"><a href="#格式命令" class="headerlink" title="格式命令"></a>格式命令</h2><div class="table-container">
-<table>
-<thead>
-<tr>
-<th style="text-align:center">命令</th>
-<th style="text-align:center">作用</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">format short</td>
-<td style="text-align:center">显示4位小数</td>
-</tr>
-<tr>
-<td style="text-align:center">format long</td>
-<td style="text-align:center">显示16位小数</td>
-</tr>
-<tr>
-<td style="text-align:center">format bank</td>
-<td style="text-align:center">显示两位小数</td>
-</tr>
-<tr>
-<td style="text-align:center">format rat</td>
-<td style="text-align:center">显示有理表达式</td>
-</tr>
-<tr>
-<td style="text-align:center">format +</td>
-<td style="text-align:center">正数</td>
-</tr>
-</tbody>
-</table>
-</div>
+          <h1 id="1、基础内容"><a href="#1、基础内容" class="headerlink" title="1、基础内容"></a>1、基础内容</h1><p>表达式是<strong>由一个或多个运算对象组成</strong>，对表达式求值得到的是一个<strong>结果</strong>，字面值和变量时最简单的表达式。</p>
+<h2 id="左值和右值"><a href="#左值和右值" class="headerlink" title="左值和右值"></a>左值和右值</h2><p>当一个对象被用作右值时，使用的是该对象的值；而被用作左值时，使用的时对象的内存。</p>
 <ul>
-<li>在命令后加<code>e</code>则会显示对应的指数形式</li>
+<li>赋值运算符需要一个非常量左值为其左侧运算对象</li>
+<li>取地址符作用于一个左值运算对象，返回一个指向该运算对象的指针，该指针为右值</li>
+<li>解引用求值结果为左值</li>
 </ul>
-<h2 id="创建矩阵"><a href="#创建矩阵" class="headerlink" title="创建矩阵"></a>创建矩阵</h2><figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">m = [<span class="number">1</span> <span class="number">2</span> <span class="number">3</span>; <span class="number">4</span> <span class="number">5</span> <span class="number">6</span>; <span class="number">7</span> <span class="number">8</span> <span class="number">9</span>]</span><br></pre></td></tr></table></figure>
-<p>结果：</p>
-<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">m =</span><br><span class="line"></span><br><span class="line">     <span class="number">1</span>     <span class="number">2</span>     <span class="number">3</span></span><br><span class="line">     <span class="number">4</span>     <span class="number">5</span>     <span class="number">6</span></span><br><span class="line">     <span class="number">7</span>     <span class="number">8</span>     <span class="number">9</span></span><br></pre></td></tr></table></figure>
-<p>同理可创建行、列向量。</p>
-<h1 id="相关命令"><a href="#相关命令" class="headerlink" title="相关命令"></a>相关命令</h1><h2 id="向量、矩阵相关"><a href="#向量、矩阵相关" class="headerlink" title="向量、矩阵相关"></a>向量、矩阵相关</h2><div class="table-container">
-<table>
-<thead>
-<tr>
-<th style="text-align:center">命令</th>
-<th style="text-align:center">作用/目的</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">cat</td>
-<td style="text-align:center">连接数组</td>
-</tr>
-<tr>
-<td style="text-align:center">find</td>
-<td style="text-align:center">查找非零元素的索引</td>
-</tr>
-<tr>
-<td style="text-align:center">length</td>
-<td style="text-align:center">计算元素数量</td>
-</tr>
-<tr>
-<td style="text-align:center">linspace</td>
-<td style="text-align:center">创建间隔向量</td>
-</tr>
-<tr>
-<td style="text-align:center">logspace</td>
-<td style="text-align:center">创建对数间隔向量</td>
-</tr>
-<tr>
-<td style="text-align:center">max</td>
-<td style="text-align:center">返回最大元素</td>
-</tr>
-<tr>
-<td style="text-align:center">min</td>
-<td style="text-align:center">返回最小元素</td>
-</tr>
-<tr>
-<td style="text-align:center">prod</td>
-<td style="text-align:center">计算数组元素的连乘积</td>
-</tr>
-<tr>
-<td style="text-align:center">reshape</td>
-<td style="text-align:center">重新调整矩阵的行数、列数、维数</td>
-</tr>
-<tr>
-<td style="text-align:center">size</td>
-<td style="text-align:center">计算数组大小</td>
-</tr>
-<tr>
-<td style="text-align:center">sort</td>
-<td style="text-align:center">排序每个列</td>
-</tr>
-<tr>
-<td style="text-align:center">sum</td>
-<td style="text-align:center">每列相加</td>
-</tr>
-<tr>
-<td style="text-align:center">eye</td>
-<td style="text-align:center">创建一个单位矩阵</td>
-</tr>
-<tr>
-<td style="text-align:center">ones</td>
-<td style="text-align:center">生成全1矩阵</td>
-</tr>
-<tr>
-<td style="text-align:center">zeros</td>
-<td style="text-align:center">生成零矩阵</td>
-</tr>
-<tr>
-<td style="text-align:center">cross</td>
-<td style="text-align:center">计算矩阵交叉乘积</td>
-</tr>
-<tr>
-<td style="text-align:center">dot</td>
-<td style="text-align:center">计算矩阵点积</td>
-</tr>
-<tr>
-<td style="text-align:center">det</td>
-<td style="text-align:center">计算数组的行列式</td>
-</tr>
-<tr>
-<td style="text-align:center">inv</td>
-<td style="text-align:center">计算矩阵的逆</td>
-</tr>
-<tr>
-<td style="text-align:center">pinv</td>
-<td style="text-align:center">计算矩阵的伪逆</td>
-</tr>
-<tr>
-<td style="text-align:center">rank</td>
-<td style="text-align:center">计算矩阵的秩</td>
-</tr>
-<tr>
-<td style="text-align:center">rref</td>
-<td style="text-align:center">将矩阵化成行最简形</td>
-</tr>
-<tr>
-<td style="text-align:center">cell</td>
-<td style="text-align:center">创建单元数组</td>
-</tr>
-<tr>
-<td style="text-align:center">celldisp</td>
-<td style="text-align:center">显示单元数组</td>
-</tr>
-<tr>
-<td style="text-align:center">cellplot</td>
-<td style="text-align:center">显示单元数组的图形表示</td>
-</tr>
-<tr>
-<td style="text-align:center">num2cell</td>
-<td style="text-align:center">将数值阵列转化为异质阵列</td>
-</tr>
-<tr>
-<td style="text-align:center">deal</td>
-<td style="text-align:center">匹配输入和输出列表</td>
-</tr>
-<tr>
-<td style="text-align:center">iscell</td>
-<td style="text-align:center">判断是否为元胞类型</td>
-</tr>
-</tbody>
-</table>
-</div>
-<h2 id="绘图"><a href="#绘图" class="headerlink" title="绘图"></a>绘图</h2><div class="table-container">
-<table>
-<thead>
-<tr>
-<th style="text-align:center">命令</th>
-<th style="text-align:center">作用/目的</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">axis</td>
-<td style="text-align:center">人工选择坐标轴尺寸</td>
-</tr>
-<tr>
-<td style="text-align:center">fplot</td>
-<td style="text-align:center">智能绘图功能</td>
-</tr>
-<tr>
-<td style="text-align:center">grid</td>
-<td style="text-align:center">显示网格线</td>
-</tr>
-<tr>
-<td style="text-align:center">plot</td>
-<td style="text-align:center">生成XY图</td>
-</tr>
-<tr>
-<td style="text-align:center">print</td>
-<td style="text-align:center">打印或绘图到文件</td>
-</tr>
-<tr>
-<td style="text-align:center">title</td>
-<td style="text-align:center">把文字置于顶部</td>
-</tr>
-<tr>
-<td style="text-align:center">xlabel</td>
-<td style="text-align:center">将文本标签添加到x轴</td>
-</tr>
-<tr>
-<td style="text-align:center">ylabel</td>
-<td style="text-align:center">将文本标签添加到y轴</td>
-</tr>
-<tr>
-<td style="text-align:center">axes</td>
-<td style="text-align:center">创建轴对象</td>
-</tr>
-<tr>
-<td style="text-align:center">close</td>
-<td style="text-align:center">关闭当前的绘图</td>
-</tr>
-<tr>
-<td style="text-align:center">close all</td>
-<td style="text-align:center">关闭所有绘图</td>
-</tr>
-<tr>
-<td style="text-align:center">figure</td>
-<td style="text-align:center">打开一个新的图形窗口</td>
-</tr>
-<tr>
-<td style="text-align:center">gtext</td>
-<td style="text-align:center">通过鼠标在指定位置放注文</td>
-</tr>
-<tr>
-<td style="text-align:center">hold</td>
-<td style="text-align:center">保持当前图形</td>
-</tr>
-<tr>
-<td style="text-align:center">legend</td>
-<td style="text-align:center">鼠标放置图例</td>
-</tr>
-<tr>
-<td style="text-align:center">refresh</td>
-<td style="text-align:center">重新绘制当前图形窗口</td>
-</tr>
-<tr>
-<td style="text-align:center">set</td>
-<td style="text-align:center">指定对象的属性，如轴</td>
-</tr>
-<tr>
-<td style="text-align:center">subplot</td>
-<td style="text-align:center">在子窗口中创建图</td>
-</tr>
-<tr>
-<td style="text-align:center">text</td>
-<td style="text-align:center">在图上做标记</td>
-</tr>
-<tr>
-<td style="text-align:center">bar</td>
-<td style="text-align:center">创建条形图</td>
-</tr>
-<tr>
-<td style="text-align:center">loglog</td>
-<td style="text-align:center">创建双对数图</td>
-</tr>
-<tr>
-<td style="text-align:center">polar</td>
-<td style="text-align:center">创建极坐标图像</td>
-</tr>
-<tr>
-<td style="text-align:center">semilogx</td>
-<td style="text-align:center">创建半对数图（对数横坐标）</td>
-</tr>
-<tr>
-<td style="text-align:center">semilogy</td>
-<td style="text-align:center">创建半对数图（对数纵坐标）</td>
-</tr>
-<tr>
-<td style="text-align:center">stairs</td>
-<td style="text-align:center">创建阶梯图</td>
-</tr>
-<tr>
-<td style="text-align:center">stem</td>
-<td style="text-align:center">创建针状图</td>
-</tr>
-</tbody>
-</table>
-</div>
-<h1 id="数据类型"><a href="#数据类型" class="headerlink" title="数据类型"></a>数据类型</h1><h2 id="常用的数据类型"><a href="#常用的数据类型" class="headerlink" title="常用的数据类型"></a>常用的数据类型</h2><div class="table-container">
-<table>
-<thead>
-<tr>
-<th style="text-align:center">数据类型</th>
-<th style="text-align:center">描述</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center"><code>int8</code></td>
-<td style="text-align:center"><code>8</code>位有符号整数</td>
-</tr>
-<tr>
-<td style="text-align:center"><code>uint8</code></td>
-<td style="text-align:center"><code>8</code>位无符号整数</td>
-</tr>
-<tr>
-<td style="text-align:center"><code>int16</code></td>
-<td style="text-align:center"><code>16</code>位有符号整数</td>
-</tr>
-<tr>
-<td style="text-align:center"><code>uint16</code></td>
-<td style="text-align:center"><code>16</code>位无符号整数</td>
-</tr>
-<tr>
-<td style="text-align:center"><code>int32</code></td>
-<td style="text-align:center"><code>32</code>位有符号整数</td>
-</tr>
-<tr>
-<td style="text-align:center"><code>uint32</code></td>
-<td style="text-align:center"><code>32</code>位无符号整数</td>
-</tr>
-<tr>
-<td style="text-align:center"><code>int64</code></td>
-<td style="text-align:center"><code>64</code>位有符号整数</td>
-</tr>
-<tr>
-<td style="text-align:center"><code>uint64</code></td>
-<td style="text-align:center"><code>64</code>位无符号整数</td>
-</tr>
-<tr>
-<td style="text-align:center"><code>single</code></td>
-<td style="text-align:center">单精度数值数据</td>
-</tr>
-<tr>
-<td style="text-align:center"><code>double</code></td>
-<td style="text-align:center">双精度数值数据</td>
-</tr>
-<tr>
-<td style="text-align:center"><code>logical</code></td>
-<td style="text-align:center">逻辑值为<code>1</code>或<code>0</code>，分别代表<code>true</code>和<code>false</code></td>
-</tr>
-<tr>
-<td style="text-align:center"><code>char</code></td>
-<td style="text-align:center">字符数据(字符串作为字符向量存储)</td>
-</tr>
-</tbody>
-</table>
-</div>
-<ul>
-<li><p>但是用法和C不同，matlab中用法类似于函数（matlab的变量不用任何定义语句）</p>
-<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">str = <span class="string">&#x27;Hello World!&#x27;</span></span><br><span class="line">n = <span class="number">2345</span></span><br><span class="line">d = double(n)</span><br><span class="line">un = uint32(<span class="number">789.50</span>)</span><br><span class="line">rn = <span class="number">5678.92347</span></span><br><span class="line">c = int32(rn)</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<h2 id="数据类型确认函数"><a href="#数据类型确认函数" class="headerlink" title="数据类型确认函数"></a>数据类型确认函数</h2><div class="table-container">
-<table>
-<thead>
-<tr>
-<th style="text-align:center">函数</th>
-<th style="text-align:center">描述说明</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center"><code>is</code></td>
-<td style="text-align:center">检测状态</td>
-</tr>
-<tr>
-<td style="text-align:center"><code>isa</code></td>
-<td style="text-align:center">确定输入是否是指定类的对象</td>
-</tr>
-<tr>
-<td style="text-align:center"><code>iscell</code></td>
-<td style="text-align:center">确定输入是单元格数组</td>
-</tr>
-<tr>
-<td style="text-align:center"><code>iscellstr</code></td>
-<td style="text-align:center">确定输入是字符串的单元格数组</td>
-</tr>
-<tr>
-<td style="text-align:center"><code>ischar</code></td>
-<td style="text-align:center">确定项目是否是字符数组</td>
-</tr>
-<tr>
-<td style="text-align:center"><code>isfield</code></td>
-<td style="text-align:center">确定输入是否是结构数组字段</td>
-</tr>
-<tr>
-<td style="text-align:center"><code>isfloat</code></td>
-<td style="text-align:center">确定输入是否为浮点数组</td>
-</tr>
-<tr>
-<td style="text-align:center"><code>ishghandle</code></td>
-<td style="text-align:center">确定是否用于处理图形对象句柄</td>
-</tr>
-<tr>
-<td style="text-align:center"><code>isinteger</code></td>
-<td style="text-align:center">确定输入是否为整数数组</td>
-</tr>
-<tr>
-<td style="text-align:center"><code>isjava</code></td>
-<td style="text-align:center">确定输入是否为Java对象</td>
-</tr>
-<tr>
-<td style="text-align:center"><code>islogical</code></td>
-<td style="text-align:center">确定输入是否为逻辑数组</td>
-</tr>
-<tr>
-<td style="text-align:center"><code>isnumeric</code></td>
-<td style="text-align:center">确定输入是否是数字数组</td>
-</tr>
-<tr>
-<td style="text-align:center"><code>isobject</code></td>
-<td style="text-align:center">确定输入是否为MATLAB对象</td>
-</tr>
-<tr>
-<td style="text-align:center"><code>isreal</code></td>
-<td style="text-align:center">检查输入是否为实数数组</td>
-</tr>
-<tr>
-<td style="text-align:center"><code>isscalar</code></td>
-<td style="text-align:center">确定输入是否为标量</td>
-</tr>
-<tr>
-<td style="text-align:center"><code>isstr</code></td>
-<td style="text-align:center">确定输入是否是字符数组</td>
-</tr>
-<tr>
-<td style="text-align:center"><code>isstruct</code></td>
-<td style="text-align:center">确定输入是否是结构数组</td>
-</tr>
-<tr>
-<td style="text-align:center"><code>isvector</code></td>
-<td style="text-align:center">确定输入是否为向量</td>
-</tr>
-<tr>
-<td style="text-align:center"><code>class</code></td>
-<td style="text-align:center">确定对象的类</td>
-</tr>
-<tr>
-<td style="text-align:center"><code>validateattributes</code></td>
-<td style="text-align:center">检查数组的有效性</td>
-</tr>
-<tr>
-<td style="text-align:center"><code>whos</code></td>
-<td style="text-align:center">在工作区中列出变量，其大小和类型</td>
-</tr>
-</tbody>
-</table>
-</div>
-<h1 id="运算符"><a href="#运算符" class="headerlink" title="运算符"></a>运算符</h1><h2 id="位运算"><a href="#位运算" class="headerlink" title="位运算"></a>位运算</h2><div class="table-container">
-<table>
-<thead>
-<tr>
-<th style="text-align:left">函数</th>
-<th style="text-align:left">目的/作用</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left">bitand(a, b)</td>
-<td style="text-align:left">当a、b是一个或数个无符号整数或无符号整数数组，返回参数a和b位和，</td>
-</tr>
-<tr>
-<td style="text-align:left">bitcmp(a)</td>
-<td style="text-align:left">a的补码</td>
-</tr>
-<tr>
-<td style="text-align:left">bitget(a,pos)</td>
-<td style="text-align:left">在指定位置pos中获取位，在整数数组a中</td>
-</tr>
-<tr>
-<td style="text-align:left">bitor(a, b)</td>
-<td style="text-align:left">对数a和b按位或</td>
-</tr>
-<tr>
-<td style="text-align:left">bitset(a, pos)</td>
-<td style="text-align:left">a的集合点在一个特定的位置pos</td>
-</tr>
-<tr>
-<td style="text-align:left">bitshift(a, k)</td>
-<td style="text-align:left">返回一个移到左K位，相当于乘以2K。K负值对应的位权转移或除以2\</td>
-<td>K\</td>
-<td>向负无穷舍入到最近的整数。任何溢出位都被截断。</td>
-</tr>
-<tr>
-<td style="text-align:left">bitxor(a, b)</td>
-<td style="text-align:left">对数a和b按位异或</td>
-</tr>
-<tr>
-<td style="text-align:left">swapbytes</td>
-<td style="text-align:left">交换字节顺序</td>
-</tr>
-</tbody>
-</table>
-</div>
-<h2 id="集合运算"><a href="#集合运算" class="headerlink" title="集合运算"></a>集合运算</h2><div class="table-container">
-<table>
-<thead>
-<tr>
-<th style="text-align:left">函数</th>
-<th style="text-align:left">描述</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left">intersect(A,B)</td>
-<td style="text-align:left">设置两个数组的交集；返回A和B所共有的值。返回的值按排序顺序排列。</td>
-</tr>
-<tr>
-<td style="text-align:left">intersect(A,B,’rows’)</td>
-<td style="text-align:left">将A和B的每一行作为单个实体处理，并返回A和B的公共行。返回的矩阵的行按排序顺序排列。</td>
-</tr>
-<tr>
-<td style="text-align:left">ismember(A,B)</td>
-<td style="text-align:left">返回与A大小相同的数组，包含1（true），其中A的元素在其他地方的B中找到，它返回0（false）。</td>
-</tr>
-<tr>
-<td style="text-align:left">ismember(A,B,’rows’)</td>
-<td style="text-align:left">将A和B的每一行作为单个实体处理，并返回一个包含1（true）的向量，其中矩阵A的行也是B的行；否则，它返回0（false）。</td>
-</tr>
-<tr>
-<td style="text-align:left">issorted(A)</td>
-<td style="text-align:left">如果A的元素按排序顺序返回逻辑1（true），否则返回逻辑0（false）。输入A可以是向量，也可以是N-by-1或1-by-N的字符串数组。如果A和sort（A）的输出相等，则A被认为是排序的。</td>
-</tr>
-<tr>
-<td style="text-align:left">issorted(A, ‘rows’)</td>
-<td style="text-align:left">如果二维矩阵A的行按排序顺序返回逻辑1（真），否则返回逻辑0（假）。 如果A和排序（A）的输出相等，则认为矩阵A被排序。</td>
-</tr>
-<tr>
-<td style="text-align:left">setdiff(A,B)</td>
-<td style="text-align:left">设置两个数组的差值；返回不在B中的值。返回数组中的值按排序顺序排列。</td>
-</tr>
-<tr>
-<td style="text-align:left">setdiff(A,B,’rows’)</td>
-<td style="text-align:left">将每一行A和B行作为单个实体处理，并返回一个不在B中的行。返回的矩阵的行按排序顺序排列。“行”选项不支持单元格数组。</td>
-</tr>
-<tr>
-<td style="text-align:left">setxor</td>
-<td style="text-align:left">设置两个数组的异或</td>
-</tr>
-<tr>
-<td style="text-align:left">union</td>
-<td style="text-align:left">设置两个数组的并集</td>
-</tr>
-<tr>
-<td style="text-align:left">unique</td>
-<td style="text-align:left">数组中唯一的值</td>
-</tr>
-</tbody>
-</table>
-</div>
-<h1 id="语句"><a href="#语句" class="headerlink" title="语句"></a>语句</h1><h2 id="条件判断"><a href="#条件判断" class="headerlink" title="条件判断"></a>条件判断</h2><figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (...)</span><br><span class="line">	.....;</span><br><span class="line">	.....;</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
-<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">switch</span>(...)</span><br><span class="line">	<span class="keyword">case</span> .. 	<span class="comment">%无冒号</span></span><br><span class="line">		....;</span><br><span class="line">		....;</span><br><span class="line">	<span class="keyword">case</span> ..</span><br><span class="line">		....	<span class="comment">%单行可以不加分号</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
-<ul>
-<li>其他用法与C基本相同</li>
-<li>end后不须跟分号（即使后面还有语句）</li>
-</ul>
-<h2 id="循环"><a href="#循环" class="headerlink" title="循环"></a>循环</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">while()</span><br><span class="line">	...;</span><br><span class="line">	...;</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
-<h3 id="for循环"><a href="#for循环" class="headerlink" title="for循环"></a>for循环</h3><p>for循环有三种用法：</p>
-<ul>
-<li><p>initval:endval  默认步长为+1，递增</p>
-<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> a = <span class="number">10</span>:<span class="number">20</span> </span><br><span class="line">	...;</span><br><span class="line">	...;</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>initval:step:endval  step可自定义步长</p>
-<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> a = <span class="number">1.0</span>: <span class="number">-0.1</span>: <span class="number">0.0</span></span><br><span class="line">	...;</span><br><span class="line">	...;</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>索引数组</p>
-<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> a = [<span class="number">24</span>,<span class="number">18</span>,<span class="number">17</span>,<span class="number">23</span>,<span class="number">28</span>]</span><br><span class="line">	...;</span><br><span class="line">	...;</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<h1 id="向量"><a href="#向量" class="headerlink" title="向量"></a>向量</h1><h2 id="元素索引"><a href="#元素索引" class="headerlink" title="元素索引"></a>元素索引</h2><figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">rv = [<span class="number">1</span> <span class="number">2</span> <span class="number">3</span> <span class="number">4</span> <span class="number">5</span> <span class="number">6</span> <span class="number">7</span> <span class="number">8</span> <span class="number">9</span>];</span><br><span class="line">sub_rv = rv(<span class="number">3</span>:<span class="number">7</span>)</span><br><span class="line">rv(<span class="number">1</span>)</span><br></pre></td></tr></table></figure>
-<h2 id="向量转置"><a href="#向量转置" class="headerlink" title="向量转置"></a>向量转置</h2><figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">r = [ <span class="number">1</span> <span class="number">2</span> <span class="number">3</span> <span class="number">4</span> ];</span><br><span class="line">tr = r&#x27;;</span><br></pre></td></tr></table></figure>
-<h2 id="求向量的模"><a href="#求向量的模" class="headerlink" title="求向量的模"></a>求向量的模</h2><figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">v = [<span class="number">1</span>: <span class="number">2</span>: <span class="number">20</span>];</span><br><span class="line">sv = v.* v;    </span><br><span class="line">dp = sum(sv);    </span><br><span class="line">mag = <span class="built_in">sqrt</span>(dp);  </span><br></pre></td></tr></table></figure>
-<h2 id="向量点积"><a href="#向量点积" class="headerlink" title="向量点积"></a>向量点积</h2><p>若要求取向量的点积，不能直接使用运算符求得，需使用函数dot(a,b)</p>
-<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">v1 = [<span class="number">2</span> <span class="number">3</span> <span class="number">4</span>];</span><br><span class="line">v2 = [<span class="number">1</span> <span class="number">2</span> <span class="number">3</span>];</span><br><span class="line">dp = <span class="built_in">dot</span>(v1, v2);</span><br></pre></td></tr></table></figure>
-<ul>
-<li><code>*</code>号用于运算矩阵乘法，而<code>.*</code>用于数组的乘法（数组的乘法有一套自己的算法）</li>
-</ul>
-<h1 id="矩阵"><a href="#矩阵" class="headerlink" title="矩阵"></a>矩阵</h1><h2 id="矩阵索引"><a href="#矩阵索引" class="headerlink" title="矩阵索引"></a>矩阵索引</h2><ul>
-<li><p>第m行，第n列的一个元素</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mx(m,n);</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>第m列的所有元素</p>
-<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">a = [ <span class="number">1</span> <span class="number">2</span> <span class="number">3</span> <span class="number">4</span> <span class="number">5</span>; <span class="number">2</span> <span class="number">3</span> <span class="number">4</span> <span class="number">5</span> <span class="number">6</span>; <span class="number">3</span> <span class="number">4</span> <span class="number">5</span> <span class="number">6</span> <span class="number">7</span>; <span class="number">4</span> <span class="number">5</span> <span class="number">6</span> <span class="number">7</span> <span class="number">8</span>];</span><br><span class="line">v = a(:,<span class="number">4</span>) <span class="comment">%第4列的所有元素，并返回一个列向量</span></span><br></pre></td></tr></table></figure>
-<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">a = [ <span class="number">1</span> <span class="number">2</span> <span class="number">3</span> <span class="number">4</span> <span class="number">5</span>; <span class="number">2</span> <span class="number">3</span> <span class="number">4</span> <span class="number">5</span> <span class="number">6</span>; <span class="number">3</span> <span class="number">4</span> <span class="number">5</span> <span class="number">6</span> <span class="number">7</span>; <span class="number">4</span> <span class="number">5</span> <span class="number">6</span> <span class="number">7</span> <span class="number">8</span>];</span><br><span class="line">a(:, <span class="number">2</span>:<span class="number">3</span>) <span class="comment">%第2-3列的所有元素</span></span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<p><strong>注：索引从1开始，而不是0</strong></p>
-<h2 id="删除行或列"><a href="#删除行或列" class="headerlink" title="删除行或列"></a>删除行或列</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">a = [ 1 2 3 4 5; 2 3 4 5 6; 3 4 5 6 7; 4 5 6 7 8];</span><br><span class="line">a( 4 , : ) = []</span><br></pre></td></tr></table></figure>
-<h2 id="除法"><a href="#除法" class="headerlink" title="除法"></a>除法</h2><figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">a = [ <span class="number">1</span> <span class="number">2</span> <span class="number">3</span> ; <span class="number">4</span> <span class="number">5</span> <span class="number">6</span>; <span class="number">7</span> <span class="number">8</span> <span class="number">9</span>];</span><br><span class="line">b = [ <span class="number">7</span> <span class="number">5</span> <span class="number">6</span> ; <span class="number">2</span> <span class="number">0</span> <span class="number">8</span>; <span class="number">5</span> <span class="number">7</span> <span class="number">1</span>];</span><br><span class="line">c = a / b	<span class="comment">%a右乘b的逆矩阵(inv(b))</span></span><br><span class="line">d = a \ b	<span class="comment">%b左乘a的逆矩阵</span></span><br></pre></td></tr></table></figure>
-<ul>
-<li>必须为方阵，因为只有方阵才有逆矩阵</li>
-</ul>
-<h2 id="行列式"><a href="#行列式" class="headerlink" title="行列式"></a>行列式</h2><figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">a = [ <span class="number">1</span> <span class="number">2</span> <span class="number">3</span>; <span class="number">2</span> <span class="number">3</span> <span class="number">4</span>; <span class="number">1</span> <span class="number">2</span> <span class="number">5</span>]</span><br><span class="line">det(a)</span><br></pre></td></tr></table></figure>
-<ul>
-<li>行列式一定为方阵</li>
-<li>转置不改变行列式的值</li>
-</ul>
-<h2 id="多维数组"><a href="#多维数组" class="headerlink" title="多维数组"></a>多维数组</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">a = [7 9 5; 6 1 9; 4 3 2];</span><br><span class="line">a(:, :, 2)= [ 1 2 3; 4 5 6; 7 8 9];</span><br><span class="line"></span><br><span class="line">结果：</span><br><span class="line">a(:,:,1) =</span><br><span class="line">     7     9     5</span><br><span class="line">     6     1     9</span><br><span class="line">     4     3     2</span><br><span class="line"></span><br><span class="line">a(:,:,2) =</span><br><span class="line">     1     2     3</span><br><span class="line">     4     5     6</span><br><span class="line">     7     8     9</span><br></pre></td></tr></table></figure>
-<p>或使用cat函数：</p>
-<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">b = <span class="built_in">cat</span>(<span class="number">3</span>,a,[ <span class="number">1</span> <span class="number">2</span> <span class="number">3</span>; <span class="number">4</span> <span class="number">5</span> <span class="number">6</span>; <span class="number">7</span> <span class="number">8</span> <span class="number">9</span>]); <span class="comment">%维度+要串联的阵列</span></span><br></pre></td></tr></table></figure>
-<h1 id="单元阵列"><a href="#单元阵列" class="headerlink" title="单元阵列"></a>单元阵列</h1><p>单元阵列的阵列中每个单元格可以存储不同的维度和数据类型的数组的索引单元格</p>
-<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">C = cell(dim1,...,dimN) <span class="comment">%dim 是一个标量整数或整数向量，指定单元格阵列C的尺寸</span></span><br></pre></td></tr></table></figure>
-<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">c = cell(<span class="number">2</span>, <span class="number">5</span>);</span><br><span class="line">c = &#123;<span class="string">&#x27;Red&#x27;</span>, <span class="string">&#x27;Blue&#x27;</span>, <span class="string">&#x27;Green&#x27;</span>, <span class="string">&#x27;Yellow&#x27;</span>, <span class="string">&#x27;White&#x27;</span>; <span class="number">1</span> <span class="number">2</span> <span class="number">3</span> <span class="number">4</span> <span class="number">5</span>&#125;;</span><br><span class="line"></span><br><span class="line">结果：</span><br><span class="line">c = </span><br><span class="line">    <span class="string">&#x27;Red&#x27;</span>    <span class="string">&#x27;Blue&#x27;</span>    <span class="string">&#x27;Green&#x27;</span>    <span class="string">&#x27;Yellow&#x27;</span>    <span class="string">&#x27;White&#x27;</span></span><br><span class="line">    [  <span class="number">1</span>]    [   <span class="number">2</span>]    [    <span class="number">3</span>]    [     <span class="number">4</span>]    [    <span class="number">5</span>]</span><br></pre></td></tr></table></figure>
-<h2 id="单元阵列索引"><a href="#单元阵列索引" class="headerlink" title="单元阵列索引"></a>单元阵列索引</h2><p>可以使用大括号或小括号索引，索引方法与前相同</p>
-<h1 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h1><h2 id="一般函数格式"><a href="#一般函数格式" class="headerlink" title="一般函数格式"></a>一般函数格式</h2><figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="params">[out1,out2,...]</span> = <span class="title">fun_name</span><span class="params">(in1,in2,...)</span></span></span><br><span class="line"><span class="comment">%帮助文本</span></span><br><span class="line">...</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
-<h2 id="匿名函数"><a href="#匿名函数" class="headerlink" title="匿名函数"></a>匿名函数</h2><figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">power = @(x, n) x.^n;</span><br><span class="line">result1 = power(<span class="number">7</span>, <span class="number">3</span>)</span><br></pre></td></tr></table></figure>
-<h1 id="绘图-1"><a href="#绘图-1" class="headerlink" title="绘图"></a>绘图</h1><figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">plot</span>(x, y), xlabel(<span class="string">&#x27;x&#x27;</span>), ylabel(<span class="string">&#x27;Sin(x)&#x27;</span>), title(<span class="string">&#x27;Sin(x) Graph&#x27;</span>),</span><br></pre></td></tr></table></figure>
-<h2 id="绘制多条曲线"><a href="#绘制多条曲线" class="headerlink" title="绘制多条曲线"></a>绘制多条曲线</h2><figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">x = [<span class="number">-10</span> : <span class="number">0.01</span>: <span class="number">10</span>];</span><br><span class="line">y = <span class="number">3</span>*x.^<span class="number">4</span> + <span class="number">2</span> * x.^<span class="number">3</span> + <span class="number">7</span> * x.^<span class="number">2</span> + <span class="number">2</span> * x + <span class="number">9</span>;</span><br><span class="line">g = <span class="number">5</span> * x.^<span class="number">3</span> + <span class="number">9</span> * x + <span class="number">2</span>;</span><br><span class="line"><span class="built_in">plot</span>(x, y, <span class="string">&#x27;r&#x27;</span>, x, g, <span class="string">&#x27;g&#x27;</span>) <span class="comment">% &#x27;r&#x27;,&#x27;g&#x27;代表曲线颜色</span></span><br><span class="line"><span class="built_in">legend</span>(<span class="string">&#x27;y(x)&#x27;</span>,<span class="string">&#x27;g(x)&#x27;</span>);</span><br></pre></td></tr></table></figure>
-<img src="/images/loading.png" data-original="/2022/11/09/matlab/p1.jpg" class title="This is an image"> 
-<h2 id="设置轴刻度"><a href="#设置轴刻度" class="headerlink" title="设置轴刻度"></a>设置轴刻度</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">axis ( [xmin xmax ymin ymax] )</span><br></pre></td></tr></table></figure>
-<h2 id="绘制多个图像"><a href="#绘制多个图像" class="headerlink" title="绘制多个图像"></a>绘制多个图像</h2><figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">subplot(a,b,c);</span><br></pre></td></tr></table></figure>
-<ul>
-<li>a：总行</li>
-<li>b：总列</li>
-<li>c：第几图</li>
-</ul>
-<p>例如生成2*2个图像，第二行第一个图则为<code>subplot(2,2,3);</code></p>
-<h1 id="代数"><a href="#代数" class="headerlink" title="代数"></a>代数</h1><h2 id="声明一个代数"><a href="#声明一个代数" class="headerlink" title="声明一个代数"></a>声明一个代数</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">syms x </span><br></pre></td></tr></table></figure>
-<h2 id="解代数方程"><a href="#解代数方程" class="headerlink" title="解代数方程"></a>解代数方程</h2><figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">solve(x^<span class="number">2</span> <span class="number">-7</span>*x + <span class="number">12</span> == <span class="number">0</span>);</span><br></pre></td></tr></table></figure>
-<p>或：</p>
-<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">eq=<span class="string">&#x27;x^2 -7*x + 12 == 0&#x27;</span>;</span><br><span class="line">result=solve(eq);</span><br></pre></td></tr></table></figure>
-<p>若要单独显示各个根：</p>
-<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">disp</span>(result(<span class="number">1</span>));</span><br><span class="line"><span class="built_in">disp</span>(result(<span class="number">2</span>));</span><br><span class="line"><span class="built_in">disp</span>(result(<span class="number">3</span>));</span><br><span class="line"><span class="built_in">disp</span>(result(<span class="number">4</span>));</span><br></pre></td></tr></table></figure>
-<ul>
-<li><strong>我的matlab必须手动打印结果，不知道为什么</strong></li>
-</ul>
-<h1 id="多项式"><a href="#多项式" class="headerlink" title="多项式"></a>多项式</h1><p>当计算一个一元多次项时，可以使用行向量表示，例如：</p>
-<p>方程 P(x) = x^4 + 7x^3 - 5x + 9 可以表示为:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">p = [1 7 0 -5 9]；</span><br></pre></td></tr></table></figure>
-<p>求解：</p>
-<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">polyval(p,<span class="number">4</span>) <span class="comment">%计算当x=4时多项式的值</span></span><br></pre></td></tr></table></figure>
-<p>还可以通过输入矩阵的方式计算多个值：</p>
-<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">p = [<span class="number">1</span> <span class="number">7</span> <span class="number">0</span>  <span class="number">-5</span> <span class="number">9</span>];</span><br><span class="line">X = [<span class="number">1</span> <span class="number">2</span> <span class="number">-3</span> <span class="number">4</span>; <span class="number">2</span> <span class="number">-5</span> <span class="number">6</span> <span class="number">3</span>; <span class="number">3</span> <span class="number">1</span> <span class="number">0</span> <span class="number">2</span>; <span class="number">5</span> <span class="number">-7</span> <span class="number">3</span> <span class="number">8</span>];</span><br><span class="line">polyval(p, X);</span><br><span class="line"></span><br><span class="line"><span class="comment">%结果：</span></span><br><span class="line"><span class="built_in">ans</span> =</span><br><span class="line">        <span class="number">2307</span>       <span class="number">-1769</span>        <span class="number">-939</span>        <span class="number">4499</span></span><br><span class="line">        <span class="number">2314</span>       <span class="number">-2376</span>        <span class="number">-249</span>        <span class="number">4695</span></span><br><span class="line">        <span class="number">2256</span>       <span class="number">-1892</span>        <span class="number">-549</span>        <span class="number">4310</span></span><br><span class="line">        <span class="number">4570</span>       <span class="number">-4532</span>       <span class="number">-1062</span>        <span class="number">9269</span></span><br></pre></td></tr></table></figure>
-<h2 id="使用多项式的曲线拟合"><a href="#使用多项式的曲线拟合" class="headerlink" title="使用多项式的曲线拟合"></a>使用多项式的曲线拟合</h2><p>当我们要对离散点拟合一条曲线时，可以使用polyfit函数，该函数的作用是通过最小二乘法的方式<strong>拟合出一条曲线的多项式</strong>。</p>
-<ul>
-<li>polyfit(x,y,n)    n为需要拟合的最高次幂，具体求法可参考<a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_39796363/article/details/116188595?ops_request_misc=%7B%22request%5Fid%22%3A%22166808186016782425129618%22%2C%22scm%22%3A%2220140713.130102334.pc%5Fall.%22%7D&amp;request_id=166808186016782425129618&amp;biz_id=0&amp;utm_medium=distribute.pc_search_result.none-task-blog-2~all~first_rank_ecpm_v1~rank_v31_ecpm-6-116188595-null-null.142^v63^pc_rank_34_queryrelevant25,201^v3^add_ask,213^v2^t3_esquery_v3&amp;utm_term=matlab polyfit&amp;spm=1018.2226.3001.4187">MATLAB polyfit曲线拟合及拟合最高次幂的选择</a></li>
-</ul>
-<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">x = [<span class="number">1</span> <span class="number">2</span> <span class="number">3</span> <span class="number">4</span> <span class="number">5</span> <span class="number">6</span>]; y = [<span class="number">5.5</span> <span class="number">43.1</span> <span class="number">128</span> <span class="number">290.7</span> <span class="number">498.4</span> <span class="number">978.67</span>]; </span><br><span class="line">p = polyfit(x,y,<span class="number">5</span>)   </span><br></pre></td></tr></table></figure>
-<p>此时p为一个多项式，可以使用polyval在坐标集上拟合出该曲线</p>
-<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">x2 = <span class="number">1</span>:<span class="number">0.1</span>:<span class="number">6</span>;          </span><br><span class="line">y2 = polyval(p,x2);</span><br><span class="line"><span class="built_in">plot</span>(x,y,<span class="string">&#x27;o&#x27;</span>,x2,y2)</span><br></pre></td></tr></table></figure>
+<h2 id="求值顺序"><a href="#求值顺序" class="headerlink" title="求值顺序"></a>求值顺序</h2><p>部分运算符是没有明确指明执行顺序的，例如&lt;&lt;运算符：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cout&lt;&lt;i&lt;&lt;<span class="string">&quot;&quot;</span>&lt;&lt;++i;</span><br></pre></td></tr></table></figure>
+<p>++i和i没有明确的先后关系，因此编译器可能做出任何行为。</p>
+<p>当多个函数会影响同一对象时，当同时调用这些函数时，调用函数的顺序也没有明确的先后关系。</p>
+<h1 id="2、算术运算符"><a href="#2、算术运算符" class="headerlink" title="2、算术运算符"></a>2、算术运算符</h1><h2 id="bool类型"><a href="#bool类型" class="headerlink" title="bool类型"></a>bool类型</h2><p>bool类型原则不应参与运算，在运算时会自动转化为int型的1，只要计算结果不为0，都将返回ture</p>
+<h2 id="优先级"><a href="#优先级" class="headerlink" title="优先级"></a>优先级</h2><p>C++大部分同优先级运算都满足从左至右的规律，赋值则相反</p>
+<h2 id="递增运算"><a href="#递增运算" class="headerlink" title="递增运算"></a>递增运算</h2><p>C++中，<strong>非必要不使用</strong>后置递增/减符（i++/i—)，因为前置运算为将对象本身作为左值返回，而后置则要额外的空间存储原始值，并将这个额外存储的原始值副本作为右值返回，因此，使用后置操作会消耗更多内存，这在相对复杂的工作中是消耗巨大的。</p>
+<h2 id="位操作"><a href="#位操作" class="headerlink" title="位操作"></a>位操作</h2><p>关于符号位的处理没有明确规定，因此位运算最好用来处理无符号类型</p>
+<h1 id="3、类型转换"><a href="#3、类型转换" class="headerlink" title="3、类型转换"></a>3、类型转换</h1><p>C++的类型转换格式不同于C：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cast-name&lt;类型&gt;(表达式)</span><br></pre></td></tr></table></figure>
+<p>最常用的cast-name为<code>static_cast</code>和<code>const_cast</code></p>
+<h3 id="static-cast"><a href="#static-cast" class="headerlink" title="static_cast"></a>static_cast</h3><p>任何有明确定义的类型转换（除了底层const）都可以使用static_cast</p>
+<p>例：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> *p = &amp;d;<span class="comment">//d不能为常量（底层const）</span></span><br><span class="line"><span class="type">double</span> *dp = <span class="built_in">static_cast</span>&lt;<span class="type">double</span>*&gt;(p);</span><br></pre></td></tr></table></figure>
+<h3 id="const-cast"><a href="#const-cast" class="headerlink" title="const_cast"></a>const_cast</h3><p><strong>专用</strong>于改变底层const，其作用为改变const性质</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">const</span> <span class="type">char</span>* pc;</span><br><span class="line"><span class="type">char</span> *p=<span class="built_in">const_cast</span>&lt;<span class="type">char</span>*&gt;(pc);</span><br></pre></td></tr></table></figure>
+<p>需要注意，可以有以下用法：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">char</span>* pc;</span><br><span class="line"><span class="type">char</span> *p=<span class="built_in">const_cast</span>&lt;<span class="type">const</span> <span class="type">char</span>*&gt;(pc);</span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -1644,7 +586,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/13/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/13/">13</a><span class="page-number current">14</span><a class="page-number" href="/page/15/">15</a><span class="space">&hellip;</span><a class="page-number" href="/page/22/">22</a><a class="extend next" rel="next" href="/page/15/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/13/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/13/">13</a><span class="page-number current">14</span><a class="page-number" href="/page/15/">15</a><span class="space">&hellip;</span><a class="page-number" href="/page/20/">20</a><a class="extend next" rel="next" href="/page/15/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1711,7 +653,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">66</span>
+          <span class="site-state-item-count">60</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>

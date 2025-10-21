@@ -197,7 +197,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2023/05/17/lzz-%E7%AC%AC%E4%B8%89%E7%AB%A0-%E4%BC%BA%E6%9C%8D%E6%8A%80%E6%9C%AF/">
+    <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2022/12/14/FreeRTOS%E4%BB%BB%E5%8A%A1%E5%BB%B6%E6%97%B6%E5%88%86%E6%9E%90/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/zoe.gif">
@@ -211,7 +211,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2023/05/17/lzz-%E7%AC%AC%E4%B8%89%E7%AB%A0-%E4%BC%BA%E6%9C%8D%E6%8A%80%E6%9C%AF/" class="post-title-link" itemprop="url">lzz-第三章 伺服技术(考试复习自用)</a>
+            <a href="/2022/12/14/FreeRTOS%E4%BB%BB%E5%8A%A1%E5%BB%B6%E6%97%B6%E5%88%86%E6%9E%90/" class="post-title-link" itemprop="url">FreeRTOS任务延时分析</a>
         </h2>
 
         <div class="post-meta">
@@ -223,14 +223,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2023-05-17 22:12:51" itemprop="dateCreated datePublished" datetime="2023-05-17T22:12:51+08:00">2023-05-17</time>
+              <time title="创建时间：2022-12-14 10:49:06" itemprop="dateCreated datePublished" datetime="2022-12-14T10:49:06+08:00">2022-12-14</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-02-25 15:30:59" itemprop="dateModified" datetime="2024-02-25T15:30:59+08:00">2024-02-25</time>
+                <time title="修改时间：2022-12-17 16:34:06" itemprop="dateModified" datetime="2022-12-17T16:34:06+08:00">2022-12-17</time>
               </span>
 
           
@@ -244,240 +244,205 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="1、伺服系统"><a href="#1、伺服系统" class="headerlink" title="1、伺服系统"></a>1、伺服系统</h1><h2 id="伺服系统定义"><a href="#伺服系统定义" class="headerlink" title="伺服系统定义"></a>伺服系统定义</h2><p>以机械参数（位移、速度、加速度、力矩等）作为<strong><u>被控制量</u></strong>的一种<u><strong>自动控制系统</strong></u></p>
-<h2 id="一般组成"><a href="#一般组成" class="headerlink" title="一般组成"></a>一般组成</h2><img src="/images/loading.png" data-original="/2023/05/17/lzz-%E7%AC%AC%E4%B8%89%E7%AB%A0-%E4%BC%BA%E6%9C%8D%E6%8A%80%E6%9C%AF/1.jpg" class title="伺服系统组成"> 
-<h2 id="分类"><a href="#分类" class="headerlink" title="分类"></a><u>分类</u></h2><h3 id="按控制原理分"><a href="#按控制原理分" class="headerlink" title="按控制原理分"></a>按控制原理分</h3><ul>
-<li>开环</li>
-<li>半闭环（不检测工作台信息）</li>
-<li>全闭环</li>
-</ul>
-<h3 id="驱动方式"><a href="#驱动方式" class="headerlink" title="驱动方式"></a>驱动方式</h3><ul>
-<li>电气伺服</li>
-<li>气压伺服</li>
-<li>液压伺服</li>
-</ul>
-<h3 id="被测控制量"><a href="#被测控制量" class="headerlink" title="被测控制量"></a>被测控制量</h3><ul>
-<li>速度控制</li>
-<li>位置控制</li>
-<li>扭矩控制</li>
-<li>同步控制</li>
-</ul>
-<h3 id="执行元件"><a href="#执行元件" class="headerlink" title="执行元件"></a>执行元件</h3><p><strong>开环大多用步进电机，半闭环与闭环多用直流伺服电机</strong></p>
+          <p>前几章中都有涉及FreeRTOS的列表相关内容，在学习过程中，我们也能看出来列表与任务的状态（就绪、延时、堵塞）与任务调度息息相关，本文就针对任务延时进行<strong>列表运行机制</strong>的进一步学习</p>
+<p>参考：<a target="_blank" rel="noopener" href="https://freertos.blog.csdn.net/article/details/51705148">FreeRTOS高级篇9—-FreeRTOS系统延时分析_研究是为了理解的博客-CSDN博客_pdms_to_ticks</a></p>
+<h1 id="相对延时"><a href="#相对延时" class="headerlink" title="相对延时"></a>相对延时</h1><div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">函数名</th>
+<th style="text-align:center">参数</th>
+<th style="text-align:center">返回值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">vTaskDelay( const TickType_t xTicksToDelay )</td>
+<td style="text-align:center">系统节拍个数</td>
+<td style="text-align:center">无</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>再次提醒一下，FreeRTOS中的延时参数都是以FreeRTOS<strong>自身的系统节拍</strong>为单位，系统节拍可以在在配置文件FreeRTOSConfig.h，改变宏configTICK_RATE_HZ的值；cubemx中的配置项也有相关的配置处，单位为Hz</p>
+<h2 id="函数体"><a href="#函数体" class="headerlink" title="函数体"></a>函数体</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">vTaskDelay</span><span class="params">( <span class="type">const</span> TickType_t xTicksToDelay )</span></span><br><span class="line">&#123;</span><br><span class="line">BaseType_t xAlreadyYielded = pdFALSE;</span><br><span class="line"> </span><br><span class="line">    <span class="comment">/* 如果延时时间为0,则不会将当前任务加入延时列表 */</span></span><br><span class="line">    <span class="keyword">if</span>( xTicksToDelay &gt; ( TickType_t ) <span class="number">0U</span> )</span><br><span class="line">    &#123;</span><br><span class="line">        configASSERT( uxSchedulerSuspended == <span class="number">0</span> );<span class="comment">//禁用中断</span></span><br><span class="line">        vTaskSuspendAll();<span class="comment">//将调度器挂起</span></span><br><span class="line">        &#123;</span><br><span class="line">        <span class="comment">/* 将当前任务从就绪列表中移除,并根据当前系统节拍计数器值计算唤醒时间,然后将任务加入延时列表 */</span></span><br><span class="line">            prvAddCurrentTaskToDelayedList( xTicksToDelay, pdFALSE );</span><br><span class="line">        &#125;</span><br><span class="line">        xAlreadyYielded = xTaskResumeAll();<span class="comment">//恢复调度器运行</span></span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    <span class="comment">/* 强制执行一次上下文切换*/</span></span><br><span class="line">    <span class="keyword">if</span>( xAlreadyYielded == pdFALSE )</span><br><span class="line">    &#123;</span><br><span class="line">        portYIELD_WITHIN_API();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>其中，关键函数为prvAddCurrentTaskToDelayedList()：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">static</span> <span class="type">void</span> <span class="title function_">prvAddCurrentTaskToDelayedList</span><span class="params">( TickType_t xTicksToWait, <span class="type">const</span> BaseType_t xCanBlockIndefinitely )</span></span><br><span class="line">&#123;</span><br><span class="line">TickType_t xTimeToWake;</span><br><span class="line"><span class="type">const</span> TickType_t xConstTickCount = xTickCount;</span><br><span class="line"></span><br><span class="line">	<span class="meta">#<span class="keyword">if</span>( INCLUDE_xTaskAbortDelay == 1 )</span></span><br><span class="line">	&#123;</span><br><span class="line">		<span class="comment">/* 延时相关标志位清零 */</span></span><br><span class="line">		pxCurrentTCB-&gt;ucDelayAborted = pdFALSE;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line"></span><br><span class="line">	<span class="comment">/* 将列表项移出当前列表（就绪列表），pxCurrentTCB作为全局变量指向当前任务TCB，uxListRemove()返回列表的成员个数 */</span></span><br><span class="line">	<span class="keyword">if</span>( uxListRemove( &amp;( pxCurrentTCB-&gt;xStateListItem ) ) == ( UBaseType_t ) <span class="number">0</span> )</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="comment">/* The current task must be in a ready list, so there is no need to</span></span><br><span class="line"><span class="comment">		check, and the port reset macro can be called directly. */</span></span><br><span class="line">		portRESET_READY_PRIORITY( pxCurrentTCB-&gt;uxPriority, uxTopReadyPriority );</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">	&#123;</span><br><span class="line">		mtCOVERAGE_TEST_MARKER();</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="meta">#<span class="keyword">if</span> ( INCLUDE_vTaskSuspend == 1 )</span></span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">if</span>( ( xTicksToWait == portMAX_DELAY ) &amp;&amp; ( xCanBlockIndefinitely != pdFALSE ) )</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="comment">/*如果设置的延时参数等于portMAX_DELAY(0xffffffff)，则视为堵塞而不是延时 */</span></span><br><span class="line">			vListInsertEnd( &amp;xSuspendedTaskList, &amp;( pxCurrentTCB-&gt;xStateListItem ) );</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span></span><br><span class="line">		&#123;</span><br><span class="line">			<span class="comment">/* 计算唤醒时间 */</span></span><br><span class="line">			xTimeToWake = xConstTickCount + xTicksToWait;</span><br><span class="line"></span><br><span class="line">			<span class="comment">/* 将当前任务TCB的状态列表项值设置为唤醒时间 */</span></span><br><span class="line">			listSET_LIST_ITEM_VALUE( &amp;( pxCurrentTCB-&gt;xStateListItem ), xTimeToWake );</span><br><span class="line"></span><br><span class="line">			<span class="keyword">if</span>( xTimeToWake &lt; xConstTickCount )</span><br><span class="line">			&#123;</span><br><span class="line">				<span class="comment">/* Wake time has overflowed.  Place this item in the overflow</span></span><br><span class="line"><span class="comment">				list. */</span></span><br><span class="line">				vListInsert( pxOverflowDelayedTaskList, &amp;( pxCurrentTCB-&gt;xStateListItem ) );</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">else</span></span><br><span class="line">			&#123;</span><br><span class="line">				<span class="comment">/* 使用的是插入函数，因此延时列表中列表项会根据唤醒时间的大小进行排序 */</span></span><br><span class="line">				vListInsert( pxDelayedTaskList, &amp;( pxCurrentTCB-&gt;xStateListItem ) );</span><br><span class="line"></span><br><span class="line">				<span class="comment">/* If the task entering the blocked state was placed at the</span></span><br><span class="line"><span class="comment">				head of the list of blocked tasks then xNextTaskUnblockTime</span></span><br><span class="line"><span class="comment">				needs to be updated too. */</span></span><br><span class="line">				<span class="keyword">if</span>( xTimeToWake &lt; xNextTaskUnblockTime )</span><br><span class="line">				&#123;</span><br><span class="line">					xNextTaskUnblockTime = xTimeToWake;</span><br><span class="line">				&#125;</span><br><span class="line">				<span class="keyword">else</span></span><br><span class="line">				&#123;</span><br><span class="line">					mtCOVERAGE_TEST_MARKER();</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">   </span><br><span class="line">   </span><br><span class="line">		<span class="comment">/* Avoid compiler warning when INCLUDE_vTaskSuspend is not 1. */</span></span><br><span class="line">		( <span class="type">void</span> ) xCanBlockIndefinitely;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="meta">#<span class="keyword">endif</span> <span class="comment">/* INCLUDE_vTaskSuspend */</span></span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>通过对上述代码解释了列表的具体使用方法：</p>
 <ul>
-<li>步进伺服</li>
-<li>直流伺服</li>
-<li>交流伺服</li>
+<li><p>若要将当前任务延时或挂起，可以通过全局变量pxCurrentTCB找到该任务TCB，再操作该TCB的<strong>状态</strong>列表项</p>
+</li>
+<li><p>当任务延时或挂起时，状态列表项的列表项值xItemValue会用于存放唤醒（延时结束）的时间，由于列表插入函数会自动根据xItemValue的值进行排序，<strong>所以唤醒时间越短的列表项会越排在列表前面</strong></p>
+</li>
+<li><p>FreeRTOS使用了两个延时列表：xDelayedTaskList1和xDelayedTaskList2，并使用两个列表指针类型变量pxDelayedTaskList和pxOverflowDelayedTaskList分别指向上面的延时列表1和延时列表2</p>
+<p>pxOverflowDelayedTaskList用于解决计时溢出的问题：</p>
+<p>tasks.c中定义了很多局部静态变量，其中有一个变量xTickCount用于记录系统节拍中断次数（可以理解为记录当前时间），当xTicksToDelay达到4294967295后再增加，就会溢出变成0。 如果内核判断出xTickCount+ xTicksToDelay溢出，就将当前任务挂接到列表指针pxOverflowDelayedTaskList指向的列表中</p>
+</li>
 </ul>
-<h2 id="要求"><a href="#要求" class="headerlink" title="要求"></a>要求</h2><ul>
-<li>快速性</li>
-<li>精确性</li>
-<li>稳定性</li>
+<h2 id="相对延时的缺点"><a href="#相对延时的缺点" class="headerlink" title="相对延时的缺点"></a>相对延时的缺点</h2><p>由于相对延时是在每次调用vTaskDelay之后才开启延时，如果调用延时的任务在运行过程中发生中断，那通过相对延时进行的周期任务就会因为该中断而被影响导致不能发生中断。</p>
+<p>因此，为了能最大程度的使相对延时达到精准的效果，最好将使用相对延时的任务优先级设置为最高</p>
+<h1 id="绝对延时"><a href="#绝对延时" class="headerlink" title="绝对延时"></a>绝对延时</h1><div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">函数名</th>
+<th style="text-align:center">参数</th>
+<th style="text-align:center">返回值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">vTaskDelayUntil( TickType_t * const pxPreviousWakeTime, <br>                   const TickType_t xTimeIncrement )</td>
+<td style="text-align:center">上一次记录的时间；<br>周期循环时间</td>
+<td style="text-align:center">无</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 id="函数体-1"><a href="#函数体-1" class="headerlink" title="函数体"></a>函数体</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">vTaskDelayUntil</span><span class="params">( TickType_t * <span class="type">const</span> pxPreviousWakeTime, <span class="type">const</span> TickType_t xTimeIncrement )</span></span><br><span class="line">&#123;</span><br><span class="line">TickType_t xTimeToWake;</span><br><span class="line">BaseType_t xAlreadyYielded, xShouldDelay = pdFALSE;</span><br><span class="line"> </span><br><span class="line">    vTaskSuspendAll();</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">/* 保存系统节拍中断次数计数器 */</span></span><br><span class="line">        <span class="type">const</span> TickType_t xConstTickCount = xTickCount;</span><br><span class="line"> </span><br><span class="line">        <span class="comment">/* 计算任务下次唤醒时间(以系统节拍中断次数表示)   */</span></span><br><span class="line">        xTimeToWake = *pxPreviousWakeTime + xTimeIncrement;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">/* *pxPreviousWakeTime中保存的是上次唤醒时间,唤醒后需要一定时间执行任务主体代码,如果上次唤醒时间大于当前时间,说明节拍计数器溢出了 */</span></span><br><span class="line">        <span class="keyword">if</span>( xConstTickCount &lt; *pxPreviousWakeTime )</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">/*只有当周期性延时时间大于任务主体代码执行时间,才会将任务挂接到延时列表.*/</span></span><br><span class="line">            <span class="keyword">if</span>( ( xTimeToWake &lt; *pxPreviousWakeTime ) &amp;&amp; ( xTimeToWake &gt; xConstTickCount ) )</span><br><span class="line">            &#123;</span><br><span class="line">                xShouldDelay = pdTRUE;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">/* 也都是保证周期性延时时间大于任务主体代码执行时间 */</span></span><br><span class="line">            <span class="keyword">if</span>( ( xTimeToWake &lt; *pxPreviousWakeTime ) || ( xTimeToWake &gt; xConstTickCount ) )</span><br><span class="line">            &#123;</span><br><span class="line">                xShouldDelay = pdTRUE;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"> </span><br><span class="line">        <span class="comment">/* 更新唤醒时间,为下一次调用本函数做准备. */</span></span><br><span class="line">        *pxPreviousWakeTime = xTimeToWake;</span><br><span class="line"> </span><br><span class="line">        <span class="keyword">if</span>( xShouldDelay != pdFALSE )</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">/* 将本任务加入延时列表,注意阻塞时间并不是以当前时间为参考,因此减去了当前系统节拍中断计数器值*/</span></span><br><span class="line">            prvAddCurrentTaskToDelayedList( xTimeToWake - xConstTickCount, pdFALSE );</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    xAlreadyYielded = xTaskResumeAll();</span><br><span class="line"> </span><br><span class="line">    <span class="comment">/* 强制执行一次上下文切换 */</span></span><br><span class="line">    <span class="keyword">if</span>( xAlreadyYielded == pdFALSE )</span><br><span class="line">    &#123;</span><br><span class="line">        portYIELD_WITHIN_API();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>写法和基本思路和相对延时区别不大，唯一需要注意的是。绝对延时之所以叫绝对延时，<strong>是因为其第一个参数pxPreviousWakeTime除开第一次使用时需获取当前系统时间外，每次调用绝对延时函数时pxPreviousWakeTime内保存的值为上一次调用时计算出的唤醒时间</strong></p>
+<p>也就是说，绝对延时的<strong>每一次延时的起点都是上一次延时的终点</strong>，这也就保证了任务主体即使被中断也不会影响到下一次执行任务主体（前提是任务主体+中断执行的时间小于延时长度，如果超过延时时间，需要重新获取pxPreviousWakeTime为当前系统的最新时间）</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2022/12/12/FreeRTOS%E7%9A%84%E4%BB%BB%E5%8A%A1%E5%88%9B%E5%BB%BA%E5%88%86%E6%9E%90/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/zoe.gif">
+      <meta itemprop="name" content="dhk">
+      <meta itemprop="description" content="记录一些学习日常">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小董的BLOG">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/12/12/FreeRTOS%E7%9A%84%E4%BB%BB%E5%8A%A1%E5%88%9B%E5%BB%BA%E5%88%86%E6%9E%90/" class="post-title-link" itemprop="url">FreeRTOS的任务创建分析</a>
+        </h2>
+
+        <div class="post-meta">
+		  
+		  
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-12-12 15:33:00" itemprop="dateCreated datePublished" datetime="2022-12-12T15:33:00+08:00">2022-12-12</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-12-13 16:42:20" itemprop="dateModified" datetime="2022-12-13T16:42:20+08:00">2022-12-13</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>本文的学习参考了<a target="_blank" rel="noopener" href="https://freertos.blog.csdn.net/article/details/51303639">FreeRTOS高级篇2—-FreeRTOS任务创建分析_研究是为了理解的博客-CSDN博客_</a></p>
+<h1 id="任务TCB分析"><a href="#任务TCB分析" class="headerlink" title="任务TCB分析"></a>任务TCB分析</h1><p>在<a target="_blank" rel="noopener" href="https://dhkkk.gitee.io/2022/12/09/基于FreeRTOS的列表学习/">基于FreeRTOS的列表学习 | 小董的BLOG (gitee.io)</a>中对列表项分析时，在列表项的结构中有一个无类型指针：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> * pvOwner;                                     <span class="comment">/*指向一个任务TCB*/</span></span><br></pre></td></tr></table></figure>
+<p>该指针用于指向任务的TCB（Task Control Block）。顾名思义，该结构作为一个用于控制任务的集合。它用于存储任务的状态信息，包括任务运行时的环境。<strong>每个任务都有自己的任务TCB。</strong></p>
+<h2 id="结构解读"><a href="#结构解读" class="headerlink" title="结构解读"></a>结构解读</h2><p>可以在task.c中找到定义TCB的结构体：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">tskTaskControlBlock</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">	<span class="keyword">volatile</span> StackType_t	*pxTopOfStack;		<span class="comment">//栈顶指针</span></span><br><span class="line"></span><br><span class="line">	<span class="meta">#<span class="keyword">if</span> ( portUSING_MPU_WRAPPERS == 1 )		<span class="comment">//是否使用MPU</span></span></span><br><span class="line">		xMPU_SETTINGS	xMPUSettings;		</span><br><span class="line">	<span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line"></span><br><span class="line">	ListItem_t			xStateListItem;	<span class="comment">//状态列表项</span></span><br><span class="line">	ListItem_t			xEventListItem;	<span class="comment">//事件列表项	</span></span><br><span class="line">	UBaseType_t			uxPriority;			<span class="comment">//优先级</span></span><br><span class="line">	StackType_t			*pxStack;			<span class="comment">//指向堆栈起始位置</span></span><br><span class="line">	<span class="type">char</span>				pcTaskName[ configMAX_TASK_NAME_LEN ];		<span class="comment">//任务名字最大长度</span></span><br><span class="line"></span><br><span class="line">	<span class="meta">#<span class="keyword">if</span> ( portSTACK_GROWTH &gt; 0 )		<span class="comment">//判断堆栈生长方向,&gt;0为向上生长</span></span></span><br><span class="line">		StackType_t		*pxEndOfStack;		 <span class="comment">//需要额外的一个指针来判断堆栈是否溢出</span></span><br><span class="line">	<span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line"></span><br><span class="line">	<span class="meta">#<span class="keyword">if</span> ( portCRITICAL_NESTING_IN_TCB == 1 )</span></span><br><span class="line">		UBaseType_t		uxCriticalNesting;	</span><br><span class="line">	<span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line"></span><br><span class="line">	<span class="meta">#<span class="keyword">if</span> ( configUSE_TRACE_FACILITY == 1 )</span></span><br><span class="line">		UBaseType_t		uxTCBNumber;		<span class="comment">//一个数值，每个任务都有一个唯一的值</span></span><br><span class="line">		UBaseType_t		uxTaskNumber;		<span class="comment">//存储一个特定数值</span></span><br><span class="line">	<span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line"></span><br><span class="line">	<span class="meta">#<span class="keyword">if</span> ( configUSE_MUTEXES == 1 )	<span class="comment">//是否使用互斥量</span></span></span><br><span class="line">		UBaseType_t		uxBasePriority;		<span class="comment">//用于保存任务的基础的基础优先级</span></span><br><span class="line">		UBaseType_t		uxMutexesHeld;</span><br><span class="line">	<span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line"></span><br><span class="line">	<span class="meta">#<span class="keyword">if</span> ( configUSE_APPLICATION_TASK_TAG == 1 )</span></span><br><span class="line">		TaskHookFunction_t pxTaskTag;</span><br><span class="line">	<span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line"></span><br><span class="line">	<span class="meta">#<span class="keyword">if</span>( configNUM_THREAD_LOCAL_STORAGE_POINTERS &gt; 0 )</span></span><br><span class="line">		<span class="type">void</span> *pvThreadLocalStoragePointers[ configNUM_THREAD_LOCAL_STORAGE_POINTERS ];</span><br><span class="line">	<span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line"></span><br><span class="line">	<span class="meta">#<span class="keyword">if</span>( configGENERATE_RUN_TIME_STATS == 1 )</span></span><br><span class="line">		<span class="type">uint32_t</span>		ulRunTimeCounter;		<span class="comment">//记录任务在运行状态下执行的总时间</span></span><br><span class="line">	<span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line"></span><br><span class="line">	<span class="meta">#<span class="keyword">if</span> ( configUSE_NEWLIB_REENTRANT == 1 )</span></span><br><span class="line">    <span class="comment">/* 为任务分配一个Newlibreent结构体变量。Newlib是一个C库函数，并非FreeRTOS维护，FreeRTOS也不对使用结果负责。如果用户使用Newlib，必须熟知Newlib的细节*/</span></span><br><span class="line">		<span class="class"><span class="keyword">struct</span>	_<span class="title">reent</span> <span class="title">xNewLib_reent</span>;</span></span><br><span class="line">	<span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line"></span><br><span class="line">	<span class="meta">#<span class="keyword">if</span>( configUSE_TASK_NOTIFICATIONS == 1 ) 		<span class="comment">//与任务通知相关</span></span></span><br><span class="line">		<span class="keyword">volatile</span> <span class="type">uint32_t</span> ulNotifiedValue;</span><br><span class="line">		<span class="keyword">volatile</span> <span class="type">uint8_t</span> ucNotifyState;</span><br><span class="line">	<span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line"></span><br><span class="line">	<span class="meta">#<span class="keyword">if</span>( tskSTATIC_AND_DYNAMIC_ALLOCATION_POSSIBLE != 0 )</span></span><br><span class="line">		<span class="type">uint8_t</span>	ucStaticallyAllocated; 		</span><br><span class="line">	<span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line"></span><br><span class="line">	<span class="meta">#<span class="keyword">if</span>( INCLUDE_xTaskAbortDelay == 1 )</span></span><br><span class="line">		<span class="type">uint8_t</span> ucDelayAborted;</span><br><span class="line">	<span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line"></span><br><span class="line">&#125; tskTCB;</span><br><span class="line"><span class="keyword">typedef</span> tskTCB TCB_t;</span><br></pre></td></tr></table></figure>
+<h3 id="状态列表项与事件列表项"><a href="#状态列表项与事件列表项" class="headerlink" title="状态列表项与事件列表项"></a>状态列表项与事件列表项</h3><p>从TCB的结构中可以发现两个定义的列表项，分别是<strong>状态列表项和事件列表项</strong>，在上一章也略微提到过，列表与列表项用于调度任务、跟踪任务状态。例如：在task.c中，定义了一些静态列表变量，其中有就绪、阻塞、挂起列表，例如当某个任务处于就绪态时，调度器就将这个任务TCB的<strong>状态列表项</strong>挂接到就绪列表。事件列表项也与之类似，当队列满的情况下，任务因入队操作而阻塞时，就会将<strong>事件列表项</strong>挂接到队列的等待入队列表上。具体实现方法和规则会在之后学习任务调度时讲到。</p>
+<h3 id="uxTCBNumber与uxTaskNumber"><a href="#uxTCBNumber与uxTaskNumber" class="headerlink" title="uxTCBNumber与uxTaskNumber"></a>uxTCBNumber与uxTaskNumber</h3><p>这两个变量主要用于调试与可视化追踪。仅当宏configUSE_TRACE_FACILITY（位于FreeRTOSConfig.h中）为1时有效。变量uxTCBNumber在创建任务时<strong>由内核自动分配</strong>，每个任务对应一个值，<strong>后续不再改变</strong>。变量uxTaskNumber由<strong>API函数vTaskSetTaskNumber()来设置的</strong>，数值由函数参数指定。</p>
+<p>其定义在task.c中如下，参数为对应任务的引用句柄和要设置的数值</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">vTaskSetTaskNumber</span><span class="params">( TaskHandle_t xTask, <span class="type">const</span> UBaseType_t uxHandle )</span></span><br><span class="line">&#123;</span><br><span class="line">	TCB_t *pxTCB;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">if</span>( xTask != <span class="literal">NULL</span> )</span><br><span class="line">		&#123;</span><br><span class="line">			pxTCB = ( TCB_t * ) xTask;</span><br><span class="line">			pxTCB-&gt;uxTaskNumber = uxHandle;</span><br><span class="line">		&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="任务创建的内部流程"><a href="#任务创建的内部流程" class="headerlink" title="任务创建的内部流程"></a>任务创建的内部流程</h1><p>假设当前创建了一个任务如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">static</span> TaskHandle_t xHandle；</span><br><span class="line">xTaskCreate(vTask_A,”Task A”,<span class="number">120</span>,<span class="literal">NULL</span>,<span class="number">1</span>,&amp;xHandle);</span><br></pre></td></tr></table></figure>
+<p>当这个语句执行后，任务A被创建并加入就绪任务列表，我们这章的主要目的，就是看看这个语句在执行过程中，发生了什么事情。</p>
+<h2 id="1、创建任务堆栈和TCB所用空间"><a href="#1、创建任务堆栈和TCB所用空间" class="headerlink" title="1、创建任务堆栈和TCB所用空间"></a>1、创建任务堆栈和TCB所用空间</h2><p>注：原博客中也就是接下来讲到的函数在我使用的基于STM32的FreeRTOS中并不存在，但是可以在对xTaskCreate的定义下找到基本类似的操作（可能是版本原因）<strong>，不过其并不是用函数封装的，但是功能基本一致</strong>。为了方便学习就使用原博客中的函数来理解。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">static</span> TCB_t *<span class="title function_">prvAllocateTCBAndStack</span><span class="params">( <span class="type">const</span> <span class="type">uint16_t</span> usStackDepth, StackType_t * <span class="type">const</span> puxStackBuffer, TCB_t * <span class="type">const</span> pxTaskBuffer )</span></span><br><span class="line">&#123;</span><br><span class="line">TCB_t *pxNewTCB;</span><br><span class="line">StackType_t *pxStack;</span><br><span class="line"> </span><br><span class="line">    <span class="comment">/* 分配堆栈空间*/</span></span><br><span class="line">    pxStack = ( StackType_t * ) pvPortMallocAligned( ( ( ( <span class="type">size_t</span> ) usStackDepth ) * <span class="keyword">sizeof</span>( StackType_t ) ), puxStackBuffer );</span><br><span class="line">    <span class="keyword">if</span>( pxStack != <span class="literal">NULL</span> )</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">/* 分配TCB空间 */</span></span><br><span class="line">        pxNewTCB = ( TCB_t * ) pvPortMallocAligned( <span class="keyword">sizeof</span>( TCB_t ), pxTaskBuffer );</span><br><span class="line"> </span><br><span class="line">        <span class="keyword">if</span>( pxNewTCB != <span class="literal">NULL</span> )</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">/* 将堆栈起始位置存入TCB*/</span></span><br><span class="line">            pxNewTCB-&gt;pxStack = pxStack;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">/* 如果TCB分配失败，释放之前申请的堆栈空间 */</span></span><br><span class="line">            <span class="keyword">if</span>( puxStackBuffer == <span class="literal">NULL</span> )</span><br><span class="line">            &#123;</span><br><span class="line">                vPortFree( pxStack );</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        pxNewTCB = <span class="literal">NULL</span>;</span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    <span class="keyword">if</span>( pxNewTCB != <span class="literal">NULL</span> )</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">/* 如果需要，使用固定值填充堆栈 */</span></span><br><span class="line">        <span class="meta">#<span class="keyword">if</span>( ( configCHECK_FOR_STACK_OVERFLOW&gt; 1 ) || ( configUSE_TRACE_FACILITY == 1 ) || ( INCLUDE_uxTaskGetStackHighWaterMark== 1 ) )</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">/* 仅用于调试 */</span></span><br><span class="line">            ( <span class="type">void</span> ) <span class="built_in">memset</span>( pxNewTCB-&gt;pxStack, ( <span class="type">int</span> ) tskSTACK_FILL_BYTE, ( <span class="type">size_t</span> ) usStackDepth * <span class="keyword">sizeof</span>( StackType_t ) );</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    <span class="keyword">return</span> pxNewTCB;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>基本就是一些分配内存的逻辑与操作，还是比较好理解的。</p>
+<h2 id="2、初始化TCB必要的字段"><a href="#2、初始化TCB必要的字段" class="headerlink" title="2、初始化TCB必要的字段"></a>2、初始化TCB必要的字段</h2><p>这些操作在我的版本中都是用预编译判断执行的，没有使用函数封装，要找到对应操作实在是有点眼花，姑且看到大部分操作都是在task.c中对xTaskCreate的定义的后面，这里为了<strong>方便理解</strong>还是使用原博主的函数：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">static</span> <span class="type">void</span> <span class="title function_">prvInitialiseTCBVariables</span><span class="params">( </span></span><br><span class="line"><span class="params">TCB_t * <span class="type">const</span> pxTCB,</span></span><br><span class="line"><span class="params"><span class="type">const</span> <span class="type">char</span> * <span class="type">const</span> pcName, </span></span><br><span class="line"><span class="params">UBaseType_t uxPriority,   </span></span><br><span class="line"><span class="params"><span class="type">const</span> MemoryRegion_t * <span class="type">const</span> xRegions, </span></span><br><span class="line"><span class="params"><span class="type">const</span> <span class="type">uint16_t</span> usStackDepth </span></span><br><span class="line"><span class="params">)</span></span><br><span class="line">&#123;</span><br><span class="line">	UBaseType_t x;</span><br><span class="line"> </span><br><span class="line">    <span class="comment">/* 将任务描述存入TCB */</span></span><br><span class="line">    <span class="keyword">for</span>( x = ( UBaseType_t ) <span class="number">0</span>; x &lt; ( UBaseType_t ) configMAX_TASK_NAME_LEN; x++ )</span><br><span class="line">    &#123;</span><br><span class="line">        pxTCB-&gt;pcTaskName[ x ] = pcName[ x ];</span><br><span class="line">        <span class="keyword">if</span>( pcName[ x ] == <span class="number">0x00</span> )</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">/* 确保字符串有结束 */</span></span><br><span class="line">    pxTCB-&gt;pcTaskName[ configMAX_TASK_NAME_LEN - <span class="number">1</span> ] = <span class="string">&#x27;\0&#x27;</span>;</span><br><span class="line"> </span><br><span class="line">    <span class="comment">/* 调整优先级，宏configMAX_PRIORITIES的值在FreeRTOSConfig.h中设置 */</span></span><br><span class="line">    <span class="keyword">if</span>( uxPriority &gt;= ( UBaseType_t ) configMAX_PRIORITIES )</span><br><span class="line">    &#123;</span><br><span class="line">        uxPriority = ( UBaseType_t ) configMAX_PRIORITIES - ( UBaseType_t ) <span class="number">1U</span>;</span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    pxTCB-&gt;uxPriority = uxPriority;</span><br><span class="line">    <span class="meta">#<span class="keyword">if</span> ( configUSE_MUTEXES == 1 )              <span class="comment">/*使用互斥量*/</span></span></span><br><span class="line">    &#123;  </span><br><span class="line">        pxTCB-&gt;uxBasePriority = uxPriority;</span><br><span class="line">        pxTCB-&gt;uxMutexesHeld = <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">#<span class="keyword">endif</span> <span class="comment">/* configUSE_MUTEXES */</span></span></span><br><span class="line">   </span><br><span class="line">    <span class="comment">/*初始化列表项*/</span></span><br><span class="line">    vListInitialiseItem( &amp;( pxTCB-&gt;xStateListItem ) );</span><br><span class="line">    vListInitialiseItem( &amp;( pxTCB-&gt;xEventListItem ) );</span><br><span class="line"> </span><br><span class="line">    <span class="comment">/* 设置列表项xStateListItem的成员pvOwner指向当前任务控制块 */</span></span><br><span class="line">    listSET_LIST_ITEM_OWNER( &amp;( pxTCB-&gt;xStateListItem ), pxTCB );</span><br><span class="line"> </span><br><span class="line">    <span class="comment">/* 设置列表项xEventListItem的成员xItemValue*/</span></span><br><span class="line">    listSET_LIST_ITEM_VALUE( &amp;( pxTCB-&gt;xEventListItem ), ( TickType_t ) configMAX_PRIORITIES - ( TickType_t ) uxPriority );</span><br><span class="line">    <span class="comment">/* 设置列表项xEventListItem的成员pvOwner指向当前任务控制块 */</span></span><br><span class="line">    listSET_LIST_ITEM_OWNER( &amp;( pxTCB-&gt;xEventListItem ), pxTCB );</span><br><span class="line"> </span><br><span class="line">    <span class="meta">#<span class="keyword">if</span> ( portCRITICAL_NESTING_IN_TCB ==1 )    <span class="comment">/*使能临界区嵌套功能*/</span></span></span><br><span class="line">    &#123;  </span><br><span class="line">        pxTCB-&gt;uxCriticalNesting = ( UBaseType_t ) <span class="number">0U</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">#<span class="keyword">endif</span> <span class="comment">/* portCRITICAL_NESTING_IN_TCB */</span></span></span><br><span class="line"> </span><br><span class="line">    <span class="meta">#<span class="keyword">if</span> ( configUSE_APPLICATION_TASK_TAG == 1 ) <span class="comment">/*使能任务标签功能*/</span></span></span><br><span class="line">    &#123;  </span><br><span class="line">        pxTCB-&gt;pxTaskTag = <span class="literal">NULL</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">#<span class="keyword">endif</span> <span class="comment">/* configUSE_APPLICATION_TASK_TAG */</span></span></span><br><span class="line"> </span><br><span class="line">    <span class="meta">#<span class="keyword">if</span> ( configGENERATE_RUN_TIME_STATS == 1 )  <span class="comment">/*使能事件统计功能*/</span></span></span><br><span class="line">    &#123;</span><br><span class="line">        pxTCB-&gt;ulRunTimeCounter = <span class="number">0UL</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">#<span class="keyword">endif</span> <span class="comment">/* configGENERATE_RUN_TIME_STATS */</span></span></span><br><span class="line"> </span><br><span class="line">    <span class="meta">#<span class="keyword">if</span> ( portUSING_MPU_WRAPPERS == 1 )         <span class="comment">/*使用MPU功能*/</span></span></span><br><span class="line">    &#123;</span><br><span class="line">        vPortStoreTaskMPUSettings( &amp;( pxTCB-&gt;xMPUSettings ), xRegions, pxTCB-&gt;pxStack, usStackDepth );</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">#<span class="keyword">else</span> <span class="comment">/* portUSING_MPU_WRAPPERS */</span></span></span><br><span class="line">    &#123;</span><br><span class="line">        ( <span class="type">void</span> ) xRegions;</span><br><span class="line">        ( <span class="type">void</span> ) usStackDepth;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">#<span class="keyword">endif</span> <span class="comment">/* portUSING_MPU_WRAPPERS */</span></span></span><br><span class="line"> </span><br><span class="line">    <span class="meta">#<span class="keyword">if</span>( configNUM_THREAD_LOCAL_STORAGE_POINTERS != 0 )<span class="comment">/*使能线程本地存储指针*/</span></span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">for</span>( x = <span class="number">0</span>; x &lt; ( UBaseType_t )configNUM_THREAD_LOCAL_STORAGE_POINTERS; x++ )</span><br><span class="line">        &#123;</span><br><span class="line">            pxTCB-&gt;pvThreadLocalStoragePointers[ x ] = <span class="literal">NULL</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line"> </span><br><span class="line">    <span class="meta">#<span class="keyword">if</span> ( configUSE_TASK_NOTIFICATIONS == 1 )   <span class="comment">/*使能任务通知功能*/</span></span></span><br><span class="line">    &#123;</span><br><span class="line">        pxTCB-&gt;ulNotifiedValue = <span class="number">0</span>;</span><br><span class="line">        pxTCB-&gt;ucNotifyState = taskNOT_WAITING_NOTIFICATION;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line"> </span><br><span class="line">    <span class="meta">#<span class="keyword">if</span> ( configUSE_NEWLIB_REENTRANT == 1 )     <span class="comment">/*使用Newlib*/</span></span></span><br><span class="line">    &#123;</span><br><span class="line">        _REENT_INIT_PTR( ( &amp;( pxTCB-&gt;xNewLib_reent ) ) );</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line"> </span><br><span class="line">    <span class="meta">#<span class="keyword">if</span>( INCLUDE_xTaskAbortDelay == 1 )</span></span><br><span class="line">    &#123;</span><br><span class="line">        pxTCB-&gt;ucDelayAborted = pdFALSE;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>其实大部分也就是对应TCB结构体中各个成员的初始化，其中有几点需要着重讲一下：</p>
+<h3 id="对两个列表项的初始化："><a href="#对两个列表项的初始化：" class="headerlink" title="对两个列表项的初始化："></a>对两个列表项的初始化：</h3><ul>
+<li><p>对状态列表项的初始化</p>
+<p>使成员pvOwner指向对应的任务TCB，其余成员不对其操作</p>
+</li>
+<li><p><strong>对事件列表项的初始化</strong></p>
+<p>之前讲到过事件列表项值会存储任务的优先级相关信息，其存储方式比较特别：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* 设置列表项xEventListItem的成员xItemValue*/</span></span><br><span class="line">listSET_LIST_ITEM_VALUE( </span><br><span class="line">&amp;( pxTCB-&gt;xEventListItem ), </span><br><span class="line">( TickType_t ) configMAX_PRIORITIES - ( TickType_t ) uxPriority );</span><br></pre></td></tr></table></figure>
+<p>可以看出，事件列表项的xItemValue中存储的值为<strong><u>用户设置的最大优先级-当前任务的优先级</u></strong>，也就是说，ItemValue的值越小，当前任务的优先级<strong>越高</strong></p>
+<p>再回想一下列表项插入列表的函数vListInsert()：</p>
+<img src="/images/loading.png" data-original="/2022/12/12/FreeRTOS%E7%9A%84%E4%BB%BB%E5%8A%A1%E5%88%9B%E5%BB%BA%E5%88%86%E6%9E%90/15.jpg" class title="This is an image"> 
+<p>可以发现xItemValue越小的值越是排在列表的前面，这也就解释了这样做的原因，<strong>其实也就是优先级越高的任务越在列表前面</strong></p>
+</li>
 </ul>
-<h1 id="2、执行元件"><a href="#2、执行元件" class="headerlink" title="2、执行元件"></a>2、执行元件</h1><p>将输入的各种形式的能量转化为机械能</p>
-<h2 id="各执行元件特点"><a href="#各执行元件特点" class="headerlink" title="各执行元件特点"></a><u>各执行元件特点</u></h2><h3 id="电气式"><a href="#电气式" class="headerlink" title="电气式"></a>电气式</h3><p>优点：</p>
+<h3 id="任务通知"><a href="#任务通知" class="headerlink" title="任务通知"></a>任务通知</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">if</span> ( configUSE_TASK_NOTIFICATIONS == 1 )   <span class="comment">/*使能任务通知功能*/</span></span></span><br><span class="line">&#123;</span><br><span class="line">    pxTCB-&gt;ulNotifiedValue = <span class="number">0</span>;</span><br><span class="line">    pxTCB-&gt;ucNotifyState = taskNOT_WAITING_NOTIFICATION;</span><br></pre></td></tr></table></figure>
+<p>在<a target="_blank" rel="noopener" href="https://dhkkk.gitee.io/2022/08/30/freertos任务通知与信号量/">FreeRTOS任务间的交互方法 | 小董的BLOG (gitee.io)</a>中将任务通知的流程时也使用到了使用该值的函数：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">BaseType_t <span class="title function_">xTaskNotifyWait</span><span class="params">( uint32_tulBits ToClearOnEntry,</span></span><br><span class="line"><span class="params">									 uint32_tulBits ToClearOnExit,</span></span><br><span class="line"><span class="params">									 <span class="type">uint32_t</span>* pulNotificationValue,</span></span><br><span class="line"><span class="params">									 TickType_t xTicksToWait )</span>;</span><br></pre></td></tr></table></figure>
+<p>其实pulNotificationValue就是拷贝自TCB中的ulNotifiedValue值，该值在任务通知发送函数将ulValue的值拷贝进ulNotifiedValue，在接收时用户可以通过pulNotificationValue判断任务通知发送的值。在初始化时，其为0，因此发送的任务值不能为0</p>
+<h2 id="3、初始化任务堆栈"><a href="#3、初始化任务堆栈" class="headerlink" title="3、初始化任务堆栈"></a>3、初始化任务堆栈</h2><p>调用函数pxPortInitialiseStack()初始化任务堆栈，并将最新的栈顶指针赋值给任务TCB的pxTopOfStack字段。</p>
+<p>具体与寄存器的调用有关，目前不深读。</p>
+<h2 id="4、进入临界区"><a href="#4、进入临界区" class="headerlink" title="4、进入临界区"></a>4、进入临界区</h2><p> 调用taskENTER_CRITICAL()进入临界区，进入临界区后的代码段将不能被打断，比如有的外设的初始化需要严格的时序，初始化过程中不能被打断。FreeRTOS 在进入临界区代码的时候需要关闭中断，当处理完临界区代码以后再打开中断。</p>
+<p>FreeRTOS 与 临界区代 码 保 护 有 关 的 函 数 有 4 个 ： taskENTER_CRITICAL() 、taskEXIT_CRITICAL() 、taskENTER_CRITICAL_FROM_ISR() 和taskEXIT_CRITICAL_FROM_ISR()，这四个函数其实是宏定义，在 task.h 文件中有定义。 这四个函数的区别是<strong>前两个是任务级的</strong>临界段代码保护，<strong>后两个是中断级</strong>的临界段代码保护。</p>
+<h2 id="5、改变跟踪任务的变量"><a href="#5、改变跟踪任务的变量" class="headerlink" title="5、改变跟踪任务的变量"></a>5、改变跟踪任务的变量</h2><p>在task.c中定义了一些静态私有变量用于跟踪任务的数量、状态等信息，每当有任务发生变化时这些对应的变量也会发生变化。</p>
+<p>其中变量uxCurrentNumberOfTasks表示当前任务的总数量，每创建一个任务，这个变量都会增加1。</p>
+<h2 id="6、第一次运行的必要初始化"><a href="#6、第一次运行的必要初始化" class="headerlink" title="6、第一次运行的必要初始化"></a>6、第一次运行的必要初始化</h2><p>如果当前创建的任务为第一个任务，则会调用函数prvInitialiseTaskLists()对列表进行<strong>初始化</strong>，在这之前，task.c中定义了这些静态类型的列表变量：(List_t类型变量在上一章已经讲过)</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">PRIVILEGED_DATAstatic List_t pxReadyTasksLists[ configMAX_PRIORITIES ];<span class="comment">/*按照优先级排序的就绪态任务*/</span></span><br><span class="line">PRIVILEGED_DATAstatic List_t xDelayedTaskList1;                    <span class="comment">/*延时的任务 */</span></span><br><span class="line">PRIVILEGED_DATAstatic List_t xDelayedTaskList2;                    <span class="comment">/*延时的任务 */</span></span><br><span class="line">PRIVILEGED_DATAstatic List_t xPendingReadyList;             <span class="comment">/*任务已就绪,但调度器被挂起 */</span></span><br><span class="line"> </span><br><span class="line"><span class="meta">#<span class="keyword">if</span> (INCLUDE_vTaskDelete == 1 )</span></span><br><span class="line">    PRIVILEGED_DATA <span class="type">static</span> List_t xTasksWaitingTermination;<span class="comment">/*任务已经被删除,但内存尚未释放*/</span></span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line"> </span><br><span class="line"><span class="meta">#<span class="keyword">if</span> (INCLUDE_vTaskSuspend == 1 )</span></span><br><span class="line">    PRIVILEGED_DATA <span class="type">static</span> List_t xSuspendedTaskList;            <span class="comment">/*当前挂起的任务*/</span></span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br></pre></td></tr></table></figure>
+<p>初始化：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">static</span> <span class="type">void</span> <span class="title function_">prvInitialiseTaskLists</span><span class="params">( <span class="type">void</span> )</span></span><br><span class="line">&#123;</span><br><span class="line">UBaseType_tuxPriority;</span><br><span class="line"> </span><br><span class="line">    <span class="keyword">for</span>( uxPriority = ( UBaseType_t ) <span class="number">0U</span>; uxPriority &lt; ( UBaseType_t ) configMAX_PRIORITIES; uxPriority++ )</span><br><span class="line">    &#123;</span><br><span class="line">        vListInitialise( &amp;( pxReadyTasksLists[ uxPriority ] ) );</span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    vListInitialise( &amp;xDelayedTaskList1 );</span><br><span class="line">    vListInitialise( &amp;xDelayedTaskList2 );</span><br><span class="line">    vListInitialise( &amp;xPendingReadyList );</span><br><span class="line"> </span><br><span class="line">    <span class="meta">#<span class="keyword">if</span> ( INCLUDE_vTaskDelete == 1 )</span></span><br><span class="line">    &#123;</span><br><span class="line">        vListInitialise( &amp;xTasksWaitingTermination );</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">#<span class="keyword">endif</span> <span class="comment">/* INCLUDE_vTaskDelete */</span></span></span><br><span class="line"> </span><br><span class="line">    <span class="meta">#<span class="keyword">if</span> ( INCLUDE_vTaskSuspend == 1 )</span></span><br><span class="line">    &#123;</span><br><span class="line">        vListInitialise( &amp;xSuspendedTaskList );</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">#<span class="keyword">endif</span> <span class="comment">/* INCLUDE_vTaskSuspend */</span></span></span><br><span class="line"> </span><br><span class="line">    <span class="comment">/* Start with pxDelayedTaskList using list1 and the pxOverflowDelayedTaskListusing list2. */</span></span><br><span class="line">    pxDelayedTaskList = &amp;xDelayedTaskList1;</span><br><span class="line">    pxOverflowDelayedTaskList = &amp;xDelayedTaskList2;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>其中主要调用的函数vListInitialise()在讲列表时已经讲过，其作用就是初始化列表成员的一些指针的初始指向，为后续接入列表项做准备。</p>
+<h2 id="7、更新任务TCB指针"><a href="#7、更新任务TCB指针" class="headerlink" title="7、更新任务TCB指针"></a>7、更新任务TCB指针</h2><p>tasks.c中定义了一个任务TCB指针型变量：</p>
 <ul>
-<li>操作简单</li>
-<li>可定位伺服</li>
-<li>响应快，易与CPU连接</li>
-<li>体积小，动力大，无污染</li>
-</ul>
-<p>缺点：</p>
-<ul>
-<li>瞬时输出功率大</li>
-<li>过载能力差，易受外部影响</li>
-</ul>
-<h3 id="气压式"><a href="#气压式" class="headerlink" title="气压式"></a>气压式</h3><p>优点：</p>
-<ul>
-<li>成本低</li>
-<li>无泄漏污染</li>
-<li>速度快，操作较简单</li>
-</ul>
-<p>缺点：</p>
-<ul>
-<li>功率小</li>
-<li>体积大</li>
-<li>工作不平稳</li>
-<li>噪声大</li>
-<li>难以伺服</li>
-</ul>
-<h3 id="液压式"><a href="#液压式" class="headerlink" title="液压式"></a>液压式</h3><p>优点：</p>
-<ul>
-<li>输出功率大</li>
-<li>速度快</li>
-<li>平稳</li>
-<li>可定位伺服，响应快</li>
-</ul>
-<p>缺点：</p>
-<ul>
-<li>体积大</li>
-<li>液压油要求严格</li>
-<li>易泄露，有污染</li>
-</ul>
-<h2 id="要求-1"><a href="#要求-1" class="headerlink" title="要求"></a>要求</h2><ul>
-<li>惯量小，动力大</li>
-<li>体积小，重量轻</li>
-<li>便于使用</li>
-<li><strong>快速性能好，加减速扭矩大，频率性能好</strong></li>
-<li>可靠，寿命长</li>
-</ul>
-<h1 id="3、步进电机概述"><a href="#3、步进电机概述" class="headerlink" title="3、步进电机概述"></a>3、步进电机概述</h1><p>步进电机式一种将脉冲信号转化为直线位移或角位移的数字/模拟变换器</p>
-<h2 id="特点"><a href="#特点" class="headerlink" title="特点"></a><u>特点</u></h2><ul>
-<li><strong>输出转角与输入脉冲严格成正比，且在<u>方向上同步</u></strong></li>
-<li><strong>输出转角精度高，有步距角误差，但无累计误差</strong></li>
-<li><strong>可实现平滑无级调速</strong></li>
-<li>不易受干扰</li>
-<li>启停时间段</li>
-</ul>
-<h2 id="种类"><a href="#种类" class="headerlink" title="种类"></a><u>种类</u></h2><h3 id="运动形式"><a href="#运动形式" class="headerlink" title="运动形式"></a>运动形式</h3><ul>
-<li>旋转式</li>
-<li>直线式</li>
-</ul>
-<h3 id="励磁相数"><a href="#励磁相数" class="headerlink" title="励磁相数"></a>励磁相数</h3><p>3、4、5、6相</p>
-<h3 id="转子结构"><a href="#转子结构" class="headerlink" title="转子结构"></a><u>转子结构</u></h3><ul>
-<li>反应式（可变磁阻式）</li>
-<li>永磁式</li>
-<li>混合式</li>
-</ul>
-<h2 id="工作原理"><a href="#工作原理" class="headerlink" title="工作原理"></a><u>工作原理</u></h2><h3 id="三相单三拍"><a href="#三相单三拍" class="headerlink" title="三相单三拍"></a>三相单三拍</h3><p>A——B——C</p>
-<ul>
-<li>三相：为三相绕组</li>
-<li>单：每拍只有一相绕组通电</li>
-<li>三拍：一个循环周期三个脉冲</li>
-</ul>
-<p>一拍<strong>30°</strong></p>
-<h3 id="三相-单双-六拍"><a href="#三相-单双-六拍" class="headerlink" title="三相(单双)六拍"></a>三相(单双)六拍</h3><p>A——AB——B——BC——C——CA</p>
-<ul>
-<li>单双：每拍为一相/两相绕组交替通电</li>
-<li>六拍：一个循环周期六个脉冲</li>
-</ul>
-<p>一拍<strong>15°</strong></p>
-<h3 id="三相双三拍"><a href="#三相双三拍" class="headerlink" title="三相双三拍"></a>三相双三拍</h3><p>AB——BC——CA</p>
-<p>一拍15°</p>
-<p><strong><u>三相双三拍和三相单双六拍比三相单三拍稳定</u></strong></p>
-<h2 id="环形分配方式"><a href="#环形分配方式" class="headerlink" title="环形分配方式"></a><u>环形分配方式</u></h2><ul>
-<li><p><strong>五相十拍电机为2-3相励磁，而不是1-2相：</strong></p>
-<p><strong>AB-ABC-BC-BCD-CD…</strong></p>
-</li>
-<li><p><strong>六相六拍为3相励磁：</strong></p>
-<p><strong>ABC-BCD-CDE-DEF-EFA-FAB</strong></p>
-</li>
-<li><p><strong>六相十二拍为2-3相励磁</strong></p>
+<li><p>PRIVILEGED_DATA TCB_t * volatile pxCurrentTCB= NULL;</p>
+<p>这是一个全局变量，在tasks.c中只定义了这一个全局变量。这个变量用来指向当前正在运行的任务TCB。</p>
 </li>
 </ul>
-<h2 id="主要性能指标"><a href="#主要性能指标" class="headerlink" title="主要性能指标"></a><u>主要性能指标</u></h2><ul>
-<li><p><strong>步距角</strong></p>
-<p><strong>我国0.36°~90°，常用15、6、3.2、1.8、1.5、0.72（k=1）</strong></p>
-</li>
-<li><p><strong>静态步距误差（步距角精度）</strong></p>
-<p>步距角越小，分辨力越高</p>
-</li>
-<li><p><strong>转速</strong></p>
-<p>频率越高，转速越大</p>
-<p>步距角越大（1/KPZ 越大），转速越大</p>
-</li>
-</ul>
-<h2 id="静态特性"><a href="#静态特性" class="headerlink" title="静态特性"></a>静态特性</h2><ul>
-<li><p>静态</p>
-<p>通电时转子保持不动的定位状态</p>
-</li>
-<li><p>静转矩</p>
-<p>静态下的电磁转矩</p>
-</li>
-<li><p>失调角</p>
-<p>静态下在转子上加一负载转矩，转子转过一个角度后稳定下来，该角度为失调角</p>
-</li>
-<li><p>矩-角特性</p>
-<p>静转矩与失调角的对应关系</p>
-</li>
-<li><p>最大静转矩</p>
-<p>矩-角特性上的最大值</p>
-</li>
-</ul>
-<h2 id="起动频率和连续运行频率"><a href="#起动频率和连续运行频率" class="headerlink" title="起动频率和连续运行频率"></a>起动频率和连续运行频率</h2><ul>
-<li><p>起动频率</p>
-<p>一定负载下能不失步地起动的最高脉冲频率</p>
-</li>
-<li><p>连续运行频率</p>
-<p>启动后逐渐升速所能达到的不失步频率</p>
-</li>
-</ul>
-<h2 id="动态特性"><a href="#动态特性" class="headerlink" title="动态特性"></a>动态特性</h2><ul>
-<li><p>动态转矩</p>
-<p>运行时的转矩</p>
-</li>
-<li><p>动态稳定区</p>
-<p><strong>通电绕组切换时不引起丢步的区域</strong></p>
-</li>
-<li><p>起动转矩</p>
-<p><strong>它表示步进电机所能承受的极限负载转矩（电机单相励磁时）</strong></p>
-</li>
-<li><p>矩-频特性</p>
-<p><strong>动态转矩与脉冲频率的关系，频率越大，动态转矩越小</strong></p>
-</li>
-</ul>
-<h1 id="4、步进电机控制"><a href="#4、步进电机控制" class="headerlink" title="4、步进电机控制"></a>4、步进电机控制</h1><h2 id="环形分配"><a href="#环形分配" class="headerlink" title="环形分配"></a><u>环形分配</u></h2><ul>
-<li>小规模集成电路</li>
-<li>专用器件</li>
-<li>软件分配</li>
-</ul>
-<h2 id="功率放大器"><a href="#功率放大器" class="headerlink" title="功率放大器"></a><u>功率放大器</u></h2><p>环形分配输出的信号放大到能驱动电机运行</p>
-<h3 id="要求-2"><a href="#要求-2" class="headerlink" title="要求"></a><u>要求</u></h3><ul>
-<li>幅值足够，波形良好</li>
-<li>功耗低，效率高</li>
-</ul>
-<h2 id="细分驱动"><a href="#细分驱动" class="headerlink" title="细分驱动"></a>细分驱动</h2><p>将一个步距角细分成若干步</p>
-<p>优点</p>
-<ul>
-<li>使步距角减小</li>
-<li>运行平稳</li>
-<li>减小振荡</li>
-</ul>
-<p>缺点</p>
-<ul>
-<li>细分后步距角精度不高</li>
-<li>功放驱动电路复杂</li>
-</ul>
-<h1 id="5、直流伺服电机"><a href="#5、直流伺服电机" class="headerlink" title="5、直流伺服电机"></a>5、直流伺服电机</h1><h2 id="种类-1"><a href="#种类-1" class="headerlink" title="种类"></a><u>种类</u></h2><p><strong>永磁式和它激式有线性的机械特性，有良好的起动、制动和调速性能</strong></p>
-<ul>
-<li>永磁式</li>
-<li>它激式</li>
-<li>串激式</li>
-<li>并激式</li>
-</ul>
-<h2 id="伺服系统组成"><a href="#伺服系统组成" class="headerlink" title="伺服系统组成"></a>伺服系统组成</h2><p>直流电动机、反馈装置、直流电源、控制驱动电路</p>
-<h2 id="电机组成"><a href="#电机组成" class="headerlink" title="电机组成"></a><u>电机组成</u></h2><ul>
-<li><p>定子</p>
-<p>为直流线圈通电激磁或用永磁体产生磁场</p>
-</li>
-<li><p>转子</p>
-<p>转子上有多相线圈，通直流电时在定子磁场下产生转矩</p>
-</li>
-<li><p>换向机构</p>
-<p>包括电刷和换向片，<strong>电刷与电源相连，换向片与电枢绕组相连，使转子在旋转时电磁转矩总是保持恒定方向</strong></p>
-</li>
-</ul>
-<h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a><u>原理</u></h2><p>转子上均匀分配多匝绕组，绕组越密集，总电磁力越大，电磁转矩越接近恒定</p>
-<h2 id="直流电机驱动调速"><a href="#直流电机驱动调速" class="headerlink" title="直流电机驱动调速"></a><u>直流电机驱动调速</u></h2><p>用于<strong>控制电枢电压的大小与极性</strong>，常用<strong>可控硅法和PWM法</strong></p>
-<p>PWM法中，低电平时电枢电感储存的能量通过续流二极管继续使电机转动</p>
-<h3 id="PWM与PFM"><a href="#PWM与PFM" class="headerlink" title="PWM与PFM"></a>PWM与PFM</h3><ul>
-<li>PWM：脉冲频率不变，调整脉冲宽度</li>
-<li>PFM：脉冲宽度不变，调整脉冲频率</li>
-</ul>
-<h1 id="6、交流伺服电机"><a href="#6、交流伺服电机" class="headerlink" title="6、交流伺服电机"></a>6、交流伺服电机</h1><h2 id="原理-1"><a href="#原理-1" class="headerlink" title="原理"></a>原理</h2><p>定子上装有四组空间差90°的两个绕组，控制、励磁绕组</p>
-<ul>
-<li><strong>控制绕组的控制电压与电源电压频率相同，相位相同或相反</strong></li>
-<li><strong>励磁绕组串联电容C，适当选择电容大小使控制绕组和励磁绕组电流相位差接近90°，从而产生转子旋转方向的磁场</strong></li>
-</ul>
-<h2 id="变频器（交流变频调速）分类"><a href="#变频器（交流变频调速）分类" class="headerlink" title="变频器（交流变频调速）分类"></a>变频器（交流变频调速）分类</h2><h3 id="按变频方式"><a href="#按变频方式" class="headerlink" title="按变频方式"></a>按变频方式</h3><ul>
-<li><p>交-直-交</p>
-</li>
-<li><p>交-交</p>
-<p>只适用于低速</p>
-</li>
-</ul>
-<h3 id="按能量处理方式"><a href="#按能量处理方式" class="headerlink" title="按能量处理方式"></a>按能量处理方式</h3><ul>
-<li>电流型</li>
-<li>电压性</li>
+<p>当调度器还没有开启时（程序刚开始运行时，可能会先创建几个任务，之后才会启动调度器），如果新创建的任务优先级大于pxCurrentTCB指向的任务优先级，则设置pxCurrentTCB指向当前新创建的任务TCB。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>( xSchedulerRunning == pdFALSE )</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span>( pxCurrentTCB-&gt;uxPriority &lt;= uxPriority )</span><br><span class="line">    &#123;</span><br><span class="line">        pxCurrentTCB = pxNewTCB;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        mtCOVERAGE_TEST_MARKER();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这项操作可以<strong>确保pxCurrentTCB始终指向优先级最高的就绪任务。</strong></p>
+<h2 id="8、将新创建的任务加入就绪列表数组"><a href="#8、将新创建的任务加入就绪列表数组" class="headerlink" title="8、将新创建的任务加入就绪列表数组"></a>8、将新创建的任务加入就绪列表数组</h2><p>新创建的任务会被直接加入到就绪列表中，因为它不会一被创建就被阻塞或挂起。观察在task.c中定义的几个静态类型的列表可以发现就绪列表是一个结构体数组：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">PRIVILEGED_DATAstatic List_t pxReadyTasksLists[ configMAX_PRIORITIES ];</span><br><span class="line"><span class="comment">/*按照优先级排序的就绪态任务*/</span></span><br></pre></td></tr></table></figure>
+<p>因此当前新创建的任务会根据该任务TCB中存储的优先级<strong>决定存入的列表下标</strong>。比如我们新创建的任务优先级为1，则这个任务被加入到列表pxReadyTasksLists[1]中。</p>
+<p>并且由于同一个列表中任务的优先级是相同的，因此每次加入列表时会直接将当前任务放入列表尾：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> prvAddTaskToReadyList( pxTCB )                        </span></span><br><span class="line">    taskRECORD_READY_PRIORITY( ( pxTCB)-&gt;uxPriority );       </span><br><span class="line">    vListInsertEnd( &amp;( pxReadyTasksLists[ (pxTCB )-&gt;uxPriority ] ), </span><br><span class="line">                    &amp;( ( pxTCB )-&gt;xStateListItem ) );</span><br></pre></td></tr></table></figure>
+<p>调用一个宏将任务放入列表。可以看到，加入列表的为任务的<strong>状态列表项</strong>，但最终调用宏的<strong>参数直接是任务TCB</strong>，因此可能用户不用关心何时操作状态列表项，何时操作事件列表项？（我的猜测，因为目前还不太清楚二者的明显区别）</p>
+<h2 id="9、退出临界区"><a href="#9、退出临界区" class="headerlink" title="9、退出临界区"></a>9、退出临界区</h2><p>到此，一个任务的创建基本结束，也就可以退出临界区了（本身进入临界区的原因就是让任务的创建过程不被打断）</p>
+<h2 id="10、新任务进入调度"><a href="#10、新任务进入调度" class="headerlink" title="10、新任务进入调度"></a>10、新任务进入调度</h2><p>如果调度器已开启，新任务便会根据其优先级由调度器进行相关调度。</p>
+<h1 id="任务创建过程总结"><a href="#任务创建过程总结" class="headerlink" title="任务创建过程总结"></a>任务创建过程总结</h1><ul>
+<li>为当前任务<strong>分配内存</strong>创建堆栈，为任务TCB创建空间</li>
+<li><strong>初始化TCB</strong>，主要是使TCB成员中的两个列表项指向当前TCB和改变<strong>事件列表项的列表项值</strong></li>
+<li><strong>初始化</strong>任务的<strong>堆栈</strong></li>
+<li><strong><em>进入临界区，之后的进程不能被打断</em></strong></li>
+<li>改变一些存储任务信息的<strong>变量</strong>（主要是全局的信息，并不是指某一个任务的信息。比如任务的总数量等）</li>
+<li>如果当前为第一个任务，则<strong>初始化各列表</strong></li>
+<li><strong>更新</strong>当前的任务TCB指针（该指针专用于指向当前TCB）</li>
+<li>将新任务加入就绪列表数组中，<strong>根据优先级决定加入的数组下标</strong></li>
+<li><strong><em>退出临界区</em></strong></li>
+<li>新任务也加入调度过程中</li>
 </ul>
 
       
@@ -498,7 +463,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2023/05/16/lzz-%E7%AC%AC%E4%BA%8C%E7%AB%A0-%E6%9C%BA%E6%A2%B0%E4%BC%A0%E5%8A%A8%E9%83%A8%E4%BB%B6%E9%80%89%E6%8B%A9/">
+    <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2022/12/09/%E5%9F%BA%E4%BA%8EFreeRTOS%E7%9A%84%E5%88%97%E8%A1%A8%E5%AD%A6%E4%B9%A0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/zoe.gif">
@@ -512,7 +477,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2023/05/16/lzz-%E7%AC%AC%E4%BA%8C%E7%AB%A0-%E6%9C%BA%E6%A2%B0%E4%BC%A0%E5%8A%A8%E9%83%A8%E4%BB%B6%E9%80%89%E6%8B%A9/" class="post-title-link" itemprop="url">lzz-第二章 机械传动部件选择(考试复习自用)</a>
+            <a href="/2022/12/09/%E5%9F%BA%E4%BA%8EFreeRTOS%E7%9A%84%E5%88%97%E8%A1%A8%E5%AD%A6%E4%B9%A0/" class="post-title-link" itemprop="url">基于FreeRTOS的列表学习</a>
         </h2>
 
         <div class="post-meta">
@@ -524,14 +489,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2023-05-16 22:06:19" itemprop="dateCreated datePublished" datetime="2023-05-16T22:06:19+08:00">2023-05-16</time>
+              <time title="创建时间：2022-12-09 20:03:34" itemprop="dateCreated datePublished" datetime="2022-12-09T20:03:34+08:00">2022-12-09</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-02-25 15:30:38" itemprop="dateModified" datetime="2024-02-25T15:30:38+08:00">2024-02-25</time>
+                <time title="修改时间：2022-12-13 11:56:38" itemprop="dateModified" datetime="2022-12-13T11:56:38+08:00">2022-12-13</time>
               </span>
 
           
@@ -545,412 +510,181 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="1、机械系统组成"><a href="#1、机械系统组成" class="headerlink" title="1、机械系统组成"></a><u>1、机械系统组成</u></h1><p>联系各部件并实现其构造功能</p>
+          <p><em>本文参考了<a target="_blank" rel="noopener" href="https://freertos.blog.csdn.net/article/details/51190095">FreeRTOS高级篇1—-FreeRTOS列表和列表项研究是为了理解的博客-CSDN博客freertos list</a>进行学习</em></p>
+<h1 id="列表与列表项"><a href="#列表与列表项" class="headerlink" title="列表与列表项"></a>列表与列表项</h1><p>FreeRTOS内核为了调度任务之间的关系，大量地使用了列表和列表项的数据结果来跟踪任务当前的状态。例如，处于挂起、延时、就绪的任务都会被挂接<strong>到各自的列表中</strong></p>
+<p>FreeRTOS中使用指针实现列表的功能，类似于链式列表。<strong>一个列表下有多个列表项</strong>，且每个列表项中都有一个指针指向列表。</p>
+<img src="/images/loading.png" data-original="/2022/12/09/%E5%9F%BA%E4%BA%8EFreeRTOS%E7%9A%84%E5%88%97%E8%A1%A8%E5%AD%A6%E4%B9%A0/1.jpg" class title="This is an image"> 
+<p><strong>需要注意的是，<u>列表</u>和之前讲到任务交互时使用的<u>队列</u>是两个东西！</strong></p>
+<h1 id="FreeRTOS列表项的构成"><a href="#FreeRTOS列表项的构成" class="headerlink" title="FreeRTOS列表项的构成"></a>FreeRTOS列表项的构成</h1><h2 id="全功能版列表项"><a href="#全功能版列表项" class="headerlink" title="全功能版列表项"></a>全功能版列表项</h2><p>我们可以在list.h中找到freertos对列表项的定义</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">xLIST_ITEM</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">     listFIRST_LIST_ITEM_INTEGRITY_CHECK_VALUE           <span class="comment">/*用于检测列表项数据是否完整*/</span></span><br><span class="line">     configLIST_VOLATILE TickType_t xItemValue;           <span class="comment">/*列表项值*/</span></span><br><span class="line">     <span class="class"><span class="keyword">struct</span> <span class="title">xLIST_ITEM</span> * <span class="title">configLIST_VOLATILE</span> <span class="title">pxNext</span>;</span>      <span class="comment">/*指向列表中下一个列表项*/</span></span><br><span class="line">     <span class="class"><span class="keyword">struct</span> <span class="title">xLIST_ITEM</span> * <span class="title">configLIST_VOLATILE</span> <span class="title">pxPrevious</span>;</span>  <span class="comment">/*指向列表中上一个列表项*/</span></span><br><span class="line">     <span class="type">void</span> * pvOwner;                                     <span class="comment">/*指向一个任务TCB*/</span></span><br><span class="line">     <span class="type">void</span> * configLIST_VOLATILE pvContainer;             <span class="comment">/*指向包含该列表项的列表 */</span></span><br><span class="line">     listSECOND_LIST_ITEM_INTEGRITY_CHECK_VALUE          <span class="comment">/*用于检测列表项数据是否完整*/</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">xLIST_ITEM</span> <span class="title">ListItem_t</span>;</span></span><br></pre></td></tr></table></figure>
 <ul>
-<li><p><strong>传动结构</strong></p>
-<p>传递能量与运动，力、速度变换器</p>
+<li><p>listFIRST_LIST_ITEM_INTEGRITY_CHECK_VALUE 和listSECOND_LIST_ITEM_INTEGRITY_CHECK_VALUE 这两个宏定义用于<strong>检查列表项的数据是否完整</strong>。</p>
+<p>当使能projdefs.h中的宏configUSE_LIST_DATA_INTEGRITY_CHECK_BYTES时，这两个宏会被替换成两个已知的数值用于检测完整性。</p>
 </li>
-<li><p><strong>导向机构</strong></p>
-<p>支撑、限制运动</p>
+<li><p>xItemValue为<strong>列表项值</strong>，通常是一个被跟踪的任务优先级或是一个调度事件的计数器值。</p>
+<p>例如在队列的使用中，如果一个任务因为在等待从队列中读取数据而进入阻塞态，则该任务的<strong>事件列表项中的列表项值</strong>会用于保存该任务的优先级有关信息；该任务的<strong>状态列表项的列表项值</strong>会用于保存阻塞时间的有关信息（之前讲过，当有多个任务等待读取队列时，读取顺序与优先级和阻塞时间相关）。至于什么是事件列表项和状态列表项，之后的文章会讲到。</p>
+<p>由于列表项值应是随时都可能更新的，因此该变量被configLIST_VOLATILE修饰，<strong>该宏被映射为C的关键字volatile</strong>。</p>
 </li>
-<li><p><strong>支撑件</strong></p>
-<p>承受载荷，保证零件相对位置的基准作用</p>
+<li><p>pxNext和pxPrevious为两个结构体指针，用于指向上下列表项，实现类似于双向链表的结构，对结构体指针还不太懂的话可以参考<a target="_blank" rel="noopener" href="https://dhkkk.gitee.io/2022/11/18/数据结构-线性表/">数据结构_链表 | 小董的BLOG (gitee.io)</a>中的一些解释。</p>
+</li>
+<li><p>pvOwner用于指向一个任务的TCB（Task Control Block），之后的文章会讲到。</p>
+</li>
+<li><p>pvContainer用于指向<strong>包含该列表项的列表</strong>。</p>
 </li>
 </ul>
-<h1 id="2、对比"><a href="#2、对比" class="headerlink" title="2、对比"></a><u>2、对比</u></h1><h2 id="传统"><a href="#传统" class="headerlink" title="传统"></a>传统</h2><ul>
-<li>动力件、传动件、执行件</li>
-<li>电器、液压、机械控制</li>
-</ul>
-<h2 id="一体化"><a href="#一体化" class="headerlink" title="一体化"></a>一体化</h2><p>核心由计算机控制</p>
-<h1 id="3、对机械系统的基本要求"><a href="#3、对机械系统的基本要求" class="headerlink" title="3、对机械系统的基本要求"></a><u>3、对机械系统的基本要求</u></h1><ul>
-<li><u>低摩擦</u></li>
-<li><u>无间隙</u></li>
-<li><strong><u>低惯量</u></strong></li>
-<li><u>高刚度</u></li>
-</ul>
-<h2 id="措施"><a href="#措施" class="headerlink" title="措施"></a>措施</h2><ul>
-<li>使用低摩擦阻尼器件</li>
-<li>减小反向死区误差</li>
-<li>最佳传动比、缩短传动链</li>
-<li>提高刚度</li>
-</ul>
-<h1 id="4、传动部件"><a href="#4、传动部件" class="headerlink" title="4、传动部件"></a>4、传动部件</h1><h2 id="主要功能"><a href="#主要功能" class="headerlink" title="主要功能"></a><u>主要功能</u></h2><p><u><strong>传递转矩和转速</strong></u>，使执行件与负载在转矩与转速方面得到最佳匹配</p>
-<h2 id="要求"><a href="#要求" class="headerlink" title="要求"></a>要求</h2><ul>
-<li>间隙</li>
-<li>精度</li>
-<li>体积</li>
-<li>运动平稳</li>
-<li>扭矩</li>
-</ul>
-<h2 id="滑动丝杠螺母"><a href="#滑动丝杠螺母" class="headerlink" title="滑动丝杠螺母"></a>滑动丝杠螺母</h2><h3 id="分类"><a href="#分类" class="headerlink" title="分类"></a>分类</h3><ul>
-<li>传递能量</li>
-<li>传递运动</li>
-</ul>
-<h3 id="优缺点"><a href="#优缺点" class="headerlink" title="优缺点"></a><u>优缺点</u></h3><ul>
-<li>结构简单、加工方便、成本低、自锁</li>
-<li><strong>摩擦</strong>阻力大，传动<strong><u>效率</u></strong>低</li>
-</ul>
-<h3 id="基本传动形式"><a href="#基本传动形式" class="headerlink" title="基本传动形式"></a><u>基本传动形式</u></h3><ul>
-<li>螺母固定，丝杠转动+移动</li>
-<li>丝杠转动、螺母移动（需导向装置限制螺母转动）</li>
-<li>螺母转动、丝杠移动  很少</li>
-<li>丝杠固定，螺母转动+移动  很少</li>
-</ul>
-<h3 id="差动传动"><a href="#差动传动" class="headerlink" title="差动传动"></a><u>差动传动</u></h3><p>丝杠上有两段导程不同的螺纹</p>
+<h2 id="迷你版列表项"><a href="#迷你版列表项" class="headerlink" title="迷你版列表项"></a>迷你版列表项</h2><p>list.h中还有一个迷你版列表项的定义：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">xMINI_LIST_ITEM</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">	listFIRST_LIST_ITEM_INTEGRITY_CHECK_VALUE			<span class="comment">//检测完整性</span></span><br><span class="line">	configLIST_VOLATILE TickType_t xItemValue;	<span class="comment">//列表项值</span></span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">xLIST_ITEM</span> * <span class="title">configLIST_VOLATILE</span> <span class="title">pxNext</span>;</span>		<span class="comment">//指向下一列表项</span></span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">xLIST_ITEM</span> * <span class="title">configLIST_VOLATILE</span> <span class="title">pxPrevious</span>;</span>	<span class="comment">//指向前一列表项</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">xMINI_LIST_ITEM</span> <span class="title">MiniListItem_t</span>;</span></span><br></pre></td></tr></table></figure>
+<p>迷你版列表项的作用下一节讲列表时会讲到。</p>
+<h2 id="初始化列表项"><a href="#初始化列表项" class="headerlink" title="初始化列表项"></a>初始化列表项</h2><p>  列表项的初始比较简单，只要确保列表项不在任何列表中即可。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">vListInitialiseItem</span><span class="params">( ListItem_t * <span class="type">const</span> pxItem )</span></span><br><span class="line">&#123;</span><br><span class="line">     pxItem-&gt;pvContainer = <span class="literal">NULL</span>;</span><br><span class="line"> </span><br><span class="line">     <span class="comment">/*设置为已知值，用于检测列表项数据是否完整*/</span></span><br><span class="line">     listSET_FIRST_LIST_ITEM_INTEGRITY_CHECK_VALUE(pxItem );</span><br><span class="line">     listSET_SECOND_LIST_ITEM_INTEGRITY_CHECK_VALUE(pxItem );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="FreeRTOS的列表构成"><a href="#FreeRTOS的列表构成" class="headerlink" title="FreeRTOS的列表构成"></a>FreeRTOS的列表构成</h1><h2 id="列表的定义"><a href="#列表的定义" class="headerlink" title="列表的定义"></a>列表的定义</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">xLIST</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">	listFIRST_LIST_INTEGRITY_CHECK_VALUE				<span class="comment">//检测完整性</span></span><br><span class="line">	configLIST_VOLATILE UBaseType_t uxNumberOfItems;</span><br><span class="line">	ListItem_t * configLIST_VOLATILE pxIndex;			</span><br><span class="line">	MiniListItem_t xListEnd;							</span><br><span class="line">	listSECOND_LIST_INTEGRITY_CHECK_VALUE				<span class="comment">//检测完整性</span></span><br><span class="line">&#125; List_t;</span><br></pre></td></tr></table></figure>
 <ul>
-<li>旋向相同</li>
-<li>旋向相反</li>
-</ul>
-<h2 id="滚珠丝杠螺母"><a href="#滚珠丝杠螺母" class="headerlink" title="滚珠丝杠螺母"></a><u>滚珠丝杠螺母</u></h2><h3 id="组成"><a href="#组成" class="headerlink" title="组成"></a>组成</h3><ul>
-<li>丝杠</li>
-<li>螺母</li>
-<li>滚珠</li>
-<li><u><strong>反向器</strong></u></li>
-</ul>
-<h3 id="优点"><a href="#优点" class="headerlink" title="优点"></a><u>优点</u></h3><ul>
-<li>效率90~95</li>
-<li>精度高</li>
-<li>摩擦小，寿命长</li>
-<li>可逆性</li>
-<li>轴向刚度高</li>
-<li>平稳</li>
-</ul>
-<h3 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a><u>缺点</u></h3><ul>
-<li><strong>不能自锁</strong></li>
-<li>结构复杂，成本高</li>
-</ul>
-<h3 id="典型结构"><a href="#典型结构" class="headerlink" title="典型结构"></a><u>典型结构</u></h3><h4 id="滚道截面形状分"><a href="#滚道截面形状分" class="headerlink" title="滚道截面形状分"></a>滚道截面形状分</h4><ul>
-<li>单圆弧形<ul>
-<li>接触角随载荷增大而增大，效率、刚度、承载能力</li>
-<li>滚道半径略大于滚珠半径</li>
-</ul>
+<li><p>uxNumberOfItems用于表示该列表中挂接的列表项数目，0表示列表为空。</p>
 </li>
-<li>双圆弧形<ul>
-<li>接触角不变（一般为45°）</li>
-<li>滚道半径等于滚珠半径</li>
-<li>小空隙用于储油润滑</li>
-</ul>
+<li><p>pxIndex为一个类型为完全体列表项的结构体指针，用于<strong>遍历列表项。</strong></p>
+</li>
+<li><p>列表项xListEnd用于标记列表结束，<strong>因为该列表项只用于标记列表的结束，因此不需要完全体列表项的所有功能</strong>，因此使用了迷你版列表项的类型。</p>
+<p>xListEnd.xItemValue被<strong>初始化为一个常数</strong>，其值与硬件架构相关，为0xFFFF（16位架构）或0xFFFFFFFF（32位架构）。</p>
 </li>
 </ul>
-<h4 id="按循环方式分"><a href="#按循环方式分" class="headerlink" title="按循环方式分"></a>按循环方式分</h4><ul>
-<li>内循环<ul>
-<li>滚珠始终与丝杠接触</li>
-<li>优点：流畅、效率、尺寸小</li>
-<li>缺点：反向器加工困难</li>
-</ul>
-</li>
-<li>外循环<ul>
-<li>螺旋槽式<ul>
-<li>易于制造</li>
-<li>刚性差、易磨损</li>
-</ul>
-</li>
-<li>插管式<ul>
-<li>易于制造</li>
-<li>尺寸大，易磨损</li>
-</ul>
-</li>
-<li>端盖式<ul>
-<li>回程轨道半径为滚珠直径1.4~1.6倍</li>
-<li>结构简单</li>
-<li>性能差</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<h3 id="尺寸参数"><a href="#尺寸参数" class="headerlink" title="尺寸参数"></a><u>尺寸参数</u></h3><ul>
-<li><p><strong>公称直径</strong></p>
-<p>为滚珠丝杠的特征尺寸</p>
-</li>
-<li><p><strong>导程</strong></p>
-<p>相对转动一圈螺母的轴向位移</p>
-<p>越小，精度越高，承载能力越小</p>
-</li>
-<li><p>行程</p>
-</li>
-<li><p>滚珠个数</p>
-<p>一般小于150</p>
-</li>
-<li><p>工作圈数</p>
-<p>2.5~3.5</p>
-</li>
-</ul>
-<h3 id="消除间隙"><a href="#消除间隙" class="headerlink" title="消除间隙"></a><u>消除间隙</u></h3><h4 id="双螺母"><a href="#双螺母" class="headerlink" title="双螺母"></a>双螺母</h4><ul>
-<li><p>双螺母螺纹预紧</p>
-<p>一边螺母通过两圆螺母预紧，两个螺母的滚珠相向受力（向内），结构简单、刚性好，可靠，方便但不精确</p>
-</li>
-<li><p>双螺母齿差预紧</p>
-<p><u><strong>两螺母相差1齿，由两端内齿轮固定，可定量调整，使用方便</strong></u></p>
-</li>
-<li><p>双螺母垫片预紧</p>
-<p>在两螺母间加装垫片，结构简单，刚度高，可靠，但调整不方便</p>
-</li>
-<li><p>弹簧式自动调整预紧</p>
-<p>一螺母固定，一螺母活动，结构复杂，刚度低，用于轻载</p>
-</li>
-</ul>
-<h3 id="支撑方式"><a href="#支撑方式" class="headerlink" title="支撑方式"></a><u>支撑方式</u></h3><ul>
-<li><p>单推-单推式</p>
-<p>两端分别装止推轴承并预紧，轴向刚度高，预紧力大，<strong>寿命较低</strong></p>
-</li>
-<li><p>双推-双推式</p>
-<p>两端分别装止<strong><u>推轴承和深沟球轴承的组合并预紧</u></strong>，轴向刚度最高，温度升高会使预紧力增大，<strong>使两端预紧力不对称</strong></p>
-</li>
-<li><p>双推-简支式</p>
-<p>一端为组合，一端仅深沟球轴承，轴向刚度低，易受热变形影响，预紧力小，寿命高，<strong>用于中速、精度较高的系统</strong></p>
-</li>
-<li><p>双推-自由式</p>
-<p>一端组合，一端悬空，轴向刚度、承载能力低，<strong>用于轻载、低速系统</strong></p>
-</li>
-</ul>
-<h3 id="制动方式"><a href="#制动方式" class="headerlink" title="制动方式"></a>制动方式</h3><p>摩擦离合器</p>
-<p>电机通电，线圈通电，弹簧压缩，离合放开</p>
-<h3 id="密封与润滑"><a href="#密封与润滑" class="headerlink" title="密封与润滑"></a>密封与润滑</h3><p>密封圈类型：接触式、非接触式</p>
-<h2 id="齿轮传动"><a href="#齿轮传动" class="headerlink" title="齿轮传动"></a>齿轮传动</h2><h3 id="要求-1"><a href="#要求-1" class="headerlink" title="要求"></a>要求</h3><ul>
-<li>传动比满足驱动与负载的<strong><u>位移、转矩、转速的匹配要求</u></strong></li>
-<li>要有足够的刚度，尽量小的转动惯量</li>
-<li>避免传动死区（啮合间隙）</li>
-</ul>
-<h2 id="谐波齿轮"><a href="#谐波齿轮" class="headerlink" title="谐波齿轮"></a><u>谐波齿轮</u></h2><h3 id="组成-1"><a href="#组成-1" class="headerlink" title="组成"></a>组成</h3><ul>
-<li><p>波发生器</p>
-<p>凸轮和薄壁轴承组成</p>
-</li>
-<li><p>刚轮</p>
-<p>刚性内齿轮</p>
-</li>
-<li><p>柔轮</p>
-<p>弹性外齿轮</p>
-</li>
-</ul>
-<h3 id="工作原理"><a href="#工作原理" class="headerlink" title="工作原理"></a>工作原理</h3><ul>
-<li>波发生器为主动件</li>
-<li><u><strong>刚轮齿数比柔轮齿数多</strong></u></li>
-<li><u><strong>具有双波发生器的谐波齿轮Zg-Zr=2</strong></u></li>
-<li><strong><u>刚轮固定时，波发生器与柔轮方向相反</u></strong></li>
-<li>柔轮固定时，~与刚轮方向相同</li>
-</ul>
-<h3 id="优点-1"><a href="#优点-1" class="headerlink" title="优点"></a>优点</h3><ul>
-<li>传动比大</li>
-<li>承载能力强</li>
-<li>精度高</li>
-<li>效率高</li>
-<li>体积小</li>
-<li>噪声低</li>
-<li>结构简单</li>
-</ul>
-<h2 id="挠性传动"><a href="#挠性传动" class="headerlink" title="挠性传动"></a>挠性传动</h2><h3 id="同步带传动"><a href="#同步带传动" class="headerlink" title="同步带传动"></a>同步带传动</h3><p>优点</p>
+<h2 id="列表的初始化"><a href="#列表的初始化" class="headerlink" title="列表的初始化"></a>列表的初始化</h2><p>可以在list.c中找到初始化函数vListInitialise()</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">vListInitialise</span><span class="params">( List_t * <span class="type">const</span> pxList )</span></span><br><span class="line">&#123;</span><br><span class="line">     <span class="comment">/*列表索引指向列表项xListEnd*/</span></span><br><span class="line">     pxList-&gt;pxIndex = ( ListItem_t * )&amp;( pxList-&gt;xListEnd );                  </span><br><span class="line">     <span class="comment">/* 设置为最大可能值为0xffff */</span></span><br><span class="line">     pxList-&gt;xListEnd.xItemValue =portMAX_DELAY;</span><br><span class="line"> </span><br><span class="line">     <span class="comment">/* 列表项xListEnd的pxNext和pxPrevious指针指向了它自己 */</span></span><br><span class="line">     pxList-&gt;xListEnd.pxNext = (ListItem_t * ) &amp;( pxList-&gt;xListEnd );</span><br><span class="line">     pxList-&gt;xListEnd.pxPrevious= ( ListItem_t * ) &amp;( pxList-&gt;xListEnd );</span><br><span class="line">     pxList-&gt;uxNumberOfItems = ( UBaseType_t) <span class="number">0U</span>;</span><br><span class="line"> </span><br><span class="line">     <span class="comment">/* 设置为已知值，用于检测列表数据是否完整*/</span></span><br><span class="line">     listSET_LIST_INTEGRITY_CHECK_1_VALUE(pxList );</span><br><span class="line">     listSET_LIST_INTEGRITY_CHECK_2_VALUE(pxList );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <ul>
-<li>传动比准确</li>
-<li>效率高</li>
-<li>平稳，噪声小</li>
-<li>能高速传动，不需润滑</li>
+<li><p>如果宏configUSE_LIST_DATA_INTEGRITY_CHECK_BYTES设置为1，则使能列表项数据完整性检查，则宏listSET_LIST_INTEGRITY_CHECK_1_VALUE()和listSET_LIST_INTEGRITY_CHECK_2_VALUE被一个已知值代替，默认为0x5a5a（16位架构）或者0x5a5a5a5a（32位架构）。</p>
+</li>
+<li><p>按照上述初始化后就应该是下图的情况：</p>
+<img src="/images/loading.png" data-original="/2022/12/09/%E5%9F%BA%E4%BA%8EFreeRTOS%E7%9A%84%E5%88%97%E8%A1%A8%E5%AD%A6%E4%B9%A0/2.jpg" class title="This is an image"> 
+<p>此时pxIndex、pxList-&gt;xListEnd.pxNext、pxList-&gt;xListEnd.pxPrevious都指向了 pxList-&gt;xListEnd（也可以说是xListEnd这个结构体的首元素）</p>
+</li>
 </ul>
-<p>缺点</p>
+<h1 id="将列表项插入列表中"><a href="#将列表项插入列表中" class="headerlink" title="将列表项插入列表中"></a>将列表项插入列表中</h1><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">vListInsert</span><span class="params">( List_t * <span class="type">const</span> pxList, ListItem_t * <span class="type">const</span> pxNewListItem )</span></span><br><span class="line">&#123;</span><br><span class="line">ListItem_t *pxIterator;		<span class="comment">//函数内定义一个列表项指针，通过列表项值的比较，找到当前输入列表项需插入的位置</span></span><br><span class="line"><span class="type">const</span> TickType_t xValueOfInsertion = pxNewListItem-&gt;xItemValue;	<span class="comment">//定义一个变量存放当前输入列表项的列表项值</span></span><br><span class="line"></span><br><span class="line">	listTEST_LIST_INTEGRITY( pxList );		<span class="comment">//检测完整性</span></span><br><span class="line">	listTEST_LIST_ITEM_INTEGRITY( pxNewListItem );		<span class="comment">//检测完整性</span></span><br><span class="line"></span><br><span class="line">   <span class="comment">/*开始为输入列表项寻找合适的插入位置*/</span></span><br><span class="line">	<span class="keyword">if</span>( xValueOfInsertion == portMAX_DELAY )</span><br><span class="line">	&#123;</span><br><span class="line">		pxIterator = pxList-&gt;xListEnd.pxPrevious;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">for</span>( pxIterator = ( ListItem_t * ) &amp;( pxList-&gt;xListEnd ); </span><br><span class="line">								  pxIterator-&gt;pxNext-&gt;xItemValue &lt;= xValueOfInsertion; </span><br><span class="line">								  pxIterator = pxIterator-&gt;pxNext ) </span><br><span class="line">		&#123;</span><br><span class="line">			<span class="comment">/* There is nothing to do here, just iterating to the wanted</span></span><br><span class="line"><span class="comment">			insertion position. */</span></span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">   <span class="comment">/******************************/</span></span><br><span class="line">   </span><br><span class="line">   <span class="comment">/*此时pxIterator为当前pxNewListItem要插入的位置*/</span></span><br><span class="line">	pxNewListItem-&gt;pxNext = pxIterator-&gt;pxNext;</span><br><span class="line">	pxNewListItem-&gt;pxNext-&gt;pxPrevious = pxNewListItem;</span><br><span class="line">	pxNewListItem-&gt;pxPrevious = pxIterator;</span><br><span class="line">	pxIterator-&gt;pxNext = pxNewListItem;</span><br><span class="line">   </span><br><span class="line">	<span class="comment">/*将列表项接入列表，列表项数目+1*/</span></span><br><span class="line">	pxNewListItem-&gt;pvContainer = ( <span class="type">void</span> * ) pxList;</span><br><span class="line">	( pxList-&gt;uxNumberOfItems )++;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这个函数中比较难以理解的地方就是关于寻找列表项插入位置的判断和循环部分，接下来将一步一步讲解：</p>
+<h2 id="当列表内无列表项时（当前插入的列表项为第一个列表项）"><a href="#当列表内无列表项时（当前插入的列表项为第一个列表项）" class="headerlink" title="当列表内无列表项时（当前插入的列表项为第一个列表项）"></a>当列表内无列表项时（当前插入的列表项为第一个列表项）</h2><p>假设该列表项值为50</p>
+<h3 id="if判断"><a href="#if判断" class="headerlink" title="if判断"></a>if判断</h3><p>不满足条件，跳过</p>
+<h3 id="for循环"><a href="#for循环" class="headerlink" title="for循环"></a>for循环</h3><ul>
+<li><p>初始化<code>pxIterator = ( ListItem_t * ) &amp;( pxList-&gt;xListEnd );</code>后，此时情况为：</p>
+<img src="/images/loading.png" data-original="/2022/12/09/%E5%9F%BA%E4%BA%8EFreeRTOS%E7%9A%84%E5%88%97%E8%A1%A8%E5%AD%A6%E4%B9%A0/3.jpg" class title="This is an image"> 
+<p>此时pxIterator成员与pxList-&gt;xListEnd的成员一一对应</p>
+</li>
+<li><p>条件判断<code>pxIterator-&gt;pxNext-&gt;xItemValue &lt;= xValueOfInsertion;</code></p>
+<p>这里需要注意：<strong>列表初始化时，xListEnd的成员pxNext，pxPrevious是指向xListEnd的</strong></p>
+<p>因此pxIterator-&gt;pxNext-&gt;xItemValue的值就是0xFFFF，是大于50的，因此不满足条件，跳出循环</p>
+</li>
+</ul>
+<h3 id="赋值"><a href="#赋值" class="headerlink" title="赋值"></a>赋值</h3><ul>
+<li><p><strong>pxNewListItem-&gt;pxNext = pxIterator-&gt;pxNext;</strong></p>
+<p>pxIterator-&gt;pxNext指向pxList-&gt;xListEnd.pxnext，而pxList-&gt;xListEnd.pxnext又指向本身xListEnd；因此，<u><strong>最终pxNewListItem-&gt;pxNext指向了pxList-&gt;xListEnd</strong></u></p>
+<img src="/images/loading.png" data-original="/2022/12/09/%E5%9F%BA%E4%BA%8EFreeRTOS%E7%9A%84%E5%88%97%E8%A1%A8%E5%AD%A6%E4%B9%A0/4.jpg" class title="cysgbj"> 
+</li>
+<li><p><strong>pxNewListItem-&gt;pxNext-&gt;pxPrevious = pxNewListItem;</strong></p>
+<p>上一步中pxNewListItem-&gt;pxNext指向了pxList-&gt;xListEnd，因此pxNewListItem-&gt;pxNext-&gt;pxPrevious等同于pxList-&gt;xListEnd.pxPrevious，而pxList-&gt;xListEnd.pxPrevious之前是指向pxList-&gt;xListEnd本身的，因此<u><strong>这一步最终的结果相当于将pxList-&gt;xListEnd.pxPrevious改变指向，指向pxNewListItem</strong></u></p>
+<img src="/images/loading.png" data-original="/2022/12/09/%E5%9F%BA%E4%BA%8EFreeRTOS%E7%9A%84%E5%88%97%E8%A1%A8%E5%AD%A6%E4%B9%A0/5.jpg" class title="cysgbj"> 
+</li>
+<li><p><strong>pxNewListItem-&gt;pxPrevious = pxIterator;</strong></p>
+<p>由于pxIterator本身就是指向pxList-&gt;xListEnd的，因此这一步相当于：</p>
+<p><u><strong>pxNewListItem-&gt;pxPrevious = pxList-&gt;xListEnd</strong></u></p>
+<img src="/images/loading.png" data-original="/2022/12/09/%E5%9F%BA%E4%BA%8EFreeRTOS%E7%9A%84%E5%88%97%E8%A1%A8%E5%AD%A6%E4%B9%A0/6.jpg" class title="cysgbj"> 
+</li>
+<li><p><strong>pxIterator-&gt;pxNext = pxNewListItem;</strong></p>
+<p>pxIterator-&gt;pxNext指向pxList-&gt;xListEnd.pxnext，此时pxList-&gt;xListEnd.pxnext本来是指向自己（pxList-&gt;xListEnd）的，因此这一步最终是：</p>
+<p><strong><u>将pxList-&gt;xListEnd.pxnext改变指向，指向pxNewListItem</u></strong></p>
+<img src="/images/loading.png" data-original="/2022/12/09/%E5%9F%BA%E4%BA%8EFreeRTOS%E7%9A%84%E5%88%97%E8%A1%A8%E5%AD%A6%E4%B9%A0/7.jpg" class title="cysgbj"> 
+</li>
+<li><p>综上，最终的结果为：</p>
+<img src="/images/loading.png" data-original="/2022/12/09/%E5%9F%BA%E4%BA%8EFreeRTOS%E7%9A%84%E5%88%97%E8%A1%A8%E5%AD%A6%E4%B9%A0/8.jpg" class title="cysgbj"> 
+<p><em>上图省略了pvContainer和pxIndex的指向和uxNumberOfItems的变化</em></p>
+</li>
+</ul>
+<h2 id="第二次，当列表中已有列表项时，且该列表项值大于上一个"><a href="#第二次，当列表中已有列表项时，且该列表项值大于上一个" class="headerlink" title="第二次，当列表中已有列表项时，且该列表项值大于上一个"></a>第二次，当列表中已有列表项时，且该列表项值大于上一个</h2><p>假设第二个列表项值为60（第一个为50）</p>
+<h3 id="if判断-1"><a href="#if判断-1" class="headerlink" title="if判断"></a>if判断</h3><p>不满足条件，跳过</p>
+<h3 id="for循环-1"><a href="#for循环-1" class="headerlink" title="for循环"></a>for循环</h3><ul>
+<li><p>初始化<code>pxIterator = ( ListItem_t * ) &amp;( pxList-&gt;xListEnd );</code>后，由于在上一个列表项插入后，pxList.xListEnd中的pxNext和pxPrevious已经改变了指向，因此当前情况为：</p>
+<img src="/images/loading.png" data-original="/2022/12/09/%E5%9F%BA%E4%BA%8EFreeRTOS%E7%9A%84%E5%88%97%E8%A1%A8%E5%AD%A6%E4%B9%A0/9.jpg" class title="cysgbj"> 
+</li>
+<li><p>条件判断<code>pxIterator-&gt;pxNext-&gt;xItemValue &lt;= xValueOfInsertion;</code></p>
+<p>由上图可得知，此时pxIterator-&gt;pxNext-&gt;xItemValue为50，小于60，条件成立</p>
+</li>
+<li><p>执行<code>pxIterator = pxIterator-&gt;pxNext</code></p>
+<p>由于pxIterator-&gt;pxNext指向pxNewListItem(1)，因此当前情况如下：</p>
+<img src="/images/loading.png" data-original="/2022/12/09/%E5%9F%BA%E4%BA%8EFreeRTOS%E7%9A%84%E5%88%97%E8%A1%A8%E5%AD%A6%E4%B9%A0/10.jpg" class title="cysgbj"> 
+</li>
+<li><p>再次进行条件判断<code>pxIterator-&gt;pxNext-&gt;xItemValue &lt;= xValueOfInsertion;</code></p>
+<p>此时pxIterator-&gt;pxNext-&gt;xItemValue为0xffff，不满足条件，循环结束。</p>
+</li>
+</ul>
+<p><strong>综上，通过该for循环，可以根据每个列表项值的大小进行列表中的位置排序</strong></p>
+<h3 id="赋值-1"><a href="#赋值-1" class="headerlink" title="赋值"></a>赋值</h3><p>这里的所有pxNewListItem在未特别说明的情况下都是指pxNewListItem(2）</p>
 <ul>
-<li>安装精度要求高</li>
-<li>成本高</li>
+<li><p><strong>pxNewListItem-&gt;pxNext = pxIterator-&gt;pxNext;</strong></p>
+<p>同第一次插入列表，<u><strong>最终pxNewListItem-&gt;pxNext指向了pxList-&gt;xListEnd</strong></u></p>
+</li>
+<li><p><strong>pxNewListItem-&gt;pxNext-&gt;pxPrevious = pxNewListItem;</strong></p>
+<p>同第一次插入列表，<u><strong>将pxList-&gt;xListEnd.pxPrevious改变指向，指向pxNewListItem</strong></u></p>
+</li>
+<li><p><strong>pxNewListItem-&gt;pxPrevious = pxIterator;</strong></p>
+<p>pxIterator在for循环中已经指向了pxNewListItem(1)，因此这里：</p>
+<p><u><strong>pxNewListItem-&gt;pxPrevious指向pxNewListItem(1)</strong></u></p>
+</li>
+<li><p><strong>pxIterator-&gt;pxNext = pxNewListItem;</strong></p>
+<p>pxIterator-&gt;pxNext指向pxNewListItem(1)-&gt;pxnext，而pxNewListItem(1)-&gt;next最终指向了pxlist.xListEnd，因此这里相当于:</p>
+<p><u><strong>改变pxNewListItem(1)-&gt;pxnext的指向，使其指向pxNewListItem(2)</strong></u></p>
+</li>
 </ul>
-<h3 id="钢带传动"><a href="#钢带传动" class="headerlink" title="钢带传动"></a>钢带传动</h3><ul>
-<li>无间隙</li>
-<li>运行可靠</li>
-<li>噪声低</li>
-<li>无蠕变</li>
-<li>摩擦阻力大</li>
+<p>综上，当前结果为：</p>
+<img src="/images/loading.png" data-original="/2022/12/09/%E5%9F%BA%E4%BA%8EFreeRTOS%E7%9A%84%E5%88%97%E8%A1%A8%E5%AD%A6%E4%B9%A0/11.jpg" class title="cysgbj"> 
+<p>有点乱，也可以参考下图，一样的</p>
+<img src="/images/loading.png" data-original="/2022/12/09/%E5%9F%BA%E4%BA%8EFreeRTOS%E7%9A%84%E5%88%97%E8%A1%A8%E5%AD%A6%E4%B9%A0/12.jpg" class title="cysgbj">
+<p>不难看出，赋值的最后两步将各个列表项相互链接</p>
+<h2 id="第二次，当列表中已有列表项时，但该列表项值小于上一个"><a href="#第二次，当列表中已有列表项时，但该列表项值小于上一个" class="headerlink" title="第二次，当列表中已有列表项时，但该列表项值小于上一个"></a>第二次，当列表中已有列表项时，但该列表项值小于上一个</h2><p>假设第二个列表值为30，小于第一个列表值50</p>
+<h3 id="if判断-2"><a href="#if判断-2" class="headerlink" title="if判断"></a>if判断</h3><p>不满足条件，跳过</p>
+<h3 id="for循环-2"><a href="#for循环-2" class="headerlink" title="for循环"></a>for循环</h3><ul>
+<li><p>初始化<code>pxIterator = ( ListItem_t * ) &amp;( pxList-&gt;xListEnd );</code>后，由于在上一个列表项插入后，pxList.xListEnd中的pxNext和pxPrevious已经改变了指向，因此当前情况为：</p>
+<img src="/images/loading.png" data-original="/2022/12/09/%E5%9F%BA%E4%BA%8EFreeRTOS%E7%9A%84%E5%88%97%E8%A1%A8%E5%AD%A6%E4%B9%A0/9.jpg" class title="cysgbj"> 
+</li>
+<li><p>条件判断<code>pxIterator-&gt;pxNext-&gt;xItemValue &lt;= xValueOfInsertion;</code></p>
+<p>由上图可得知，此时pxIterator-&gt;pxNext-&gt;xItemValue为50，大于30，条件不成立，循环结束</p>
+</li>
 </ul>
-<h3 id="绳轮传动"><a href="#绳轮传动" class="headerlink" title="绳轮传动"></a>绳轮传动</h3><h1 id="5、导向机构（导轨支撑部件）"><a href="#5、导向机构（导轨支撑部件）" class="headerlink" title="5、导向机构（导轨支撑部件）"></a><u>5、导向机构（导轨支撑部件）</u></h1><p><strong>支撑和限制运动部件按照规定运动方向运动</strong></p>
-<h2 id="组成-2"><a href="#组成-2" class="headerlink" title="组成"></a>组成</h2><ul>
-<li>承导件</li>
-<li>运动件</li>
-</ul>
-<h2 id="分类-1"><a href="#分类-1" class="headerlink" title="分类"></a>分类</h2><h3 id="按运动方式"><a href="#按运动方式" class="headerlink" title="按运动方式"></a>按运动方式</h3><ul>
-<li>直线运动导轨副</li>
-<li>回转运动导轨副</li>
-</ul>
-<h3 id="按接触面摩擦性质"><a href="#按接触面摩擦性质" class="headerlink" title="按接触面摩擦性质"></a>按接触面摩擦性质</h3><ul>
-<li>滑动</li>
-<li>滚道</li>
-<li>气体、液体</li>
-<li>弹性摩擦</li>
-</ul>
-<h3 id="按结构特点"><a href="#按结构特点" class="headerlink" title="按结构特点"></a>按结构特点</h3><ul>
-<li>开式</li>
-<li>闭式</li>
-</ul>
-<h2 id="要求-2"><a href="#要求-2" class="headerlink" title="要求"></a><u>要求</u></h2><ul>
-<li><strong>导向精度</strong></li>
-<li><strong>刚度</strong></li>
-<li><strong>精度的保持性，取决于耐磨性</strong></li>
-<li>运动灵活性</li>
-<li>温度敏感性</li>
-</ul>
-<h2 id="消隙"><a href="#消隙" class="headerlink" title="消隙"></a>消隙</h2><ul>
-<li>压板</li>
-<li>镶条</li>
-</ul>
-<h2 id="滚动导轨优缺点"><a href="#滚动导轨优缺点" class="headerlink" title="滚动导轨优缺点"></a><u>滚动导轨优缺点</u></h2><p>优点</p>
+<h3 id="赋值-2"><a href="#赋值-2" class="headerlink" title="赋值"></a>赋值</h3><p>这里的所有pxNewListItem在未特别说明的情况下都是指pxNewListItem(2）</p>
 <ul>
-<li>摩擦小</li>
-<li>启动阻力小</li>
-<li>可预紧，刚度高</li>
-<li>寿命长</li>
-<li>精度高</li>
-<li>润滑方便</li>
+<li><p><strong>pxNewListItem-&gt;pxNext = pxIterator-&gt;pxNext;</strong></p>
+<p><u><strong>不同第一次插入列表！此时pxNewListItem-&gt;pxNext最终指向了xNewListItem(1)</strong></u></p>
+</li>
+<li><p><strong>pxNewListItem-&gt;pxNext-&gt;pxPrevious = pxNewListItem;</strong></p>
+<p><strong>不同第一次插入列表！</strong>此时pxNewListItem-&gt;pxNext-&gt;pxPrevious 即是：</p>
+<p><u><strong>pxNewListItem(1)-&gt;xPrevious指向了pxNewListItem(2)</strong></u></p>
+</li>
+<li><p><strong>pxNewListItem-&gt;pxPrevious = pxIterator;</strong></p>
+<p>pxIterator是直接指向pxList-&gt;xListEnd的，因此：</p>
+<p><u><strong>pxNewListItem-&gt;pxPrevious 直接指向pxList-&gt;xListEnd</strong></u></p>
+</li>
+<li><p><strong>pxIterator-&gt;pxNext = pxNewListItem;</strong></p>
+<p>在执行这一步之前，情况如下：</p>
+<img src="/images/loading.png" data-original="/2022/12/09/%E5%9F%BA%E4%BA%8EFreeRTOS%E7%9A%84%E5%88%97%E8%A1%A8%E5%AD%A6%E4%B9%A0/13.jpg" class title="cysgbj"> 
+<p>这里我产生了一个疑问，pxIterator-&gt;pxNext是指向pxNewListItem(1)，那让pxNewListItem(1)=pxNewListItem是什么意思呢？让上一个列表项指向当前列表项？这明显是不符合列表逻辑的。</p>
+<p>后来在找寻问题的过程中，才发现自己又犯了老错误，pxNewListItem(1)其实也是一个指针变量，他是直接指向列表项1的内存单元的，<strong>因此pxIterator-&gt;pxNext是直接指向了列表项1的内存单元</strong>，因此改变pxIterator-&gt;pxNext是直接改变了这个指针的指向，也就是说结果是：</p>
+<p><strong><u>将pxList-&gt;xListEnd.pxNext改变指向，使其指向pxNewListItem(2)</u></strong></p>
+</li>
 </ul>
-<p>缺点</p>
+<p>综上，最后结果为：</p>
+<img src="/images/loading.png" data-original="/2022/12/09/%E5%9F%BA%E4%BA%8EFreeRTOS%E7%9A%84%E5%88%97%E8%A1%A8%E5%AD%A6%E4%B9%A0/14.jpg" class title="cysgbj"> 
+<h2 id="对比两种情况"><a href="#对比两种情况" class="headerlink" title="对比两种情况"></a>对比两种情况</h2><p>第二个列表项值大于第一个的情况：</p>
+<img src="/images/loading.png" data-original="/2022/12/09/%E5%9F%BA%E4%BA%8EFreeRTOS%E7%9A%84%E5%88%97%E8%A1%A8%E5%AD%A6%E4%B9%A0/11.jpg" class title="cysgbj"> 
+<p>对比一下，可以看出：</p>
 <ul>
-<li>抗振性差</li>
-<li>对导轨部件尺寸精度要求高</li>
-<li>结构复杂成本高</li>
-<li>对脏物敏感</li>
+<li><strong>pxList-&gt;xListEnd.pxNext总是指向列表项值最小的列表项</strong></li>
+<li><strong>pxList-&gt;xListEnd.pxPrevious总是指向列表项值最大的列表项</strong></li>
+<li><strong>列表项值小的列表项的pxNext总是指向列表项值大的列表项</strong></li>
+<li><strong>列表项值大的列表项的PxPrevious总是指向列表项值小的列表项</strong></li>
+<li><strong>首列表项的pxPrevious和尾列表项的pxNext都指向pxList-&gt;xListEnd</strong></li>
 </ul>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2023/05/16/%E7%BB%AA%E8%AE%BA/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/zoe.gif">
-      <meta itemprop="name" content="dhk">
-      <meta itemprop="description" content="记录一些学习日常">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="小董的BLOG">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/05/16/%E7%BB%AA%E8%AE%BA/" class="post-title-link" itemprop="url">lzz——绪论(考试复习自用)</a>
-        </h2>
-
-        <div class="post-meta">
-		  
-		  
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2023-05-16 22:00:03" itemprop="dateCreated datePublished" datetime="2023-05-16T22:00:03+08:00">2023-05-16</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-02-25 15:32:13" itemprop="dateModified" datetime="2024-02-25T15:32:13+08:00">2024-02-25</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="1、什么是机电一体化"><a href="#1、什么是机电一体化" class="headerlink" title="1、什么是机电一体化"></a>1、什么是机电一体化</h1><h2 id="组成"><a href="#组成" class="headerlink" title="组成"></a>组成</h2><ul>
-<li>机械工程</li>
-<li>电气工程</li>
-<li>计算机/控制工程</li>
-</ul>
-<h2 id="基础"><a href="#基础" class="headerlink" title="基础"></a>基础</h2><p>产品和过程</p>
-<h2 id="主体"><a href="#主体" class="headerlink" title="主体"></a>主体</h2><p>机械</p>
-<h2 id="核心"><a href="#核心" class="headerlink" title="核心"></a>核心</h2><p>微电子、计算机控制技术</p>
-<h1 id="2、产品分类"><a href="#2、产品分类" class="headerlink" title="2、产品分类"></a>2、产品分类</h1><h2 id="按照结合程度"><a href="#按照结合程度" class="headerlink" title="按照结合程度"></a>按照结合程度</h2><h3 id="机械电子化产品"><a href="#机械电子化产品" class="headerlink" title="机械电子化产品"></a>机械电子化产品</h3><ul>
-<li>机械电子化<ul>
-<li>机械<strong><u>本身主要功能</u></strong>被取代    相机</li>
-<li><strong><u>信息处理机构</u></strong>被电子元件替代     电子表</li>
-<li><strong><u>控制机构</u></strong>被替代     缝纫机凸轮</li>
-<li>微电子技术增加功能   数控机床</li>
-</ul>
-</li>
-</ul>
-<h3 id="机电融合产品"><a href="#机电融合产品" class="headerlink" title="机电融合产品"></a>机电融合产品</h3><p>工业机器人、复印机</p>
-<h2 id="按使用领域"><a href="#按使用领域" class="headerlink" title="按使用领域"></a>按使用领域</h2><ul>
-<li>生产</li>
-<li>运输</li>
-<li>储存</li>
-<li>社会服务</li>
-<li>家用</li>
-<li>科研</li>
-</ul>
-<h1 id="3、机电一体化目的"><a href="#3、机电一体化目的" class="headerlink" title="3、机电一体化目的"></a><u>3、机电一体化目的</u></h1><p>使产品<u><strong>高附加值化</strong></u></p>
-<ul>
-<li>功能</li>
-<li>效率</li>
-<li>可靠性</li>
-<li>省材料、能源</li>
-<li>结构轻薄小巧</li>
-</ul>
-<p>以满足人们生活和生产的<strong><u>多样化</u>、<u>省力化</u>、<u>自动化需要</u></strong></p>
-<h1 id="4、机电一体化系统基本组成"><a href="#4、机电一体化系统基本组成" class="headerlink" title="4、机电一体化系统基本组成"></a><u>4、机电一体化系统基本组成</u></h1><h2 id="五大要素与对应功能"><a href="#五大要素与对应功能" class="headerlink" title="五大要素与对应功能"></a><u>五大要素与对应功能</u></h2><ul>
-<li>计算机——控制  CPU</li>
-<li>动力源——动力  电能</li>
-<li>传感器——检测  直线光栅</li>
-<li>机构——整体结构功能  机械本体、齿轮传动、导向机构</li>
-<li>执行元件——操作  电机</li>
-</ul>
-<h3 id="机械本体"><a href="#机械本体" class="headerlink" title="机械本体"></a>机械本体</h3><p>包括机身、框架、机械连接</p>
-<h3 id="动力源"><a href="#动力源" class="headerlink" title="动力源"></a>动力源</h3><h3 id="传感器"><a href="#传感器" class="headerlink" title="传感器"></a>传感器</h3><p>传感器及其信号检测电路，提供控制所需信息</p>
-<h3 id="计算机"><a href="#计算机" class="headerlink" title="计算机"></a>计算机</h3><h3 id="执行元件"><a href="#执行元件" class="headerlink" title="执行元件"></a>执行元件</h3><p>实现机电一体化系统<u><strong>主功能</strong></u></p>
-<h2 id="主功能"><a href="#主功能" class="headerlink" title="主功能"></a><u>主功能</u></h2><ul>
-<li>变化（加工）</li>
-<li>传递（运输）</li>
-<li>存储</li>
-</ul>
-<p><u><strong>完成对物质、能量、信息（工业三大要素）的变换、传递、存储</strong></u></p>
-<h1 id="5、技术体系"><a href="#5、技术体系" class="headerlink" title="5、技术体系"></a>5、<u>技术体系</u></h1><ul>
-<li><p><strong>检测与传感技术</strong></p>
-<p>物理到电，处理电信号，实现自动控制的<strong><u>关键环节</u></strong></p>
-</li>
-<li><p><strong>计算机与信息处理</strong></p>
-<p><u>信息处理、人工智能，是促进机电一体化发展的<strong>最活跃因素</strong></u></p>
-</li>
-<li><p><strong>自动控制</strong></p>
-<p>基本控制理论，<u><strong>提高产品精度、效率</strong></u></p>
-</li>
-<li><p><strong>伺服传动</strong></p>
-<p>执行元件、驱动装置，对各项性能起到<strong><u>决定性影响</u></strong></p>
-</li>
-<li><p><strong>机械技术</strong></p>
-<p>机械结构设计、制造</p>
-</li>
-</ul>
-<h2 id="主要学科"><a href="#主要学科" class="headerlink" title="主要学科"></a>主要学科</h2><ul>
-<li>机械学</li>
-<li>控制论</li>
-<li>电子学</li>
-<li>计算机科学</li>
-</ul>
-<h1 id="6、发展趋势"><a href="#6、发展趋势" class="headerlink" title="6、发展趋势"></a>6、<u>发展趋势</u></h1><ul>
-<li>绿色化</li>
-<li>智能化</li>
-<li>网络化</li>
-<li>微型化</li>
-<li>模块化</li>
-</ul>
+<p>根据上述的规律，就可以清晰地明白FreeRTOS对列表的插入方式了：</p>
+<img src="/images/loading.png" data-original="/2022/12/09/%E5%9F%BA%E4%BA%8EFreeRTOS%E7%9A%84%E5%88%97%E8%A1%A8%E5%AD%A6%E4%B9%A0/15.jpg" class title="cysgbj"> 
+<p>因此，若要访问列表项，要通过pxList-&gt;xListEnd.pxNext访问手列表项，通过pxList-&gt;xListEnd.pxPrevious访问尾列表项。</p>
+<p>实现插入的方法看了之后感觉真的很巧妙，我感觉也只能停留在理解的阶段，要自己写出来感觉难度还是很大。。。<strong>但是规律还是很好记住的😋</strong></p>
+<h1 id="直接将列表项插入列表尾"><a href="#直接将列表项插入列表尾" class="headerlink" title="直接将列表项插入列表尾"></a>直接将列表项插入列表尾</h1><p>原理跟上面的是一样的，如果能理解插入的方法，相信这个理解起来就很ez了，就不多说了</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">vListInsertEnd</span><span class="params">( List_t * <span class="type">const</span> pxList, ListItem_t * <span class="type">const</span> pxNewListItem )</span></span><br><span class="line">&#123;</span><br><span class="line">ListItem_t* <span class="type">const</span> pxIndex = pxList-&gt;pxIndex;</span><br><span class="line"> </span><br><span class="line">         <span class="comment">/*检查列表和列表项数据的完整性，仅当configASSERT()定义时有效。*/</span></span><br><span class="line">         listTEST_LIST_INTEGRITY( pxList );</span><br><span class="line">         listTEST_LIST_ITEM_INTEGRITY(pxNewListItem );</span><br><span class="line"> </span><br><span class="line">         <span class="comment">/*向列表中插入新的列表项*/</span></span><br><span class="line">         pxNewListItem-&gt;pxNext = pxIndex;</span><br><span class="line">         pxNewListItem-&gt;pxPrevious =pxIndex-&gt;pxPrevious;</span><br><span class="line"> </span><br><span class="line">         mtCOVERAGE_TEST_DELAY();</span><br><span class="line"> </span><br><span class="line">         pxIndex-&gt;pxPrevious-&gt;pxNext =pxNewListItem;</span><br><span class="line">         pxIndex-&gt;pxPrevious = pxNewListItem;</span><br><span class="line"> </span><br><span class="line">         pxNewListItem-&gt;pvContainer = ( <span class="type">void</span>* ) pxList;</span><br><span class="line"> </span><br><span class="line">         ( pxList-&gt;uxNumberOfItems )++;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>在FreeRTOS中，任务的调度与列表息息相关，因此要想学好任务调度的原理，列表是第一大难关！</p>
 
       
     </div>
@@ -968,7 +702,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/10/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/10/">10</a><span class="page-number current">11</span><a class="page-number" href="/page/12/">12</a><span class="space">&hellip;</span><a class="page-number" href="/page/22/">22</a><a class="extend next" rel="next" href="/page/12/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/10/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/10/">10</a><span class="page-number current">11</span><a class="page-number" href="/page/12/">12</a><span class="space">&hellip;</span><a class="page-number" href="/page/20/">20</a><a class="extend next" rel="next" href="/page/12/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1035,7 +769,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">66</span>
+          <span class="site-state-item-count">60</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>

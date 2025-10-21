@@ -197,7 +197,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2022/10/31/C++-7/">
+    <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2022/09/16/python-2/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/zoe.gif">
@@ -211,7 +211,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2022/10/31/C++-7/" class="post-title-link" itemprop="url">C++_IO库</a>
+            <a href="/2022/09/16/python-2/" class="post-title-link" itemprop="url">python_2</a>
         </h2>
 
         <div class="post-meta">
@@ -223,14 +223,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2022-10-31 19:05:26" itemprop="dateCreated datePublished" datetime="2022-10-31T19:05:26+08:00">2022-10-31</time>
+              <time title="创建时间：2022-09-16 10:29:36" itemprop="dateCreated datePublished" datetime="2022-09-16T10:29:36+08:00">2022-09-16</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2023-01-11 19:27:55" itemprop="dateModified" datetime="2023-01-11T19:27:55+08:00">2023-01-11</time>
+                <time title="修改时间：2024-08-13 13:06:02" itemprop="dateModified" datetime="2024-08-13T13:06:02+08:00">2024-08-13</time>
               </span>
 
           
@@ -244,283 +244,193 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="IO类"><a href="#IO类" class="headerlink" title="IO类"></a>IO类</h1><p>在之前的一些用到输入与输出的程序都是用户对流的读写，也就是使用的iostream类，但是C++中的IO处理并不止通过流进行读写，为了支持不同的IO操作，标准库中还定义了其他的一些IO类，他们被包含在不同的头文件中：</p>
+          <h1 id="一些基础语法"><a href="#一些基础语法" class="headerlink" title="一些基础语法"></a>一些基础语法</h1><h2 id="1、条件控制"><a href="#1、条件控制" class="headerlink" title="1、条件控制"></a>1、条件控制</h2><p>一般形式：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> condition_1:</span><br><span class="line">    statement_block_1</span><br><span class="line"><span class="keyword">elif</span> condition_2:</span><br><span class="line">    statement_block_2</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    statement_block_3</span><br></pre></td></tr></table></figure>
+<ul>
+<li>记得在条件后加<code>:</code></li>
+<li>Python 中用 <strong>elif</strong> 代替了 <strong>else if</strong>，所以if语句的关键字为：<strong>if – elif – else</strong></li>
+<li>python中没有switch语句，python3.10后更新了类似语法，由于我是3.9，就不写在这里了</li>
+</ul>
+<h2 id="2、循环语句"><a href="#2、循环语句" class="headerlink" title="2、循环语句"></a>2、循环语句</h2><h3 id="while语句"><a href="#while语句" class="headerlink" title="while语句"></a>while语句</h3><p>可以与else配合使用：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span> &lt;expr&gt;: <span class="comment">#记得冒号</span></span><br><span class="line">    &lt;statement(s)&gt;</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    &lt;additional_statement(s)&gt;</span><br></pre></td></tr></table></figure>
+<p>while中的break和continue用法同C</p>
+<h3 id="for语句"><a href="#for语句" class="headerlink" title="for语句"></a>for语句</h3><p>一般格式</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">a = <span class="string">&#x27;dhk&#x27;</span></span><br><span class="line"><span class="keyword">for</span> x <span class="keyword">in</span> a: </span><br><span class="line">	<span class="built_in">print</span>(x,end=<span class="string">&#x27;&#x27;</span>) <span class="comment">#dhk</span></span><br><span class="line"><span class="keyword">else</span>:	<span class="comment">#else用于在循环结束后执行的内容</span></span><br><span class="line">   <span class="built_in">print</span>(<span class="string">&quot;error!!&quot;</span>)</span><br><span class="line">  </span><br><span class="line">sites = [<span class="string">&quot;Baidu&quot;</span>, <span class="string">&quot;Google&quot;</span>,<span class="string">&quot;Runoob&quot;</span>,<span class="string">&quot;Taobao&quot;</span>]</span><br><span class="line"><span class="keyword">for</span> site <span class="keyword">in</span> sites:</span><br><span class="line">    <span class="built_in">print</span>(site)</span><br><span class="line">  </span><br><span class="line">questions = &#123;<span class="string">&#x27;name&#x27;</span>: <span class="string">&#x27;lancelot&#x27;</span>, <span class="string">&#x27;quest&#x27;</span>:<span class="string">&#x27;the holy grail&#x27;</span>, <span class="string">&#x27;favorite color&#x27;</span>:<span class="string">&#x27;blue&#x27;</span>&#125;</span><br><span class="line"><span class="keyword">for</span> q,b <span class="keyword">in</span> questions.items(): <span class="comment">#字典会稍微复杂一点</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&#x27;<span class="subst">&#123;q&#125;</span>  <span class="subst">&#123;b&#125;</span>&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<p>不同于C，python的for语句<strong>常用来遍历某个可迭代对象</strong>，如列表、字符串，如上的循环中，x每次只取遍历对象的<strong>最基本单位并自动递增</strong>。</p>
+<h3 id="range函数"><a href="#range函数" class="headerlink" title="range函数"></a>range函数</h3><p>生成一个数字序列，格式：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> x <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>,<span class="number">10</span>,<span class="number">2</span>):</span><br><span class="line">   <span class="built_in">print</span>(x,end=<span class="string">&#x27;&#x27;</span>)<span class="comment">#13579</span></span><br><span class="line">   </span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt;a = [<span class="string">&#x27;Google&#x27;</span>, <span class="string">&#x27;Baidu&#x27;</span>, <span class="string">&#x27;Runoob&#x27;</span>, <span class="string">&#x27;Taobao&#x27;</span>, <span class="string">&#x27;QQ&#x27;</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(a)):</span><br><span class="line"><span class="meta">... </span>    <span class="built_in">print</span>(i, a[i])</span><br><span class="line"><span class="meta">... </span></span><br><span class="line"><span class="number">0</span> Google</span><br><span class="line"><span class="number">1</span> Baidu</span><br><span class="line"><span class="number">2</span> Runoob</span><br><span class="line"><span class="number">3</span> Taobao</span><br><span class="line"><span class="number">4</span> QQ</span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure>
+<p>range函数的指定区间同样<strong>遵循左闭右开</strong>的原则</p>
+<h3 id="pass语句"><a href="#pass语句" class="headerlink" title="pass语句"></a>pass语句</h3><p>空语句，表示空</p>
+<h2 id="3、迭代器"><a href="#3、迭代器" class="headerlink" title="3、迭代器"></a>3、迭代器</h2><p>迭代是Python最强大的功能之一，是<strong>访问集合元素的一种方式</strong>。</p>
+<p>大概作用和C的指针有点像？</p>
+<p>迭代器是一个<strong>可以记住遍历的位置</strong>的对象。</p>
+<p>迭代器对象从集合的第一个元素开始访问，直到所有的元素被访问完结束。迭代器只能往前不会后退。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">    <span class="built_in">list</span> = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>]</span><br><span class="line">    it = <span class="built_in">iter</span>(<span class="built_in">list</span>)  <span class="comment"># 创建迭代器对象</span></span><br><span class="line">    it2 = <span class="built_in">iter</span>(<span class="built_in">list</span>)  <span class="comment"># 创建迭代器对象</span></span><br><span class="line">    <span class="keyword">for</span> x <span class="keyword">in</span> it:</span><br><span class="line">        <span class="keyword">if</span> x != <span class="number">4</span>:</span><br><span class="line">            <span class="built_in">print</span>(x, end=<span class="string">&quot; &quot;</span>)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="built_in">print</span>(x)</span><br><span class="line">    <span class="built_in">print</span>(<span class="built_in">next</span>(it2))</span><br><span class="line">    <span class="built_in">print</span>(<span class="built_in">next</span>(it2))</span><br><span class="line">    <span class="built_in">print</span>(<span class="built_in">next</span>(it2))</span><br><span class="line">    <span class="built_in">print</span>(<span class="built_in">next</span>(it2))</span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">1 2 3 4</span></span><br><span class="line"><span class="string">1</span></span><br><span class="line"><span class="string">2</span></span><br><span class="line"><span class="string">3</span></span><br><span class="line"><span class="string">4</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br></pre></td></tr></table></figure>
+<h3 id="把一个类作为迭代器使用："><a href="#把一个类作为迭代器使用：" class="headerlink" title="把一个类作为迭代器使用："></a>把一个类作为迭代器使用：</h3><p>若想把一个类作为迭代器使用，需要在类中实现两个方法：</p>
+<ul>
+<li><p><code>__iter__()</code>:返回一个特殊的迭代器对象， 这个迭代器对象实现了 <strong>next</strong>() 方法并通过 StopIteration 异常标识迭代的完成。</p>
+</li>
+<li><p><code>__next__()</code>:返回下一个迭代器对象</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">   <span class="keyword">class</span> <span class="title class_">MyNumbers</span>:</span><br><span class="line">       <span class="keyword">def</span> <span class="title function_">__iter__</span>(<span class="params">self</span>):</span><br><span class="line">           self.a = <span class="number">1</span></span><br><span class="line">           <span class="keyword">return</span> self</span><br><span class="line">  </span><br><span class="line">       <span class="keyword">def</span> <span class="title function_">__next__</span>(<span class="params">self</span>):</span><br><span class="line">           <span class="keyword">if</span> self.a &lt;= <span class="number">20</span>:</span><br><span class="line">               x = self.a</span><br><span class="line">               self.a += <span class="number">1</span></span><br><span class="line">               <span class="keyword">return</span> x</span><br><span class="line">           <span class="keyword">else</span>:</span><br><span class="line">               <span class="keyword">raise</span> StopIteration <span class="comment">#挂起StopIteration标志迭代完成，不能用return</span></span><br><span class="line">   a = MyNumbers()</span><br><span class="line">   i = <span class="built_in">iter</span>(a)</span><br><span class="line">   <span class="keyword">for</span> x <span class="keyword">in</span> i:</span><br><span class="line">       <span class="built_in">print</span>(x, end=<span class="string">&#x27; &#x27;</span>)</span><br><span class="line"><span class="comment">#1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 </span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="4、生成器"><a href="#4、生成器" class="headerlink" title="4、生成器"></a>4、生成器</h2><p> 在 Python 中，使用了 yield 的函数被称为生成器（generator）。</p>
+<p>在调用生成器运行的过程中，<strong>每次遇到 yield 时函数会暂停并保存当前所有的运行信息，返回 yield 的值</strong>, 并在下一次执行 next() 方法时从当前位置继续运行。</p>
+<ul>
+<li>生成器函数返回的是一个<strong>迭代器对象</strong></li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">fibonacci</span>(<span class="params">n</span>): <span class="comment"># 生成器函数 - 斐波那契</span></span><br><span class="line">    a, b, counter = <span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span></span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        <span class="keyword">if</span> (counter &gt; n): </span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        <span class="keyword">yield</span> a</span><br><span class="line">        a, b = b, a + b</span><br><span class="line">        counter += <span class="number">1</span></span><br><span class="line">f = fibonacci(<span class="number">10</span>) <span class="comment"># f 是一个迭代器，由生成器返回生成</span></span><br><span class="line"> </span><br><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        <span class="built_in">print</span> (<span class="built_in">next</span>(f), end=<span class="string">&quot; &quot;</span>)</span><br><span class="line">    <span class="keyword">except</span> StopIteration:</span><br><span class="line">        sys.exit()</span><br></pre></td></tr></table></figure>
+<h2 id="5、函数"><a href="#5、函数" class="headerlink" title="5、函数"></a>5、函数</h2><p>规则：</p>
+<ul>
+<li>函数代码块以 <strong>def</strong> 关键词开头，后接函数标识符名称和圆括号 <strong>()</strong>。</li>
+<li>函数内容以冒号 <strong>:</strong> 起始，并且缩进。<strong>（记得冒号！！）</strong></li>
+<li>与C不同，py的函数不需要确定返回值类型，直接return就可以</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">def 函数名（参数列表）:</span><br><span class="line">    函数体</span><br></pre></td></tr></table></figure>
+<h3 id="关键字参数"><a href="#关键字参数" class="headerlink" title="关键字参数"></a>关键字参数</h3><p>在调用函数时，实参可以是key=value的形式，称为关键字参数。</p>
+<p>凡是按照这种形式定义的实参，可以不按照从左到右的顺序定义，但仍能为指定的形参赋值。</p>
+<ul>
+<li><p><strong>关键字参数在位置参数后面</strong>，因为python函数在解析参数时，是按照顺序来的，<strong>位置参数</strong>是必须先满足，才考虑其他可变参数。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">printinfo</span>(<span class="params">age, name</span>):</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;名字: &quot;</span>, name)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;年龄: &quot;</span>, age)</span><br><span class="line">    <span class="keyword">return</span></span><br><span class="line">  </span><br><span class="line">printinfo(<span class="number">50</span>, name=<span class="string">&quot;runoob&quot;</span>) <span class="comment">#age为位置参数，name为关键字参数</span></span><br></pre></td></tr></table></figure>
+<p>需要注意：</p>
+<ul>
+<li><strong>位置参数的输入必须和定义时的位置相同</strong></li>
+<li><strong>关键字参数的输入必须在位置参数之后</strong></li>
+</ul>
+</li>
+</ul>
+<h3 id="当参数不定长时"><a href="#当参数不定长时" class="headerlink" title="当参数不定长时"></a>当参数不定长时</h3><figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">printinfo</span>(<span class="params"> arg1, *vartuple </span>):</span><br></pre></td></tr></table></figure>
+<p>加了星号 <strong>*</strong> 的参数会以元组(tuple)的形式导入，存放所有未命名的变量参数</p>
+<p>当参数添加双星号<strong>**</strong>时，传入的参数将以字典的形式保存</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">func</span>(<span class="params">**dic</span>)</span><br><span class="line">	<span class="built_in">print</span>(dic)</span><br><span class="line">func(**&#123;<span class="string">&#x27;a&#x27;</span>:<span class="number">1</span>,<span class="string">&#x27;b&#x27;</span>:<span class="number">2</span>&#125;)</span><br><span class="line"><span class="comment">#or</span></span><br><span class="line">func(a=<span class="number">1</span>,b=<span class="number">2</span>)</span><br></pre></td></tr></table></figure>
+<h3 id="匿名函数"><a href="#匿名函数" class="headerlink" title="匿名函数"></a>匿名函数</h3><p>Python 使用 <strong>lambda</strong> 来创建匿名函数</p>
+<ul>
+<li>lambda 的主体是一个表达式，而不是一个代码块。仅仅能在 lambda 表达式中封装有限的逻辑进去。</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 可写函数说明</span></span><br><span class="line"><span class="built_in">sum</span> = <span class="keyword">lambda</span> arg1, arg2: arg1 + arg2</span><br><span class="line"> </span><br><span class="line"><span class="comment"># 调用sum函数</span></span><br><span class="line"><span class="built_in">print</span> (<span class="string">&quot;相加后的值为 : &quot;</span>, <span class="built_in">sum</span>( <span class="number">10</span>, <span class="number">20</span> ))</span><br><span class="line"><span class="built_in">print</span> (<span class="string">&quot;相加后的值为 : &quot;</span>, <span class="built_in">sum</span>( <span class="number">20</span>, <span class="number">20</span> ))</span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">30</span></span><br><span class="line"><span class="string">40</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br></pre></td></tr></table></figure>
+<h3 id="强制位置参数＆命名关键字参数"><a href="#强制位置参数＆命名关键字参数" class="headerlink" title="强制位置参数＆命名关键字参数"></a>强制位置参数＆命名关键字参数</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># a, b, c成为限定位置形参</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">func</span>(<span class="params">a, b, c, /, d</span>):</span><br><span class="line">    <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#这时参数kw1, kw2必须传入关键字参数</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">func</span>(<span class="params">其他形参, *, kw1, kw2</span>):</span><br><span class="line">    <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
+<h2 id="6、类"><a href="#6、类" class="headerlink" title="6、类"></a>6、类</h2><p>Python中的类提供了面向对象编程的所有基本功能：类的继承机制允许多个基类，派生类可以覆盖基类中的任何方法，方法中可以调用基类中的同名方法。</p>
+<p>定义：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">MyClass</span>:</span><br><span class="line">    i = <span class="number">12345</span></span><br><span class="line">    a = <span class="number">1</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">f</span>(<span class="params">self</span>):<span class="comment">#类中的函数称作类的方法</span></span><br><span class="line">        <span class="keyword">return</span> <span class="string">&#x27;hello world&#x27;</span></span><br></pre></td></tr></table></figure>
+<p>类的初始化（构造方法），<strong>这里注意类的方法的第一个参数</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Complex</span>:</span><br><span class="line">    name = <span class="string">&#x27;&#x27;</span></span><br><span class="line">    age = <span class="number">0</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, n, a</span>): <span class="comment">#类的方法必须包含self，且其必须为第一个参数</span></span><br><span class="line">        self.name = n</span><br><span class="line">        self.age = a</span><br></pre></td></tr></table></figure>
+<p>创建一个类的实例：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">x = MyClass()</span><br></pre></td></tr></table></figure>
+<p>访问类的属性、方法：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(<span class="string">&quot;MyClass 类的属性 i 为：&quot;</span>, x.i)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;MyClass 类的方法 f 输出为：&quot;</span>, x.f())</span><br></pre></td></tr></table></figure>
+<h4 id="类的继承："><a href="#类的继承：" class="headerlink" title="类的继承："></a>类的继承：</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#类定义</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">people</span>:</span><br><span class="line">    <span class="comment">#定义基本属性</span></span><br><span class="line">    name = <span class="string">&#x27;&#x27;</span></span><br><span class="line">    age = <span class="number">0</span></span><br><span class="line">    <span class="comment">#定义私有属性,私有属性在类外部无法直接进行访问</span></span><br><span class="line">    __weight = <span class="number">0</span>	</span><br><span class="line">    <span class="comment">#定义构造方法</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self,n,a,w</span>):</span><br><span class="line">        self.name = n</span><br><span class="line">        self.age = a</span><br><span class="line">        self.__weight = w</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">speak</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;%s 说: 我 %d 岁。&quot;</span> %(self.name,self.age))</span><br><span class="line"> </span><br><span class="line"><span class="comment">#单继承示例</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">student</span>(<span class="title class_ inherited__">people</span>):</span><br><span class="line">    grade = <span class="string">&#x27;&#x27;</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self,n,a,w,g</span>):</span><br><span class="line">        <span class="comment">#调用父类的构函</span></span><br><span class="line">        people.__init__(self,n,a,w)</span><br><span class="line">        self.grade = g</span><br><span class="line">    <span class="comment">#重写父类的方法</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">speak</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;%s 说: 我 %d 岁了，我在读 %d 年级&quot;</span>%(self.name,self.age,self.grade))</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line">s = student(<span class="string">&#x27;ken&#x27;</span>,<span class="number">10</span>,<span class="number">60</span>,<span class="number">3</span>)</span><br><span class="line">s.speak()</span><br></pre></td></tr></table></figure>
+<ul>
+<li>子类中若出现了父类同名的方法，则在调用该子类方法时使用的内容也是子类中定义的内容</li>
+</ul>
+<p>私有属性与方法：</p>
+<p>在<strong>方法</strong>或属性的开头加两个下划线，<strong>声明</strong>（不包含在变量名中）该属性为私有，不能在类的外部被使用或直接访问</p>
+<h1 id="文件间的引用"><a href="#文件间的引用" class="headerlink" title="文件间的引用"></a>文件间的引用</h1><h2 id="1、import语句"><a href="#1、import语句" class="headerlink" title="1、import语句"></a>1、import语句</h2><p>想使用一个 Python 源文件，只需在另一个源文件里执行 import 语句导入该模块（就是后缀为.py的文件）</p>
+<ul>
+<li>一个模块只会被导入一次，不管你执行了多少次 <strong>import</strong>。这样可以防止导入模块被一遍又一遍地执行。</li>
+</ul>
+<h2 id="2、from-import语句"><a href="#2、from-import语句" class="headerlink" title="2、from..import语句"></a>2、from..import语句</h2><p>从模块中导入指定的部分，例如:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> test_file <span class="keyword">import</span> test_fuction1,test_fuction2</span><br><span class="line"><span class="comment">#从test_file.py中导入两个函数</span></span><br><span class="line"><span class="comment">#将某个模块中的全部函数导入，格式为from somemodule import *</span></span><br></pre></td></tr></table></figure>
+<h2 id="3、使用模块中的变量、函数"><a href="#3、使用模块中的变量、函数" class="headerlink" title="3、使用模块中的变量、函数"></a>3、使用模块中的变量、函数</h2><p>通过modname.itemname 这样的表示法来访问模块内的函数</p>
+<h2 id="4、-name-属性"><a href="#4、-name-属性" class="headerlink" title="4、_name__属性"></a>4、_name__属性</h2><p>一个模块被另一个程序第一次引入时，其主程序将运行。每个模块都有一个<strong>name</strong>属性，当其值是’<strong>main</strong>‘时，表明该模块自身在运行，否则是被引入。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">   <span class="built_in">print</span>(<span class="string">&#x27;程序自身在运行&#x27;</span>)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">   <span class="built_in">print</span>(<span class="string">&#x27;其他程序在运行&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<p>可以通过name属性使某个文件<strong>仅在自身运行而非被引用时</strong>运行某些函数</p>
+<h2 id="5、包"><a href="#5、包" class="headerlink" title="5、包"></a>5、包</h2><p>包是一种管理 Python 模块命名空间的形式，采用”点模块名称”。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">sound/                          顶层包</span><br><span class="line">      __init__.py               初始化 sound 包</span><br><span class="line">      formats/                  文件格式转换子包</span><br><span class="line">              __init__.py</span><br><span class="line">              wavread.py</span><br><span class="line">              wavwrite.py</span><br><span class="line">              aiffread.py</span><br><span class="line">              aiffwrite.py</span><br><span class="line">              auread.py</span><br><span class="line">              auwrite.py</span><br><span class="line">              ...</span><br><span class="line">      effects/                  声音效果子包</span><br><span class="line">              __init__.py</span><br><span class="line">              echo.py</span><br><span class="line">              surround.py</span><br><span class="line">              reverse.py</span><br><span class="line">              ...</span><br><span class="line">      filters/                  filters 子包</span><br><span class="line">              __init__.py</span><br><span class="line">              equalizer.py</span><br><span class="line">              vocoder.py</span><br><span class="line">              karaoke.py</span><br><span class="line">              ...</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p><strong>目录只有包含一个叫做 _ _init__.py 的文件才会被认作是一个包</strong></p>
+<ul>
+<li><p>导入方法</p>
+<p>导入模块</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sound.effects <span class="keyword">import</span> echo</span><br></pre></td></tr></table></figure>
+<p>导入函数、变量</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sound.effects.echo <span class="keyword">import</span> echofilter</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>导入多个子模块</p>
+<p>在sound/下的init文件中：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">__all__ = [&quot;echo&quot;, &quot;surround&quot;, &quot;reverse&quot;]</span><br></pre></td></tr></table></figure>
+<p>由于windows不区分大小写，因此可以通过这种方式在当使用导入*时区分大小写地导入子模块</p>
+</li>
+</ul>
+<h1 id="读、写文件"><a href="#读、写文件" class="headerlink" title="读、写文件"></a>读、写文件</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">f=<span class="built_in">open</span>(name,mode)</span><br></pre></td></tr></table></figure>
+<p>mode可选：</p>
 <div class="table-container">
 <table>
 <thead>
 <tr>
-<th style="text-align:center">头文件</th>
-<th style="text-align:center">类</th>
-<th style="text-align:center">作用</th>
+<th style="text-align:left">模式</th>
+<th style="text-align:left">描述</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align:center">iostream</td>
-<td style="text-align:center">(w)istream<br>(w)ostream<br>(w)iostream</td>
-<td style="text-align:center">从<strong>普通流</strong>中读写数据</td>
+<td style="text-align:left">r</td>
+<td style="text-align:left">以只读方式打开文件。文件的指针将会放在文件的开头。这是默认模式。</td>
 </tr>
 <tr>
-<td style="text-align:center">fstream</td>
-<td style="text-align:center">(w)ifstream<br>(w)ofstream<br>(w)fstream</td>
-<td style="text-align:center">从<strong>文件流</strong>中读写数据</td>
+<td style="text-align:left">rb</td>
+<td style="text-align:left">以二进制格式打开一个文件用于只读。文件指针将会放在文件的开头。</td>
 </tr>
 <tr>
-<td style="text-align:center">sstream</td>
-<td style="text-align:center">(w)istringstream<br>(w)ostringstream<br>(w)stringstream</td>
-<td style="text-align:center">从<strong>字符串流</strong>中读写数据</td>
+<td style="text-align:left">r+</td>
+<td style="text-align:left">打开一个文件用于读写。文件指针将会放在文件的开头。</td>
+</tr>
+<tr>
+<td style="text-align:left">rb+</td>
+<td style="text-align:left">以二进制格式打开一个文件用于读写。文件指针将会放在文件的开头。</td>
+</tr>
+<tr>
+<td style="text-align:left">w</td>
+<td style="text-align:left">打开一个文件只用于写入。如果该文件已存在则打开文件，并从开头开始编辑，即原有内容会被删除。如果该文件不存在，创建新文件。</td>
+</tr>
+<tr>
+<td style="text-align:left">wb</td>
+<td style="text-align:left">以二进制格式打开一个文件只用于写入。如果该文件已存在则打开文件，并从开头开始编辑，即原有内容会被删除。如果该文件不存在，创建新文件。</td>
+</tr>
+<tr>
+<td style="text-align:left">w+</td>
+<td style="text-align:left">打开一个文件用于读写。如果该文件已存在则打开文件，并从开头开始编辑，即原有内容会被删除。如果该文件不存在，创建新文件。</td>
+</tr>
+<tr>
+<td style="text-align:left">wb+</td>
+<td style="text-align:left">以二进制格式打开一个文件用于读写。如果该文件已存在则打开文件，并从开头开始编辑，即原有内容会被删除。如果该文件不存在，创建新文件。</td>
+</tr>
+<tr>
+<td style="text-align:left">a</td>
+<td style="text-align:left">打开一个文件用于追加。如果该文件已存在，文件指针将会放在文件的结尾。也就是说，新的内容将会被写入到已有内容之后。如果该文件不存在，创建新文件进行写入。</td>
+</tr>
+<tr>
+<td style="text-align:left">ab</td>
+<td style="text-align:left">以二进制格式打开一个文件用于追加。如果该文件已存在，文件指针将会放在文件的结尾。也就是说，新的内容将会被写入到已有内容之后。如果该文件不存在，创建新文件进行写入。</td>
+</tr>
+<tr>
+<td style="text-align:left">a+</td>
+<td style="text-align:left">打开一个文件用于读写。如果该文件已存在，文件指针将会放在文件的结尾。文件打开时会是追加模式。如果该文件不存在，创建新文件用于读写。</td>
+</tr>
+<tr>
+<td style="text-align:left">ab+</td>
+<td style="text-align:left">以二进制格式打开一个文件用于追加。如果该文件已存在，文件指针将会放在文件的结尾。如果该文件不存在，创建新文件用于读写。</td>
 </tr>
 </tbody>
 </table>
 </div>
-<ul>
-<li>在类和其函数前添加w则为正常类对象、函数等（例如wcin，wcout）的宽字符版。</li>
-</ul>
-<h2 id="IO类型间的关系"><a href="#IO类型间的关系" class="headerlink" title="IO类型间的关系"></a>IO类型间的关系</h2><p>类型ifstream和istringstream都<strong>继承</strong>自istream，因此，我们如何使用istream，就如何使用其他IO类型。在之后介绍的标准库的流特性<strong>均可以无差别地使用于各个IO类型</strong>。</p>
-<h1 id="IO类型的特性"><a href="#IO类型的特性" class="headerlink" title="IO类型的特性"></a>IO类型的特性</h1><h2 id="IO对象不能拷贝"><a href="#IO对象不能拷贝" class="headerlink" title="IO对象不能拷贝"></a>IO对象不能拷贝</h2><p>当我们定义了一些IO对象时（通常是用于IO操作的一些函数），之前也使用过，是不能对这些对象进行拷贝或赋值的操作的，<strong>因此当我们操作流时，通常都是使用引用的方式传递和返回流</strong>，这也意味着这些IO操作函数的返回类型要定义为IO类的引用，参数中的流也需定义为IO类的引用。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">istream &amp;<span class="title">read</span><span class="params">(istream &amp;in, person &amp;item)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    in&gt;&gt;item.name&gt;&gt;item.addr;</span><br><span class="line">    <span class="keyword">return</span> in;</span><br><span class="line">&#125;<span class="comment">//上一章讲到的read函数就是一个IO操作函数</span></span><br></pre></td></tr></table></figure>
-<h2 id="条件状态"><a href="#条件状态" class="headerlink" title="条件状态"></a>条件状态</h2><p>当使用IO操作流时可能会发生多种错误，为了查询这些错误，标准库中定义了相关函数和标准以访问当前流的条件状态。</p>
-<p>流分为以下几个状态：（这些状态为IO类中定义）</p>
-<div class="table-container">
-<table>
-<thead>
-<tr>
-<th style="text-align:center">badbit</th>
-<th style="text-align:center">当前流已崩溃</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">failbit</td>
-<td style="text-align:center">当前IO操作失败了</td>
-</tr>
-<tr>
-<td style="text-align:center">eofbit</td>
-<td style="text-align:center">当前流到达了文件结束</td>
-</tr>
-<tr>
-<td style="text-align:center">goodbit</td>
-<td style="text-align:center">为0代表流正常</td>
-</tr>
-</tbody>
-</table>
-</div>
-<ul>
-<li>可以对这些状态位进行位运算</li>
-<li>badbit表示系统级错误，是不可恢复的错误。通常一旦被置位，流就无法再使用了。</li>
-<li>failbit表示可恢复的错误，修正后流可以机械使用。<strong>badbit被置位后failbit也会被置位</strong>。</li>
-<li>如果文件结束，failbit和eofbit<strong>都会被置位</strong>。</li>
-<li>上面三位<strong>任意一位有置位情况goodbit都会被置位</strong>。</li>
-</ul>
-<p>以下是IO类的一些查询函数：</p>
-<div class="table-container">
-<table>
-<thead>
-<tr>
-<th style="text-align:center">类的子函数</th>
-<th style="text-align:center">作用</th>
-<th style="text-align:center">返回值</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">eof()</td>
-<td style="text-align:center">查询eofbit状态</td>
-<td style="text-align:center">若对应状态位<strong>置位</strong>则返回ture</td>
-</tr>
-<tr>
-<td style="text-align:center">fail()</td>
-<td style="text-align:center">查询failbit状态</td>
-<td style="text-align:center">若对应状态位<strong>置位</strong>则返回ture</td>
-</tr>
-<tr>
-<td style="text-align:center">bad()</td>
-<td style="text-align:center">查询badbit状态</td>
-<td style="text-align:center">若对应状态位<strong>置位</strong>则返回ture</td>
-</tr>
-<tr>
-<td style="text-align:center">good()</td>
-<td style="text-align:center">查询goodbit状态</td>
-<td style="text-align:center">若对应状态位<strong>置位</strong>则返回ture</td>
-</tr>
-<tr>
-<td style="text-align:center">clear()</td>
-<td style="text-align:center">将流中所有条件状态位复位</td>
-<td style="text-align:center">void</td>
-</tr>
-<tr>
-<td style="text-align:center">rdstate()</td>
-<td style="text-align:center">返回当前流的状态</td>
-<td style="text-align:center">一种包含所有状态位信息的类，但类型同状态位</td>
-</tr>
-<tr>
-<td style="text-align:center">clear(flag)</td>
-<td style="text-align:center">复位指定状态位</td>
-<td style="text-align:center">void</td>
-</tr>
-<tr>
-<td style="text-align:center">setstate(flag)</td>
-<td style="text-align:center">置位指定状态位</td>
-<td style="text-align:center">void</td>
-</tr>
-</tbody>
-</table>
-</div>
-<h3 id="管理条件状态"><a href="#管理条件状态" class="headerlink" title="管理条件状态"></a>管理条件状态</h3><p>每进行一次流操作后恢复上一次的条件状态：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">auto</span> oldstate = cin.<span class="built_in">rdstate</span>();</span><br><span class="line">cin.<span class="built_in">clear</span>();</span><br><span class="line">cin&gt;&gt;....<span class="comment">//一次输入流操作</span></span><br><span class="line">cin.<span class="built_in">setstate</span>(oldstate);</span><br></pre></td></tr></table></figure>
-<p>通过位操作一次操作多个状态位：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//假设当前所有状态置位</span></span><br><span class="line">cin.<span class="built_in">clear</span>(cin.<span class="built_in">rdstate</span>() &amp; ~cin.failbit &amp; ~cin.badbit)<span class="comment">//只复位failbit，badbit</span></span><br></pre></td></tr></table></figure>
-<h2 id="输出流的缓冲"><a href="#输出流的缓冲" class="headerlink" title="输出流的缓冲"></a>输出流的缓冲</h2><h3 id="刷新缓冲区"><a href="#刷新缓冲区" class="headerlink" title="刷新缓冲区"></a>刷新缓冲区</h3><p>之前讲到过输出endl可以刷新缓冲区，还有以下操作也可以刷新</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cout&lt;&lt;endl; <span class="comment">//换行</span></span><br><span class="line">cout&lt;&lt;flush; <span class="comment">//不添加任何额外字符</span></span><br><span class="line">cout&lt;&lt;ends; <span class="comment">//添加一个空字符</span></span><br></pre></td></tr></table></figure>
-<h3 id="刷新缓冲区的作用"><a href="#刷新缓冲区的作用" class="headerlink" title="刷新缓冲区的作用"></a>刷新缓冲区的作用</h3><p>我其实也不是特别理解，姑且谈一下我的理解，这是网上的一个例程</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="built_in">setvbuf</span>( stdout, <span class="literal">NULL</span>, _IOLBF, <span class="number">1024</span> );  <span class="comment">//设置控制台输出为行缓存模式，把缓冲区与流相关 </span></span><br><span class="line">	cout &lt;&lt;<span class="string">&quot;hello world\n&quot;</span>&lt;&lt;endl;                </span><br><span class="line">	<span class="built_in">Sleep</span>(<span class="number">5000</span>);                            </span><br><span class="line">	cout &lt;&lt;<span class="string">&quot;leeboy&quot;</span> &lt;&lt;endl;                 </span><br><span class="line">	<span class="built_in">system</span>(<span class="string">&quot;pause&quot;</span>);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>如果第四行不刷新缓冲区，则4行内容会和7行在5s后一起输出，所以刷新缓冲区的作用应该是立即输出当前内容？而按照网上说法，如果不刷新缓冲区，输出是由系统每隔一段时间检测输出流是否有内容。</p>
-<h3 id="unitbuf操作符"><a href="#unitbuf操作符" class="headerlink" title="unitbuf操作符"></a>unitbuf操作符</h3><p>如果想设置每一次输出后自动刷新缓冲区，可以：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cout&lt;&lt;std::unitbuf;</span><br><span class="line">cout&lt;&lt;std::nounitbuf;<span class="comment">//恢复正常缓冲模式</span></span><br></pre></td></tr></table></figure>
-<h3 id="关联输入和输出流"><a href="#关联输入和输出流" class="headerlink" title="关联输入和输出流"></a>关联输入和输出流</h3><p>关联后任何试图从输入流读取数据的操作都会先刷新关联的输出流</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cin&gt;&gt;std::ival;<span class="comment">//默认情况下cin和cerr都关联到了cout</span></span><br></pre></td></tr></table></figure>
-<h1 id="文件的输入与输出"><a href="#文件的输入与输出" class="headerlink" title="文件的输入与输出"></a>文件的输入与输出</h1><p>头文件fstream中定义了三个类来支持关于文件的IO操作：</p>
-<ul>
-<li>ifstream：用于文件读操作，从给定文件读取内容</li>
-<li>ofstream：用于文件写操作</li>
-<li>fstream：读写操作，可以通过不同配置实现上两类的功能</li>
-</ul>
-<p>这些类都继承了iostream的相关操作，同时还定义了一些新的成员来管理与流相关的文件，以下列出了部分特有操作，<strong>这些操作都适用于上三个类</strong>，但不能对其他IO类调用</p>
-<div class="table-container">
-<table>
-<thead>
-<tr>
-<th style="text-align:center">操作</th>
-<th style="text-align:center">功能</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">fstream a;</td>
-<td style="text-align:center">创建一个未绑定的文件流</td>
-</tr>
-<tr>
-<td style="text-align:center">fstream a(s);</td>
-<td style="text-align:center">创建一个文件流，并打开名为s的文件，s为string类型或C风格字符串指针</td>
-</tr>
-<tr>
-<td style="text-align:center">a.open()</td>
-<td style="text-align:center">打开一个文件，并绑定至流a</td>
-</tr>
-<tr>
-<td style="text-align:center">a.close()</td>
-<td style="text-align:center">关闭绑定的文件</td>
-</tr>
-<tr>
-<td style="text-align:center">a.is_open()</td>
-<td style="text-align:center">返回一个bool值，指出文件是否成功打开</td>
-</tr>
-</tbody>
-</table>
-</div>
-<h2 id="文件的打开"><a href="#文件的打开" class="headerlink" title="文件的打开"></a>文件的打开</h2><p>刚刚讲到了有两种方式打开一个文件，分别是</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">fstream <span class="title">a</span><span class="params">(<span class="string">&quot;dhk.txt&quot;</span>)</span></span>;</span><br><span class="line"><span class="comment">///////////////////////</span></span><br><span class="line">fstream b;</span><br><span class="line">b.<span class="built_in">open</span>(<span class="string">&quot;dhk.txt&quot;</span>);</span><br></pre></td></tr></table></figure>
-<p>我们先详解一下open函数：</p>
-<h3 id="open-函数"><a href="#open-函数" class="headerlink" title="open()函数"></a>open()函数</h3><p>根据输入的参数数量，该函数有以下几个定义</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">public</span> member function</span></span><br><span class="line"><span class="function"> </span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">open</span> <span class="params">( <span class="type">const</span> <span class="type">char</span> * filename,</span></span></span><br><span class="line"><span class="params"><span class="function">            ios_base::openmode mode = ios_base::in | ios_base::out )</span></span>;</span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">open</span><span class="params">(<span class="type">const</span> <span class="type">wchar_t</span> *_Filename,</span></span></span><br><span class="line"><span class="params"><span class="function">        ios_base::openmode mode= ios_base::in | ios_base::out,</span></span></span><br><span class="line"><span class="params"><span class="function">        <span class="type">int</span> prot = ios_base::_Openprot)</span>；</span></span><br><span class="line"><span class="function"> </span></span><br></pre></td></tr></table></figure>
-<p>参数：</p>
-<ul>
-<li>filename：文件名</li>
-<li>open mode：打开方式</li>
-<li>prot：打开文件的属性，一般很少用到</li>
-</ul>
-<p>这里重点讲一下打开方式，刚刚我们讲过：头文件fstream中的fstream类可以实现读和写的操作，也就是可以通过不同的配置实现ifstream和ofstream的操作，也就是通过这里的打开方式配置。</p>
-<p>打开方式在ios类中定义：</p>
-<div class="table-container">
-<table>
-<thead>
-<tr>
-<th style="text-align:center">ios::in</th>
-<th style="text-align:center">为输入(读)而打开文件</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">ios::out</td>
-<td style="text-align:center">为输出(写)而打开文件</td>
-</tr>
-<tr>
-<td style="text-align:center">ios::ate</td>
-<td style="text-align:center">初始位置：文件尾</td>
-</tr>
-<tr>
-<td style="text-align:center">ios::app</td>
-<td style="text-align:center">所有输出附加在文件末尾</td>
-</tr>
-<tr>
-<td style="text-align:center">ios::trunc</td>
-<td style="text-align:center">如果文件已存在则先删除该文件</td>
-</tr>
-<tr>
-<td style="text-align:center">ios::binary</td>
-<td style="text-align:center">二进制方式</td>
-</tr>
-</tbody>
-</table>
-</div>
-<p><strong>这些方式可以通过或运算|组合使用</strong></p>
-<ul>
-<li>ate和binary通常用于打开任何类型的文件流对象</li>
-</ul>
-<h3 id="默认打开方式"><a href="#默认打开方式" class="headerlink" title="默认打开方式"></a>默认打开方式</h3><p>对于第二种方式<code>fstream a(&quot;dhk.txt&quot;);</code>其实是隐式地调用了open()函数，直接使用了默认打开方式：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">ofstream <span class="title">out</span><span class="params">(<span class="string">&quot;...&quot;</span>, ios::out)</span></span>;</span><br><span class="line"><span class="function">ifstream <span class="title">in</span><span class="params">(<span class="string">&quot;...&quot;</span>, ios::in)</span></span>;</span><br><span class="line"><span class="function">fstream <span class="title">foi</span><span class="params">(<span class="string">&quot;...&quot;</span>, ios::in|ios::out)</span></span>;</span><br></pre></td></tr></table></figure>
-<h3 id="以写模式打开一个文件会丢弃已有数据"><a href="#以写模式打开一个文件会丢弃已有数据" class="headerlink" title="以写模式打开一个文件会丢弃已有数据"></a>以写模式打开一个文件会丢弃已有数据</h3><p>默认情况下，当打开一个ofstream对象时，若没有指定模式，默认是隐含的使用截断(ios::trunc)，即每次打开该文件时会清空之前的内容，若要阻止清空，<strong>需显式地设置为ios::app模式</strong>，同时，使用app模式则隐式地包含了ios::out。</p>
-<h2 id="使用fstream对象代替iostream-amp"><a href="#使用fstream对象代替iostream-amp" class="headerlink" title="使用fstream对象代替iostream&amp;"></a>使用fstream对象代替iostream&amp;</h2><p>由于fstream类继承自iostream，因此，接受一个iostream类型引用参数的函数也可以接收fstream类型：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"> <span class="keyword">struct</span> <span class="title class_">person</span></span><br><span class="line"> &#123;</span><br><span class="line">    string name;</span><br><span class="line">    string addr;</span><br><span class="line"> &#125;;</span><br><span class="line"></span><br><span class="line"><span class="function">istream &amp;<span class="title">read</span><span class="params">(istream &amp;in, person &amp;item)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    in&gt;&gt;item.name&gt;&gt;item.addr;</span><br><span class="line">    <span class="keyword">return</span> in;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">ostream &amp;<span class="title">print</span><span class="params">(ostream &amp;out, person &amp;item)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    out&lt;&lt;<span class="string">&quot;NAME: &quot;</span>&lt;&lt;item.name&lt;&lt;endl;</span><br><span class="line">    out&lt;&lt;<span class="string">&quot;ADDR: &quot;</span>&lt;&lt;item.addr&lt;&lt;endl;</span><br><span class="line">    <span class="keyword">return</span> out;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"> <span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"> </span>&#123;</span><br><span class="line">    person man;</span><br><span class="line">    <span class="function">ifstream <span class="title">in</span><span class="params">(<span class="string">&quot;D.txt&quot;</span>)</span></span>;</span><br><span class="line">    <span class="function">ofstream <span class="title">out</span><span class="params">(<span class="string">&quot;dhk.txt&quot;</span>)</span></span>;</span><br><span class="line">    <span class="built_in">read</span>(in,man);	<span class="comment">//使用ifstream代替istream</span></span><br><span class="line">    <span class="built_in">print</span>(out,man); 	<span class="comment">//使用ofstream代替ostream</span></span><br><span class="line">    out.<span class="built_in">close</span>();</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
-<h2 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h2><p>对一个已经打开的文件流再调用open函数会导致该流的failbit置位，后续操作都会失败</p>
-<ul>
-<li>查看文件是否成功打开的快捷方式：if(a);</li>
-</ul>
-<h2 id="文件打开路径的问题"><a href="#文件打开路径的问题" class="headerlink" title="文件打开路径的问题"></a>文件打开路径的问题</h2><p>文件的默认打开路径我也没搞懂，最好使用相对路径打开相关文件</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">ifstream <span class="title">in</span><span class="params">(<span class="string">&quot;.vscode\\fstream\\D.txt&quot;</span>)</span></span>;</span><br></pre></td></tr></table></figure>
-<p><u><strong>并且这里要使用双斜杠！！！</strong></u></p>
-<h1 id="字符串流"><a href="#字符串流" class="headerlink" title="字符串流"></a>字符串流</h1><p>在头文件sstream中定义了三个类来支持操作字符串IO，分别是：</p>
-<ul>
-<li>istringstream</li>
-<li>ostirngstream</li>
-<li>stringstream</li>
-</ul>
-<p>这些类同样继承自iostream，用法同文件流，类特有操作有：</p>
-<div class="table-container">
-<table>
-<thead>
-<tr>
-<th style="text-align:center">stringstream a;</th>
-<th style="text-align:center">创建一个未绑定string的流</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">stringstream a(s);</td>
-<td style="text-align:center">与string对象s绑定的一个字符串流</td>
-</tr>
-<tr>
-<td style="text-align:center">a.str();</td>
-<td style="text-align:center">返回a中所保存的所有字符串</td>
-</tr>
-<tr>
-<td style="text-align:center">a.str();</td>
-<td style="text-align:center">将s拷贝至a中，返回void</td>
-</tr>
-<tr>
-<td style="text-align:center">a.clear();</td>
-<td style="text-align:center">清空流</td>
-</tr>
-</tbody>
-</table>
-</div>
-<h2 id="读取string"><a href="#读取string" class="headerlink" title="读取string"></a>读取string</h2><p>与文件流相同，stringstream也可以实现读取和输入的功能</p>
-<p>下面以一个例程说明string流的用法 </p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;fstream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;string&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;windows.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;sstream&gt;</span></span></span><br><span class="line"> <span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"> <span class="keyword">struct</span> <span class="title class_">person</span></span><br><span class="line"> &#123;</span><br><span class="line">    string name;</span><br><span class="line">    string addr;</span><br><span class="line"> &#125;;</span><br><span class="line"><span class="function">istream &amp;<span class="title">read</span><span class="params">(istream &amp;in, person &amp;item)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    in&gt;&gt;item.name&gt;&gt;item.addr;</span><br><span class="line">    <span class="keyword">return</span> in;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function">ostream &amp;<span class="title">print</span><span class="params">(ostream &amp;out, person &amp;item)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    out&lt;&lt;<span class="string">&quot;NAME: &quot;</span>&lt;&lt;item.name&lt;&lt;endl;</span><br><span class="line">    out&lt;&lt;<span class="string">&quot;ADDR: &quot;</span>&lt;&lt;item.addr&lt;&lt;endl;</span><br><span class="line">    <span class="keyword">return</span> out;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    person man;</span><br><span class="line">    string line;</span><br><span class="line">    <span class="function">ifstream <span class="title">in</span><span class="params">(<span class="string">&quot;sstream\\D.txt&quot;</span>)</span></span>;	<span class="comment">//打开一个txt文件并绑定一个输入文件流in</span></span><br><span class="line">   <span class="comment">/*D.txt的内容：</span></span><br><span class="line"><span class="comment">   dhk 12</span></span><br><span class="line"><span class="comment">   aca 34</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">    <span class="keyword">while</span>(<span class="built_in">getline</span>(in,line))	<span class="comment">//分别处理文件中每一行的数据</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="function">stringstream <span class="title">s</span><span class="params">(line)</span></span>;<span class="comment">//将该行内容与字符串流s绑定，s的寿命为当次循环，当次循环结束s自动销毁</span></span><br><span class="line">        s&gt;&gt;man.name;<span class="comment">//将该行第一个词输入进类成员</span></span><br><span class="line">        s&gt;&gt;man.addr;<span class="comment">//该行第二个词输入进类成员</span></span><br><span class="line">        <span class="built_in">print</span>(cout,man);<span class="comment">//通过iostream输出类成员</span></span><br><span class="line">    &#125;</span><br><span class="line">    in.<span class="built_in">close</span>();<span class="comment">//关闭打开的文件</span></span><br><span class="line">    <span class="built_in">system</span>(<span class="string">&quot;pause&quot;</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>可以看出，流每次输出（入）的内容为一个“词”，也就是说空格和换行都会结束该次输出（入）的内容</li>
-</ul>
-<h2 id="输出到字符串流"><a href="#输出到字符串流" class="headerlink" title="输出到字符串流"></a>输出到字符串流</h2><p>当我们想逐步构造想要输出的内容，最后一口气打印时，就可以使用字符串的输出流，将构造好的内容分布写入到ostingstream（或stringstream的输出流）中，最后通过函数.str()输出到cout或者你想要的其他流中</p>
+<p>open的其他方法见：<a target="_blank" rel="noopener" href="https://www.runoob.com/python3/python3-file-methods.html">Python3 File 方法 | 菜鸟教程 (runoob.com)</a></p>
+<p>文件对象的其他方法见<a target="_blank" rel="noopener" href="https://www.runoob.com/python3/python3-inputoutput.html">Python3 输入和输出 | 菜鸟教程 (runoob.com)</a></p>
+<h1 id="局部变量和全局变量"><a href="#局部变量和全局变量" class="headerlink" title="局部变量和全局变量"></a>局部变量和全局变量</h1><p>在局部作用域修改全局变量，感觉。。还是我们C方便。。。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">num = <span class="number">1</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">fun1</span>():</span><br><span class="line">    <span class="keyword">global</span> num  <span class="comment"># 需要使用 global 关键字声明</span></span><br><span class="line">    <span class="built_in">print</span>(num) </span><br><span class="line">    num = <span class="number">123</span></span><br><span class="line">    <span class="built_in">print</span>(num)</span><br><span class="line">fun1()</span><br><span class="line"><span class="built_in">print</span>(num)</span><br></pre></td></tr></table></figure>
+<h1 id="Numpy库"><a href="#Numpy库" class="headerlink" title="Numpy库"></a>Numpy库</h1><h2 id="array操作"><a href="#array操作" class="headerlink" title="array操作"></a>array操作</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">a = np.zeros((<span class="number">1</span>, <span class="number">5</span>))                                       </span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;a shape = <span class="subst">&#123;a.shape&#125;</span>, a = <span class="subst">&#123;a&#125;</span>&quot;</span>)                     </span><br><span class="line"></span><br><span class="line">a = np.zeros((<span class="number">2</span>, <span class="number">1</span>))                                                                 </span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;a shape = <span class="subst">&#123;a.shape&#125;</span>, a = <span class="subst">&#123;a&#125;</span>&quot;</span>) </span><br><span class="line"></span><br><span class="line">a = np.random.random_sample((<span class="number">1</span>, <span class="number">1</span>))  </span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;a shape = <span class="subst">&#123;a.shape&#125;</span>, a = <span class="subst">&#123;a&#125;</span>&quot;</span>) </span><br><span class="line"></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">a shape = (1, 5), a = [[0. 0. 0. 0. 0.]]</span></span><br><span class="line"><span class="string">a shape = (2, 1), a = [[0.]</span></span><br><span class="line"><span class="string"> [0.]] #此处为2个行向量</span></span><br><span class="line"><span class="string">a shape = (1, 1), a = [[0.78320514]]</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">a = np.array([[<span class="number">5</span>], [<span class="number">4</span>], [<span class="number">3</span>]])  </span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot; a shape = <span class="subst">&#123;a.shape&#125;</span>, np.array: a = <span class="subst">&#123;a&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string"> a shape = (3, 1), np.array: a = [[5]</span></span><br><span class="line"><span class="string"> [4]</span></span><br><span class="line"><span class="string"> [3]]</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br></pre></td></tr></table></figure>
+<h2 id="索引"><a href="#索引" class="headerlink" title="索引"></a>索引</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">a = np.arange(<span class="number">6</span>).reshape(-<span class="number">1</span>, <span class="number">2</span>)   <span class="comment">#将0~5转化为？行，2列的格式</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;a.shape: <span class="subst">&#123;a.shape&#125;</span>, \na= <span class="subst">&#123;a&#125;</span>&quot;</span>)</span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">a.shape: (3, 2), </span></span><br><span class="line"><span class="string">a= [[0 1]</span></span><br><span class="line"><span class="string"> [2 3]</span></span><br><span class="line"><span class="string"> [4 5]]</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#索引某个元素（索引从0开始,因此索引的为第3排第1列）</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;\na[2,0].shape: <span class="subst">&#123;a[<span class="number">2</span>, <span class="number">0</span>].shape&#125;</span>, a[2,0] = <span class="subst">&#123;a[<span class="number">2</span>, <span class="number">0</span>]&#125;</span>, type(a[2,0]) = <span class="subst">&#123;<span class="built_in">type</span>(a[<span class="number">2</span>, <span class="number">0</span>])&#125;</span> Accessing an element returns a scalar\n&quot;</span>)</span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">a[2,0].shape: (), a[2,0] = 4, type(a[2,0]) = &lt;class &#x27;numpy.int32&#x27;&gt; Accessing an element returns a scalar</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#索引某一行</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;a[2].shape:   <span class="subst">&#123;a[<span class="number">2</span>].shape&#125;</span>, a[2]   = <span class="subst">&#123;a[<span class="number">2</span>]&#125;</span>, type(a[2])   = <span class="subst">&#123;<span class="built_in">type</span>(a[<span class="number">2</span>])&#125;</span>&quot;</span>)</span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">a[2].shape:   (2,), a[2]   = [4 5], type(a[2])   = &lt;class &#x27;numpy.ndarray&#x27;&gt;</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br></pre></td></tr></table></figure>
+<h2 id="np-expand-dims"><a href="#np-expand-dims" class="headerlink" title="np.expand_dims"></a>np.expand_dims</h2><p>我也还不太清楚具体用法，先做个记录，可以仿照着用</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">A = np.arange(<span class="number">1</span>,<span class="number">11</span>).reshape(<span class="number">1</span>,-<span class="number">1</span>) <span class="comment">#只有1行的二维</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&#x27;<span class="subst">&#123;A&#125;</span>\n&#x27;</span>)</span><br><span class="line">A = np.expand_dims(A,axis=<span class="number">2</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&#x27;<span class="subst">&#123;A&#125;</span>\n<span class="subst">&#123;A.shape&#125;</span>&#x27;</span>)</span><br><span class="line">A = A[:,:,<span class="number">0</span>]</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&#x27;<span class="subst">&#123;A&#125;</span>\n&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">[[ 1  2  3  4  5  6  7  8  9 10]]</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">[[[ 1]</span></span><br><span class="line"><span class="string">  [ 2]</span></span><br><span class="line"><span class="string">  [ 3]</span></span><br><span class="line"><span class="string">  [ 4]</span></span><br><span class="line"><span class="string">  [ 5]</span></span><br><span class="line"><span class="string">  [ 6]</span></span><br><span class="line"><span class="string">  [ 7]</span></span><br><span class="line"><span class="string">  [ 8]</span></span><br><span class="line"><span class="string">  [ 9]</span></span><br><span class="line"><span class="string">  [10]]]</span></span><br><span class="line"><span class="string">(1, 10, 1)</span></span><br><span class="line"><span class="string">[[ 1  2  3  4  5  6  7  8  9 10]]</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br></pre></td></tr></table></figure>
+<h2 id="np-pad"><a href="#np-pad" class="headerlink" title="np.pad"></a>np.pad</h2><p>对数组在不同维度填充值，默认为0</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line">A = np.arange(<span class="number">1</span>,<span class="number">11</span>).reshape(<span class="number">2</span>,-<span class="number">1</span>)</span><br><span class="line">A = np.expand_dims(A,axis=<span class="number">2</span>)	<span class="comment">#变为3维</span></span><br><span class="line">A = np.pad(A,((<span class="number">1</span>,<span class="number">2</span>),(<span class="number">0</span>,<span class="number">0</span>),(<span class="number">0</span>,<span class="number">0</span>)))</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&#x27;<span class="subst">&#123;A&#125;</span>\n&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">[[[ 0]</span></span><br><span class="line"><span class="string">  [ 0]</span></span><br><span class="line"><span class="string">  [ 0]</span></span><br><span class="line"><span class="string">  [ 0]</span></span><br><span class="line"><span class="string">  [ 0]]</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"> [[ 1]</span></span><br><span class="line"><span class="string">  [ 2]</span></span><br><span class="line"><span class="string">  [ 3]</span></span><br><span class="line"><span class="string">  [ 4]</span></span><br><span class="line"><span class="string">  [ 5]]</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"> [[ 6]</span></span><br><span class="line"><span class="string">  [ 7]</span></span><br><span class="line"><span class="string">  [ 8]</span></span><br><span class="line"><span class="string">  [ 9]</span></span><br><span class="line"><span class="string">  [10]]</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"> [[ 0]</span></span><br><span class="line"><span class="string">  [ 0]</span></span><br><span class="line"><span class="string">  [ 0]</span></span><br><span class="line"><span class="string">  [ 0]</span></span><br><span class="line"><span class="string">  [ 0]]</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"> [[ 0]</span></span><br><span class="line"><span class="string">  [ 0]</span></span><br><span class="line"><span class="string">  [ 0]</span></span><br><span class="line"><span class="string">  [ 0]</span></span><br><span class="line"><span class="string">  [ 0]]]</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">A = np.pad(A,((<span class="number">0</span>,<span class="number">0</span>),(<span class="number">1</span>,<span class="number">2</span>),(<span class="number">0</span>,<span class="number">0</span>)))</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&#x27;<span class="subst">&#123;A&#125;</span>\n&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">[[[ 0]</span></span><br><span class="line"><span class="string">  [ 1]</span></span><br><span class="line"><span class="string">  [ 2]</span></span><br><span class="line"><span class="string">  [ 3]</span></span><br><span class="line"><span class="string">  [ 4]</span></span><br><span class="line"><span class="string">  [ 5]</span></span><br><span class="line"><span class="string">  [ 0]</span></span><br><span class="line"><span class="string">  [ 0]]</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"> [[ 0]</span></span><br><span class="line"><span class="string">  [ 6]</span></span><br><span class="line"><span class="string">  [ 7]</span></span><br><span class="line"><span class="string">  [ 8]</span></span><br><span class="line"><span class="string">  [ 9]</span></span><br><span class="line"><span class="string">  [10]</span></span><br><span class="line"><span class="string">  [ 0]</span></span><br><span class="line"><span class="string">  [ 0]]]</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">A = np.pad(A,((<span class="number">0</span>,<span class="number">0</span>),(<span class="number">0</span>,<span class="number">0</span>),(<span class="number">1</span>,<span class="number">2</span>)))</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&#x27;<span class="subst">&#123;A&#125;</span>\n&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">[[[ 0  1  0  0]</span></span><br><span class="line"><span class="string">  [ 0  2  0  0]</span></span><br><span class="line"><span class="string">  [ 0  3  0  0]</span></span><br><span class="line"><span class="string">  [ 0  4  0  0]</span></span><br><span class="line"><span class="string">  [ 0  5  0  0]]</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"> [[ 0  6  0  0]</span></span><br><span class="line"><span class="string">  [ 0  7  0  0]</span></span><br><span class="line"><span class="string">  [ 0  8  0  0]</span></span><br><span class="line"><span class="string">  [ 0  9  0  0]</span></span><br><span class="line"><span class="string">  [ 0 10  0  0]]]</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br></pre></td></tr></table></figure>
+<h1 id="matplotlib-pyplot库"><a href="#matplotlib-pyplot库" class="headerlink" title="matplotlib.pyplot库"></a>matplotlib.pyplot库</h1><p>用法接近matlab</p>
+<h2 id="subplots"><a href="#subplots" class="headerlink" title="subplots"></a>subplots</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">fig, axarr = plt.subplots(<span class="number">6</span>)</span><br><span class="line">axarr[<span class="number">0</span>].plot(...)</span><br><span class="line">axarr[<span class="number">1</span>].imshow()</span><br><span class="line">...</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+<h2 id="subplot"><a href="#subplot" class="headerlink" title="subplot"></a>subplot</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">plt.subplot(1,2,1)</span><br><span class="line">plt.plot(...)</span><br><span class="line">plt.subplot(1,2,2)</span><br><span class="line">plt.plot(...)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+<h1 id="OS库"><a href="#OS库" class="headerlink" title="OS库"></a>OS库</h1><h2 id="os-listdir"><a href="#os-listdir" class="headerlink" title="os.listdir()"></a>os.listdir()</h2><p>os.listdir() 方法用于返回指定的文件夹包含的<strong>文件或文件夹</strong>的<strong>名字</strong>的<strong>列表</strong></p>
+<h2 id="os-path"><a href="#os-path" class="headerlink" title="os.path()"></a>os.path()</h2><p><a target="_blank" rel="noopener" href="https://www.runoob.com/python/python-os-path.html">Python os.path 模块 | 菜鸟教程 (runoob.com)</a></p>
+<h3 id="os-path-join-path1-path2-…"><a href="#os-path-join-path1-path2-…" class="headerlink" title="os.path.join(path1[, path2[, …]])"></a>os.path.join(path1[, path2[, …]])</h3><p>把path1path2合成一个路径</p>
 
       
     </div>
@@ -540,7 +450,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2022/10/30/C-%E6%9D%82%E9%A1%B9/">
+    <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2022/09/15/C++-3/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/zoe.gif">
@@ -554,7 +464,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2022/10/30/C-%E6%9D%82%E9%A1%B9/" class="post-title-link" itemprop="url">C_杂项</a>
+            <a href="/2022/09/15/C++-3/" class="post-title-link" itemprop="url">C++字符串、向量和数组</a>
         </h2>
 
         <div class="post-meta">
@@ -566,14 +476,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2022-10-30 19:41:19" itemprop="dateCreated datePublished" datetime="2022-10-30T19:41:19+08:00">2022-10-30</time>
+              <time title="创建时间：2022-09-15 19:34:35" itemprop="dateCreated datePublished" datetime="2022-09-15T19:34:35+08:00">2022-09-15</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2023-02-10 23:20:56" itemprop="dateModified" datetime="2023-02-10T23:20:56+08:00">2023-02-10</time>
+                <time title="修改时间：2023-01-12 14:45:43" itemprop="dateModified" datetime="2023-01-12T14:45:43+08:00">2023-01-12</time>
               </span>
 
           
@@ -587,21 +497,72 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="位域结构体"><a href="#位域结构体" class="headerlink" title="位域结构体"></a>位域结构体</h1><p>有时候，信息存储的时候，并不需要一个完整的字节，而只需占几个或一个二进制位就能满足需求。例如存放一个bool类型的变量，只需要true或者false即可，这种情况下，只需要0或者1一位二进制位即可。为了节省存储空间，并使处理简便，C语言又提供了一种数据结构，称为“位域”或“位段”。<strong>所谓“位域”是把一个字节中的二进位划分为几个不同的区域，并说明每个区域的位数。</strong>每个域有一个域名，允许在程序中按域名进行操作。<strong>这样就可以把几个不同的对象用一个字节的二进制位域来表示。</strong></p>
-<p>格式：</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> _<span class="title">net_pro_cdu</span>  </span></span><br><span class="line"><span class="class">&#123;</span> </span><br><span class="line">    <span class="type">unsigned</span>  <span class="type">char</span> acs:<span class="number">4</span> </span><br><span class="line">    <span class="type">unsigned</span>  <span class="type">char</span> :<span class="number">0</span>  </span><br><span class="line">    <span class="type">unsigned</span>  <span class="type">char</span> ace:<span class="number">4</span>  </span><br><span class="line">    <span class="type">unsigned</span>  <span class="type">char</span> dve:<span class="number">4</span> </span><br><span class="line">&#125; Ncdu;</span><br></pre></td></tr></table></figure>
-<p>注意：</p>
+          <h1 id="字符串、向量和数组"><a href="#字符串、向量和数组" class="headerlink" title="字符串、向量和数组"></a>字符串、向量和数组</h1><h2 id="1、using声明"><a href="#1、using声明" class="headerlink" title="1、using声明"></a>1、using声明</h2><p>作用：使用using声明命名空间的相关成员后，后续不需再声明</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> std::cin;</span><br><span class="line"><span class="type">int</span> i;</span><br><span class="line">cin&gt;&gt;i;</span><br></pre></td></tr></table></figure>
 <ul>
-<li>无位域名的位域不能使用，仅用来填充、调整尾置（如第四行）</li>
-<li>位大小不能超过定义用的类型（如上述例子位数不能超过8）</li>
+<li>每个名字都需要独立的using声明</li>
 </ul>
-<h1 id="volatile关键字"><a href="#volatile关键字" class="headerlink" title="volatile关键字"></a>volatile关键字</h1><p>声明一个变量是易变的，可以防止编译器对程序一些变量运算的过度优化。</p>
-<h1 id="for循环执行顺序"><a href="#for循环执行顺序" class="headerlink" title="for循环执行顺序"></a>for循环执行顺序</h1><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="type">int</span> i =<span class="number">0</span>; i&lt;<span class="number">5</span>;i++)&#123;</span><br><span class="line">     <span class="comment">// 循环体</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>执行顺序解抛<br>执行的顺序如下：<br>第一步 ： i=0  初始化值<br>第二步 ： i&lt;5 进行条件判断，如果为真，则继续执行<br>第三步 ： 执行循环体的内容<br>第四步 ： i++ 变量i自增<br>第五步 ： 回到第二步，条件判断为真，则执行循环体内容，再到i++一直循环，<br>直到第二步的判断条件为假，则退出该循环</p>
-<p>原文链接：<a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_44080187/article/details/123429045">https://blog.csdn.net/weixin_44080187/article/details/123429045</a></p>
-<h1 id="union类型"><a href="#union类型" class="headerlink" title="union类型"></a>union类型</h1><h2 id="长度问题"><a href="#长度问题" class="headerlink" title="长度问题"></a>长度问题</h2><p>实例化为变量后，这个变量的长度是这个union中最长的数据类型的长度</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">union</span> <span class="title">DEMO</span>&#123;</span> </span><br><span class="line">     <span class="type">char</span> status;</span><br><span class="line">     <span class="type">int</span> a; </span><br><span class="line">     <span class="type">int</span> serial[<span class="number">4</span>]; </span><br><span class="line">&#125;demo；<span class="comment">//大小为16字节</span></span><br></pre></td></tr></table></figure>
-<h2 id="数据访问"><a href="#数据访问" class="headerlink" title="数据访问"></a>数据访问</h2><p>对于union成员，地址相同，存储有点像并列一样的存储（？我是这么理解的），一个成员变化一定会影响其他成员</p>
+<h2 id="2、string类型"><a href="#2、string类型" class="headerlink" title="2、string类型"></a>2、string类型</h2><ul>
+<li>使用前需包含头文件<code>&lt;string&gt;</code>(没有.h)，且需声明string定义于命名空间中</li>
+</ul>
+<h3 id="初始化string类型的方法"><a href="#初始化string类型的方法" class="headerlink" title="初始化string类型的方法"></a>初始化string类型的方法</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">string s1;</span><br><span class="line">string s2=s1;</span><br><span class="line"><span class="function">string <span class="title">s3</span><span class="params">(<span class="string">&quot;value&quot;</span>)</span></span>;</span><br><span class="line">string s3 =<span class="string">&quot;value&quot;</span>;</span><br><span class="line"><span class="function">string <span class="title">s4</span><span class="params">(n,<span class="string">&#x27;c&#x27;</span>)</span></span>;<span class="comment">//此处只能为字符</span></span><br></pre></td></tr></table></figure>
+<h3 id="读写string对象"><a href="#读写string对象" class="headerlink" title="读写string对象"></a>读写string对象</h3><p>当要将标准输入内容读取到一个string对象时，string对象会自动忽略开头的空白（空格、换行等），从第一个真正的字符开始，直到遇到遇到下一个空白（但读取结束的标准是换行）</p>
+<h3 id="使用getline函数读取一整行"><a href="#使用getline函数读取一整行" class="headerlink" title="使用getline函数读取一整行"></a>使用getline函数读取一整行</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">string s;</span><br><span class="line"><span class="built_in">getline</span>(cin,s);</span><br></pre></td></tr></table></figure>
+<p>getline只有当读取到换行符时才会结束，并且这个换行符会被丢弃。</p>
+<h3 id="相加问题"><a href="#相加问题" class="headerlink" title="相加问题"></a>相加问题</h3><p>string对象可以相加，string对象也可以与字面值相加，<strong>但字面值不能与字面值相加！</strong></p>
+<h3 id="单独处理字符"><a href="#单独处理字符" class="headerlink" title="单独处理字符"></a>单独处理字符</h3><p>C++11提供了一种语句：范围for</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">string <span class="built_in">str</span>(<span class="string">&quot;something&quot;</span>);</span><br><span class="line"><span class="keyword">for</span>(auto c:<span class="built_in">str</span>)	cout&lt;&lt;c&lt;&lt;endl;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>每次循环中，都会把序列中的<strong>基础元素</strong>存入c中</li>
+</ul>
+<p>还可以通过引用等方式单独改变字符</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">string <span class="title">str</span><span class="params">(<span class="string">&quot;something&quot;</span>)</span></span>;</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">auto</span> &amp;c:str)	c=<span class="built_in">toupper</span>(c);<span class="comment">//大写转换函数</span></span><br></pre></td></tr></table></figure>
+<h3 id="下标问题"><a href="#下标问题" class="headerlink" title="下标问题"></a>下标问题</h3><p>C++支持对字符串使用下标运算符<code>[]</code>访问字符串的单个字符，规则同python，但貌似C++不支持截取。</p>
+<h2 id="3、vector类型"><a href="#3、vector类型" class="headerlink" title="3、vector类型"></a>3、vector类型</h2><p>要想使用vector，需包含<code>&lt;vector&gt;</code>头文件。<strong>类型vector表示对象的集合</strong></p>
+<p>实例化：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">vector&lt;<span class="type">int</span>&gt; a;</span><br><span class="line">vector&lt;vector&lt;<span class="type">int</span>&gt;&gt; b;</span><br></pre></td></tr></table></figure>
+<h3 id="定义与初始化"><a href="#定义与初始化" class="headerlink" title="定义与初始化"></a>定义与初始化</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">vector&lt;<span class="type">int</span>&gt; a;</span><br><span class="line"><span class="function">vector&lt;<span class="type">int</span>&gt; <span class="title">a</span><span class="params">(b)</span></span>; <span class="comment">//a包含b中所有元素的副本 a和b的类型需相同</span></span><br><span class="line">vector&lt;<span class="type">int</span>&gt; a=b;</span><br><span class="line"><span class="function">vector&lt;<span class="type">int</span>&gt; <span class="title">a</span><span class="params">(n,val)</span></span>; <span class="comment">//a中有n个重复的val</span></span><br><span class="line"><span class="function">vector&lt;<span class="type">int</span>&gt; <span class="title">a</span><span class="params">(n)</span></span>; <span class="comment">//包含n个对象</span></span><br><span class="line">vector&lt;<span class="type">int</span>&gt; a&#123;A,B,C&#125;;</span><br><span class="line">vector&lt;<span class="type">int</span>&gt; a=&#123;A,B,C&#125;;</span><br></pre></td></tr></table></figure>
+<h3 id="向vector对象尾部添加元素"><a href="#向vector对象尾部添加元素" class="headerlink" title="向vector对象尾部添加元素"></a>向vector对象尾部添加元素</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">vector&lt;<span class="type">int</span>&gt; a;</span><br><span class="line">a.<span class="built_in">push_back</span>(<span class="number">1</span>);<span class="comment">//a=&#123;1&#125;</span></span><br></pre></td></tr></table></figure>
+<h3 id="其他函数"><a href="#其他函数" class="headerlink" title="其他函数"></a>其他函数</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">a.<span class="built_in">empty</span>(); <span class="comment">//如果a不含元素则返回真</span></span><br><span class="line">a.<span class="built_in">size</span>(); <span class="comment">//返回元素个数</span></span><br></pre></td></tr></table></figure>
+<p>其他的类函数参考书p91</p>
+<h3 id="索引"><a href="#索引" class="headerlink" title="索引"></a>索引</h3><p>vector对象同样支持使用下标运算符进行单个元素的索引，但不能通过下标添加元素。</p>
+<h2 id="4、迭代器"><a href="#4、迭代器" class="headerlink" title="4、迭代器"></a>4、迭代器</h2><p>迭代器（iterator）是一种可以遍历容器元素的数据类型。迭代器是一个变量，相当于容器和操纵容器的算法之间的中介。<strong>C++更趋向于使用迭代器而不是数组下标操作</strong>，因为标准库为每一种标准容器（如vector、map和list等）定义了一种迭代器类型，而只有少数容器（如vector）支持数组下标操作访问容器元素。可以通过迭代器指向你想访问容器的元素地址，通过*x打印出元素值。这和我们所熟知的指针极其类似。</p>
+<p>C语言有指针，指针用起来十分灵活高效。<br>C++语言有迭代器，迭代器相对于指针而言功能更为丰富。</p>
+<h3 id="迭代器的使用"><a href="#迭代器的使用" class="headerlink" title="迭代器的使用"></a>迭代器的使用</h3><p>可以看出，迭代器的基本使用和指针极其相似</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	vector&lt;string&gt; v&#123;<span class="string">&quot;aaaa&quot;</span>,<span class="string">&quot;bbbb&quot;</span>&#125;;</span><br><span class="line">	<span class="keyword">auto</span> i=v.<span class="built_in">begin</span>();</span><br><span class="line">	cout&lt;&lt;*(i+<span class="number">1</span>); <span class="comment">//bbbb</span></span><br><span class="line">	<span class="built_in">system</span>(<span class="string">&quot;pause&quot;</span>);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="迭代器运算符"><a href="#迭代器运算符" class="headerlink" title="迭代器运算符"></a>迭代器运算符</h3><ul>
+<li><p>获得迭代器所指元素</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">*iter  <span class="keyword">or</span>  iter-&gt;mem</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>获取迭代器长度</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">i.<span class="built_in">end</span>()-i.<span class="built_in">begin</span>()</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="迭代器类型"><a href="#迭代器类型" class="headerlink" title="迭代器类型"></a>迭代器类型</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">vector&lt;string&gt; v&#123;<span class="string">&quot;aaaa&quot;</span>,<span class="string">&quot;bbbb&quot;</span>&#125;;</span><br><span class="line"><span class="keyword">auto</span> i=v.<span class="built_in">begin</span>();</span><br><span class="line"><span class="comment">//vector&lt;string&gt;::iterator i; 类型</span></span><br><span class="line"></span><br><span class="line"><span class="function">string <span class="title">str</span><span class="params">(<span class="string">&quot;12345&quot;</span>)</span></span>;</span><br><span class="line"><span class="keyword">auto</span> i=str.<span class="built_in">begin</span>();</span><br><span class="line"><span class="comment">//string::iterator i; 类型</span></span><br><span class="line"></span><br><span class="line">对应的只读类型</span><br><span class="line"><span class="comment">//vector&lt;string&gt;::const_iterator v;</span></span><br><span class="line"><span class="comment">//string::const_iterator str;</span></span><br></pre></td></tr></table></figure>
+<h3 id="当需要对迭代器进行遍历时，需注意for循环的条件3："><a href="#当需要对迭代器进行遍历时，需注意for循环的条件3：" class="headerlink" title="当需要对迭代器进行遍历时，需注意for循环的条件3："></a>当需要对迭代器进行遍历时，需注意for循环的条件3：</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	vector&lt;<span class="type">int</span>&gt; v&#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>,<span class="number">8</span>,<span class="number">9</span>,<span class="number">10</span>&#125;;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">auto</span> i=v.<span class="built_in">begin</span>(); i !=v.<span class="built_in">end</span>(); ++i)<span class="comment">//应使用++i，这是因为end为元素10之后的位置	</span></span><br><span class="line">	&#123;</span><br><span class="line">		*i=*i*<span class="number">2</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">auto</span> a:v) cout&lt;&lt;a&lt;&lt;endl;</span><br><span class="line">	<span class="built_in">system</span>(<span class="string">&quot;pause&quot;</span>);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="5、数组"><a href="#5、数组" class="headerlink" title="5、数组"></a>5、数组</h2><p>大部分规定与C相同。</p>
+<ul>
+<li><p>定义数组时不允许用auto关键字由初始值推断类型。</p>
+</li>
+<li><p>可使用decltype(数组名)定义数组类型。</p>
+</li>
+<li><p><strong>数组不是类类型，因此没有成员函数。</strong></p>
+<p>因此C++11引入了begin、end函数来查询数组相关元素的<strong>地址</strong></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> a[]=&#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>&#125;;</span><br><span class="line"><span class="type">int</span> *p=<span class="built_in">begin</span>(a);</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>注意：end()和vector类型的子函数.end()不同，end()函数返回的是数组最后一个元素的地址，而vector类型的end子函数返回的是最后一个元素的后一位地址</p>
+<h3 id="单个元素类型"><a href="#单个元素类型" class="headerlink" title="单个元素类型"></a>单个元素类型</h3><p>通常对数组的单个类型定义为size_t型，该类型为一种机器相关的无符号类型，它被设计得足够大以便能表示内存中任意对象的大小</p>
+<p><strong>要使用该类型，应包含cstddef头文件</strong></p>
+<h3 id="C与C-的字符串风格"><a href="#C与C-的字符串风格" class="headerlink" title="C与C++的字符串风格"></a>C与C++的字符串风格</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">char</span> a[<span class="number">10</span>]=<span class="string">&quot;dhk&quot;</span>; <span class="comment">//C风格</span></span><br><span class="line"><span class="function">string <span class="title">a</span><span class="params">(<span class="string">&quot;dhk&quot;</span>)</span></span>;	<span class="comment">//C++风格</span></span><br></pre></td></tr></table></figure>
+<p>在C中，通常我们要对字符串进行一些例如比较、拷贝、连接等的操作时，通常使用的是标准库中的相关字符串长度，相较于C++中string类型的变量可以对存放字符串的变量直接进行运算等操作，C的字符串风格更加繁琐，且极容易在数组的内存方面引发严重问题</p>
+<h4 id="混用规则："><a href="#混用规则：" class="headerlink" title="混用规则："></a>混用规则：</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">string <span class="title">a</span><span class="params">(<span class="string">&quot;dhk&quot;</span>)</span></span>;</span><br><span class="line"><span class="type">char</span> *str=a;<span class="comment">//错误，a的类型为string，而str类型为char*，冲突</span></span><br><span class="line"><span class="type">char</span> *str=a.<span class="built_in">c_str</span>();<span class="comment">//正确。c_str()函数返回的是C风格字符串（一个地址）</span></span><br></pre></td></tr></table></figure>
+<p>上述用法相当于是<strong>又</strong>在内存中创建了一个”dhk”字符串，而用于找到该字符串的指针一旦改变，该字符串就将不能再被找到，因此通常对存放该类型的指针进行const操作。其规则类似C中的<code>char *str=&quot;dhk&quot;</code>所遵循的规则。</p>
+<h3 id="使用数组初始化vector类型"><a href="#使用数组初始化vector类型" class="headerlink" title="使用数组初始化vector类型"></a>使用数组初始化vector类型</h3><p>C++不允许用一个数组为另一个数组赋初值，也不允许通过vector类型对象为一个数组初始化，但是允许通过数组为vector对象初始化。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> a[]=&#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>&#125;;</span><br><span class="line"><span class="function">vector&lt;<span class="type">int</span>&gt; <span class="title">v</span><span class="params">(begin(a),end(a))</span></span>;</span><br></pre></td></tr></table></figure>
+<h2 id="6、多维数组"><a href="#6、多维数组" class="headerlink" title="6、多维数组"></a>6、多维数组</h2><p>一些基础内容同C，详见<u>二维数组复习 | 小董的BLOG (gitee.io)</u></p>
+<p>多维数组可以理解为数组的数组例如<code>int a[3][4]</code>可以理解为a数组包含三个元素，而这三个元素都为大小为4的数组</p>
+<h3 id="下标引用"><a href="#下标引用" class="headerlink" title="下标引用"></a>下标引用</h3><h3 id="使用范围for语句和下标引用处理多维数组"><a href="#使用范围for语句和下标引用处理多维数组" class="headerlink" title="使用范围for语句和下标引用处理多维数组"></a>使用范围for语句和下标引用处理多维数组</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> a[<span class="number">3</span>][<span class="number">4</span>]=&#123;<span class="number">0</span>&#125;;</span><br><span class="line"><span class="type">size_t</span> x=<span class="number">0</span>;</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">auto</span> &amp;row : a)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">auto</span> &amp;col : row)</span><br><span class="line">	&#123;</span><br><span class="line">		col=x;</span><br><span class="line">		x++;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -621,7 +582,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2022/10/26/C++-6/">
+    <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2022/09/14/python-1/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/zoe.gif">
@@ -635,7 +596,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2022/10/26/C++-6/" class="post-title-link" itemprop="url">C++_类</a>
+            <a href="/2022/09/14/python-1/" class="post-title-link" itemprop="url">python_基础定义</a>
         </h2>
 
         <div class="post-meta">
@@ -647,14 +608,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2022-10-26 20:53:02" itemprop="dateCreated datePublished" datetime="2022-10-26T20:53:02+08:00">2022-10-26</time>
+              <time title="创建时间：2022-09-14 18:30:37" itemprop="dateCreated datePublished" datetime="2022-09-14T18:30:37+08:00">2022-09-14</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-10-28 18:52:36" itemprop="dateModified" datetime="2022-10-28T18:52:36+08:00">2022-10-28</time>
+                <time title="修改时间：2024-08-12 14:04:55" itemprop="dateModified" datetime="2024-08-12T14:04:55+08:00">2024-08-12</time>
               </span>
 
           
@@ -668,73 +629,266 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="定义抽象数据类型"><a href="#定义抽象数据类型" class="headerlink" title="定义抽象数据类型"></a>定义抽象数据类型</h1><h2 id="定义一个类"><a href="#定义一个类" class="headerlink" title="定义一个类"></a>定义一个类</h2><p>C++中可以使用struct和class构建一个类，struct为继承C语言留下，但用法与C不同。struct和class使用方法完全相同，只是对类成员默认的访问权限不同，这点后面会谈到。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span>/<span class="keyword">class</span> <span class="title class_">person</span></span><br><span class="line">&#123;</span><br><span class="line">	string name;</span><br><span class="line">	string addr;</span><br><span class="line">   <span class="function"><span class="type">int</span> <span class="title">test</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="在类的外部定义成员函数"><a href="#在类的外部定义成员函数" class="headerlink" title="在类的外部定义成员函数"></a>在类的外部定义成员函数</h2><p>C++的struct与C最不同的一点就是C++可以在类中定义函数，例如上述类中声明了一个返回值为int型的函数。</p>
-<p>该函数的内容可以在类中定义，也可以只在类中声明，再在外部定义。在外部定义时需注意以下几点：</p>
-<ul>
-<li>函数类型声明、函数名、参数列表必须和声明中一致</li>
-<li>由于函数是在类中声明，在定义时需声明其命名空间（声明函数名）</li>
+          <h1 id="1、基本数据类型"><a href="#1、基本数据类型" class="headerlink" title="1、基本数据类型"></a>1、基本数据类型</h1><ul>
+<li>变量不需要声明，也没有类型。</li>
+<li>python允许同时给多个变量赋值</li>
 </ul>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">person::test</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="定义一个返回类的函数"><a href="#定义一个返回类的函数" class="headerlink" title="定义一个返回类的函数"></a>定义一个返回类的函数</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">person</span></span><br><span class="line">&#123;</span><br><span class="line">	string name;</span><br><span class="line">	string addr;</span><br><span class="line">   <span class="function">person&amp; <span class="title">copy</span><span class="params">(<span class="type">const</span> person &amp;x)</span></span></span><br><span class="line"><span class="function">   </span>&#123;</span><br><span class="line">      name=x.name;</span><br><span class="line">      <span class="keyword">return</span> *<span class="keyword">this</span>;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li><p>该函数同样可以在类外定义，规则同上一节</p>
-</li>
-<li><p>函数返回的类型<strong>必须为引用</strong>，因为返回的值应该为一个左值</p>
-</li>
-<li><p>若函数参数也为一个类对象，也必须为引用格式</p>
-</li>
-<li><p>return *this意为返回该调用该函数的对象，例如：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">person test1,test2;</span><br><span class="line">test1.name=&quot;dhk&quot;; test2.name=&quot;aca&quot;;</span><br><span class="line">test1.copy(test2);</span><br><span class="line">cout&lt;&lt;test1.name; //输出&quot;aca&quot;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>函数体中的name和addr为调用该函数的对象的类成员</p>
-</li>
+<h2 id="标准数据类型："><a href="#标准数据类型：" class="headerlink" title="标准数据类型："></a>标准数据类型：</h2><ul>
+<li>Number</li>
+<li>String</li>
+<li>List</li>
+<li>Tuple（元组）</li>
+<li>Set（集合）</li>
+<li>Dictionary（字典）</li>
 </ul>
-<h2 id="定义类相关的非成员函数"><a href="#定义类相关的非成员函数" class="headerlink" title="定义类相关的非成员函数"></a>定义类相关的非成员函数</h2><h3 id="通过定义流的引用直接操作类成员的输入输出"><a href="#通过定义流的引用直接操作类成员的输入输出" class="headerlink" title="通过定义流的引用直接操作类成员的输入输出"></a>通过定义流的引用直接操作类成员的输入输出</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">istream &amp;<span class="title">read</span><span class="params">(istream &amp;in, person &amp;item)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    in&gt;&gt;item.name&gt;&gt;item.addr;</span><br><span class="line">    <span class="keyword">return</span> in;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function">ostream &amp;<span class="title">print</span><span class="params">(ostream &amp;out, person &amp;item)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    out&lt;&lt;<span class="string">&quot;NAME: &quot;</span>&lt;&lt;item.name&lt;&lt;endl;</span><br><span class="line">    out&lt;&lt;<span class="string">&quot;ADDR: &quot;</span>&lt;&lt;item.addr&lt;&lt;endl;</span><br><span class="line">    <span class="keyword">return</span> out;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="1、Number（数字）"><a href="#1、Number（数字）" class="headerlink" title="1、Number（数字）"></a>1、Number（数字）</h3><p>Python3 支持 int、float、bool、<strong>complex（复数）</strong>。</p>
 <ul>
-<li>istream和ostream需提前声明其命名空间</li>
-<li>IO类不能被拷贝，因此当其作为参数时<strong>必须通过引用传递值</strong></li>
-<li>此处print函数的参数item可以不使用引用</li>
-</ul>
-<h1 id="类的构造函数"><a href="#类的构造函数" class="headerlink" title="类的构造函数"></a>类的构造函数</h1><p>当我们定义一个类对象时，并没有对每一个类成员进行初始化，这时，编译器便通过一个特殊的构造函数来控制当前初始化，此函数叫做默认构造函数，<strong>该函数会对所有成员进行默认初始化。</strong></p>
-<p>但是如果我们想在定义类对象时就对一些成员进行我们想要的初始化该怎么办呢？这时我们就可以自己定义构造函数对一些类成员进行想要的初始化：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">person</span></span><br><span class="line">&#123;	</span><br><span class="line">   <span class="built_in">person</span>()=<span class="keyword">default</span>;</span><br><span class="line">   <span class="built_in">person</span>(string s1, string s2) &#123;name=s1;addr=s2;&#125;</span><br><span class="line">   <span class="built_in">person</span>(person &amp;item) &#123;<span class="built_in">copy</span>(item);&#125;</span><br><span class="line">   <span class="built_in">person</span>(istream &amp;in) &#123;<span class="built_in">read</span>(in,*<span class="keyword">this</span>);&#125;</span><br><span class="line"><span class="comment">/**********************以上为构造函数*******************/</span>      </span><br><span class="line">	string name;</span><br><span class="line">	string addr;</span><br><span class="line">   <span class="function">person&amp; <span class="title">copy</span><span class="params">(<span class="type">const</span> person &amp;x)</span></span></span><br><span class="line"><span class="function">   </span>&#123;</span><br><span class="line">      name=x.name;</span><br><span class="line">      <span class="keyword">return</span> *<span class="keyword">this</span>;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function">istream &amp;<span class="title">read</span><span class="params">(istream &amp;in, person &amp;item)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    in&gt;&gt;item.name&gt;&gt;item.addr;</span><br><span class="line">    <span class="keyword">return</span> in;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">   person a;</span><br><span class="line">   <span class="function">string <span class="title">s1</span><span class="params">(<span class="string">&quot;dhk&quot;</span>)</span>,<span class="title">s2</span><span class="params">(<span class="string">&quot;aca&quot;</span>)</span></span>; <span class="function">person <span class="title">b</span><span class="params">(s1,s2)</span></span>;</span><br><span class="line">   <span class="function">person <span class="title">c</span><span class="params">(b)</span></span>;</span><br><span class="line">   <span class="function">person <span class="title">d</span><span class="params">(cin)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>在person类中一共定义了四个构造函数，下面将分别讲解这四个构造函数的含义和相关知识：</p>
-<ul>
-<li><p><code>person()=default;</code>默认构造函数</p>
-<p>当一个类中定义了其他构造函数时，编译器便不会自动生成默认构造函数。因此，若没有此函数，主函数中24行便会报错，原因是没有与当前定义情况匹配的构造函数。</p>
+<li>可使用type(<em>变量</em> )函数查询变量类型</li>
+<li><p>可用isinstance(<em>变量，类型</em> )判断变量是否为想要的类型，为真返回Ture</p>
 </li>
-<li><p><code>person(string s1, string s2)</code></p>
-<p>如主函数25行，当初始化参数为两个string对象时，会进入该构造函数，该构造函数的作用是将类成员赋值为两个string对象。需要注意：</p>
-<ul>
-<li><p>大括号内为构造函数的函数体，可以在此完成一系列的初始化</p>
+<li><p>del 语句可用删除对对象的引用</p>
 </li>
-<li><p>这里也有一种构造初始值列表的初始化方式：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">person</span>(string s1, string s2): <span class="built_in">name</span>(s1),<span class="built_in">addr</span>(s2) &#123;&#125;</span><br></pre></td></tr></table></figure>
-<p>两种方式作用完全相同，但是实现的原理有所差异，这点后面会讲到。</p>
+<li><p>在除法的计算中，<code>/</code>返回浮点数，<code>//</code>返回整数，在混合计算时会把整数转化为浮点数</p>
+</li>
+<li><p><code>//</code>返回的不一定是整型的数，这与分母分子的类型有关</p>
 </li>
 </ul>
+<p>python可以使用<code>**</code>来进行幂运算，如5的平方：<code>5**2</code></p>
+<ul>
+<li><p><strong>number为不可变类型，</strong>例如变量赋值 <strong>a=5</strong> 后再赋值 <strong>a=10</strong>，这里实际是新生成一个 int 值对象 10，再让 a 指向它，而 5 被丢弃，不是改变 a 的值，相当于新生成了 a</p>
 </li>
-<li><p><code>person(person &amp;item)</code></p>
-<p>如主函数26行，类初始化的参数也可以为一个类对象，该构造函数会直接将输入参数用于执行copy函数，相当于通过copy函数间接给类成员赋值。</p>
+<li><p>数字类型转换</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">a=<span class="number">1.0</span></span><br><span class="line"><span class="built_in">int</span>(a)</span><br><span class="line"><span class="built_in">float</span>(a)</span><br><span class="line"><span class="built_in">complex</span>(a)	<span class="comment">#转换为复数，实数部分为a，虚数部分为0</span></span><br><span class="line">b=<span class="number">2</span></span><br><span class="line"><span class="built_in">complex</span>(a,b)	<span class="comment">#转换为复数，实数部分为a，虚数部分为b</span></span><br></pre></td></tr></table></figure>
 </li>
-<li><p><code>person(istream &amp;in)</code></p>
-<p>如27行，输入参数为一个IO类型的引用，需要注意此时read函数第二个参数为*this</p>
+<li><p>其他常用数字函数</p>
+<p><a target="_blank" rel="noopener" href="https://www.runoob.com/python3/python3-number.html">Python3 数字(Number) | 菜鸟教程 (runoob.com)</a></p>
 </li>
 </ul>
-<h2 id="构造函数初始值列表和赋值的区别"><a href="#构造函数初始值列表和赋值的区别" class="headerlink" title="构造函数初始值列表和赋值的区别"></a>构造函数初始值列表和赋值的区别</h2><p>之前我们讲到了构造函数对类成员的操作有两种：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">person</span>(string s1, string s2) &#123;name=s1;addr=s2;&#125;</span><br><span class="line"><span class="built_in">person</span>(string s1, string s2): <span class="built_in">name</span>(s1),<span class="built_in">addr</span>(s2) &#123;&#125;</span><br></pre></td></tr></table></figure>
-<p>两个操作在效果上一样，但是第一种操作根源上为赋值，而第二种操作才是初始化，在大部分情况下二者区别不大但是如果当类成员为引用或者const类型时，此时将不能赋值，但是可以初始化：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">person</span></span><br><span class="line">&#123;</span><br><span class="line">   <span class="built_in">person</span>(<span class="type">int</span> i) &#123;a=i;r=i&#125; <span class="comment">//错误的，不能给引用和常量赋值</span></span><br><span class="line">   <span class="built_in">person</span>(<span class="type">int</span> i): <span class="built_in">a</span>(i),<span class="built_in">r</span>(i) &#123;&#125; <span class="comment">//正确</span></span><br><span class="line">	<span class="type">const</span> <span class="type">int</span> a;</span><br><span class="line">	<span class="type">int</span> &amp;r;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h1 id="访问控制和封装"><a href="#访问控制和封装" class="headerlink" title="访问控制和封装"></a>访问控制和封装</h1><p>前面讲到了使用class和struct唯一区别是对类成员默认的访问权限不同，C++中可以使用访问说明符来管理类成员的访问权限以达到更好的封装。如果使用struct，则在第一个访问说明符前的成员默认为public，class则相反。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">person</span></span><br><span class="line">&#123;	</span><br><span class="line">   <span class="keyword">public</span>: <span class="comment">//以下成员在整个程序中都可以被访问</span></span><br><span class="line">   <span class="built_in">person</span>()=<span class="keyword">default</span>;</span><br><span class="line">   <span class="built_in">person</span>(string s1, string s2) &#123;name=s1;addr=s2;&#125;</span><br><span class="line">   <span class="built_in">person</span>(person &amp;item) &#123;<span class="built_in">copy</span>(item);&#125;</span><br><span class="line">   <span class="built_in">person</span>(istream &amp;in) &#123;<span class="built_in">read</span>(in,*<span class="keyword">this</span>);&#125;  </span><br><span class="line">   <span class="keyword">private</span>: <span class="comment">//以下成员只可以被类的成员函数访问</span></span><br><span class="line">	string name;</span><br><span class="line">	string addr;</span><br><span class="line">   <span class="function">person&amp; <span class="title">copy</span><span class="params">(<span class="type">const</span> person &amp;x)</span></span></span><br><span class="line"><span class="function">   </span>&#123;</span><br><span class="line">      name=x.name;</span><br><span class="line">      <span class="keyword">return</span> *<span class="keyword">this</span>;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>需要注意，private说明符后的成员<strong>只可以被类的成员函数访问，</strong>像前面讲到的read和print函数不属于类的成员函数，因此无法访问private中的成员。</p>
-<h2 id="友元"><a href="#友元" class="headerlink" title="友元"></a>友元</h2><p>若想非类成员函数访问private内容,可以在类中<strong>使用friend关键字对其进行友元声明</strong></p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">person</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="function"><span class="keyword">friend</span> istream &amp;<span class="title">read</span><span class="params">(istream &amp;in, person &amp;item)</span></span>;</span><br><span class="line">   <span class="function"><span class="keyword">friend</span> ostream &amp;<span class="title">print</span><span class="params">(ostream &amp;out, person &amp;item)</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">istream &amp;<span class="title">read</span><span class="params">(istream &amp;in, person &amp;item)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    in&gt;&gt;item.name&gt;&gt;item.addr;</span><br><span class="line">    <span class="keyword">return</span> in;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function">ostream &amp;<span class="title">print</span><span class="params">(ostream &amp;out, person &amp;item)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    out&lt;&lt;<span class="string">&quot;NAME: &quot;</span>&lt;&lt;item.name&lt;&lt;endl;</span><br><span class="line">    out&lt;&lt;<span class="string">&quot;ADDR: &quot;</span>&lt;&lt;item.addr&lt;&lt;endl;</span><br><span class="line">    <span class="keyword">return</span> out;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>友元声明也适用于声明其他类及其成员函数</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">person</span></span><br><span class="line">&#123;</span><br><span class="line">   <span class="keyword">friend</span> <span class="keyword">class</span> <span class="title class_">test</span>;</span><br><span class="line">   <span class="function"><span class="keyword">friend</span> <span class="type">void</span> <span class="title">test::test1</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">test</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="function"><span class="type">void</span> <span class="title">test1</span><span class="params">()</span></span>&#123;...&#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h1 id="关于类的静态成员"><a href="#关于类的静态成员" class="headerlink" title="关于类的静态成员"></a>关于类的静态成员</h1><p>在仔细阅读了书籍过后个人觉得用处不是特别大，如果以后用到了相关知识再在这里补充，目前就不写了。</p>
+<h3 id="2、String（字符串）"><a href="#2、String（字符串）" class="headerlink" title="2、String（字符串）"></a>2、String（字符串）</h3><p>Python 没有单独的字符类型，一个字符就是长度为 1 的字符串</p>
+<p>python中的字符串可用单引号或双引号括起来，使用完全相同</p>
+<p>字符串的截取：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#变量[头下标:尾下标:截取步长]</span></span><br><span class="line"><span class="comment">#若截取步长为负数则逆向读取</span></span><br><span class="line"><span class="comment">#第一个字符索引值为0，末尾字符为-1</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;dhk&quot;</span>*<span class="number">2</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;dhk&quot;</span>+<span class="string">&quot;dhk&quot;</span>)</span><br><span class="line"><span class="comment">#dhkdhk</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>字符索引：变量[索引下标]</li>
+<li>屏蔽转义字符：在字符串前（引号外）添加一个r</li>
+<li><strong>python字符串不能被改变，也就是说不能给单个索引位置赋值</strong></li>
+</ul>
+<p>字符串的格式化：<code>print(&quot;%s %d&quot; % (&#39;abc&#39;, 10))</code></p>
+<h4 id="input"><a href="#input" class="headerlink" title="input"></a>input</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">input</span>([prompt]) <span class="comment">#prompt为用户写的提示信息</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt;a = <span class="built_in">input</span>(<span class="string">&quot;input:&quot;</span>)</span><br><span class="line"><span class="built_in">input</span>:<span class="number">123</span>                  <span class="comment"># 输入整数</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">type</span>(a)</span><br><span class="line">&lt;<span class="built_in">type</span> <span class="string">&#x27;int&#x27;</span>&gt;               <span class="comment"># 整型</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a = <span class="built_in">input</span>(<span class="string">&quot;input:&quot;</span>)    </span><br><span class="line"><span class="built_in">input</span>:<span class="string">&quot;runoob&quot;</span>           <span class="comment"># 正确，字符串表达式</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">type</span>(a)</span><br><span class="line">&lt;<span class="built_in">type</span> <span class="string">&#x27;str&#x27;</span>&gt;             <span class="comment"># 字符串，python3 里 input() 默认接收到的是 str 类型</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a = <span class="built_in">input</span>(<span class="string">&quot;input:&quot;</span>)</span><br><span class="line"><span class="built_in">input</span>:runoob               <span class="comment"># 报错，不是表达式</span></span><br></pre></td></tr></table></figure>
+<h4 id="f-string字符串格式化"><a href="#f-string字符串格式化" class="headerlink" title="f-string字符串格式化"></a>f-string字符串格式化</h4><p> 格式化字符串以 <strong>f</strong> 开头，后面跟着字符串，字符串中的表达式用大括号 {} 包起来，它会将变量或表达式计算后的值替换进去，括号中的变量不仅限于字符串</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">name = <span class="string">&#x27;dhk&#x27;</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&#x27;hello <span class="subst">&#123;name&#125;</span>&#x27;</span>)</span><br><span class="line"><span class="comment">#hello dhk</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>print中的转义字符用法同C</li>
+</ul>
+<h4 id="print"><a href="#print" class="headerlink" title="print"></a>print</h4><p>python的输出不同于c，直接把想输出的内容通过逗号连接即可</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">a=<span class="number">11</span></span><br><span class="line">b=<span class="string">&#x27;dhk&#x27;</span></span><br><span class="line"><span class="built_in">print</span>(a,b)</span><br></pre></td></tr></table></figure>
+<p>也可以通过类似C的语法：</p>
+<p>但是感觉这种方法不如f-string和上述用法方便简单</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span> (<span class="string">&quot;我叫 %s 今年 %d 岁!&quot;</span> % (<span class="string">&#x27;小明&#x27;</span>, <span class="number">10</span>))</span><br></pre></td></tr></table></figure>
+<p>格式化符号详见<a target="_blank" rel="noopener" href="https://www.runoob.com/python3/python3-string.html">Python3 字符串 | 菜鸟教程 (runoob.com)</a></p>
+<ul>
+<li><p>end关键字，用于将结果输出到同一行</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(b, end=<span class="string">&#x27;,&#x27;</span>)</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="转义字符"><a href="#转义字符" class="headerlink" title="转义字符"></a>转义字符</h4><p><a target="_blank" rel="noopener" href="https://www.runoob.com/python3/python3-string.html">Python3 字符串 | 菜鸟教程 (runoob.com)</a></p>
+<p>其中进制的转换为：</p>
+<ul>
+<li>bin(a)：转二进制</li>
+<li>oct(a)：转八进制</li>
+<li>hex(a)：转十六进制</li>
+</ul>
+<h4 id="字符串相关函数"><a href="#字符串相关函数" class="headerlink" title="字符串相关函数"></a>字符串相关函数</h4><p><a target="_blank" rel="noopener" href="https://www.runoob.com/python3/python3-string.html">Python3 字符串 | 菜鸟教程 (runoob.com)</a></p>
+<h3 id="3、List（列表），中括号"><a href="#3、List（列表），中括号" class="headerlink" title="3、List（列表），中括号"></a>3、List（列表），中括号</h3><p>定义方式：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">a=[<span class="number">1</span>,<span class="number">10.1</span>,<span class="string">&#x27;abcd&#x27;</span>]</span><br></pre></td></tr></table></figure>
+<ul>
+<li>基本使用同字符串，也可以索引、截取，使用步长截取（包括逆向）等。</li>
+<li><strong>列表内的元素可改变！</strong>，直接像c的数组一样改就行</li>
+<li>逆向读取不会将元素内容逆向</li>
+</ul>
+<h4 id="更新列表："><a href="#更新列表：" class="headerlink" title="更新列表："></a>更新列表：</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">list1 = [<span class="string">&#x27;Google&#x27;</span>, <span class="string">&#x27;Runoob&#x27;</span>, <span class="string">&#x27;Taobao&#x27;</span>]</span><br><span class="line">list1.append(<span class="string">&#x27;Baidu&#x27;</span>)</span><br><span class="line"><span class="built_in">print</span> (<span class="string">&quot;更新后的列表 : &quot;</span>, list1)	<span class="comment">#更新后的列表 :  [&#x27;Google&#x27;, &#x27;Runoob&#x27;, &#x27;Taobao&#x27;, &#x27;Baidu&#x27;]</span></span><br></pre></td></tr></table></figure>
+<h4 id="删除列表元素"><a href="#删除列表元素" class="headerlink" title="删除列表元素"></a>删除列表元素</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">list1 = [<span class="string">&#x27;Google&#x27;</span>, <span class="string">&#x27;Runoob&#x27;</span>, <span class="string">&#x27;Taobao&#x27;</span>]</span><br><span class="line"><span class="keyword">del</span> <span class="built_in">list</span>[<span class="number">2</span>]</span><br></pre></td></tr></table></figure>
+<h4 id="索引"><a href="#索引" class="headerlink" title="索引"></a>索引</h4><p>变量[头下标:尾下标] or 变量[头下标:尾下标:<strong>步长</strong>]步长为-1时逆向读取</p>
+<p>其中-1代表末尾（用于不知道实际长度时的索引），同时-2、-3对应倒数第二、第三…</p>
+<p>正数和负数的使用<strong>不相互冲突</strong></p>
+<h4 id="列表操作函数"><a href="#列表操作函数" class="headerlink" title="列表操作函数"></a>列表操作函数</h4><p><a target="_blank" rel="noopener" href="https://www.runoob.com/python3/python3-list.html">Python3 列表 | 菜鸟教程 (runoob.com)</a></p>
+<h4 id="创建指定长度空列表"><a href="#创建指定长度空列表" class="headerlink" title="创建指定长度空列表"></a>创建指定长度空列表</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">n = <span class="number">5</span></span><br><span class="line">empty_list = [<span class="literal">None</span>] * n</span><br></pre></td></tr></table></figure>
+<h3 id="4、Tuple（元组），小括号"><a href="#4、Tuple（元组），小括号" class="headerlink" title="4、Tuple（元组），小括号"></a>4、Tuple（元组），小括号</h3><p>定义方式：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">a=(<span class="number">1</span>,<span class="number">10.1</span>,<span class="string">&#x27;abcd&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>基本使用同字符串，也可以索引、截取，使用步长截取（包括逆向）等。</p>
+</li>
+<li><p>元组在输入时可能没有括号，例如<code>t = 12345, 54321, &#39;hello!&#39;</code></p>
+</li>
+<li><p><strong>元组内元素不可改变，但可以包含可变的对象，比如列表</strong>，同时也可以对元组之间进行连接组合成新元组：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">tup1 = (<span class="number">12</span>, <span class="number">34.56</span>)</span><br><span class="line">tup2 = (<span class="string">&#x27;abc&#x27;</span>, <span class="string">&#x27;xyz&#x27;</span>)</span><br><span class="line"> </span><br><span class="line"><span class="comment"># 以下修改元组元素操作是非法的。</span></span><br><span class="line"><span class="comment"># tup1[0] = 100</span></span><br><span class="line"> </span><br><span class="line"><span class="comment"># 创建一个新的元组</span></span><br><span class="line">tup3 = tup1 + tup2</span><br><span class="line"><span class="built_in">print</span> (tup3)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>包含0和1个的元组有额外的语法规则：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">tup1 = ()    <span class="comment"># 空元组</span></span><br><span class="line">tup2 = (<span class="number">20</span>,) <span class="comment"># 一个元素，需要在元素后添加逗号,否则括号会被当作运算符使用</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong><u>元组中只包含一个元素时，需要在元素后面添加逗号  ，否则括号会被当作运算符使用</u></strong></p>
+</li>
+<li><p>内置函数</p>
+<p><a target="_blank" rel="noopener" href="https://www.runoob.com/python3/python3-tuple.html">Python3 元组 | 菜鸟教程 (runoob.com)</a></p>
+</li>
+</ul>
+<h3 id="5、Set（集合），大括号"><a href="#5、Set（集合），大括号" class="headerlink" title="5、Set（集合），大括号"></a>5、Set（集合），大括号</h3><p>定义方式：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">a=() <span class="comment">#空集合需用小括号</span></span><br><span class="line">b=&#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>&#125;</span><br><span class="line">c=<span class="built_in">set</span>(<span class="string">&#x27;abcde&#x27;</span>) <span class="comment">#使用set函数=&#123;&#x27;a&#x27;,&#x27;b&#x27;,&#x27;c&#x27;,&#x27;d&#x27;,&#x27;e&#x27;&#125;</span></span><br><span class="line"><span class="comment">#必须用 set() 而不是 &#123; &#125;，因为 &#123; &#125; 是用来创建一个空字典。</span></span><br><span class="line">b.add(<span class="number">4</span>)</span><br><span class="line">b.update(<span class="number">4</span>)	<span class="comment">#添加元素上述两种都可以</span></span><br><span class="line">b.remove(<span class="number">4</span>)</span><br><span class="line">b.discard(<span class="number">4</span>)	<span class="comment">#remove不存在元素会报错，discard则不会</span></span><br></pre></td></tr></table></figure>
+<p>特点：</p>
+<ul>
+<li><p><strong>输出时会自动去掉重复的元素（从第二次重复的元素开始删除）</strong></p>
+</li>
+<li><p>可以进行集合运算</p>
+</li>
+<li><p><strong>不可像前面几个类型一样进行索引</strong>，集合是无序的</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(a-b) <span class="comment">#将a中与b相同的元素去掉后输出a</span></span><br><span class="line"><span class="built_in">print</span>(a|b) <span class="comment"># 并集</span></span><br><span class="line"><span class="built_in">print</span>(a&amp;b) <span class="comment">#交集</span></span><br><span class="line"><span class="built_in">print</span>(a^b) <span class="comment">#非交集</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>其余内置函数</p>
+<p><a target="_blank" rel="noopener" href="https://www.runoob.com/python3/python3-set.html">Python3 集合 | 菜鸟教程 (runoob.com)</a></p>
+<h3 id="6、Dictionary（字典）"><a href="#6、Dictionary（字典）" class="headerlink" title="6、Dictionary（字典）"></a>6、Dictionary（字典）</h3><p>字典是一种映射类型，它是一个<strong>无序</strong>的 <strong>键(key) : 值(value)</strong> 的集合。</p>
+<p>定义方式：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">a = &#123;<span class="string">&#x27;a&#x27;</span> : <span class="number">1</span>, <span class="string">&#x27;b&#x27;</span>: <span class="number">2</span>, <span class="string">&#x27;c&#x27;</span> :<span class="number">3</span>&#125;  <span class="comment">#&#x27;:&#x27;前为“键”，后为“值”</span></span><br><span class="line"><span class="comment">#or</span></span><br><span class="line">a= &#123;&#125;</span><br><span class="line">a[<span class="string">&#x27;a&#x27;</span>] = <span class="number">1</span></span><br><span class="line">a[<span class="string">&#x27;b&#x27;</span>] = <span class="number">2</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(a) <span class="comment">#&#123;&#x27;a&#x27;: &#x27;abcd&#x27;, &#x27;b&#x27;: &#x27;123&#x27;&#125;</span></span><br><span class="line"><span class="built_in">print</span>(a.keys()) <span class="comment">#dict_keys([&#x27;a&#x27;, &#x27;b&#x27;])</span></span><br><span class="line"><span class="built_in">print</span>(a.values()) <span class="comment">#dict_values([&#x27;abcd&#x27;, &#x27;123&#x27;])</span></span><br><span class="line"><span class="built_in">print</span>(a[<span class="string">&#x27;b&#x27;</span>])	<span class="comment">#2    访问字典里的值</span></span><br></pre></td></tr></table></figure>
+<p>键的特性：</p>
+<ul>
+<li><p>同一个键出现两次时只有后一个值会被记住</p>
+</li>
+<li><p>键<strong>必须是不可变</strong>的，因此可以是数字、字符串、元组，而不能是列表等可以改变的变量</p>
+</li>
+<li><p>修改字典</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">tinydict = &#123;<span class="string">&#x27;Name&#x27;</span>: <span class="string">&#x27;Runoob&#x27;</span>, <span class="string">&#x27;Age&#x27;</span>: <span class="number">7</span>, <span class="string">&#x27;Class&#x27;</span>: <span class="string">&#x27;First&#x27;</span>&#125;</span><br><span class="line"> </span><br><span class="line">tinydict[<span class="string">&#x27;Age&#x27;</span>] = <span class="number">8</span>               <span class="comment"># 更新 Age</span></span><br><span class="line">tinydict[<span class="string">&#x27;School&#x27;</span>] = <span class="string">&quot;菜鸟教程&quot;</span>  <span class="comment"># 添加信息</span></span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line"><span class="built_in">print</span> (<span class="string">&quot;tinydict[&#x27;Age&#x27;]: &quot;</span>, tinydict[<span class="string">&#x27;Age&#x27;</span>])</span><br><span class="line"><span class="built_in">print</span> (<span class="string">&quot;tinydict[&#x27;School&#x27;]: &quot;</span>, tinydict[<span class="string">&#x27;School&#x27;</span>])</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>同时遍历多个序列和用单个字典表示：</p>
+</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">questions = &#123;<span class="string">&#x27;name&#x27;</span>: <span class="string">&#x27;lancelot&#x27;</span>, <span class="string">&#x27;quest&#x27;</span>:<span class="string">&#x27;the holy grail&#x27;</span>, <span class="string">&#x27;favorite color&#x27;</span>:<span class="string">&#x27;blue&#x27;</span>&#125;</span><br><span class="line"><span class="keyword">for</span> q, a <span class="keyword">in</span> questions.items():<span class="comment">#q和a会分别遍历键和值</span></span><br><span class="line">	<span class="built_in">print</span>(<span class="string">f&#x27;What is your <span class="subst">&#123;q&#125;</span>?  It is <span class="subst">&#123;a&#125;</span>.&#x27;</span>)</span><br><span class="line">   </span><br><span class="line"><span class="comment">####################or#####################</span></span><br><span class="line"></span><br><span class="line">questions = [<span class="string">&#x27;name&#x27;</span>, <span class="string">&#x27;quest&#x27;</span>, <span class="string">&#x27;favorite color&#x27;</span>]</span><br><span class="line">answers = [<span class="string">&#x27;lancelot&#x27;</span>, <span class="string">&#x27;the holy grail&#x27;</span>, <span class="string">&#x27;blue&#x27;</span>]</span><br><span class="line"><span class="keyword">for</span> q, a <span class="keyword">in</span> <span class="built_in">zip</span>(questions, answers): <span class="comment">#索引多个序列</span></span><br><span class="line">   <span class="built_in">print</span>(<span class="string">f&#x27;What is your <span class="subst">&#123;q&#125;</span>?  It is <span class="subst">&#123;a&#125;</span>.&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">What is your name?  It is lancelot.</span></span><br><span class="line"><span class="string">What is your quest?  It is the holy grail.</span></span><br><span class="line"><span class="string">What is your favorite color?  It is blue.</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>其余内置函数和方法</p>
+<p><a target="_blank" rel="noopener" href="https://www.runoob.com/python3/python3-dictionary.html">Python3 字典 | 菜鸟教程 (runoob.com)</a></p>
+</li>
+</ul>
+<h2 id="综上"><a href="#综上" class="headerlink" title="综上"></a>综上</h2><ul>
+<li>list元素可改变，有序</li>
+<li>tuple元素不可改变，有序</li>
+<li>set无序，不可索引</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">a=[<span class="number">1</span>,<span class="number">10.1</span>,<span class="string">&#x27;abcd&#x27;</span>]  <span class="comment">#列表</span></span><br><span class="line">a=(<span class="number">1</span>,<span class="number">10.1</span>,<span class="string">&#x27;abcd&#x27;</span>)	<span class="comment">#元组</span></span><br><span class="line">a=&#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>&#125;	<span class="comment">#集合</span></span><br><span class="line">a = &#123;<span class="string">&#x27;a&#x27;</span> : <span class="number">1</span>, <span class="string">&#x27;b&#x27;</span>: <span class="number">2</span>, <span class="string">&#x27;c&#x27;</span> :<span class="number">3</span>&#125; <span class="comment">#字典</span></span><br></pre></td></tr></table></figure>
+<h1 id="2、推导式"><a href="#2、推导式" class="headerlink" title="2、推导式"></a>2、推导式</h1><p>Python 推导式是一种独特的数据处理方式，<strong>可以从一个数据序列构建另一个新的数据序列的结构体</strong>。</p>
+<p>Python 支持各种数据结构的推导式：</p>
+<ul>
+<li>列表(list)推导式</li>
+<li>字典(dict)推导式</li>
+<li>集合(set)推导式</li>
+<li>元组(tuple)推导式</li>
+</ul>
+<h2 id="列表推导式"><a href="#列表推导式" class="headerlink" title="列表推导式"></a>列表推导式</h2><p>格式：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[表达式 <span class="keyword">for</span> 变量 <span class="keyword">in</span> 列表 <span class="keyword">if</span> 条件]</span><br></pre></td></tr></table></figure>
+<ul>
+<li>表达式：需要对输出元素的操作，可以是有返回值的函数，<strong>其格式即推导式最终输出的格式</strong></li>
+<li><p>变量＆列表：我的理解是定义一个新变量，通过这个新变量将现有列表元素传入<strong>表达式</strong>中</p>
+</li>
+<li><p>条件：对变量进行筛选</p>
+</li>
+</ul>
+<p>例：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">a = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>, <span class="number">10</span>]</span><br><span class="line">b = [i/<span class="number">2</span> <span class="keyword">for</span> i <span class="keyword">in</span> a <span class="keyword">if</span> i % <span class="number">2</span> == <span class="number">0</span>]</span><br><span class="line"><span class="comment">#定义变量i，i来自列表a中的可以整除2的元素，最后返回i/2的值作为新列表b的元素</span></span><br><span class="line"><span class="built_in">print</span>(b)</span><br><span class="line"><span class="comment">#[1.0, 2.0, 3.0, 4.0, 5.0]</span></span><br></pre></td></tr></table></figure>
+<p>同时定义多个变量存放值：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">vec1 = [2, 4, 6]</span><br><span class="line">vec2 = [4, 3, -9]</span><br><span class="line">[x*y for x in vec1 for y in vec2] </span><br><span class="line">[x+y for x in vec1 for y in vec2]</span><br><span class="line">[vec1[i]*vec2[i] for i in range(len(vec1))]</span><br></pre></td></tr></table></figure>
+<p>在矩阵列表中使用：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">a = [[1, 2, 3], [4, 5, 6]]</span><br><span class="line">b = [row[0] for row in a]</span><br><span class="line">print(b)</span><br></pre></td></tr></table></figure>
+<h2 id="字典推导式"><a href="#字典推导式" class="headerlink" title="字典推导式"></a>字典推导式</h2><p>格式与列表推导式几乎相同，只是将表达式换成了<code>key:value</code>的格式，具体见下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">a = [<span class="number">97</span>, <span class="number">98</span>, <span class="number">99</span>, <span class="number">100</span>, <span class="number">101</span>] <span class="comment"># 传入推导式的为一个列表</span></span><br><span class="line">b = &#123;k: <span class="built_in">chr</span>(k) <span class="keyword">for</span> k <span class="keyword">in</span> a&#125;</span><br><span class="line"><span class="built_in">print</span>(b)	<span class="comment">#&#123;97: &#x27;a&#x27;, 98: &#x27;b&#x27;, 99: &#x27;c&#x27;, 100: &#x27;d&#x27;, 101: &#x27;e&#x27;&#125;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">a = &#123;<span class="number">97</span>: <span class="string">&#x27;a&#x27;</span>, <span class="number">98</span>: <span class="string">&#x27;b&#x27;</span>, <span class="number">99</span>: <span class="string">&#x27;c&#x27;</span>, <span class="number">100</span>: <span class="string">&#x27;d&#x27;</span>, <span class="number">101</span>: <span class="string">&#x27;e&#x27;</span>&#125;<span class="comment"># 传入推导式的为一个字典</span></span><br><span class="line">b = &#123;k: <span class="built_in">chr</span>(k) <span class="keyword">for</span> k <span class="keyword">in</span> a.keys()&#125;</span><br><span class="line"><span class="built_in">print</span>(b)	<span class="comment">#&#123;97: &#x27;a&#x27;, 98: &#x27;b&#x27;, 99: &#x27;c&#x27;, 100: &#x27;d&#x27;, 101: &#x27;e&#x27;&#125;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#or</span></span><br><span class="line"></span><br><span class="line">a = &#123;<span class="number">97</span>: <span class="string">&#x27;a&#x27;</span>, <span class="number">98</span>: <span class="string">&#x27;b&#x27;</span>, <span class="number">99</span>: <span class="string">&#x27;c&#x27;</span>, <span class="number">100</span>: <span class="string">&#x27;d&#x27;</span>, <span class="number">101</span>: <span class="string">&#x27;e&#x27;</span>&#125;</span><br><span class="line">b = &#123;k: i <span class="keyword">for</span> k,i <span class="keyword">in</span> a.items()&#125;</span><br><span class="line"><span class="built_in">print</span>(b)</span><br></pre></td></tr></table></figure>
+<p>但如果如下操作：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">a = &#123;<span class="number">97</span>: <span class="string">&#x27;a&#x27;</span>, <span class="number">98</span>: <span class="string">&#x27;b&#x27;</span>, <span class="number">99</span>: <span class="string">&#x27;c&#x27;</span>, <span class="number">100</span>: <span class="string">&#x27;d&#x27;</span>, <span class="number">101</span>: <span class="string">&#x27;e&#x27;</span>&#125;</span><br><span class="line">b = &#123;k: i <span class="keyword">for</span> i <span class="keyword">in</span> a.values() <span class="keyword">for</span> k <span class="keyword">in</span> a.keys()&#125;</span><br><span class="line"><span class="built_in">print</span>(b)</span><br><span class="line"><span class="comment">#&#123;97: &#x27;e&#x27;, 98: &#x27;e&#x27;, 99: &#x27;e&#x27;, 100: &#x27;e&#x27;, 101: &#x27;e&#x27;&#125;</span></span><br></pre></td></tr></table></figure>
+<p>目前还不知道原因。</p>
+<h2 id="集合推导式"><a href="#集合推导式" class="headerlink" title="集合推导式"></a>集合推导式</h2><p>规则格式与列表推导式相同</p>
+<p>例：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">a = &#123;x <span class="keyword">for</span> x <span class="keyword">in</span> <span class="string">&#x27;abracadabra&#x27;</span> <span class="keyword">if</span> x <span class="keyword">not</span> <span class="keyword">in</span> <span class="string">&#x27;abc&#x27;</span>&#125; <span class="comment">#判断不是abc的字母</span></span><br><span class="line"><span class="built_in">print</span>(a) <span class="comment">#&#123;&#x27;d&#x27;, &#x27;r&#x27;&#125;</span></span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">type</span>(a)) <span class="comment">#&lt;class &#x27;set&#x27;&gt;</span></span><br></pre></td></tr></table></figure>
+<h2 id="元组推导式（生成器表达式）"><a href="#元组推导式（生成器表达式）" class="headerlink" title="元组推导式（生成器表达式）"></a>元组推导式（生成器表达式）</h2><p>元组推导式和列表推导式的用法也完全相同，但元组推导式返回的结果是一个生成器对象</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>a = (x <span class="keyword">for</span> x <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>,<span class="number">10</span>))</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a</span><br><span class="line">&lt;generator <span class="built_in">object</span> &lt;genexpr&gt; at <span class="number">0x7faf6ee20a50</span>&gt;  <span class="comment"># 返回的是生成器对象</span></span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">tuple</span>(a)       <span class="comment"># 使用 tuple() 函数，可以直接将生成器对象转换成元组</span></span><br><span class="line">(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>)</span><br></pre></td></tr></table></figure>
+<h1 id="3、运算符"><a href="#3、运算符" class="headerlink" title="3、运算符"></a>3、运算符</h1><h2 id="赋值运算符"><a href="#赋值运算符" class="headerlink" title="赋值运算符"></a>赋值运算符</h2><ul>
+<li><p><code>:=</code>   海象运算符，在表达式内部为变量赋值：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (n := <span class="built_in">len</span>(a)) &gt; <span class="number">10</span>  <span class="comment">#可以避免调用两次len函数</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="python逻辑运算符"><a href="#python逻辑运算符" class="headerlink" title="python逻辑运算符"></a>python逻辑运算符</h2><div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">运算符</th>
+<th style="text-align:center">表达式</th>
+<th style="text-align:center">作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">and</td>
+<td style="text-align:center">x and y</td>
+<td style="text-align:center">x为<strong>假</strong>则返回x，x为<strong>真</strong>则返回y</td>
+</tr>
+<tr>
+<td style="text-align:center">or</td>
+<td style="text-align:center">a or y</td>
+<td style="text-align:center">x为<strong>真</strong>则返回x，x为<strong>假</strong>则返回y</td>
+</tr>
+<tr>
+<td style="text-align:center">not</td>
+<td style="text-align:center">not x</td>
+<td style="text-align:center">x为真返回假，为假返回真</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 id="python成员运算符"><a href="#python成员运算符" class="headerlink" title="python成员运算符"></a>python成员运算符</h2><p>可用于字符串、列表、元组、集合、字典（貌似是判断键）</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">运算符</th>
+<th style="text-align:center">表达式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">in</td>
+<td style="text-align:center">x in list</td>
+</tr>
+<tr>
+<td style="text-align:center">not in</td>
+<td style="text-align:center">x not in list</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 id="python身份运算符"><a href="#python身份运算符" class="headerlink" title="python身份运算符"></a>python身份运算符</h2><div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">运算符</th>
+<th style="text-align:center">表达式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">is</td>
+<td style="text-align:center">a is b</td>
+</tr>
+<tr>
+<td style="text-align:center">is not</td>
+<td style="text-align:center">a is not b</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h1 id="4、其他"><a href="#4、其他" class="headerlink" title="4、其他"></a>4、其他</h1><ul>
+<li><p>end关键字，用于将结果输出到同一行，同时将end=的内容添加在每次输出的末尾</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">b=<span class="number">1</span></span><br><span class="line"><span class="keyword">while</span> b&lt;<span class="number">10</span>：</span><br><span class="line">	<span class="built_in">print</span>(b,end=<span class="string">&#x27;,&#x27;</span>)</span><br><span class="line">	b+=<span class="number">1</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>多行语句</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">total = item_one + \</span><br><span class="line">        item_two + \</span><br><span class="line">        item_three</span><br><span class="line"><span class="comment">#在 [], &#123;&#125;, 或 () 中的多行语句，不需要使用反斜杠</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
 
       
     </div>
@@ -752,7 +906,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/14/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/14/">14</a><span class="page-number current">15</span><a class="page-number" href="/page/16/">16</a><span class="space">&hellip;</span><a class="page-number" href="/page/22/">22</a><a class="extend next" rel="next" href="/page/16/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/14/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/14/">14</a><span class="page-number current">15</span><a class="page-number" href="/page/16/">16</a><span class="space">&hellip;</span><a class="page-number" href="/page/20/">20</a><a class="extend next" rel="next" href="/page/16/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -819,7 +973,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">66</span>
+          <span class="site-state-item-count">60</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
