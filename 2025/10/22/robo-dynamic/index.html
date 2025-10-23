@@ -22,20 +22,20 @@
     var CONFIG = {"hostname":"dhkkkkkk.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="1、基础内容表达式是由一个或多个运算对象组成，对表达式求值得到的是一个结果，字面值和变量时最简单的表达式。 左值和右值当一个对象被用作右值时，使用的是该对象的值；而被用作左值时，使用的时对象的内存。  赋值运算符需要一个非常量左值为其左侧运算对象 取地址符作用于一个左值运算对象，返回一个指向该运算对象的指针，该指针为右值 解引用求值结果为左值  求值顺序部分运算符是没有明确指明执行顺序的，例如&amp;l">
+  <meta name="description" content="速度与静力位置矢量的微分（线速度矢量）对于位置矢量的速度可以看成是用位置矢量描述的空间上一点的线速度，如果想在坐标系{A}表达一个{B}中位置矢量的速度，则有： 因为旋转矩阵可以表示坐标系的映射，因此有：  ^A(^BV_Q)&#x3D;^A_BR{^BV_Q}由于速度矢量为自由矢量，因此不需要使用平移矩阵即可表达。因此当我们已知一个坐标系{A}原点在{W}中的速度表达时，便可通过旋转矩阵得到其在其他坐标系">
 <meta property="og:type" content="article">
-<meta property="og:title" content="C++_表达式">
-<meta property="og:url" content="https://dhkkkkkk.github.io/2022/10/03/C++-4/index.html">
+<meta property="og:title" content="机器人动力学">
+<meta property="og:url" content="https://dhkkkkkk.github.io/2025/10/22/robo-dynamic/index.html">
 <meta property="og:site_name" content="小董的BLOG">
-<meta property="og:description" content="1、基础内容表达式是由一个或多个运算对象组成，对表达式求值得到的是一个结果，字面值和变量时最简单的表达式。 左值和右值当一个对象被用作右值时，使用的是该对象的值；而被用作左值时，使用的时对象的内存。  赋值运算符需要一个非常量左值为其左侧运算对象 取地址符作用于一个左值运算对象，返回一个指向该运算对象的指针，该指针为右值 解引用求值结果为左值  求值顺序部分运算符是没有明确指明执行顺序的，例如&amp;l">
+<meta property="og:description" content="速度与静力位置矢量的微分（线速度矢量）对于位置矢量的速度可以看成是用位置矢量描述的空间上一点的线速度，如果想在坐标系{A}表达一个{B}中位置矢量的速度，则有： 因为旋转矩阵可以表示坐标系的映射，因此有：  ^A(^BV_Q)&#x3D;^A_BR{^BV_Q}由于速度矢量为自由矢量，因此不需要使用平移矩阵即可表达。因此当我们已知一个坐标系{A}原点在{W}中的速度表达时，便可通过旋转矩阵得到其在其他坐标系">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2022-10-03T13:06:48.000Z">
-<meta property="article:modified_time" content="2022-10-25T12:43:07.801Z">
+<meta property="article:published_time" content="2025-10-22T06:49:42.000Z">
+<meta property="article:modified_time" content="2025-10-23T09:04:07.361Z">
 <meta property="article:author" content="dhk">
-<meta property="article:tag" content="C++学习">
+<meta property="article:tag" content="机器人学">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="https://dhkkkkkk.github.io/2022/10/03/C++-4/">
+<link rel="canonical" href="https://dhkkkkkk.github.io/2025/10/22/robo-dynamic/">
 
 
 <script id="page-configurations">
@@ -61,7 +61,7 @@
   padding: 1px 4px;
 }
 </style>
-  <title>C++_表达式 | 小董的BLOG</title>
+  <title>机器人动力学 | 小董的BLOG</title>
   
 
 
@@ -201,7 +201,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2022/10/03/C++-4/">
+    <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2025/10/22/robo-dynamic/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/zoe.gif">
@@ -214,7 +214,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          C++_表达式
+          机器人动力学
         </h1>
 
         <div class="post-meta">
@@ -226,14 +226,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2022-10-03 21:06:48" itemprop="dateCreated datePublished" datetime="2022-10-03T21:06:48+08:00">2022-10-03</time>
+              <time title="创建时间：2025-10-22 14:49:42" itemprop="dateCreated datePublished" datetime="2025-10-22T14:49:42+08:00">2025-10-22</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-10-25 20:43:07" itemprop="dateModified" datetime="2022-10-25T20:43:07+08:00">2022-10-25</time>
+                <time title="修改时间：2025-10-23 17:04:07" itemprop="dateModified" datetime="2025-10-23T17:04:07+08:00">2025-10-23</time>
               </span>
 
           
@@ -247,32 +247,68 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="1、基础内容"><a href="#1、基础内容" class="headerlink" title="1、基础内容"></a>1、基础内容</h1><p>表达式是<strong>由一个或多个运算对象组成</strong>，对表达式求值得到的是一个<strong>结果</strong>，字面值和变量时最简单的表达式。</p>
-<h2 id="左值和右值"><a href="#左值和右值" class="headerlink" title="左值和右值"></a>左值和右值</h2><p>当一个对象被用作右值时，使用的是该对象的值；而被用作左值时，使用的时对象的内存。</p>
-<ul>
-<li>赋值运算符需要一个非常量左值为其左侧运算对象</li>
-<li>取地址符作用于一个左值运算对象，返回一个指向该运算对象的指针，该指针为右值</li>
-<li>解引用求值结果为左值</li>
-</ul>
-<h2 id="求值顺序"><a href="#求值顺序" class="headerlink" title="求值顺序"></a>求值顺序</h2><p>部分运算符是没有明确指明执行顺序的，例如&lt;&lt;运算符：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cout&lt;&lt;i&lt;&lt;<span class="string">&quot;&quot;</span>&lt;&lt;++i;</span><br></pre></td></tr></table></figure>
-<p>++i和i没有明确的先后关系，因此编译器可能做出任何行为。</p>
-<p>当多个函数会影响同一对象时，当同时调用这些函数时，调用函数的顺序也没有明确的先后关系。</p>
-<h1 id="2、算术运算符"><a href="#2、算术运算符" class="headerlink" title="2、算术运算符"></a>2、算术运算符</h1><h2 id="bool类型"><a href="#bool类型" class="headerlink" title="bool类型"></a>bool类型</h2><p>bool类型原则不应参与运算，在运算时会自动转化为int型的1，只要计算结果不为0，都将返回ture</p>
-<h2 id="优先级"><a href="#优先级" class="headerlink" title="优先级"></a>优先级</h2><p>C++大部分同优先级运算都满足从左至右的规律，赋值则相反</p>
-<h2 id="递增运算"><a href="#递增运算" class="headerlink" title="递增运算"></a>递增运算</h2><p>C++中，<strong>非必要不使用</strong>后置递增/减符（i++/i—)，因为前置运算为将对象本身作为左值返回，而后置则要额外的空间存储原始值，并将这个额外存储的原始值副本作为右值返回，因此，使用后置操作会消耗更多内存，这在相对复杂的工作中是消耗巨大的。</p>
-<h2 id="位操作"><a href="#位操作" class="headerlink" title="位操作"></a>位操作</h2><p>关于符号位的处理没有明确规定，因此位运算最好用来处理无符号类型</p>
-<h1 id="3、类型转换"><a href="#3、类型转换" class="headerlink" title="3、类型转换"></a>3、类型转换</h1><p>C++的类型转换格式不同于C：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cast-name&lt;类型&gt;(表达式)</span><br></pre></td></tr></table></figure>
-<p>最常用的cast-name为<code>static_cast</code>和<code>const_cast</code></p>
-<h3 id="static-cast"><a href="#static-cast" class="headerlink" title="static_cast"></a>static_cast</h3><p>任何有明确定义的类型转换（除了底层const）都可以使用static_cast</p>
-<p>例：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> *p = &amp;d;<span class="comment">//d不能为常量（底层const）</span></span><br><span class="line"><span class="type">double</span> *dp = <span class="built_in">static_cast</span>&lt;<span class="type">double</span>*&gt;(p);</span><br></pre></td></tr></table></figure>
-<h3 id="const-cast"><a href="#const-cast" class="headerlink" title="const_cast"></a>const_cast</h3><p><strong>专用</strong>于改变底层const，其作用为改变const性质</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">const</span> <span class="type">char</span>* pc;</span><br><span class="line"><span class="type">char</span> *p=<span class="built_in">const_cast</span>&lt;<span class="type">char</span>*&gt;(pc);</span><br></pre></td></tr></table></figure>
-<p>需要注意，可以有以下用法：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">char</span>* pc;</span><br><span class="line"><span class="type">char</span> *p=<span class="built_in">const_cast</span>&lt;<span class="type">const</span> <span class="type">char</span>*&gt;(pc);</span><br></pre></td></tr></table></figure>
-
+        <h1 id="速度与静力"><a href="#速度与静力" class="headerlink" title="速度与静力"></a>速度与静力</h1><h2 id="位置矢量的微分（线速度矢量）"><a href="#位置矢量的微分（线速度矢量）" class="headerlink" title="位置矢量的微分（线速度矢量）"></a>位置矢量的微分（线速度矢量）</h2><p>对于位置矢量的速度可以看成是用<strong>位置矢量描述的空间上<u>一点的线速度</u></strong>，如果想在坐标系{A}表达一个{B}中位置矢量的速度，则有：</p>
+<p>因为旋转矩阵可以表示坐标系的映射，因此有：</p>
+<script type="math/tex; mode=display">
+^A(^BV_Q)=^A_BR{^BV_Q}</script><p>由于速度矢量为自由矢量，因此不需要使用平移矩阵即可表达。因此当我们已知一个坐标系{A}原点在{W}中的速度表达时，便可通过旋转矩阵得到其在其他坐标系{B}下的<strong>表达</strong>：</p>
+<script type="math/tex; mode=display">
+^B(^WV_{A_{org}})=^BV_{A_{org}}=^B_WR{^WV_{A_{org}}}=^W_BR^{-1}{^WV_{A_{org}}}</script><p>可以看出，上述计算与{A}无关</p>
+<h2 id="角速度矢量"><a href="#角速度矢量" class="headerlink" title="角速度矢量"></a>角速度矢量</h2><p>线速度描述的是一个点的速度属性，而角速度则描述了刚体的<strong>自转</strong>运动（坐标系固连在刚体上）</p>
+<p>由于自转肯定是绕着某一轴，因此对于</p>
+<script type="math/tex; mode=display">
+^A\Omega_B</script><p>其方向则代表了{B}相对于{A}的瞬时旋转轴的方向，大小则表示旋转速度</p>
+<p>对于线速度和角速度，我们规定：</p>
+<script type="math/tex; mode=display">
+v_A=^WV_{A_{org}}</script><script type="math/tex; mode=display">
+\omega_A = ^W\Omega_A</script><h2 id="刚体的速度表达"><a href="#刚体的速度表达" class="headerlink" title="刚体的速度表达"></a>刚体的速度表达</h2><p>上面我们讨论的线速度与角速度都是针对于坐标系的原点，现在讨论在刚体中的情况。</p>
+<p>假设参考坐标系为{A}，将{B}固连在一刚体上，刚体上存在一点Q（不在原点上），则有：</p>
+<script type="math/tex; mode=display">
+^AV_Q=(^AV_{B_{org}}+^A_BR^BV_Q)+(^A\Omega_B \times^A_BR^BQ)</script><p>前一个括号表示线速度，后一个表示角速度</p>
+<h2 id="连杆间的速度传递-重点"><a href="#连杆间的速度传递-重点" class="headerlink" title="连杆间的速度传递(重点)"></a>连杆间的速度传递(重点)</h2><p>由于连杆是链式结构，每一个连杆的运动都与其相邻杆有关，<strong>因此对于i+1连杆，其速度就是连杆i的速度加上附加到关节i+1上的新速度分量</strong>（对于连杆的速度，我们通常讨论的是连杆坐标系原<strong>点</strong>的线速度和连杆坐标系的角速度）</p>
+<p>对于角速度，根据上述规则，则有：</p>
+<script type="math/tex; mode=display">
+^i\omega_{i+1}={^i\omega}_{i}+{^i_{i+1}R \dot{\theta}_{i+1}{^{i+1}\hat{Z}_{i+1}}}</script><p>此处乘Z是为了让关节角加速度匹配R矩阵维度，并且该加速度只在Z轴上存在，将上式两边同左乘<strong>i相对于i+1</strong>的旋转矩阵，则有：</p>
+<script type="math/tex; mode=display">
+^{i+1}\omega_{i+1}=^{i+1}_{i}R {^i\omega}_{i}+{ \dot{\theta}_{i+1}{^{i+1}\hat{Z}_{i+1}}}</script><p>对于线速度，其等于{i}原点线速度加上由于<strong>i角速度</strong>引起的新分量：</p>
+<script type="math/tex; mode=display">
+{^iv_{i+1}}={^iv_{i}}+{^i\omega}_{i}\times{^iP_{i+1}}</script><p>其中P为两坐标系原点形成的矢量，同样的，通过左乘旋转矩阵可得到{i+1}下的速度表达：</p>
+<script type="math/tex; mode=display">
+{^{i+1}v_{i+1}}={^{i+1}_iR}({^iv_{i}}+{^i\omega}_{i}\times{^iP_{i+1}})</script><p>对于移动关节，则额外有：</p>
+<script type="math/tex; mode=display">
+{^{i+1}v_{i+1}}={^{i+1}_iR}({^iv_{i}}+{^i\omega}_{i}\times{^iP_{i+1}})+\dot{d}_{i+1}\hat{Z}_{i+1}</script><h2 id="雅可比矩阵"><a href="#雅可比矩阵" class="headerlink" title="雅可比矩阵"></a>雅可比矩阵</h2><p>对于一个6自由度机器人，我们可以设其正运动学方程为：</p>
+<script type="math/tex; mode=display">
+x=f(q)</script><p>其中x是一个包含位姿与姿态的6x1向量，q为机器人的六个关节变量组成的6x1向量，因此f为一个6x6矩阵，代表了x每一个元素与q的非线性函数关系，将上式两边同时对时间求导，则有：</p>
+<script type="math/tex; mode=display">
+V=J(q)\dot{q}</script><p>此时，该式表示了<strong>连杆速度（笛卡尔）</strong>（取决于选择的连杆和参考坐标系）与<strong>关节角速度</strong>之间的<strong>映射关系</strong></p>
+<p>对于常见的求末端速度的雅各比矩阵，有：</p>
+<script type="math/tex; mode=display">
+^0V_6=\begin{bmatrix}^0v_6\\^0\omega_6 \end{bmatrix}={^0J(q)}\dot{q}</script><p>此时，该矩阵代表了在{0}坐标下，各<strong>关节角速度</strong>对<strong>末端速度</strong>（线+角）的共享</p>
+<h3 id="奇异性"><a href="#奇异性" class="headerlink" title="奇异性"></a>奇异性</h3><p>因此，当已知机器人结构（<strong>等同于已知雅各比矩阵表达式</strong>），各关节转角（可求出J具体值）和笛卡尔速度时，便可以求出各关节速度：</p>
+<script type="math/tex; mode=display">
+\dot{q}=J^{-1}(q)V</script><p>但此时要求J是可逆的，当机器人出现奇异位姿时，会导致J的行列式为0，此时，J为奇异的</p>
+<h3 id="参考系的变换"><a href="#参考系的变换" class="headerlink" title="参考系的变换"></a>参考系的变换</h3><p>对于在{A}中表达的某雅各比矩阵，若要变换到{B}中表达，则有：</p>
+<script type="math/tex; mode=display">
+^BJ(q)=\begin{bmatrix}{^B_AR} &0 \\ 0 &{^B_AR} \end{bmatrix} {^AJ(q)}</script><h2 id="力域中的雅可比"><a href="#力域中的雅可比" class="headerlink" title="力域中的雅可比"></a>力域中的雅可比</h2><p>当一个F作用与机器人时，我们想要求出各关节需输出多少力矩以保持机器人的静力平衡。</p>
+<p>当一个笛卡尔广义力F（形式类似于笛卡尔速度）作用于机器人末端时，根据功率守恒，有：</p>
+<script type="math/tex; mode=display">
+F^TV=\tau\dot{q}</script><p>将上一节中计算的速度雅可比方程带入V中则最终有：</p>
+<script type="math/tex; mode=display">
+\tau={^0J^T}{^0F}</script><p>于速度雅可比方程一样，F与J需在同一坐标系下表达</p>
+<h3 id="力-力矩变换"><a href="#力-力矩变换" class="headerlink" title="力-力矩变换"></a>力-力矩变换</h3><p>对于笛卡尔广义力的在不同坐标系下的表示，有：</p>
+<script type="math/tex; mode=display">
+\begin{bmatrix}
+{}^A F_A \\
+{}^A N_A
+\end{bmatrix}
+=
+\begin{bmatrix}
+{}^A_B R & 0 \\
+{}^A P_{BORG} \times {}^A_B R & {}^A_B R
+\end{bmatrix}
+\begin{bmatrix}
+{}^B F_B \\
+{}^B N_B
+\end{bmatrix}</script>
     </div>
 
     
@@ -287,7 +323,7 @@
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/C-%E5%AD%A6%E4%B9%A0/" rel="tag"><i class="fa fa-tag"></i># C++学习</a>
+              <a href="/tags/%E6%9C%BA%E5%99%A8%E4%BA%BA%E5%AD%A6/" rel="tag"><i class="fa fa-tag"></i># 机器人学</a>
           </div>
 
         
@@ -296,13 +332,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2022/09/16/python-2/" rel="prev" title="python_2">
-      <i class="fa fa-chevron-left"></i> python_2
+    <a href="/2025/10/17/math-base/" rel="prev" title="数学基础">
+      <i class="fa fa-chevron-left"></i> 数学基础
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2022/10/11/C++-5/" rel="next" title="C++的语句与函数">
-      C++的语句与函数 <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -361,7 +394,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1%E3%80%81%E5%9F%BA%E7%A1%80%E5%86%85%E5%AE%B9"><span class="nav-number">1.</span> <span class="nav-text">1、基础内容</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B7%A6%E5%80%BC%E5%92%8C%E5%8F%B3%E5%80%BC"><span class="nav-number">1.1.</span> <span class="nav-text">左值和右值</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B1%82%E5%80%BC%E9%A1%BA%E5%BA%8F"><span class="nav-number">1.2.</span> <span class="nav-text">求值顺序</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2%E3%80%81%E7%AE%97%E6%9C%AF%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="nav-number">2.</span> <span class="nav-text">2、算术运算符</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#bool%E7%B1%BB%E5%9E%8B"><span class="nav-number">2.1.</span> <span class="nav-text">bool类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BC%98%E5%85%88%E7%BA%A7"><span class="nav-number">2.2.</span> <span class="nav-text">优先级</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%80%92%E5%A2%9E%E8%BF%90%E7%AE%97"><span class="nav-number">2.3.</span> <span class="nav-text">递增运算</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%8D%E6%93%8D%E4%BD%9C"><span class="nav-number">2.4.</span> <span class="nav-text">位操作</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3%E3%80%81%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2"><span class="nav-number">3.</span> <span class="nav-text">3、类型转换</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#static-cast"><span class="nav-number">3.0.1.</span> <span class="nav-text">static_cast</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#const-cast"><span class="nav-number">3.0.2.</span> <span class="nav-text">const_cast</span></a></li></ol></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%80%9F%E5%BA%A6%E4%B8%8E%E9%9D%99%E5%8A%9B"><span class="nav-number">1.</span> <span class="nav-text">速度与静力</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%8D%E7%BD%AE%E7%9F%A2%E9%87%8F%E7%9A%84%E5%BE%AE%E5%88%86%EF%BC%88%E7%BA%BF%E9%80%9F%E5%BA%A6%E7%9F%A2%E9%87%8F%EF%BC%89"><span class="nav-number">1.1.</span> <span class="nav-text">位置矢量的微分（线速度矢量）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A7%92%E9%80%9F%E5%BA%A6%E7%9F%A2%E9%87%8F"><span class="nav-number">1.2.</span> <span class="nav-text">角速度矢量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%9A%E4%BD%93%E7%9A%84%E9%80%9F%E5%BA%A6%E8%A1%A8%E8%BE%BE"><span class="nav-number">1.3.</span> <span class="nav-text">刚体的速度表达</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%9E%E6%9D%86%E9%97%B4%E7%9A%84%E9%80%9F%E5%BA%A6%E4%BC%A0%E9%80%92-%E9%87%8D%E7%82%B9"><span class="nav-number">1.4.</span> <span class="nav-text">连杆间的速度传递(重点)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%9B%85%E5%8F%AF%E6%AF%94%E7%9F%A9%E9%98%B5"><span class="nav-number">1.5.</span> <span class="nav-text">雅可比矩阵</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A5%87%E5%BC%82%E6%80%A7"><span class="nav-number">1.5.1.</span> <span class="nav-text">奇异性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E7%B3%BB%E7%9A%84%E5%8F%98%E6%8D%A2"><span class="nav-number">1.5.2.</span> <span class="nav-text">参考系的变换</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8A%9B%E5%9F%9F%E4%B8%AD%E7%9A%84%E9%9B%85%E5%8F%AF%E6%AF%94"><span class="nav-number">1.6.</span> <span class="nav-text">力域中的雅可比</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8A%9B-%E5%8A%9B%E7%9F%A9%E5%8F%98%E6%8D%A2"><span class="nav-number">1.6.1.</span> <span class="nav-text">力-力矩变换</span></a></li></ol></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -482,6 +515,59 @@
   
 
   
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
 
   
 

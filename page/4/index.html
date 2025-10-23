@@ -197,6 +197,130 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2025/10/05/DL-base/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/zoe.gif">
+      <meta itemprop="name" content="dhk">
+      <meta itemprop="description" content="记录一些学习日常">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小董的BLOG">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/10/05/DL-base/" class="post-title-link" itemprop="url">深度学习基础杂项</a>
+        </h2>
+
+        <div class="post-meta">
+		  
+		  
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2025-10-05 15:14:37" itemprop="dateCreated datePublished" datetime="2025-10-05T15:14:37+08:00">2025-10-05</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-10-15 15:46:38" itemprop="dateModified" datetime="2025-10-15T15:46:38+08:00">2025-10-15</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="常用激活函数"><a href="#常用激活函数" class="headerlink" title="常用激活函数"></a>常用激活函数</h1><h2 id="sigmoid"><a href="#sigmoid" class="headerlink" title="sigmoid"></a>sigmoid</h2><p>指一类<strong><u>S型</u>的两端饱和函数</strong>，常见的有logistic和Tanh及其变种</p>
+<h3 id="logistic"><a href="#logistic" class="headerlink" title="logistic"></a>logistic</h3><script type="math/tex; mode=display">
+\sigma(x)=\frac{1}{1+e^{-x}}</script><p>由于最大导数只有0.25，两端饱和严重，输出始终为正，导致梯度下降变慢，现在深度学习隐藏层中已很少使用</p>
+<h3 id="Tanh"><a href="#Tanh" class="headerlink" title="Tanh"></a>Tanh</h3><script type="math/tex; mode=display">
+\sigma(x)=\frac{e^x-e^{-x}}{e^x+e^{-x}}</script><p>零中心化，优于logistic</p>
+<h2 id="ReLU"><a href="#ReLU" class="headerlink" title="ReLU"></a>ReLU</h2><script type="math/tex; mode=display">
+f(x) = \max(0, x)</script><p>导数1缓解了梯度消失问题</p>
+<p>0的部分导致了该神经元的输入参数死亡，永不更新（注：死亡ReLU和梯度消失不是一回事）</p>
+<h3 id="LeakyReLU"><a href="#LeakyReLU" class="headerlink" title="LeakyReLU"></a>LeakyReLU</h3><script type="math/tex; mode=display">
+f(x) = \max(0, x)+\gamma\min(0,x)</script><p>gamma为一个很小值（torch中默认e-2），代替ReLU的0</p>
+<h3 id="PReLU"><a href="#PReLU" class="headerlink" title="PReLU"></a>PReLU</h3><p>将gamma换作可学习的参数</p>
+<h3 id="Swish"><a href="#Swish" class="headerlink" title="Swish"></a>Swish</h3><script type="math/tex; mode=display">
+f(x)=x\sigma(\beta x)</script><p>自门控激活函数。其中sigma为logisitc函数，beta是一个可学习或超参数。</p>
+<p>当logistic接近1时，swish输出接近x，logistic接近0时，输出接近0但不为0。</p>
+<p>形状类似LeakyRelu</p>
+<h1 id="损失函数"><a href="#损失函数" class="headerlink" title="损失函数"></a>损失函数</h1><h2 id="均方误差（Mean-Squared-Error-）"><a href="#均方误差（Mean-Squared-Error-）" class="headerlink" title="均方误差（Mean Squared Error ）"></a>均方误差（Mean Squared Error ）</h2><script type="math/tex; mode=display">
+MSE = \frac{1}{n} \sum_{i=1}^{n} (\hat{y}_i - y_i)^2</script><p>其中y^hat为模型输出（概率），y为标签值（真1假0）</p>
+<p>在分类问题中，使用sigmoid/softmx得到概率，配合MSE损失函数时，采用梯度下降法进行学习时，会出现模型<strong>一开始训练时，学习速度非常慢</strong>的情况</p>
+<h2 id="交叉熵（Cross-Entropy-Loss-Function）"><a href="#交叉熵（Cross-Entropy-Loss-Function）" class="headerlink" title="交叉熵（Cross Entropy Loss Function）"></a>交叉熵（Cross Entropy Loss Function）</h2><script type="math/tex; mode=display">
+L = \frac{1}{N} \sum_{i=1}^{N} L_i = -\frac{1}{N} \sum_{i=1}^{N} \sum_{c=1}^{M} y_{ic} \log(p_{ic})</script><p>其中N可以理解为batchsize（只是最后对所有样本的交叉熵求平均），M为类别数量（模型输出维度），y_ic为标签值（真1假0），p_ic为模型对每个类的输出概率</p>
+<p><em><u>对于torch，可选择是否最终除以N</u></em></p>
+<h1 id="反向传播算法"><a href="#反向传播算法" class="headerlink" title="反向传播算法"></a>反向传播算法</h1><p>对于某个神经元的输出，设为（假设无偏置项）：</p>
+<script type="math/tex; mode=display">
+out^{(l)}=f(\omega x)=in^{(l+1)}</script><p>其中，l上标指网络层数，f为激活函数。（其实ωx是一个矩阵，为方便理解，假设该神经元只有一个输入）对于梯度下降算法中权重的更新，有：</p>
+<script type="math/tex; mode=display">
+\omega _{new}= \omega - \alpha \frac{\partial L}{\partial \omega}</script><p>由链式法则可知：</p>
+<script type="math/tex; mode=display">
+\frac{\partial L}{\partial \omega} = \frac{\partial L}{\partial f}
+\cdot \frac{\partial f}{\partial (\omega x)}
+\cdot \frac{\partial (\omega x)}{\partial \omega}=
+\frac{\partial L}{\partial out^{(l)}} \cdot f' \cdot out^{(l-1)}</script><p>一般称损失函数对l层该神经元输出的偏导为<strong>误差项</strong>δ，则损失函数对该权重的偏导则为：</p>
+<p>误差项  x  <strong>该神经元</strong>激活函数的<strong>梯度</strong>  x  <strong>该权重对应上一神经元</strong>的输出</p>
+<p>而误差项的计算：</p>
+<script type="math/tex; mode=display">
+out^{l+1}=f_{l+1}(\omega^{(l+1)} out^{(l)})
+\\
+\frac{\partial L}{\partial out^{(l)}}= \frac{\partial L}{\partial out^{(l+1)}}
+\cdot \frac{\partial out^{l+1}}{\partial f_{l+1}}
+\cdot \frac{\partial f_{l+1}}{\partial out^{(l)}}= \delta^{(l+1)} \cdot f_{(l+1)}' \cdot \omega^{(l+1)}</script><p>注意此处最后一导是对l层该神经元的输出偏导，所以结果是l+1层的权重。（我对激活函数的理解与标准公式中梯度的位置不太一样，但其实最终结果都是一样的。即：</p>
+<script type="math/tex; mode=display">
+\frac{\partial L}{\partial \omega_{(l)}}=\frac{\partial L}{\partial out^{(last)}} \\ \cdot f_{(last)}'\cdot \omega^{(last)}\cdot...
+\cdot  \cdot f_{(l+1)}' \cdot \omega^{(l+1)} \cdot
+\\
+ f_{(l)}' \cdot out^{(l-1)}</script><p>最后一层的输出即模型的输出（概率），总结下来就是：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">损失函数对l层权重的偏导 = 损失函数对模型输出的偏导 *</span><br><span class="line">					  最后一层到l层的所有激活函数的梯度 *</span><br><span class="line">					  最后一层到l+1层的权重和 *</span><br><span class="line">					  l-1层的神经元输出</span><br></pre></td></tr></table></figure>
+<p>（题外话，由该公式可理解死亡ReLU造成的是在反向传播中该神经元之前所有相关线路中参数更新的直接死亡，而梯度消失问题则是由于某些激活函数饱和区导数接近0导致的网络参数更新缓慢）</p>
+<h1 id="自动微分与计算图"><a href="#自动微分与计算图" class="headerlink" title="自动微分与计算图"></a>自动微分与计算图</h1><p>本节以pytorch操作为例</p>
+<p>自动微分的存在是为了方便对参数梯度的计算，其基本原理是将所有的数值计算分解为基本数值运算和一些初等函数，最终通过链式法则自动计算该复合函数的梯度</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">x = torch.tensor([<span class="number">1.0</span>, <span class="number">2.0</span>, <span class="number">3.0</span>, <span class="number">4.0</span>], requires_grad=<span class="literal">True</span>)</span><br><span class="line">y = (torch.exp(-(<span class="number">2</span>*x + <span class="number">1</span>) + <span class="number">1</span>) + <span class="number">1</span>)</span><br><span class="line">y.retain_grad()</span><br><span class="line">z = <span class="number">1</span> / y</span><br><span class="line">z.<span class="built_in">sum</span>().backward()</span><br><span class="line"><span class="built_in">print</span>(x.grad) <span class="comment"># tensor([0.2100, 0.0353, 0.0049, 0.0007])</span></span><br><span class="line"><span class="built_in">print</span>(y.grad) <span class="comment"># tensor([-0.7758, -0.9644, -0.9951, -0.9993])</span></span><br></pre></td></tr></table></figure>
+<p>此时x到z的计算即为：</p>
+<script type="math/tex; mode=display">
+z=\frac{1}{y}=\frac{1}{e^{(-(2x+1)+1)}+1}</script><p>其计算图为：</p>
+<script type="math/tex; mode=display">
+2x>2x+1>-(2x+1)>-(2x+1)+1>...>\frac{1}{e^{(-(2x+1)+1)}+1}</script><p>因此若要计算z对x的导数，则可以通过链式法则+反向传播进行求解，因为每个子函数的导数都很简单，所以降低了运算量</p>
+<p>若想单独得到某一步运算中tensor的梯度，则需要向上述代码中的y一样先单独保存该tensor并保存其梯度</p>
+<h2 id="在深度学习中"><a href="#在深度学习中" class="headerlink" title="在深度学习中"></a>在深度学习中</h2><p>在训练神经网络时，backward会计算出loss计算图中所有节点的梯度，包括激活函数梯度等，然后后续再通过用户设置不同的优化器对参数进行优化计算，因此在代码中需要先backward然后再optimizer，backward只负责计算梯度，不负责优化（训练）参数。</p>
+<p>因此，当网络中存在并联结构时（例如一个encoder后并联接入两个decoder），如果只想让一个decoder能影响encoder的更新（让另一个decoder自己单独训练），可以对这个单独训练的decoder输入进行.detach()操作以断掉其之前的计算图，这样对该decoder进行反向传播时梯度就只会计算至detach处（注：只要使用了detach，该条线路上之前的神经元就无论如何都无法被该线路的loss优化所训练了）</p>
+<h1 id="残差结构设计注意事项"><a href="#残差结构设计注意事项" class="headerlink" title="残差结构设计注意事项"></a>残差结构设计注意事项</h1><p>对于残差结构最后相加处，主分支在最后一层网络后不应该再经过激活函数，而是应该直接与残差分支相加后再通过激活函数（但是主分支再相加前还是要进行归一化操作）</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2025/10/05/beamform/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -381,91 +505,9 @@ z(n)=\frac{1}{M}(1,e^{j2\pi f \tau_1},e^{j2\pi f \tau_2}...) \cdot y(n)^T
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2024/10/22/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%9A%84%E4%B8%80%E4%BA%9B%E6%A6%82%E5%BF%B5%E6%80%A7%E7%90%86%E8%A7%A3/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/zoe.gif">
-      <meta itemprop="name" content="dhk">
-      <meta itemprop="description" content="记录一些学习日常">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="小董的BLOG">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/10/22/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%9A%84%E4%B8%80%E4%BA%9B%E6%A6%82%E5%BF%B5%E6%80%A7%E7%90%86%E8%A7%A3/" class="post-title-link" itemprop="url">深度学习的一些概念性理解</a>
-        </h2>
-
-        <div class="post-meta">
-		  
-		  
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2024-10-22 16:46:18" itemprop="dateCreated datePublished" datetime="2024-10-22T16:46:18+08:00">2024-10-22</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-11-08 20:08:12" itemprop="dateModified" datetime="2024-11-08T20:08:12+08:00">2024-11-08</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="激活函数"><a href="#激活函数" class="headerlink" title="激活函数"></a>激活函数</h1><h2 id="为什么要使用激活函数"><a href="#为什么要使用激活函数" class="headerlink" title="为什么要使用激活函数"></a>为什么要使用激活函数</h2><p>如果没有激活函数，神经网络中将只存在大量的<code>权重*输入</code>（还有偏置）的线性叠加，无法拟合出非线性函数的效果。当引入非线性的激活函数后，神经网络便可以逼近任何线性、非线性函数</p>
-<h2 id="常见激活函数"><a href="#常见激活函数" class="headerlink" title="常见激活函数"></a>常见激活函数</h2><h3 id="sigmoid函数"><a href="#sigmoid函数" class="headerlink" title="sigmoid函数"></a>sigmoid函数</h3><p>指一类S型函数</p>
-<ul>
-<li>优点：logistic函数可以将输出归一到(0,1)，而Tanh函数可以处理负数输入，因此Tanh会更常用一些</li>
-<li>缺点：<strong>在两个饱和处，其斜率变化较缓，导致w的变化对loss的影响较小，最终导致w的更新变慢</strong>（梯度消失）（我感觉这样说好理解一点）</li>
-</ul>
-<h3 id="ReLU函数"><a href="#ReLU函数" class="headerlink" title="ReLU函数"></a>ReLU函数</h3><p>引入了负数全部置0的非线性元素，且其正部本身为线性，斜率为1，不会出现梯度消失问题</p>
-<p>缺点：但如果参数在一次不恰当的更新后，导致某一个层输入到某个神经元的值为0时，<strong>该神经元输出到后面所有神经元的值全为0，此时该神经元的w无论怎么变化，输出到下一层所有神经元的值都为0（梯度为0），导致该神经元前的参数都无法更新</strong>，出现dead relu</p>
-<h1 id="反向传播（BP）"><a href="#反向传播（BP）" class="headerlink" title="反向传播（BP）"></a>反向传播（BP）</h1><h2 id="参数学习"><a href="#参数学习" class="headerlink" title="参数学习"></a>参数学习</h2><p>以交叉熵损失函数为例，假设y为one-hot向量（仅标签位置为1，其他0），则可以延伸至多分类问题，且其输出仅与标签位置处的y^相关，y^越小，损失函数越大(y^&lt;1)</p>
-<img src="/images/loading.png" data-original="/2024/10/22/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%9A%84%E4%B8%80%E4%BA%9B%E6%A6%82%E5%BF%B5%E6%80%A7%E7%90%86%E8%A7%A3/1.jpg" class title="This is an image"> 
-<p>由于y^是W（权重矩阵）和偏置的函数，因此Loss函数也为W和b的函数，通过优化迭代他们的值即可接近Loss的最小值，而要降低Loss，通常是借助各w的梯度实现</p>
-<h2 id="反向传播算法"><a href="#反向传播算法" class="headerlink" title="反向传播算法"></a>反向传播算法</h2><p>当一次正向传播后，Loss值已经确定，此时Loss对所有w的偏导都已确定，因此计算出这些偏导即可完成一次梯度下降。如果从开头通过链式法则对所有w逐一计算效率较低。但由链式法则又可得：</p>
-<p><strong>loss对某一w的偏导可通过下一层的所有w偏导计算而得，因此从输出层对w偏导进行反向计算效率更高</strong></p>
-<h1 id="注意力机制"><a href="#注意力机制" class="headerlink" title="注意力机制"></a>注意力机制</h1><h2 id="向量点乘的几何意义"><a href="#向量点乘的几何意义" class="headerlink" title="向量点乘的几何意义"></a>向量点乘的几何意义</h2><p>向量<strong>x</strong>在向量<strong>y</strong>方向上的投影再与向量<strong>y</strong>的乘积，能够反应两个向量的相似度。<u>向量点乘结果越大，两个向量越相似。</u></p>
-<h2 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h2><p>注意力机制通过计算输入序列中每个位置（时间步）的权重，来决定每个时间步的重要性。权重越高，说明该时间步包含的信息越关键，模型就会更“关注”该部分。</p>
-<p>与之相比，卷积只能使输入局部相关，而全连接层则计算量大，<strong>注意力机制则可以根据整个输入序列实时调整权重</strong></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/3/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/20/">20</a><a class="extend next" rel="next" href="/page/5/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/3/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/21/">21</a><a class="extend next" rel="next" href="/page/5/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -532,7 +574,7 @@ z(n)=\frac{1}{M}(1,e^{j2\pi f \tau_1},e^{j2\pi f \tau_2}...) \cdot y(n)^T
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">60</span>
+          <span class="site-state-item-count">61</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -702,11 +744,11 @@ z(n)=\frac{1}{M}(1,e^{j2\pi f \tau_1},e^{j2\pi f \tau_2}...) \cdot y(n)^T
         pbOptions.networks = "Wechat,QQZone,Weibo,Douban,Twitter,Facebook";
       new needShareButton('#needsharebutton-postbottom', pbOptions);
   </script>
-<script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script><script>
             window.imageLazyLoadSetting = {
                 isSPA: false,
                 preloadRatio: 1,
                 processImages: null,
             };
-        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(e.href.match(t)||e.href.match(r))&&(e.href=a.dataset.original)})});</script><script>!function(n){n.imageLazyLoadSetting.processImages=o;var e=n.imageLazyLoadSetting.isSPA,i=n.imageLazyLoadSetting.preloadRatio||1,r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]"));function o(){e&&(r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")));for(var t,a=0;a<r.length;a++)0<=(t=(t=r[a]).getBoundingClientRect()).bottom&&0<=t.left&&t.top<=(n.innerHeight*i||document.documentElement.clientHeight*i)&&function(){var t,e,n,i,o=r[a];t=o,e=function(){r=r.filter(function(t){return o!==t})},n=new Image,i=t.getAttribute("data-original"),n.onload=function(){t.src=i,e&&e()},t.src!==i&&(n.src=i)}()}o(),n.addEventListener("scroll",function(){var t,e;t=o,e=n,clearTimeout(t.tId),t.tId=setTimeout(function(){t.call(e)},500)})}(this);</script><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script></body>
+        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(e.href.match(t)||e.href.match(r))&&(e.href=a.dataset.original)})});</script><script>!function(n){n.imageLazyLoadSetting.processImages=o;var e=n.imageLazyLoadSetting.isSPA,i=n.imageLazyLoadSetting.preloadRatio||1,r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]"));function o(){e&&(r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")));for(var t,a=0;a<r.length;a++)0<=(t=(t=r[a]).getBoundingClientRect()).bottom&&0<=t.left&&t.top<=(n.innerHeight*i||document.documentElement.clientHeight*i)&&function(){var t,e,n,i,o=r[a];t=o,e=function(){r=r.filter(function(t){return o!==t})},n=new Image,i=t.getAttribute("data-original"),n.onload=function(){t.src=i,e&&e()},t.src!==i&&(n.src=i)}()}o(),n.addEventListener("scroll",function(){var t,e;t=o,e=n,clearTimeout(t.tId),t.tId=setTimeout(function(){t.call(e)},500)})}(this);</script></body>
 </html>
