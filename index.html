@@ -311,7 +311,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-10-23 17:05:34" itemprop="dateModified" datetime="2025-10-23T17:05:34+08:00">2025-10-23</time>
+                <time title="修改时间：2025-10-27 19:02:12" itemprop="dateModified" datetime="2025-10-27T19:02:12+08:00">2025-10-27</time>
               </span>
 
           
@@ -325,7 +325,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="速度与静力"><a href="#速度与静力" class="headerlink" title="速度与静力"></a>速度与静力</h1><h2 id="位置矢量的微分（线速度矢量）"><a href="#位置矢量的微分（线速度矢量）" class="headerlink" title="位置矢量的微分（线速度矢量）"></a>位置矢量的微分（线速度矢量）</h2><p>对于位置矢量的速度可以看成是用<strong>位置矢量描述的空间上<u>一点的线速度</u></strong>，如果想在坐标系{A}表达一个{B}中位置矢量的速度，则有：</p>
+          <h1 id="速度与静力"><a href="#速度与静力" class="headerlink" title="速度与静力"></a>速度与静力</h1><h2 id="位置矢量的微分（线速度矢量）"><a href="#位置矢量的微分（线速度矢量）" class="headerlink" title="位置矢量的微分（线速度矢量）"></a>位置矢量的微分（线速度矢量）</h2><p>对于位置矢量的速度可以看成是用<strong>位置矢量描述的空间上<u>一点的速度</u></strong>，如果想在坐标系{A}表达一个{B}中位置矢量的速度，则有：</p>
 <script type="math/tex; mode=display">
 ^A(^BV_Q)=\frac{^Ad}{dt} {^BQ} \Leftrightarrow \lim_{\Delta t \to 0} \frac{^A Q(t + \Delta t) - ^A Q(t)}{\Delta t}</script><p>因为旋转矩阵可以表示坐标系的映射，因此有：</p>
 <script type="math/tex; mode=display">
@@ -339,11 +339,14 @@
 <p>对于线速度和角速度，我们规定：</p>
 <script type="math/tex; mode=display">
 v_A=^WV_{A_{org}}</script><script type="math/tex; mode=display">
-\omega_A = ^W\Omega_A</script><h2 id="刚体的速度表达"><a href="#刚体的速度表达" class="headerlink" title="刚体的速度表达"></a>刚体的速度表达</h2><p>上面我们讨论的线速度与角速度都是针对于坐标系的原点，现在讨论在刚体中的情况。</p>
+\omega_A = ^W\Omega_A</script><h2 id="刚体（上一点）的速度表达"><a href="#刚体（上一点）的速度表达" class="headerlink" title="刚体（上一点）的速度表达"></a>刚体（上一点）的速度表达</h2><p>上面我们讨论的线速度与角速度都是针对于坐标系的原点，现在讨论在刚体中的情况。</p>
 <p>假设参考坐标系为{A}，将{B}固连在一刚体上，刚体上存在一点Q（不在原点上），则有：</p>
 <script type="math/tex; mode=display">
-^AV_Q=(^AV_{B_{org}}+^A_BR^BV_Q)+(^A\Omega_B \times^A_BR^BQ)</script><p>前一个括号表示线速度，后一个表示角速度</p>
-<h2 id="连杆间的速度传递-重点"><a href="#连杆间的速度传递-重点" class="headerlink" title="连杆间的速度传递(重点)"></a>连杆间的速度传递(重点)</h2><p>由于连杆是链式结构，每一个连杆的运动都与其相邻杆有关，<strong>因此对于i+1连杆，其速度就是连杆i的速度加上附加到关节i+1上的新速度分量</strong>（对于连杆的速度，我们通常讨论的是连杆坐标系原<strong>点</strong>的线速度和连杆坐标系的角速度）</p>
+^AV_Q=(^AV_{B_{org}}+^A_BR^BV_Q)+(^A\Omega_B \times^A_BR^BQ)</script><p>前一个括号表示线速度项，后一个表示角速度项</p>
+<h3 id="关于线速度、角速度和刚体的速度"><a href="#关于线速度、角速度和刚体的速度" class="headerlink" title="关于线速度、角速度和刚体的速度"></a>关于线速度、角速度和刚体的速度</h3><p>线速度描述的是空间上<strong>一个点</strong>沿某轨迹运动的快慢与方向，在坐标系中则为位置矢量Q<strong>发生变化</strong>的大小与方向；而角加速度针对的是坐标系的自转情况；将这两个概念引入到刚体中，对于<strong>刚体速度</strong>的描述，即是<u>刚体上某一点Q在参考坐标系{A}下的<strong>坐标变化情况与自转情况</strong></u>，说的更全面一点，即是：在{A}中观测{B}中一位置矢量Q的速度变化，{B}代表这个刚体，Q代表刚体上一点</p>
+<p>另外，由于我们通常都是讨论刚体上的固定一点，因此其位置矢量的微分为0，所以其实<strong>线速度项</strong>就是坐标系{B}原点的移动速度：</p>
+<script type="math/tex; mode=display">
+^AV_Q=^AV_{B_{org}}+(^A\Omega_B \times^A_BR^BQ)</script><h2 id="连杆间的速度传递"><a href="#连杆间的速度传递" class="headerlink" title="连杆间的速度传递"></a>连杆间的速度传递</h2><p>由于连杆是链式结构，每一个连杆的运动都与其相邻杆有关，<strong>因此对于i+1连杆，其速度就是连杆i的速度加上附加到关节i+1上的新速度分量</strong>（对于连杆的速度，我们通常讨论的是连杆坐标系原<strong>点</strong>的线速度和连杆坐标系的角速度）</p>
 <p>对于角速度，根据上述规则，则有：</p>
 <script type="math/tex; mode=display">
 ^i\omega_{i+1}={^i\omega}_{i}+{^i_{i+1}R \dot{\theta}_{i+1}{^{i+1}\hat{Z}_{i+1}}}</script><p>此处乘Z是为了让关节角加速度匹配R矩阵维度，并且该加速度只在Z轴上存在，将上式两边同左乘<strong>i相对于i+1</strong>的旋转矩阵，则有：</p>
@@ -358,19 +361,19 @@ v_A=^WV_{A_{org}}</script><script type="math/tex; mode=display">
 <script type="math/tex; mode=display">
 x=f(q)</script><p>其中x是一个包含位姿与姿态的6x1向量，q为机器人的六个关节变量组成的6x1向量，因此f为一个6x6矩阵，代表了x每一个元素与q的非线性函数关系，将上式两边同时对时间求导，则有：</p>
 <script type="math/tex; mode=display">
-V=J(q)\dot{q}</script><p>此时，该式表示了<strong>连杆速度（笛卡尔）</strong>（取决于选择的连杆和参考坐标系）与<strong>关节角速度</strong>之间的<strong>映射关系</strong></p>
+\text{v}=J(q)\dot{q}</script><p>此时，该式表示了<strong>连杆速度v（笛卡尔表示）</strong>（取决于选择的连杆和参考坐标系）与<strong>关节角速度</strong>之间的<strong>映射关系</strong></p>
 <p>对于常见的求末端速度的雅各比矩阵，有：</p>
 <script type="math/tex; mode=display">
-^0V_6=\begin{bmatrix}^0v_6\\^0\omega_6 \end{bmatrix}={^0J(q)}\dot{q}</script><p>此时，该矩阵代表了在{0}坐标下，各<strong>关节角速度</strong>对<strong>末端速度</strong>（线+角）的共享</p>
+^0\text{v}_6=\begin{bmatrix}^0v_6\\^0\omega_6 \end{bmatrix}={^0J(q)}\dot{q}</script><p>此时，该矩阵代表了在{0}坐标下，各<strong>关节角速度</strong>对<strong>末端速度</strong>（线+角）的共享</p>
 <h3 id="奇异性"><a href="#奇异性" class="headerlink" title="奇异性"></a>奇异性</h3><p>因此，当已知机器人结构（<strong>等同于已知雅各比矩阵表达式</strong>），各关节转角（可求出J具体值）和笛卡尔速度时，便可以求出各关节速度：</p>
 <script type="math/tex; mode=display">
-\dot{q}=J^{-1}(q)V</script><p>但此时要求J是可逆的，当机器人出现奇异位姿时，会导致J的行列式为0，此时，J为奇异的</p>
+\dot{q}=J^{-1}(q)\text{v}</script><p>但此时要求J是可逆的，当机器人出现奇异位姿时，会导致J的行列式为0，此时，J为奇异的</p>
 <h3 id="参考系的变换"><a href="#参考系的变换" class="headerlink" title="参考系的变换"></a>参考系的变换</h3><p>对于在{A}中表达的某雅各比矩阵，若要变换到{B}中表达，则有：</p>
 <script type="math/tex; mode=display">
 ^BJ(q)=\begin{bmatrix}{^B_AR} &0 \\ 0 &{^B_AR} \end{bmatrix} {^AJ(q)}</script><h2 id="力域中的雅可比"><a href="#力域中的雅可比" class="headerlink" title="力域中的雅可比"></a>力域中的雅可比</h2><p>当一个F作用与机器人时，我们想要求出各关节需输出多少力矩以保持机器人的静力平衡。</p>
 <p>当一个笛卡尔广义力F（形式类似于笛卡尔速度）作用于机器人末端时，根据功率守恒，有：</p>
 <script type="math/tex; mode=display">
-F^TV=\tau\dot{q}</script><p>将上一节中计算的速度雅可比方程带入V中则最终有：</p>
+F^T\text{v}=\tau\dot{q}</script><p>将上一节中计算的速度雅可比方程带入v中则最终有：</p>
 <script type="math/tex; mode=display">
 \tau={^0J^T}{^0F}</script><p>于速度雅可比方程一样，F与J需在同一坐标系下表达</p>
 <h3 id="力-力矩变换"><a href="#力-力矩变换" class="headerlink" title="力-力矩变换"></a>力-力矩变换</h3><p>对于笛卡尔广义力的在不同坐标系下的表示，有：</p>
@@ -387,7 +390,26 @@ F^TV=\tau\dot{q}</script><p>将上一节中计算的速度雅可比方程带入V
 \begin{bmatrix}
 {}^B F_B \\
 {}^B N_B
-\end{bmatrix}</script>
+\end{bmatrix}</script><h1 id="机器人动力学"><a href="#机器人动力学" class="headerlink" title="机器人动力学"></a>机器人动力学</h1><h2 id="刚体的加速度"><a href="#刚体的加速度" class="headerlink" title="刚体的加速度"></a>刚体的加速度</h2><p>对上一章“刚体的速度表达”中两边同时对时间进行求导最终可得到在{A}中表达一个{B}中的<strong>常量矢量Q</strong>的加速度公式：（常量Q代表着其在{B}中的速度、加速度表达均为0）</p>
+<script type="math/tex; mode=display">
+{^A\dot{V}_Q}={^A\dot{V}_{Borg}}+{^A\Omega_B}\times({^A\Omega_B}\times{}^A_B RQ)+{^A\dot{\Omega}_B}\times{}^A_B RQ</script><ul>
+<li><p>角加速度的单独表达：</p>
+<p>对于{B}，{C}都在转动的情况，有：</p>
+<script type="math/tex; mode=display">
+{^A\dot{\Omega}_C}={^A\dot{\Omega}_B}+{}^A_B R{^B\dot{\Omega}_C}+{^A\Omega_B}\times{}^A_B R{^B\Omega_C}</script></li>
+</ul>
+<h2 id="刚体的质量分布"><a href="#刚体的质量分布" class="headerlink" title="刚体的质量分布"></a>刚体的质量分布</h2><p>在一个刚体绕某个轴做旋转运动时，需要一种能够表征其质量分布的方法，因此我们引入惯性张量：</p>
+<script type="math/tex; mode=display">
+I = 
+\begin{bmatrix}
+I_{xx} & I_{xy} & I_{xz} \\
+I_{yx} & I_{yy} & I_{yz} \\
+I_{zx} & I_{zy} & I_{zz}
+\end{bmatrix}</script><p>其中，xx，yy，zz为<strong>惯量矩</strong>，其余交叉项为<strong>惯量积</strong>；这六个参量取决于其<strong>所在</strong>坐标系（即刚体中的{B}）的位姿；</p>
+<h3 id="平移移轴定理"><a href="#平移移轴定理" class="headerlink" title="平移移轴定理"></a>平移移轴定理</h3><p>该定理描述了一个以刚体质心为原点的坐标系<strong><u>平移</u></strong>到另一个坐标系时的惯性张量变换关系：</p>
+<script type="math/tex; mode=display">
+{^AI}={^CI}+m(P^T_cP_cI_3-P_cP^T_c)</script><p>其中I代表要变换的惯量矩/惯量积，Pc为质心坐标系{A}原点位置（3x1），I3为3x3单位矩阵</p>
+
       
     </div>
 
