@@ -311,7 +311,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-10-27 19:02:12" itemprop="dateModified" datetime="2025-10-27T19:02:12+08:00">2025-10-27</time>
+                <time title="修改时间：2025-10-28 19:31:57" itemprop="dateModified" datetime="2025-10-28T19:31:57+08:00">2025-10-28</time>
               </span>
 
           
@@ -390,15 +390,10 @@ F^T\text{v}=\tau\dot{q}</script><p>将上一节中计算的速度雅可比方程
 \begin{bmatrix}
 {}^B F_B \\
 {}^B N_B
-\end{bmatrix}</script><h1 id="机器人动力学"><a href="#机器人动力学" class="headerlink" title="机器人动力学"></a>机器人动力学</h1><h2 id="刚体的加速度"><a href="#刚体的加速度" class="headerlink" title="刚体的加速度"></a>刚体的加速度</h2><p>对上一章“刚体的速度表达”中两边同时对时间进行求导最终可得到在{A}中表达一个{B}中的<strong>常量矢量Q</strong>的加速度公式：（常量Q代表着其在{B}中的速度、加速度表达均为0）</p>
+\end{bmatrix}</script><h1 id="机器人动力学"><a href="#机器人动力学" class="headerlink" title="机器人动力学"></a>机器人动力学</h1><p>假设已知关节的转角、速度和加速度，<strong>求驱动关节所需要的力矩</strong></p>
+<h2 id="刚体的加速度"><a href="#刚体的加速度" class="headerlink" title="刚体的加速度"></a>刚体的加速度</h2><p>对上一章“刚体的速度表达”中两边同时对时间进行求导最终可得到在{A}中表达一个{B}中的<strong>常量矢量Q</strong>的加速度公式：（常量Q代表着其在{B}中的速度、加速度表达均为0）</p>
 <script type="math/tex; mode=display">
-{^A\dot{V}_Q}={^A\dot{V}_{Borg}}+{^A\Omega_B}\times({^A\Omega_B}\times{}^A_B RQ)+{^A\dot{\Omega}_B}\times{}^A_B RQ</script><ul>
-<li><p>角加速度的单独表达：</p>
-<p>对于{B}，{C}都在转动的情况，有：</p>
-<script type="math/tex; mode=display">
-{^A\dot{\Omega}_C}={^A\dot{\Omega}_B}+{}^A_B R{^B\dot{\Omega}_C}+{^A\Omega_B}\times{}^A_B R{^B\Omega_C}</script></li>
-</ul>
-<h2 id="刚体的质量分布"><a href="#刚体的质量分布" class="headerlink" title="刚体的质量分布"></a>刚体的质量分布</h2><p>在一个刚体绕某个轴做旋转运动时，需要一种能够表征其质量分布的方法，因此我们引入惯性张量：</p>
+{^A\dot{V}_Q}={^A\dot{V}_{Borg}}+{^A\Omega_B}\times({^A\Omega_B}\times{}^A_B RQ)+{^A\dot{\Omega}_B}\times{}^A_B RQ</script><h2 id="刚体的质量分布"><a href="#刚体的质量分布" class="headerlink" title="刚体的质量分布"></a>刚体的质量分布</h2><p>在一个刚体绕某个轴做旋转运动时，需要一种能够表征其质量分布的方法，因此我们引入惯性张量：</p>
 <script type="math/tex; mode=display">
 I = 
 \begin{bmatrix}
@@ -409,7 +404,55 @@ I_{zx} & I_{zy} & I_{zz}
 <h3 id="平移移轴定理"><a href="#平移移轴定理" class="headerlink" title="平移移轴定理"></a>平移移轴定理</h3><p>该定理描述了一个以刚体质心为原点的坐标系<strong><u>平移</u></strong>到另一个坐标系时的惯性张量变换关系：</p>
 <script type="math/tex; mode=display">
 {^AI}={^CI}+m(P^T_cP_cI_3-P_cP^T_c)</script><p>其中I代表要变换的惯量矩/惯量积，Pc为质心坐标系{A}原点位置（3x1），I3为3x3单位矩阵</p>
-
+<h2 id="牛顿-欧拉法"><a href="#牛顿-欧拉法" class="headerlink" title="牛顿-欧拉法"></a>牛顿-欧拉法</h2><h3 id="牛顿方程与欧拉方程"><a href="#牛顿方程与欧拉方程" class="headerlink" title="牛顿方程与欧拉方程"></a>牛顿方程与欧拉方程</h3><p>牛顿方程描述了作用与质心的力F与质心加速度之间的关系：</p>
+<script type="math/tex; mode=display">
+F=m\dot{v}</script><p>对于加速度的计算已在“刚体的加速度”小节中给出（没错，就是包含了角加速度的那个加速度）</p>
+<p>欧拉方程描述了惯量、力矩与角加速度的关系：</p>
+<script type="math/tex; mode=display">
+N=I\dot{\omega}+\omega \times I\omega</script><h3 id="外向迭代法（计算速度、加速度以得到连杆上的力、力矩）"><a href="#外向迭代法（计算速度、加速度以得到连杆上的力、力矩）" class="headerlink" title="外向迭代法（计算速度、加速度以得到连杆上的力、力矩）"></a>外向迭代法（计算速度、加速度以得到连杆上的力、力矩）</h3><p>由连杆间速度传递，对<strong>角速度</strong>求导可得：</p>
+<script type="math/tex; mode=display">
+{^{i+1}\dot{\omega}_{i+1}}=\frac{d(^{i+1}_iR^i\omega_i)}{dt}+{ \ddot{\theta}_{i+1}{^{i+1}\hat{Z}_{i+1}}}={}^{i+1}_iR ^i\dot{\omega}_i+{}^{i+1}_iR^i\omega_i\times{ \dot{\theta}_{i+1}{^{i+1}\hat{Z}_{i+1}}}+{ \ddot{\theta}_{i+1}{^{i+1}\hat{Z}_{i+1}}}</script><p>因为R本身也与时间相关，因此其导数也有特殊形式，上式记住就行</p>
+<p>由“刚体加速度”中的公式可得每个连杆<strong>坐标系原点</strong>和其<strong>质心</strong>的加速度：</p>
+<script type="math/tex; mode=display">
+{^{i+1}\dot v_{i+1}}=^{i+1}_iR({^i\dot v_i} + ^i\omega_i\times {}^iP_{i+1}+ ^i\omega_i \times(^i\omega_i \times {}^iP_{i+1}))</script><script type="math/tex; mode=display">
+{^i\dot v_{C_i}}= {^i\dot v_{i}} + ^i\dot{\omega}_i \times {^iP_{C_i}}+^i\omega_i \times (^i\omega_i+{^iP_{C_i}})</script><p>假设质心坐标系坐标轴方位与连杆坐标系{i}方向相同</p>
+<p>得出角加速度和加速度后，即可根据<strong>牛顿、欧拉方程</strong>计算出每个<strong>作用在每个连杆上的惯性力和力矩</strong></p>
+<h3 id="内向迭代法"><a href="#内向迭代法" class="headerlink" title="内向迭代法"></a>内向迭代法</h3><p><u>在得到作用在连杆上的力和力矩后</u>，即可根据力、力矩平衡计算出<strong>连杆i-1对连杆i</strong>施加的力f和力矩n，最后得到<strong>关节i</strong>的驱动力矩：</p>
+<script type="math/tex; mode=display">
+{^if_i}={^i_{i+1}R}f_{i+1}+{}^iF_i</script><script type="math/tex; mode=display">
+{}^in_i={}^iN_i+{^i_{i+1}R} \ n_{i+1}+{^iP_{C_i}}\times {}^iF_i+{}^iP_{i+1}\times{^i_{i+1}R}{^{i+1}f_{i+1}}</script><p>最终，对于旋转关节：</p>
+<script type="math/tex; mode=display">
+\tau_i={}^in_i^T\hat{Z}_i</script><p>对于移动关节：（此时tau代表线性驱动力）</p>
+<script type="math/tex; mode=display">
+\tau_i={}^if_i^T\hat{Z}_i</script><p><strong>对于末端未与环境接触的机器人，其f_i+1与n_i+1为0</strong></p>
+<h3 id="总流程"><a href="#总流程" class="headerlink" title="总流程"></a>总流程</h3><p>结合外向和内向迭代，便可在已知关节转角、及其一阶、二阶导的情况下，计算出每个关节的驱动力矩：</p>
+<ul>
+<li><p><strong>外向迭代</strong>，依次求连杆上惯性力和力矩。从<strong>0连杆推到n连杆</strong>（0连杆（基座）的角速度、角加速度为0）</p>
+<ul>
+<li><p>角速度计算(<strong>不需计算线速度</strong>)</p>
+</li>
+<li><p>角加速度计算</p>
+</li>
+<li><p>连杆坐标系原点加速度计算</p>
+</li>
+<li><p>连杆质心加速度计算</p>
+</li>
+<li><p>惯性力、力矩计算</p>
+</li>
+</ul>
+</li>
+<li><p><strong>内向迭代</strong>，依次求各关节驱动力矩。从<strong>n连杆推到0连杆</strong></p>
+<ul>
+<li>i-1连杆对i连杆的<strong>作用力</strong>计算</li>
+<li>i-1连杆对i连杆的<strong>作用力矩</strong>计算</li>
+<li>根据关节属性计算驱动力矩/力</li>
+</ul>
+</li>
+</ul>
+<img src="/images/loading.png" data-original="/2025/10/22/robo-dynamic/1.png" class title="This is an image"> 
+<h3 id="考虑重力存在的情况"><a href="#考虑重力存在的情况" class="headerlink" title="考虑重力存在的情况"></a>考虑重力存在的情况</h3><p>为基座加速度假想一个与重力矢量G大小相等，方向相反的加速度，即：</p>
+<script type="math/tex; mode=display">
+{^0\dot{v}_0}=G</script>
       
     </div>
 
