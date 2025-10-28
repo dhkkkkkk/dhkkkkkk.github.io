@@ -311,7 +311,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-10-28 19:31:57" itemprop="dateModified" datetime="2025-10-28T19:31:57+08:00">2025-10-28</time>
+                <time title="修改时间：2025-10-28 19:58:47" itemprop="dateModified" datetime="2025-10-28T19:58:47+08:00">2025-10-28</time>
               </span>
 
           
@@ -452,7 +452,14 @@ N=I\dot{\omega}+\omega \times I\omega</script><h3 id="外向迭代法（计算�
 <img src="/images/loading.png" data-original="/2025/10/22/robo-dynamic/1.png" class title="This is an image"> 
 <h3 id="考虑重力存在的情况"><a href="#考虑重力存在的情况" class="headerlink" title="考虑重力存在的情况"></a>考虑重力存在的情况</h3><p>为基座加速度假想一个与重力矢量G大小相等，方向相反的加速度，即：</p>
 <script type="math/tex; mode=display">
-{^0\dot{v}_0}=G</script>
+{^0\dot{v}_0}=G</script><h2 id="动力学方程"><a href="#动力学方程" class="headerlink" title="动力学方程"></a>动力学方程</h2><h3 id="状态空间方程"><a href="#状态空间方程" class="headerlink" title="状态空间方程"></a>状态空间方程</h3><p>对于用牛顿-欧拉法分析得到的关节驱动力矩矩阵，其动力学方程可以表示为：</p>
+<script type="math/tex; mode=display">
+\tau=M(\theta)\ddot{\theta}+V(\theta,\ddot{\theta})+G(\theta)</script><p>其中M为nxn质量矩阵，V为nx1的离心力与哥氏力矢量，G为nx1的重力矢量</p>
+<p>假设有如下关节力矩表示：</p>
+<img src="/images/loading.png" data-original="/2025/10/22/robo-dynamic/2.png" class title="This is an image"> 
+<p>则可得到：</p>
+<img src="/images/loading.png" data-original="/2025/10/22/robo-dynamic/3.png" class title="This is an image"> 
+
       
     </div>
 
