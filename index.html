@@ -311,7 +311,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-10-28 19:58:47" itemprop="dateModified" datetime="2025-10-28T19:58:47+08:00">2025-10-28</time>
+                <time title="修改时间：2025-10-29 10:59:03" itemprop="dateModified" datetime="2025-10-29T10:59:03+08:00">2025-10-29</time>
               </span>
 
           
@@ -390,7 +390,7 @@ F^T\text{v}=\tau\dot{q}</script><p>将上一节中计算的速度雅可比方程
 \begin{bmatrix}
 {}^B F_B \\
 {}^B N_B
-\end{bmatrix}</script><h1 id="机器人动力学"><a href="#机器人动力学" class="headerlink" title="机器人动力学"></a>机器人动力学</h1><p>假设已知关节的转角、速度和加速度，<strong>求驱动关节所需要的力矩</strong></p>
+\end{bmatrix}</script><h1 id="机器人动力学"><a href="#机器人动力学" class="headerlink" title="机器人动力学"></a>机器人动力学</h1><p>假设已知关节的转角、速度和加速度，<strong>求驱动关节所需要的力矩</strong>（逆动力学）</p>
 <h2 id="刚体的加速度"><a href="#刚体的加速度" class="headerlink" title="刚体的加速度"></a>刚体的加速度</h2><p>对上一章“刚体的速度表达”中两边同时对时间进行求导最终可得到在{A}中表达一个{B}中的<strong>常量矢量Q</strong>的加速度公式：（常量Q代表着其在{B}中的速度、加速度表达均为0）</p>
 <script type="math/tex; mode=display">
 {^A\dot{V}_Q}={^A\dot{V}_{Borg}}+{^A\Omega_B}\times({^A\Omega_B}\times{}^A_B RQ)+{^A\dot{\Omega}_B}\times{}^A_B RQ</script><h2 id="刚体的质量分布"><a href="#刚体的质量分布" class="headerlink" title="刚体的质量分布"></a>刚体的质量分布</h2><p>在一个刚体绕某个轴做旋转运动时，需要一种能够表征其质量分布的方法，因此我们引入惯性张量：</p>
@@ -459,7 +459,19 @@ N=I\dot{\omega}+\omega \times I\omega</script><h3 id="外向迭代法（计算�
 <img src="/images/loading.png" data-original="/2025/10/22/robo-dynamic/2.png" class title="This is an image"> 
 <p>则可得到：</p>
 <img src="/images/loading.png" data-original="/2025/10/22/robo-dynamic/3.png" class title="This is an image"> 
-
+<h3 id="笛卡尔状态空间方程"><a href="#笛卡尔状态空间方程" class="headerlink" title="笛卡尔状态空间方程"></a>笛卡尔状态空间方程</h3><p>当我们项将笛卡尔变量的一般形式应用于动力学方程中时，有：</p>
+<img src="/images/loading.png" data-original="/2025/10/22/robo-dynamic/4.png" class title="This is an image"> 
+<h2 id="拉格朗日法"><a href="#拉格朗日法" class="headerlink" title="拉格朗日法"></a>拉格朗日法</h2><p>牛顿-欧拉法是通过分析作用于连杆的之间的约束力和力矩而进行动力学求解，可以被认为是一种<strong>力平衡方法</strong>。而拉格朗日公式则是一种基于能量的动力学方法。</p>
+<p>拉格朗日函数描述了一个系统的动能和势能的差值：</p>
+<script type="math/tex; mode=display">
+L(\theta,\dot{\theta})=k(\theta,\dot{\theta})-u(\theta)</script><p>对于连杆i的动能，可表示为：</p>
+<script type="math/tex; mode=display">
+k_i=\frac1 2 m_iv^2_{Ci}+\frac1 2 I_i\omega^2_i</script><p>对于连杆i的势能，可表示为：</p>
+<script type="math/tex; mode=display">
+u_i=m_igh+C</script><p>其中C为势能参考0点所带来的常数，可取任意值，通常参考点为基座，则C为0（由于动力学方程中仅出现势能对θ的偏导，因此C无关紧要）</p>
+<p><strong>由能量守恒，我们可以得知外力做功=系统机械能变化量，对等式两边同时对位移（θ）求导，即有拉格朗日动力学方程：</strong></p>
+<script type="math/tex; mode=display">
+\tau=\frac d {dt} \frac{\partial L}{\partial \dot{\theta}}-\frac{\partial L}{\partial \theta}=\frac d {dt} \frac{\partial k}{\partial \dot{\theta}}-(\frac{\partial k}{\partial \theta}-\frac{\partial u}{\partial \theta})</script>
       
     </div>
 
@@ -846,11 +858,11 @@ e^{a t}x(t) \Leftrightarrow X(s-a)</script></li>
         pbOptions.networks = "Wechat,QQZone,Weibo,Douban,Twitter,Facebook";
       new needShareButton('#needsharebutton-postbottom', pbOptions);
   </script>
-<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script><script>
+<script>
             window.imageLazyLoadSetting = {
                 isSPA: false,
                 preloadRatio: 1,
                 processImages: null,
             };
-        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(e.href.match(t)||e.href.match(r))&&(e.href=a.dataset.original)})});</script><script>!function(n){n.imageLazyLoadSetting.processImages=o;var e=n.imageLazyLoadSetting.isSPA,i=n.imageLazyLoadSetting.preloadRatio||1,r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]"));function o(){e&&(r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")));for(var t,a=0;a<r.length;a++)0<=(t=(t=r[a]).getBoundingClientRect()).bottom&&0<=t.left&&t.top<=(n.innerHeight*i||document.documentElement.clientHeight*i)&&function(){var t,e,n,i,o=r[a];t=o,e=function(){r=r.filter(function(t){return o!==t})},n=new Image,i=t.getAttribute("data-original"),n.onload=function(){t.src=i,e&&e()},t.src!==i&&(n.src=i)}()}o(),n.addEventListener("scroll",function(){var t,e;t=o,e=n,clearTimeout(t.tId),t.tId=setTimeout(function(){t.call(e)},500)})}(this);</script></body>
+        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(e.href.match(t)||e.href.match(r))&&(e.href=a.dataset.original)})});</script><script>!function(n){n.imageLazyLoadSetting.processImages=o;var e=n.imageLazyLoadSetting.isSPA,i=n.imageLazyLoadSetting.preloadRatio||1,r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]"));function o(){e&&(r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")));for(var t,a=0;a<r.length;a++)0<=(t=(t=r[a]).getBoundingClientRect()).bottom&&0<=t.left&&t.top<=(n.innerHeight*i||document.documentElement.clientHeight*i)&&function(){var t,e,n,i,o=r[a];t=o,e=function(){r=r.filter(function(t){return o!==t})},n=new Image,i=t.getAttribute("data-original"),n.onload=function(){t.src=i,e&&e()},t.src!==i&&(n.src=i)}()}o(),n.addEventListener("scroll",function(){var t,e;t=o,e=n,clearTimeout(t.tId),t.tId=setTimeout(function(){t.call(e)},500)})}(this);</script><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script></body>
 </html>
