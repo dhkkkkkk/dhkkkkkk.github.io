@@ -197,6 +197,117 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2024/07/17/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/zoe.gif">
+      <meta itemprop="name" content="dhk">
+      <meta itemprop="description" content="记录一些学习日常">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小董的BLOG">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/07/17/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-1/" class="post-title-link" itemprop="url">机器学习的一些概念</a>
+        </h2>
+
+        <div class="post-meta">
+		  
+		  
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2024-07-17 14:17:08" itemprop="dateCreated datePublished" datetime="2024-07-17T14:17:08+08:00">2024-07-17</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2024-10-22 16:45:06" itemprop="dateModified" datetime="2024-10-22T16:45:06+08:00">2024-10-22</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="监督学习"><a href="#监督学习" class="headerlink" title="监督学习"></a>监督学习</h1><p>监督学习是从<strong>对应了某种特定标签的的训练数据（例如房价预测中的输入里，一个面积对应一个的价格）</strong>中学习并建立模型，然后基于该模型预测未知的样本。其中，模型的<strong>输入是某个样本数据的特征</strong>，而函数的输出是<strong>与该样本相对应的标签</strong>。监督学习算法则负责预测输入到输出之间的<strong>映射关系</strong></p>
+<p>例如：输入为语音，输出为文字，则该监督学习的应用即为语音识别</p>
+<p>分类：</p>
+<ul>
+<li>回归算法(regression)</li>
+<li>分类算法(classfication)。分类预测的是一个小的、有限的一套阐述类别（输出大多为离散、有限的）</li>
+</ul>
+<h2 id="线性回归模型（linear-regression）"><a href="#线性回归模型（linear-regression）" class="headerlink" title="线性回归模型（linear regression）"></a>线性回归模型（linear regression）</h2><ul>
+<li>训练集（training set）：用于训练模型的已知数据<strong>集合</strong></li>
+<li>输入变量x(input/feature)：训练集中的输入</li>
+<li>输出变量y (output/target)：训练集中的输出</li>
+<li>模型：用于预测的函数  </li>
+<li>预测y-hat(^)（prediction）：模型的输出，<strong>注意区分y和y-hat</strong></li>
+</ul>
+<h3 id="代价函数（cost-function）or损失函数（loss）"><a href="#代价函数（cost-function）or损失函数（loss）" class="headerlink" title="代价函数（cost function）or损失函数（loss）"></a>代价函数（cost function）or损失函数（loss）</h3><p>用于评估模型输出和训练数据的拟合程度</p>
+<p>因此代价函数输出应尽可能<strong>小</strong></p>
+<h4 id="平方误差代价函数（squared-error-cost-function）"><a href="#平方误差代价函数（squared-error-cost-function）" class="headerlink" title="平方误差代价函数（squared error cost function）"></a>平方误差代价函数（squared error cost function）</h4><img src="/images/loading.png" data-original="/2024/07/17/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-1/2.JPG" class title="This is an image"> 
+<p>模型参数w，b会影响代价函数的输出，而找到当前训练集下使代价函数输出最小的参数w，b，即可找到对当前训练集最适合的线性回归模型</p>
+<img src="/images/loading.png" data-original="/2024/07/17/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-1/3.jpg" class title="This is an image"> 
+<p><u>对于使用平方误差代价函数的线性回归中总会出现弓形、吊床形的图像</u></p>
+<p>即只有一个最小值</p>
+<h3 id="梯度下降算法（gradient-descent）"><a href="#梯度下降算法（gradient-descent）" class="headerlink" title="梯度下降算法（gradient descent）"></a>梯度下降算法（gradient descent）</h3><p>可用于尝试最小化任何函数</p>
+<img src="/images/loading.png" data-original="/2024/07/17/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-1/4.jpg" class title="This is an image"> 
+<ul>
+<li><p>参数w、b必须同时更新，而不算将更新后的w用于b的更新中</p>
+</li>
+<li><p>α：学习率，学习率过大会导致代价函数无法收敛，甚至效果越来越差</p>
+</li>
+<li><p>由式可以看出，<strong>梯度下降算法只 能找到代价函数中的某个极小值</strong>，而对于找到的极小值则与w，b在梯度下降算法中的初始值有关</p>
+</li>
+</ul>
+<img src="/images/loading.png" data-original="/2024/07/17/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-1/5.jpg" class title="This is an image">
+<p>由于两个参数的梯度下降式是互相独立的，因此对w或b的更新可以视作，另一个参数固定。再结合梯度下降算式可以看出该算法其实是利用了斜率的正负特性进行找极小值的过程 </p>
+<h2 id="分类算法"><a href="#分类算法" class="headerlink" title="分类算法"></a>分类算法</h2><h3 id="逻辑回归算法（非回归算法）logistic-regression"><a href="#逻辑回归算法（非回归算法）logistic-regression" class="headerlink" title="逻辑回归算法（非回归算法）logistic regression"></a>逻辑回归算法（非回归算法）logistic regression</h3><h1 id="非监督学习"><a href="#非监督学习" class="headerlink" title="非监督学习"></a>非监督学习</h1><p>非监督学习算法的输入样本<strong>不对应某种特定的标签</strong>，而是<strong>自动</strong>地从样本中学习以找到某种结构、模式……</p>
+<p>分类：</p>
+<ul>
+<li>聚类算法(clustering)：例如从数万篇文章中找到相似词（<strong>非特定</strong>）并聚类</li>
+<li>异常检测（anomaly detection）</li>
+<li>降维（dimensionality reduction） </li>
+</ul>
+<p>吴恩达の小练习：（其中两个为监督两个为非监督）</p>
+<img src="/images/loading.png" data-original="/2024/07/17/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-1/1.jpg" class title="This is an image"> 
+<h1 id="jupyter-Notebook"><a href="#jupyter-Notebook" class="headerlink" title="jupyter Notebook"></a>jupyter Notebook</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">python -m pip install --upgrade pip</span><br><span class="line">pip install jupyter notebook</span><br></pre></td></tr></table></figure>
+<p>剩下的一些操作lab1文件写的很清楚，忘了就去看看</p>
+<h1 id="参数归一化（normalization）"><a href="#参数归一化（normalization）" class="headerlink" title="参数归一化（normalization）"></a>参数归一化（normalization）</h1><p>由于各参数（特征）的变化范围、大小、单位不同，需要先进行归一化处理后才输入到模型</p>
+<h2 id="平均归一化（mean-normalization）"><a href="#平均归一化（mean-normalization）" class="headerlink" title="平均归一化（mean normalization）"></a>平均归一化（mean normalization）</h2><h2 id="Z-score-normalization"><a href="#Z-score-normalization" class="headerlink" title="Z-score normalization"></a>Z-score normalization</h2>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2024/07/12/%E8%AE%BA%E6%96%87%E6%92%B0%E5%86%99/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -684,177 +795,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2024/07/09/endnote/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/zoe.gif">
-      <meta itemprop="name" content="dhk">
-      <meta itemprop="description" content="记录一些学习日常">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="小董的BLOG">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/07/09/endnote/" class="post-title-link" itemprop="url">EndNote</a>
-        </h2>
-
-        <div class="post-meta">
-		  
-		  
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2024-07-09 16:12:39" itemprop="dateCreated datePublished" datetime="2024-07-09T16:12:39+08:00">2024-07-09</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-07-14 19:08:53" itemprop="dateModified" datetime="2024-07-14T19:08:53+08:00">2024-07-14</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>本文学习基于<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1W4411b7GM/?p=3&amp;spm_id_from=pageDriver&amp;vd_source=063d3dd412d275078eaf18c62b5f21f6">endnote中科大慕课_bilibili</a></p>
-<h1 id="基本使用"><a href="#基本使用" class="headerlink" title="基本使用"></a>基本使用</h1><img src="/images/loading.png" data-original="/2024/07/09/endnote/1.jpg" class title="This is an image"> 
-<ul>
-<li>在线搜索可在不同数据库中按需检索文献</li>
-<li>Retrieve result可选检索结果显示数量</li>
-<li>➕可将选中文献复制到本地数据库</li>
-<li><u>查找全文</u>可搜索原文PDF；也可通过<u>打开网址</u>进行检索。PDF最好用endnote内置阅读器打开</li>
-<li>可在左侧栏对数据库文献进行分组，直接拖拽就可</li>
-</ul>
-<h1 id="在word中使用"><a href="#在word中使用" class="headerlink" title="在word中使用"></a>在word中使用</h1><h2 id="endnote关联word"><a href="#endnote关联word" class="headerlink" title="endnote关联word"></a>endnote关联word</h2><ul>
-<li><p>在endnote安装路径下运行configure endnote并勾选第一个选项</p>
-</li>
-<li><p>文件-选项-加载项-管理COM加载项 转到-勾选Endnote cite while you write，如果出现<strong>报错</strong>：</p>
-<ul>
-<li><p>检查window系统位数（一般为64），在endnote安装路径下的Product-Support/CWYW中将..x64.dat改为压缩包格式后缀并解压，将解压后的5个文件复制到word的endnote加载项地址进行替换</p>
-</li>
-<li><p>如果还是不行，检查<strong>word</strong>是否为64位，如果win系统为64位而word为32位建议<strong>重装一个64位office（</strong>本人原为32位office2019，全网的方法都试过了还是不行，重装为64位office2021后就正常了，使用的是endnote 21）</p>
-</li>
-<li><p>其他问题可参考：<a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_45936544/article/details/134223088?spm=1001.2014.3001.5506">Word 找不到 Endnote选项_word加载项里找不到endnote-CSDN博客</a></p>
-<p><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/340094831/answer/1057369528"> word2019与endnote如何关联？ - 知乎 (zhihu.com)</a></p>
-<p>如果上述方法都不行真的建议立刻重装一个64位office，反正我是被折磨了一整天的😥</p>
-<p>office卸载建议使用微软官方的彻底卸载（整个过程大概20min左右）：<a target="_blank" rel="noopener" href="https://support.microsoft.com/zh-cn/office/从-pc-卸载-office-9dd49b83-264a-477a-8fcc-2fdf5dbf61d8?ui=zh-cn&amp;rs=zh-cn&amp;ad=cn">卸载 Office -Microsoft 支持</a></p>
-</li>
-</ul>
-</li>
-</ul>
-<h2 id="在word中插入参考文献"><a href="#在word中插入参考文献" class="headerlink" title="在word中插入参考文献"></a>在word中插入参考文献</h2><img src="/images/loading.png" data-original="/2024/07/09/endnote/2.jpg" class title="This is an image"> 
-<ul>
-<li>可在<strong>word中插入</strong>endnote中选中的文献</li>
-<li>也可以<strong>在endnote中</strong>有个引号图标在指定文档中插入文献</li>
-<li>也可以直接在endnote中把相关文献<strong>拖</strong>进word（需打开word中的即时格式化）</li>
-<li>在样式中可以根据要求选择不同的<strong>引用格式</strong></li>
-<li>在插入引文中可以插入<strong>作者名</strong>等信息（需endnote账号）</li>
-<li>在“编辑＆管理引文”中可以<strong>移除引文</strong></li>
-<li>投稿前需将论文在“转换引文和参考文献”中转换为纯文本</li>
-</ul>
-<h2 id="修改引文样式"><a href="#修改引文样式" class="headerlink" title="修改引文样式"></a>修改引文样式</h2><p>endnote21 中 工具-输出样式-编辑xx or新样式</p>
-<h2 id="使用论文模板"><a href="#使用论文模板" class="headerlink" title="使用论文模板"></a>使用论文模板</h2><p>endnote21 中 工具-格式化论文-格式论文</p>
-<h2 id="插图"><a href="#插图" class="headerlink" title="插图"></a>插图</h2><p>使用endnote插图可以自动根据选择的样式进行排版</p>
-<ul>
-<li>新建文献-reference type设置为figure</li>
-<li>title设置该文献名字</li>
-<li>caption设置批注</li>
-<li>figure选择图片</li>
-</ul>
-<h1 id="将文献导入endnote"><a href="#将文献导入endnote" class="headerlink" title="将文献导入endnote"></a>将文献导入endnote</h1><h2 id="1、直接检索"><a href="#1、直接检索" class="headerlink" title="1、直接检索"></a>1、直接检索</h2><p>在endnote中在不同数据库中进行在线搜索，需注意几点</p>
-<ul>
-<li>web of science的年份搜索可通过20xx-20xx进行区间搜索；Pub为20xx:20xx</li>
-<li>可以点击➕选择更多数据库</li>
-</ul>
-<h2 id="2、网站输出"><a href="#2、网站输出" class="headerlink" title="2、网站输出"></a>2、网站输出</h2><ul>
-<li><p>web of science</p>
-<p>通过网站的save to endnote desktop（需根据网站具体情况） </p>
-<p>web of science可先将选中文献Add to Marked List，再导出至endnote</p>
-</li>
-<li><p>Scopus</p>
-<p>export-输出为RIS格式</p>
-</li>
-<li><p>知网</p>
-<p><em>导出的txt在endnote中进行导入，导入选项为endnote import</em>（现在知网可以直接导出endnote可识别的数据库格式）</p>
-</li>
-</ul>
-<h2 id="3、PDF导入"><a href="#3、PDF导入" class="headerlink" title="3、PDF导入"></a>3、PDF导入</h2><p>需在有网络时使用</p>
-<p>如果没有成功识别pdf信息可能是文献无doi号，可以尝试改名+右键 查找文献更新</p>
-<p>可在endnote首选项（preference）中设置pdf自动导入文件夹</p>
-<h2 id="4、手动输入和软件之间的交互"><a href="#4、手动输入和软件之间的交互" class="headerlink" title="4、手动输入和软件之间的交互"></a>4、手动输入和软件之间的交互</h2><ul>
-<li><p>手动输入</p>
-<p>ctrl+N（引用按钮旁边的按钮） </p>
-</li>
-<li><p>endnote数据库导出到其他软件，格式一般为RIS</p>
-<p>一点就闪退捏😋，这盗版用不了一点</p>
-</li>
-</ul>
-<h1 id="endnote的一些功能"><a href="#endnote的一些功能" class="headerlink" title="endnote的一些功能"></a>endnote的一些功能</h1><ul>
-<li><p><strong>查找重复文献</strong></p>
-<p>endnote21：数据库-查找重复项</p>
-</li>
-<li><p><strong>分组/Tags/Label</strong></p>
-<ul>
-<li><p>分组：手动拖动；创建可筛选的智能组；根据已有组再次筛选新组；组集下可以再创组</p>
-<p>可以通过组集(group set)+组(group)的方式对文献进行<strong>分级管理</strong></p>
-</li>
-<li><p>tag：创建后可在每篇文献的summary下管理tag，主要作为分组的补充</p>
-<p>可以将某文献的具体类型、期刊等元素通过tag进行标记，<strong>tag的颜色有限</strong></p>
-</li>
-<li><p>Label:编辑文献中可在Label中添加对改文献的一些<strong>标注</strong></p>
-</li>
-</ul>
-</li>
-<li><p><strong>分享</strong></p>
-<p>用格式化复制；邮件发送（用的office）；可导出为txt、网页格式</p>
-</li>
-<li><p><strong>文献分析</strong></p>
-<p>工具-学科文献，按照作者、年份、期刊进行数量分析</p>
-</li>
-</ul>
-<h1 id="高效阅读文献"><a href="#高效阅读文献" class="headerlink" title="高效阅读文献"></a>高效阅读文献</h1><ul>
-<li>先阅读标题，通过rating先大概筛选一遍</li>
-<li>浏览摘要，再通过rating筛选一遍</li>
-</ul>
-<h1 id="文献检索技巧"><a href="#文献检索技巧" class="headerlink" title="文献检索技巧"></a>文献检索技巧</h1><ul>
-<li>先通过各网站找到相关专业名词，一种东西可能对应了<strong>多个词组</strong><a target="_blank" rel="noopener" href="https://dict.cnki.net/index">CNKI翻译助手</a></li>
-<li>可通过单词加*检索该单词所有形式（复数、大小写…）</li>
-<li>可以从标题-&gt;主题进行检索</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   
   <nav class="pagination">
     <a class="extend prev" rel="prev" href="/page/6/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><span class="page-number current">7</span><a class="page-number" href="/page/8/">8</a><span class="space">&hellip;</span><a class="page-number" href="/page/21/">21</a><a class="extend next" rel="next" href="/page/8/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
@@ -924,7 +864,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">61</span>
+          <span class="site-state-item-count">62</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1041,11 +981,11 @@
         pbOptions.networks = "Wechat,QQZone,Weibo,Douban,Twitter,Facebook";
       new needShareButton('#needsharebutton-postbottom', pbOptions);
   </script>
-<script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script><script>
             window.imageLazyLoadSetting = {
                 isSPA: false,
                 preloadRatio: 1,
                 processImages: null,
             };
-        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(e.href.match(t)||e.href.match(r))&&(e.href=a.dataset.original)})});</script><script>!function(n){n.imageLazyLoadSetting.processImages=o;var e=n.imageLazyLoadSetting.isSPA,i=n.imageLazyLoadSetting.preloadRatio||1,r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]"));function o(){e&&(r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")));for(var t,a=0;a<r.length;a++)0<=(t=(t=r[a]).getBoundingClientRect()).bottom&&0<=t.left&&t.top<=(n.innerHeight*i||document.documentElement.clientHeight*i)&&function(){var t,e,n,i,o=r[a];t=o,e=function(){r=r.filter(function(t){return o!==t})},n=new Image,i=t.getAttribute("data-original"),n.onload=function(){t.src=i,e&&e()},t.src!==i&&(n.src=i)}()}o(),n.addEventListener("scroll",function(){var t,e;t=o,e=n,clearTimeout(t.tId),t.tId=setTimeout(function(){t.call(e)},500)})}(this);</script><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script></body>
+        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(e.href.match(t)||e.href.match(r))&&(e.href=a.dataset.original)})});</script><script>!function(n){n.imageLazyLoadSetting.processImages=o;var e=n.imageLazyLoadSetting.isSPA,i=n.imageLazyLoadSetting.preloadRatio||1,r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]"));function o(){e&&(r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")));for(var t,a=0;a<r.length;a++)0<=(t=(t=r[a]).getBoundingClientRect()).bottom&&0<=t.left&&t.top<=(n.innerHeight*i||document.documentElement.clientHeight*i)&&function(){var t,e,n,i,o=r[a];t=o,e=function(){r=r.filter(function(t){return o!==t})},n=new Image,i=t.getAttribute("data-original"),n.onload=function(){t.src=i,e&&e()},t.src!==i&&(n.src=i)}()}o(),n.addEventListener("scroll",function(){var t,e;t=o,e=n,clearTimeout(t.tId),t.tId=setTimeout(function(){t.call(e)},500)})}(this);</script></body>
 </html>

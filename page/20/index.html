@@ -197,6 +197,161 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2022/07/30/C%E8%AF%AD%E8%A8%802/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/zoe.gif">
+      <meta itemprop="name" content="dhk">
+      <meta itemprop="description" content="记录一些学习日常">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小董的BLOG">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/07/30/C%E8%AF%AD%E8%A8%802/" class="post-title-link" itemprop="url">字符串复习</a>
+        </h2>
+
+        <div class="post-meta">
+		  
+		  
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-07-30 22:42:02" itemprop="dateCreated datePublished" datetime="2022-07-30T22:42:02+08:00">2022-07-30</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-09-04 21:39:01" itemprop="dateModified" datetime="2022-09-04T21:39:01+08:00">2022-09-04</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="字符串"><a href="#字符串" class="headerlink" title="字符串"></a>字符串</h1><h2 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h2><p>字符串是位于双引号中的字符序列，因此在内存中以“\0”结束,所占字节比实际多一个。</p>
+<p>（‘\0’是字符串结束的标志，因此数组中没有‘\0’时只是字符数组，且元素中间不能出现’\0’）</p>
+<h2 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h2><p>当数组元素个数大于存储字符内容时, 未被初始化的部分默认值是0。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"> <span class="type">char</span> name[] = <span class="string">&quot;c\0ool&quot;</span>;</span><br><span class="line"> <span class="built_in">printf</span>(<span class="string">&quot;name = %s\n&quot;</span>,name);</span><br><span class="line"><span class="comment">//输出结果: c</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>注意点:<ul>
+<li>对一个字符串数组, 如果不做初始化赋值, 必须指定数组长度；</li>
+<li>字符串数组最后一个字符的位置要留给字符串的结尾标示‘\0’；</li>
+<li>当用scanf函数输入字符串时,字符串中不能含有空格,否则将以空格作为串的结束符。</li>
+</ul>
+</li>
+</ul>
+<h3 id="正确的赋值方法："><a href="#正确的赋值方法：" class="headerlink" title="正确的赋值方法："></a>正确的赋值方法：</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">char</span> str[<span class="number">10</span>]=<span class="string">&quot;string&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="type">char</span> str[]=<span class="string">&quot;string&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="type">char</span> str[<span class="number">10</span>];</span><br><span class="line"><span class="built_in">scanf</span>(<span class="string">&quot;%s&quot;</span>,&amp;str);<span class="comment">//或scanf(&quot;%s&quot;,str);</span></span><br></pre></td></tr></table></figure>
+<h3 id="错误的赋值方法"><a href="#错误的赋值方法" class="headerlink" title="错误的赋值方法:"></a>错误的赋值方法:</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">char</span> str[<span class="number">10</span>];</span><br><span class="line">str=<span class="string">&quot;string&quot;</span>; <span class="comment">//这是因为数组名是一个地址常量，是不可被赋值的</span></span><br></pre></td></tr></table></figure>
+<h2 id="※常用函数※"><a href="#※常用函数※" class="headerlink" title="※常用函数※"></a>※常用函数※</h2><p>使用字符串函数应包含头文件”string.h”</p>
+<h3 id="（1）输出函数"><a href="#（1）输出函数" class="headerlink" title="（1）输出函数"></a>（1）输出函数</h3><ul>
+<li>格式: puts(字符数组名)</li>
+<li><p>功能:把字符数组中的字符串输出到显示器。即在屏幕上显示该字符串。</p>
+</li>
+<li><p>优点:</p>
+<ul>
+<li>自动换行；</li>
+<li>可以是数组的任意元素地址。</li>
+</ul>
+</li>
+<li>缺点<ul>
+<li>不能自定义输出格式</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">char</span> ch[] = <span class="string">&quot;dhk&quot;</span>;</span><br><span class="line"><span class="built_in">puts</span>(ch); <span class="comment">//输出结果: dhk</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>当使用printf且输出格式为&amp;s时，输出项直接为数组名，而不是数组元素</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">char</span> s[<span class="number">10</span>]=<span class="string">&quot;dhk&quot;</span>;</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;%s&quot;</span>,s);<span class="comment">//正确</span></span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;%s&quot;</span>,s[<span class="number">0</span>]);<span class="comment">//错误</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="（2）输入函数"><a href="#（2）输入函数" class="headerlink" title="（2）输入函数"></a>（2）输入函数</h3><ul>
+<li>格式: gets (字符数组名)</li>
+<li>功能:从标准输入设备键盘上输入一个字符串。</li>
+</ul>
+<p>当输入的字符串中含有空格时,输出仍为全部字符串。说明gets函数并不以空格作为字符串输入结束的标志,<strong><em>而只以回车作为输入结束</em></strong>。这是与scanf函数不同的。</p>
+<ul>
+<li>若要使用scanf一个字符串类型，则需要注意scanf会自动把空格当作分隔符</li>
+</ul>
+<h3 id="（3）计算长度"><a href="#（3）计算长度" class="headerlink" title="（3）计算长度"></a>（3）计算长度</h3><h4 id="1-sizeof（）"><a href="#1-sizeof（）" class="headerlink" title="1.sizeof（）"></a>1.sizeof（）</h4><p>数值包含’\0’，且当对象为字符串数组时，计算的是整个数组分配空间的长度</p>
+<h4 id="2-strlen"><a href="#2-strlen" class="headerlink" title="2.strlen()"></a>2.strlen()</h4><p>测量字符串实际长度，不包含;\0’。</p>
+<h3 id="（4）连接函数"><a href="#（4）连接函数" class="headerlink" title="（4）连接函数"></a>（4）连接函数</h3><ul>
+<li>格式: strcat(字符数组名1,字符数组名2)  /strncat(~,~,num);</li>
+<li>功能:把字符数组2中的字符串连接到字符数组1 中字符串的后面,并删去字符串1后的串标志 “\0”。<strong>本函数返回值是字符数组1的首地址</strong>。</li>
+</ul>
+<h3 id="（5）比较函数"><a href="#（5）比较函数" class="headerlink" title="（5）比较函数"></a>（5）比较函数</h3><ul>
+<li><p>格式: strcmp(字符数组名1,字符数组名2)  </p>
+</li>
+<li><p>功能:<strong><em>按照ASCII码顺序</em></strong>比较两个数组中的字符串,并由函数返回值返回比较结果。</p>
+<ul>
+<li>字符串1=字符串2,返回值=0;</li>
+<li>字符串1&gt;字符串2,返回值1;</li>
+<li>字符串1&lt;字符串2,返回值-1。</li>
+</ul>
+<p>需要注意的是，比较顺序是从左至右依次比较每一个字符的ASCII码大小，只要出现不同字符就只按照当前字符大小比较，与之后字符大小就无关了。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span>&#123;</span><br><span class="line">	<span class="type">char</span> str1[<span class="number">10</span>] =<span class="string">&quot;acb&quot;</span>;     </span><br><span class="line">	<span class="type">char</span> str2[<span class="number">10</span>] =<span class="string">&quot;abc&quot;</span>;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>, <span class="built_in">strcmp</span>(str1,str2));</span><br><span class="line">    <span class="comment">//输出1，由于&#x27;c&#x27;&gt;&#x27;b&#x27;,与第三个及以后的字符大小无关</span></span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>感觉不是很好用，就拿来比较是否相同就行。</p>
+</li>
+</ul>
+<h3 id="（6）拷贝函数"><a href="#（6）拷贝函数" class="headerlink" title="（6）拷贝函数"></a>（6）拷贝函数</h3><ul>
+<li>格式： strcpy(char<em> dest,char</em> src);   /   strncpy(char<em> dest,const char</em> src,size_t num);</li>
+<li>功能：将参数src字符串拷贝至参数dest所指的地址。</li>
+<li>返回值：返回参数dest的字符串起始地址。</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span>&#123;</span><br><span class="line">	<span class="type">char</span> str1[<span class="number">10</span>] =<span class="string">&quot;aaaaaa&quot;</span>;     </span><br><span class="line">	<span class="type">char</span> str2[<span class="number">10</span>] = <span class="string">&quot;bbb&quot;</span>;</span><br><span class="line">	<span class="built_in">strncpy</span>(str1,str2,<span class="number">2</span>);</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%s\n&quot;</span>, str1); <span class="comment">//结果为&quot;bbaaaa&quot; </span></span><br><span class="line">    <span class="comment">//当num长度大于srt2中字符串长度时仅会打印bbb（结果可能与编译器相关）</span></span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>strcpy会覆盖原来的整个字符串，而strncpy只会覆盖n个字节原来的字符串，剩下的保留（当n超长时应该是默认使用strcpy）</strong></p>
+<h3 id="（7）检索函数"><a href="#（7）检索函数" class="headerlink" title="（7）检索函数"></a>（7）检索函数</h3><h4 id="1-char-strstr-const-char-str-const-char-substr"><a href="#1-char-strstr-const-char-str-const-char-substr" class="headerlink" title="1. char strstr(const char str,const char* substr)"></a>1. char<em> strstr(const char</em> str,const char* substr)</h4><ul>
+<li><p>功能：检索子串在字符串中<strong>首次出现的位置</strong>。</p>
+</li>
+<li><p>返回值：返回字符串str中第一次出现子串substr的地址；如果没有检索到子串，则返回NULL。</p>
+<h4 id="2-char-strchr-const-char-str-char-c"><a href="#2-char-strchr-const-char-str-char-c" class="headerlink" title="2. char strchr(const char str,char c)"></a>2. char<em> strchr(const char</em> str,char c)</h4></li>
+<li><p>功能：查找字符串中第一次出现c的位置。</p>
+</li>
+<li><p>返回值：规律同strstr()。</p>
+<h4 id="3-char-strrchr-const-char-str-char-c"><a href="#3-char-strrchr-const-char-str-char-c" class="headerlink" title="3. char strrchr(const char str,char c)"></a>3. char<em> strrchr(const char</em> str,char c)</h4></li>
+<li><p>功能：查找字符串中最后一次出现c的位置。</p>
+</li>
+<li><p>返回值：同上。</p>
+</li>
+</ul>
+<h3 id="（8）其余函数"><a href="#（8）其余函数" class="headerlink" title="（8）其余函数"></a>（8）其余函数</h3><h4 id="字符转换"><a href="#字符转换" class="headerlink" title="字符转换"></a>字符转换</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">tolower</span><span class="params">(<span class="type">int</span> c)</span>：转化字符为小写字母； </span><br><span class="line"><span class="type">int</span> <span class="title function_">toupper</span><span class="params">(<span class="type">int</span> c)</span>：转化字符为大写字母；</span><br></pre></td></tr></table></figure>
+<h4 id="整型转换"><a href="#整型转换" class="headerlink" title="整型转换"></a>整型转换</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">atoi</span><span class="params">(<span class="type">const</span> <span class="type">char</span>* str)</span></span><br></pre></td></tr></table></figure>
+<p>​    返回转换后的整型数。</p>
+<h4 id="字符串大小写转换"><a href="#字符串大小写转换" class="headerlink" title="字符串大小写转换"></a>字符串大小写转换</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">strlwr(<span class="type">const</span> <span class="type">char</span>* str);<span class="comment">//转小写</span></span><br><span class="line">strupr(<span class="type">const</span> <span class="type">char</span>* str);<span class="comment">//转大写</span></span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2022/07/30/hexo-2/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -344,149 +499,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2022/07/28/%E4%BA%8C%E7%BB%B4%E6%95%B0%E7%BB%84/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/zoe.gif">
-      <meta itemprop="name" content="dhk">
-      <meta itemprop="description" content="记录一些学习日常">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="小董的BLOG">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/07/28/%E4%BA%8C%E7%BB%B4%E6%95%B0%E7%BB%84/" class="post-title-link" itemprop="url">二维数组复习</a>
-        </h2>
-
-        <div class="post-meta">
-		  
-		  
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2022-07-28 20:02:33" itemprop="dateCreated datePublished" datetime="2022-07-28T20:02:33+08:00">2022-07-28</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-09-08 20:13:11" itemprop="dateModified" datetime="2022-09-08T20:13:11+08:00">2022-09-08</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="一、理论方面"><a href="#一、理论方面" class="headerlink" title="一、理论方面"></a>一、理论方面</h1><h2 id="1-存储"><a href="#1-存储" class="headerlink" title="1.存储"></a>1.存储</h2><ul>
-<li><p>存储方式:</p>
-<ul>
-<li><p>内存寻址从大到小, 从高地址开辟一块连续没有被使用的内存给数组。</p>
-</li>
-<li><p>从分配的连续存储空间中, <strong><em>地址小的位置开始给每个元素分配空间</em></strong>。</p>
-</li>
-<li><p>从每个元素分配的存储空间中, <strong><em>地址最大的位置开始存储数据</em></strong>。</p>
-</li>
-<li><p>用数组名指向整个存储空间最小的地址。</p>
-<p>（分配从小地址开始，赋值从大地址开始）</p>
-</li>
-</ul>
-</li>
-</ul>
-<h3 id="二维数组地址详解-指针数组-数组指针-重要！！！"><a href="#二维数组地址详解-指针数组-数组指针-重要！！！" class="headerlink" title="二维数组地址详解+指针数组+数组指针(重要！！！)"></a>二维数组地址详解+指针数组+数组指针(重要！！！)</h3><p><em>如果还没有学习指针相关内容可以先跳过</em></p>
-<h4 id="地址问题详解"><a href="#地址问题详解" class="headerlink" title="地址问题详解"></a>地址问题详解</h4><p>先看一下各种情况的输出结果</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">int</span> a[<span class="number">2</span>][<span class="number">3</span>]=&#123;&#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>&#125;&#123;<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>&#125;&#125;;</span><br><span class="line">    <span class="type">int</span> *p[<span class="number">3</span>];</span><br><span class="line">    p[<span class="number">0</span>]=&amp;a[<span class="number">0</span>][<span class="number">0</span>];</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d&quot;</span>,p); <span class="comment">//6487520</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d&quot;</span>,&amp;p); <span class="comment">//6487520</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d&quot;</span>,&amp;p[<span class="number">0</span>]); <span class="comment">//6487520</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d&quot;</span>,*p); <span class="comment">//6487552</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d&quot;</span>,&amp;a[<span class="number">0</span>][<span class="number">0</span>]); <span class="comment">//6487552</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d&quot;</span>,**p); <span class="comment">//1</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d&quot;</span>,*p[<span class="number">0</span>]); <span class="comment">//1</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>当输出为p和&amp;p时，我们可以发现输出的都是一个地址且二者输出相同，都等于p[0]的地址。这就说明数组指针与数组的相关规则相同——其数组名<strong>代表了其第一个元素的地址</strong></li>
-<li>当输出为<code>*p</code>和&amp;a[0] [0]时，输出的值为地址且二者相同，&amp;a[0] [0]我们不难理解，但对于<code>*p</code>，上一点已经说到，p代表了p这个数组指针第一个元素的地址，如果我们对这个地址进行解引用（关于解引用<code>*</code>运算符在<a target="_blank" rel="noopener" href="https://dhkkk.gitee.io/2022/07/31/C-指针/">指针相关复习 | 小董的BLOG </a>中有详细讲到），<strong>返回值也就是这个首元素的地址内所存储的内容</strong>，而我们知道，指针变量本身存储的内容就是地址，<strong>所以对p进行解引用的结果，就是p的首元素的地址（6487520）所存储的“a[0] [0]的地址（6487552）“</strong></li>
-<li>如果你能很好的理解解引用<em>运算符的用法，相信你已经能理解输出为<code>**p</code>和` </em>p[0]<code>的结果了；</code><strong>p<code>即再对</code> *p`进行一次解引用，也就是对”a[0] [0]的地址（6487552）“解引用，返回值为a[0] [0]的</strong>地址<strong>所存储的内容，即1。（`</strong>p<code>和</code> *p[0]`等价）</li>
-</ul>
-<p>如果你对以上内容已经比较理解，那可以思考一下以下内容（以下内容是我个人的理解，不能保证正确！）</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">int</span> a[<span class="number">2</span>][<span class="number">3</span>]=&#123;&#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>&#125;&#123;<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>&#125;&#125;;</span><br><span class="line">    <span class="type">int</span> *p[<span class="number">3</span>];</span><br><span class="line">    p[<span class="number">0</span>]=a;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>根据对一维数组的学习，可以推断出二维数组名a即代表第一个元素的地址，把这个元素地址放进p内，完全没问题，全然大丈夫！但是编译器就是报错了捏😋。在网上找了很多资料之后，大概能想明白是怎么回事，但是又并不是那么明白：<strong>二维数组名a代表的是<code>a[2][3]</code>中a[0]的地址，而在C语言中，这个a[0]又被看作a[3]={1,2,3};</strong>那么这里的a是不是就可以看作是a[0] [0]的地址呢，我们接着尝试：</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;%d&quot;</span>,a);<span class="comment">//6487552</span></span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;%d&quot;</span>,*a);<span class="comment">//6487552</span></span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;%d&quot;</span>,**a);<span class="comment">//1</span></span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;%d&quot;</span>,a[<span class="number">0</span>]);<span class="comment">//6487552</span></span><br></pre></td></tr></table></figure>
-<p>我超，什么意思捏，a和<code>*a</code>输出值一样？？？为了解释这个现象，我们不妨来读一下刚刚的报错：</p>
-<p><code>[Error] cannot convert &#39;int [2][3]&#39; to &#39;int*&#39; in assignment</code></p>
-<p>这里我的理解是：二维数组a的类型为<code>int [2][3]</code>，而a[0]的类型为<code>int[3]</code>，通俗一点，就是a代表的是第一行数组的地址，而a[0]代表的是a[0] [0]的地址，二者虽然在地址值上相同，但表达的意思是不同的，这也就是为什么a无法存入p中的原因，因为类型是冲突的。所以这里正常的赋值应为：</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">int</span> a[<span class="number">2</span>][<span class="number">3</span>]=&#123;&#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>&#125;&#123;<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>&#125;&#125;;</span><br><span class="line">    <span class="type">int</span> *p[<span class="number">3</span>];</span><br><span class="line">    p[<span class="number">0</span>]=*a;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d&quot;</span>,**p); 或 <span class="built_in">printf</span>(<span class="string">&quot;%d&quot;</span>,*p[<span class="number">0</span>]);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//还有一个办法是：</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">int</span> a[<span class="number">2</span>][<span class="number">3</span>]=&#123;&#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>&#125;&#123;<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>&#125;&#125;;</span><br><span class="line">    <span class="type">int</span> (*p)[<span class="number">3</span>];</span><br><span class="line">    p=a; <span class="comment">//此时p单纯的就是一个指针变量</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d&quot;</span>,**p); 或 <span class="built_in">printf</span>(<span class="string">&quot;%d&quot;</span>,*p[<span class="number">0</span>]);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>说真的感觉不太好理解，所以可以记下一个规律：</p>
-<p><strong>对一个代表一行元素的地址解引用，得到的是该行首元素的地址，再对这个地址解引用得到首元素</strong></p>
-<p>(所以此处a[0]等同于*a）</p>
-<h4 id="指针数组与数组指针"><a href="#指针数组与数组指针" class="headerlink" title="指针数组与数组指针"></a>指针数组与数组指针</h4><ul>
-<li><p>指针数组</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> *p[<span class="number">3</span>];</span><br></pre></td></tr></table></figure>
-<p>在C语言中，[]的优先级高于<code>*</code>因此此式正确理解为：<code>int *(p[3])</code>，说明p为一个数组，且该数组用于存放地址，<strong>此时p是一个数组，但其元素内存储的为某个地址</strong></p>
-</li>
-<li><p>数组指针</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> (*p)[<span class="number">3</span>];</span><br></pre></td></tr></table></figure>
-<p>先表明了p是一个指针变量，再说明了p指向的对象是一个int[3]型的数组，且p本身保存的是指向数组的首地址，<strong>此时p是一个指针</strong></p>
-<ul>
-<li><p>对数组指针的调用</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">int</span> a[][<span class="number">3</span>]=&#123;&#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>&#125;,&#123;<span class="number">4</span>,<span class="number">5</span>,<span class="number">0</span>&#125;&#125;,(*p)[<span class="number">3</span>],i;</span><br><span class="line">	p=a;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%d&quot;</span>,p);<span class="comment">//6487552</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d&quot;</span>,*p);<span class="comment">//6487552</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d&quot;</span>,p[<span class="number">0</span>]);<span class="comment">//6487552</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d&quot;</span>,**p);<span class="comment">//1</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d&quot;</span>,*p[<span class="number">0</span>]);<span class="comment">//1</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d&quot;</span>,p[<span class="number">0</span>][<span class="number">0</span>]);<span class="comment">//1</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>对于数组指针的使用有以下几点：<em>（都假设存放的是多维数组）</em></p>
-<ul>
-<li>指针名代表<strong>二维数组第一行元素的地址</strong></li>
-<li>对指针名解引用一次<strong>代表二维数组第一行数组中的第一个元素的地址（等同于p[0]）</strong></li>
-<li>当数组指针下标精准到某一个元素时，例如<code>p[0][0]</code>,此时<code>p[0][0]</code>就代表数组元素的值，<strong>而不是地址</strong></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<h2 id="2-初始化"><a href="#2-初始化" class="headerlink" title="2.初始化"></a>2.初始化</h2><p>​    一维：可以理解为行数，可省略。</p>
-<p>​    二维：~~，不可省略（会报错）。</p>
-<ul>
-<li><p>分行赋值</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> a[<span class="number">3</span>][<span class="number">4</span>]=</span><br><span class="line">&#123;</span><br><span class="line">    &#123;<span class="number">1</span>,<span class="number">2</span>,,&#125;</span><br><span class="line">    &#123;,,<span class="number">1</span>,&#125;</span><br><span class="line">    &#123;,,,<span class="number">1</span>&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<ul>
-<li><p>指定元素的初始化</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> a[<span class="number">2</span>][<span class="number">3</span>]=&#123;[<span class="number">1</span>][<span class="number">2</span>]=<span class="number">10</span>&#125;;</span><br><span class="line"><span class="type">int</span> a[<span class="number">2</span>][<span class="number">3</span>]=&#123;[<span class="number">1</span>]=&#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>&#125;&#125;</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<h2 id="2-二维数组与函数"><a href="#2-二维数组与函数" class="headerlink" title="2.二维数组与函数"></a>2.二维数组与函数</h2><p>​    形参是基本类型则不会影响实参，如果是数组类型则会影响实参。</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="type">void</span> <span class="title function_">change_1</span><span class="params">(<span class="type">char</span> ch)</span></span><br><span class="line">&#123;</span><br><span class="line">    ch = <span class="string">&#x27;n&#x27;</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="type">void</span> <span class="title function_">change_2</span><span class="params">(<span class="type">char</span> ch[])</span></span><br><span class="line">&#123;</span><br><span class="line">    ch[<span class="number">0</span>] = <span class="string">&#x27;n&#x27;</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="type">void</span> <span class="title function_">change_3</span><span class="params">(<span class="type">char</span> ch[][<span class="number">3</span>])</span></span><br><span class="line">&#123;</span><br><span class="line">    ch[<span class="number">0</span>][<span class="number">0</span>] = <span class="string">&#x27;n&#x27;</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="type">char</span> cs[<span class="number">2</span>][<span class="number">3</span>] = </span><br><span class="line">  &#123;</span><br><span class="line">        &#123;<span class="string">&#x27;a&#x27;</span>, <span class="string">&#x27;b&#x27;</span>, <span class="string">&#x27;c&#x27;</span>&#125;,</span><br><span class="line">        &#123;<span class="string">&#x27;d&#x27;</span>, <span class="string">&#x27;e&#x27;</span>, <span class="string">&#x27;f&#x27;</span>&#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">&quot;cs[0][0] = %c\n&quot;</span>, cs[<span class="number">0</span>][<span class="number">0</span>]); <span class="comment">// 打印a</span></span><br><span class="line">  change(cs);  <span class="built_in">printf</span>(<span class="string">&quot;cs[0][0] = %c\n&quot;</span>, cs[<span class="number">0</span>][<span class="number">0</span>]); <span class="comment">// 基本类型形参不影响实参</span></span><br><span class="line">  change_2(cs);  <span class="built_in">printf</span>(<span class="string">&quot;cs[0][0] = %c\n&quot;</span>, cs[<span class="number">0</span>][<span class="number">0</span>]); <span class="comment">// 数组类型形参影响实参  </span></span><br><span class="line">  change_3(cs);  <span class="built_in">printf</span>(<span class="string">&quot;cs[0][0] = %c\n&quot;</span>, cs[<span class="number">0</span>][<span class="number">0</span>]); <span class="comment">// 数组类型形参影响实参 </span></span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<h1 id="二、实操"><a href="#二、实操" class="headerlink" title="二、实操"></a>二、实操</h1><p>通过键盘录入 w,s,a,d控制小人向不同方向移动,其中w代表向上移动,s代表向 下移动,a代表向左移动,d 代表向右移动,当小人移动到出口位置,玩家胜利。</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="type">char</span> <span class="built_in">map</span>[<span class="number">6</span>][<span class="number">7</span>]=&#123;    <span class="string">&#x27;#&#x27;</span>,<span class="string">&#x27;#&#x27;</span>,<span class="string">&#x27;#&#x27;</span>,<span class="string">&#x27;#&#x27;</span>,<span class="string">&#x27;#&#x27;</span>,<span class="string">&#x27;#&#x27;</span>,<span class="string">&#x27;\0&#x27;</span>,</span><br><span class="line">	                <span class="string">&#x27;#&#x27;</span>,<span class="string">&#x27;0&#x27;</span>,<span class="string">&#x27;\0&#x27;</span>,<span class="string">&#x27;#&#x27;</span>, <span class="string">&#x27;\0&#x27;</span>,<span class="string">&#x27;\0&#x27;</span>,<span class="string">&#x27;\0&#x27;</span>, 								</span><br><span class="line">					<span class="string">&#x27;#&#x27;</span>,<span class="string">&#x27;\0&#x27;</span>,<span class="string">&#x27;#&#x27;</span>,<span class="string">&#x27;#&#x27;</span>,<span class="string">&#x27;\0&#x27;</span>,<span class="string">&#x27;#&#x27;</span>,<span class="string">&#x27;\0&#x27;</span>,								   </span><br><span class="line">					<span class="string">&#x27;#&#x27;</span>,<span class="string">&#x27;\0&#x27;</span>,<span class="string">&#x27;\0&#x27;</span>,<span class="string">&#x27;#&#x27;</span>,<span class="string">&#x27;\0&#x27;</span>,<span class="string">&#x27;#&#x27;</span>,<span class="string">&#x27;\0&#x27;</span>,								   </span><br><span class="line">					<span class="string">&#x27;#&#x27;</span>,<span class="string">&#x27;#&#x27;</span>,<span class="string">&#x27;\0&#x27;</span>,<span class="string">&#x27;\0&#x27;</span>,<span class="string">&#x27;\0&#x27;</span>,<span class="string">&#x27;#&#x27;</span>,<span class="string">&#x27;\0&#x27;</span>,								   </span><br><span class="line">					<span class="string">&#x27;#&#x27;</span>,<span class="string">&#x27;#&#x27;</span>,<span class="string">&#x27;#&#x27;</span>,<span class="string">&#x27;#&#x27;</span>,<span class="string">&#x27;#&#x27;</span>,<span class="string">&#x27;#&#x27;</span>,<span class="string">&#x27;\0&#x27;</span> &#125;;</span><br><span class="line"><span class="type">void</span> <span class="title function_">mapdraw</span><span class="params">()</span>;</span><br><span class="line"><span class="type">void</span> <span class="title function_">move</span><span class="params">()</span>;</span><br><span class="line"><span class="type">void</span> <span class="title function_">change</span><span class="params">(<span class="type">char</span> loc[<span class="number">6</span>][<span class="number">7</span>])</span>;</span><br><span class="line"><span class="type">int</span> x=<span class="number">1</span>;</span><br><span class="line"><span class="type">int</span> y=<span class="number">1</span>;   <span class="comment">//当前坐标</span></span><br><span class="line"><span class="type">int</span> last_x=<span class="number">1</span>;</span><br><span class="line"><span class="type">int</span> last_y=<span class="number">1</span>;  <span class="comment">//前一次坐标</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">	mapdraw();</span><br><span class="line">	<span class="keyword">while</span>(<span class="number">1</span>)</span><br><span class="line">	&#123;</span><br><span class="line">	move();</span><br><span class="line">	change(<span class="built_in">map</span>);</span><br><span class="line">	mapdraw();</span><br><span class="line">	<span class="keyword">if</span>(<span class="built_in">map</span>[<span class="number">1</span>][<span class="number">6</span>]==<span class="string">&#x27;0&#x27;</span>) <span class="keyword">break</span>;</span><br><span class="line">	&#125;</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;YOU WIN!&quot;</span>);	</span><br><span class="line"><span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">mapdraw</span><span class="params">()</span>  <span class="comment">//打印二维数组</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;<span class="number">7</span>;i++)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;%c&quot;</span>,<span class="built_in">map</span>[<span class="number">0</span>][i]);	</span><br><span class="line">		<span class="keyword">if</span>(i==<span class="number">6</span>) <span class="built_in">printf</span>(<span class="string">&quot;\n&quot;</span>);</span><br><span class="line">	&#125;</span><br><span class="line">		<span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;<span class="number">7</span>;i++)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;%c&quot;</span>,<span class="built_in">map</span>[<span class="number">1</span>][i]);	</span><br><span class="line">		<span class="keyword">if</span>(i==<span class="number">6</span>) <span class="built_in">printf</span>(<span class="string">&quot;\n&quot;</span>);</span><br><span class="line">	&#125;</span><br><span class="line">		<span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;<span class="number">7</span>;i++)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;%c&quot;</span>,<span class="built_in">map</span>[<span class="number">2</span>][i]);	</span><br><span class="line">		<span class="keyword">if</span>(i==<span class="number">6</span>) <span class="built_in">printf</span>(<span class="string">&quot;\n&quot;</span>);</span><br><span class="line">	&#125;</span><br><span class="line">		<span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;<span class="number">7</span>;i++)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;%c&quot;</span>,<span class="built_in">map</span>[<span class="number">3</span>][i]);	</span><br><span class="line">		<span class="keyword">if</span>(i==<span class="number">6</span>) <span class="built_in">printf</span>(<span class="string">&quot;\n&quot;</span>);</span><br><span class="line">	&#125;</span><br><span class="line">		<span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;<span class="number">7</span>;i++)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;%c&quot;</span>,<span class="built_in">map</span>[<span class="number">4</span>][i]);	</span><br><span class="line">		<span class="keyword">if</span>(i==<span class="number">6</span>) <span class="built_in">printf</span>(<span class="string">&quot;\n&quot;</span>);</span><br><span class="line">	&#125;</span><br><span class="line">		<span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;<span class="number">7</span>;i++)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;%c&quot;</span>,<span class="built_in">map</span>[<span class="number">5</span>][i]);	</span><br><span class="line">		<span class="keyword">if</span>(i==<span class="number">6</span>) <span class="built_in">printf</span>(<span class="string">&quot;\n&quot;</span>);</span><br><span class="line">	&#125;</span><br><span class="line">		<span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;<span class="number">7</span>;i++)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;%c&quot;</span>,<span class="built_in">map</span>[<span class="number">6</span>][i]);	</span><br><span class="line">		<span class="keyword">if</span>(i==<span class="number">6</span>) <span class="built_in">printf</span>(<span class="string">&quot;\n&quot;</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;\n&quot;</span>);</span><br><span class="line">	last_x=x;</span><br><span class="line">	last_y=y;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">change</span><span class="params">(<span class="type">char</span> loc[<span class="number">6</span>][<span class="number">7</span>])</span>  </span><br><span class="line">&#123;</span><br><span class="line">	loc[last_x][last_y]=<span class="string">&#x27;\0&#x27;</span>;</span><br><span class="line">	loc[x][y]=<span class="string">&#x27;0&#x27;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">move</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">	</span><br><span class="line">	<span class="type">char</span> dir;</span><br><span class="line">	<span class="built_in">scanf</span>(<span class="string">&quot;%c&quot;</span>,&amp;dir);</span><br><span class="line">	<span class="keyword">switch</span>(dir)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">case</span> <span class="string">&#x27;w&#x27;</span>:x=x<span class="number">-1</span>;<span class="keyword">if</span>(<span class="built_in">map</span>[x][y]==<span class="string">&#x27;#&#x27;</span>) x=x+<span class="number">1</span>;<span class="keyword">break</span>;</span><br><span class="line">		<span class="keyword">case</span> <span class="string">&#x27;s&#x27;</span>:x=x+<span class="number">1</span>;<span class="keyword">if</span>(<span class="built_in">map</span>[x][y]==<span class="string">&#x27;#&#x27;</span>) x=x<span class="number">-1</span>;<span class="keyword">break</span>;</span><br><span class="line">		<span class="keyword">case</span> <span class="string">&#x27;a&#x27;</span>:y=y<span class="number">-1</span>;<span class="keyword">if</span>(<span class="built_in">map</span>[x][y]==<span class="string">&#x27;#&#x27;</span>) y=y+<span class="number">1</span>;<span class="keyword">break</span>;</span><br><span class="line">		<span class="keyword">case</span> <span class="string">&#x27;d&#x27;</span>:y=y+<span class="number">1</span>;<span class="keyword">if</span>(<span class="built_in">map</span>[x][y]==<span class="string">&#x27;#&#x27;</span>) y=y<span class="number">-1</span>;<span class="keyword">break</span>;</span><br><span class="line">		defalut :<span class="keyword">break</span>;	</span><br><span class="line">	&#125;</span><br><span class="line">	fflush(<span class="built_in">stdin</span>);  <span class="comment">//清除缓冲区</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h1 id="scanf-停止接受输入及scanf-“-c”-amp-c）吃掉回车或者空格字符的问题"><a href="#scanf-停止接受输入及scanf-“-c”-amp-c）吃掉回车或者空格字符的问题" class="headerlink" title="scanf()停止接受输入及scanf(“%c”,&amp;c）吃掉回车或者空格字符的问题"></a>scanf()停止接受输入及scanf(“%c”,&amp;c）吃掉回车或者空格字符的问题</h1><p>例如，当输入‘w’+‘回车’时，回车会作为’\n’进入缓冲区等待下一次使用，也就是说main中的循环会执行两次。</p>
-<p><strong>解决方法</strong>：</p>
-<p>函数名: fflush<br>功 能: 清除一个流<br>用 法: int fflush(FILE *stream);</p>
-<p><strong>fflush(stdin); 清除缓冲区内容。</strong></p>
-<h1 id="一些记录"><a href="#一些记录" class="headerlink" title="一些记录"></a>一些记录</h1><h2 id="1-整个数组指针"><a href="#1-整个数组指针" class="headerlink" title="1.整个数组指针"></a>1.整个数组指针</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">int</span> a[<span class="number">5</span>] = &#123; <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span> &#125;;</span><br><span class="line">	<span class="type">int</span>* ptr = (<span class="type">int</span>*)(&amp;a + <span class="number">1</span>);</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%d,%d&quot;</span>, *(a + <span class="number">1</span>), *(ptr - <span class="number">1</span>));  <span class="comment">//2   5</span></span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>&amp;a为整个数组的地址，类型为int(*)[5],需将其强制转化才可以存进prt指针。因此&amp;a+1为整个数组的指针+1。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   
   <nav class="pagination">
     <a class="extend prev" rel="prev" href="/page/19/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/19/">19</a><span class="page-number current">20</span><a class="page-number" href="/page/21/">21</a><a class="extend next" rel="next" href="/page/21/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
@@ -556,7 +568,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">61</span>
+          <span class="site-state-item-count">62</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -673,11 +685,11 @@
         pbOptions.networks = "Wechat,QQZone,Weibo,Douban,Twitter,Facebook";
       new needShareButton('#needsharebutton-postbottom', pbOptions);
   </script>
-<script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script><script>
             window.imageLazyLoadSetting = {
                 isSPA: false,
                 preloadRatio: 1,
                 processImages: null,
             };
-        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(e.href.match(t)||e.href.match(r))&&(e.href=a.dataset.original)})});</script><script>!function(n){n.imageLazyLoadSetting.processImages=o;var e=n.imageLazyLoadSetting.isSPA,i=n.imageLazyLoadSetting.preloadRatio||1,r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]"));function o(){e&&(r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")));for(var t,a=0;a<r.length;a++)0<=(t=(t=r[a]).getBoundingClientRect()).bottom&&0<=t.left&&t.top<=(n.innerHeight*i||document.documentElement.clientHeight*i)&&function(){var t,e,n,i,o=r[a];t=o,e=function(){r=r.filter(function(t){return o!==t})},n=new Image,i=t.getAttribute("data-original"),n.onload=function(){t.src=i,e&&e()},t.src!==i&&(n.src=i)}()}o(),n.addEventListener("scroll",function(){var t,e;t=o,e=n,clearTimeout(t.tId),t.tId=setTimeout(function(){t.call(e)},500)})}(this);</script><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script></body>
+        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(e.href.match(t)||e.href.match(r))&&(e.href=a.dataset.original)})});</script><script>!function(n){n.imageLazyLoadSetting.processImages=o;var e=n.imageLazyLoadSetting.isSPA,i=n.imageLazyLoadSetting.preloadRatio||1,r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]"));function o(){e&&(r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")));for(var t,a=0;a<r.length;a++)0<=(t=(t=r[a]).getBoundingClientRect()).bottom&&0<=t.left&&t.top<=(n.innerHeight*i||document.documentElement.clientHeight*i)&&function(){var t,e,n,i,o=r[a];t=o,e=function(){r=r.filter(function(t){return o!==t})},n=new Image,i=t.getAttribute("data-original"),n.onload=function(){t.src=i,e&&e()},t.src!==i&&(n.src=i)}()}o(),n.addEventListener("scroll",function(){var t,e;t=o,e=n,clearTimeout(t.tId),t.tId=setTimeout(function(){t.call(e)},500)})}(this);</script></body>
 </html>
