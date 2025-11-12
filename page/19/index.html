@@ -197,6 +197,170 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2022/08/18/FreeRTOS-1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/zoe.gif">
+      <meta itemprop="name" content="dhk">
+      <meta itemprop="description" content="记录一些学习日常">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小董的BLOG">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/08/18/FreeRTOS-1/" class="post-title-link" itemprop="url">FreeRTOS_基本框架</a>
+        </h2>
+
+        <div class="post-meta">
+		  
+		  
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-08-18 18:12:33" itemprop="dateCreated datePublished" datetime="2022-08-18T18:12:33+08:00">2022-08-18</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2024-04-23 14:40:27" itemprop="dateModified" datetime="2024-04-23T14:40:27+08:00">2024-04-23</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="1、基础内容"><a href="#1、基础内容" class="headerlink" title="1、基础内容"></a>1、基础内容</h1><h2 id="状态"><a href="#状态" class="headerlink" title="状态"></a>状态</h2><ul>
+<li>运行态:任务正在运行的状态。如果使用的是核处理器的话那么不管在任何时刻永远都只有一个任务处于运行态。</li>
+<li>就绪态：处于就绪态的任务是那些已经准备就绪（这些任务没有被阻塞或者挂起 可以运行的任务，但是处于就绪态的任务还没有运行，因为有一个同优先级或者更高优先级的任务正在运行）</li>
+<li>阻塞态：如果一个任务当前正在等待某个外部事件的话就说它处于阻塞态,比如说如果某个任务调用了函数 vTaskDelay()的话就会进入阻塞态， 直到延时周期完成。（任务在等待队列、信号量、事件组、通知或互斥信号量的时候也会进入阻塞态 。<strong>任务进入阻塞态会有一个超时时间，当超过这个超时时间任务就会退出阻塞态，即使所等待的事件还没有来临</strong>）</li>
+<li>挂起态：任务进入挂起态以后也不能被调度器调用进入运行态，但是进入挂起态的任务没有超时时间。</li>
+</ul>
+<p>需要注意的是，当任务从阻塞/挂起态退出时是进入的就绪态而非直接进入运行态。</p>
+<h2 id="优先级"><a href="#优先级" class="headerlink" title="优先级"></a>优先级</h2><ul>
+<li><p>优先级数字越<strong>低</strong>表示任务优先级越<strong>低 （除使用Cortex内核的情况！！！！！！！！！）</strong></p>
+<p>例如当一个任务A正在运行，另外一个任务B(优先级高于A)阻塞时间到或者事件触发处于就绪态，那么B会从A那抢占处理器，B开始运行，A停止运行</p>
+<p><strong>※※※※※当使用cortex内核时相反（例如STM32)※※※※※</strong></p>
+</li>
+<li><p>时间片轮转</p>
+<p>当宏<code>configUSE_TIME_SLICING</code>定义为1 的时候多个任务可以共用一个优先级，数量不限。此时处于就绪态的优先级相同的任务就会使用时间片轮转调度器获取运行时间</p>
+</li>
+</ul>
+<h2 id="任务堆栈"><a href="#任务堆栈" class="headerlink" title="任务堆栈"></a>任务堆栈</h2><p>FreeRTOS之所以能正确的恢复一个任务的运行就是因为有任务堆栈在保驾护航，任务调度器在进行任务切换的时候会将当前任务的现场 (CPU寄存器值等 )保存在此任务的任务堆栈中，等到此任务下次运行的时候就会先用堆栈中保存的值来恢复现场 ，恢复现场以后任务就会接着从上次中断的地方开始运行。</p>
+<h1 id="2、机制"><a href="#2、机制" class="headerlink" title="2、机制"></a>2、机制</h1><h2 id="任务通知"><a href="#任务通知" class="headerlink" title="任务通知"></a>任务通知</h2><p>任务通知来代替信号量、消息队列、事件标志组等这些东西。使用任务通知的话效率会更高。</p>
+<h2 id="STM32支持的低功耗模式"><a href="#STM32支持的低功耗模式" class="headerlink" title="STM32支持的低功耗模式"></a>STM32支持的低功耗模式</h2><ul>
+<li><p>sleep睡眠模式</p>
+<p>在 SLEEP 模式下，只有内核停止了工作，而外设仍然在运行。<br>在进入 SLEEP 模式后，所有中断（‘外部中断、串口中断、定时器中断等’）均可唤醒 MCU，从而退出 SLEEP 模式。</p>
+</li>
+<li><p>stop停止模式</p>
+<p>在进入 STOP 模式后，此时 SYSTICK 也会被停掉，只有外部中断（EXTI）才能唤醒 MCU由于 RTC 中断挂在外部中断线上，所以 RTC 中断也能唤醒 MCU）</p>
+</li>
+<li><p>standby待机模式</p>
+<p>在 STANDBY 模式下，内核、所有的时钟、以及后备 1.2V 电源全部停止工作。</p>
+<p>从 STANDBY 模式中唤醒后，系统相当于执行了一次复位操作，程序会从头来过。</p>
+</li>
+</ul>
+<h2 id="Tickless-模式"><a href="#Tickless-模式" class="headerlink" title="Tickless 模式"></a>Tickless 模式</h2><p>FreeRTOS系统提供的低功耗模式，当处理器进入空闲任务周期以后就关闭系统节拍中断(滴答定时器中断)，只有当其他中断发生或者其他任务需要处理的时侯处理器才会从低功耗模式中唤醒。</p>
+<h1 id="3、一些内核配置"><a href="#3、一些内核配置" class="headerlink" title="3、一些内核配置"></a>3、一些内核配置</h1><ul>
+<li><p><strong>configUSE_PREEMPTION</strong></p>
+<p>为1时RTOS使用抢占式调度器，为0时RTOS使用协作式调度器（时间片）。（协作式操作系统是任务主动释放CPU后，切换到下一个任务。任务切换的时机完全取决于正在运行的任务）</p>
+</li>
+<li><p><strong>configUSE_PORT_OPTIMISED_TASK_SELECTION</strong></p>
+<p>某些运行FreeRTOS的硬件有两种方法选择下一个要执行的任务：通用方法和特定于硬件（硬件计算前导零指令）的方法</p>
+<ul>
+<li>设置为0 通用办法，可以用于所有FreeRTOS支持的硬件</li>
+<li>设置为1 硬件计算前导零指令，并非所有硬件都支持</li>
+</ul>
+</li>
+<li><p><strong>configUSE_IDLE_HOOK</strong></p>
+<p>设置为1使用空闲钩子（Idle Hook类似于回调函数），0忽略空闲钩子。</p>
+<p>空闲任务钩子是一个函数，这个函数由用户来实现，RTOS规定了函数的名字和参数，这个函数在每个空闲任务周期都会被调用。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">vApplicationIdleHook</span><span class="params">(<span class="type">void</span>)</span>;</span><br><span class="line"><span class="comment">//这个钩子函数不可以调用会引起空闲任务阻塞的API函数（例如：vTaskDelay()、带有阻塞时间的队列和信号量函数</span></span><br></pre></td></tr></table></figure>
+<p>使用空闲钩子函数设置CPU进入省电模式是很常见的。</p>
+</li>
+<li><p>configUSE_MALLOC_FAILED_HOOK</p>
+<p>如果定义并正确配置malloc()失败钩子函数，则这个函数会在pvPortMalloc()函数返回NULL时被调用。只有FreeRTOS在响应内存分配请求时发现堆内存不足才会返回NULL</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">vApplicationMallocFailedHook</span><span class="params">( <span class="type">void</span>)</span>;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>configUSE_TICK_HOOK</strong></p>
+<p>设置为1使用时间片钩子（Tick Hook），0忽略时间片钩子.</p>
+<p>时间片中断可以周期性的调用一个被称为钩子函数（回调函数）的应用程序。时间片钩子函数可以很方便的实现一个定时器功能。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">vApplicationTickHook</span><span class="params">( <span class="type">void</span> )</span>;</span><br><span class="line"><span class="comment">//vApplicationTickHook()函数在中断服务程序中执行，因此这个函数必须非常短小，不能大量使用堆栈，只能调用以”FromISR&quot; 或 &quot;FROM_ISR”结尾的API函数。</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>一些顾名思义的配置</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> configCPU_CLOCK_HZ				( SystemCoreClock ) <span class="comment">//CPU频率</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> configTICK_RATE_HZ				( ( TickType_t ) 1000 ) <span class="comment">//时钟节拍频率，这里设置为1000，周期就是1ms</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> configMAX_PRIORITIES			( 32 )  <span class="comment">//可使用的最大优先级</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> configMINIMAL_STACK_SIZE		( ( unsigned short ) 128 )<span class="comment">//空闲任务使用的堆栈大小</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> configTOTAL_HEAP_SIZE			( ( size_t ) ( 64 * 1024 ) )<span class="comment">//系统所有总的堆大小</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> configMAX_TASK_NAME_LEN			( 16 )  <span class="comment">//任务名字字符串长度</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> configUSE_16_BIT_TICKS			0   <span class="comment">//系统节拍计数器变量数据类型，</span></span></span><br><span class="line">                                            <span class="comment">//1表示为16位无符号整形，0表示为32位无符号整形</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>configIDLE_SHOULD_YIELD</strong></p>
+<p>这个参数控制任务在空闲优先级中的行为。仅在满足下列条件后，才会起作用。</p>
+<ul>
+<li>使用抢占式内核调度（见第一点）</li>
+<li>用户任务使用空闲优先级</li>
+</ul>
+<p>使用同一优先级的多个任务，且该优先级大于空闲优先级时，这些任务反映在时间片上会获得相同的处理器时间。单当多个任务（不止空闲任务，还包括用户任务）共享空闲优先级时，如果configIDLE_SHOULD_YIELD为1，当用户任务运行时，空闲任务立刻让出CPU，但是空闲任务仍然会占据时间片中的一段时间，<strong>就会导致空闲任务与接下来的用户任务会共享一个时间片，即该用户任务占有时间片少于正常分配的时间片</strong></p>
+<p><strong>设置configIDLE_SHOULD_YIELD为0将阻止空闲任务为用户任务让出CPU，直到空闲任务的时间片结束。这确保所有处在空闲优先级的任务分配到相同多的处理器时间，但是，这是以分配给空闲任务更高比例的处理器时间为代价的。</strong></p>
+</li>
+<li><p><strong>configUSE_TASK_NOTIFICATIONS</strong>（很有用）</p>
+<p>置1将会开启任务通知功能，每个RTOS任务具有一个32位的通知值，RTOS任务通知相当于直接向任务发送一个事件，接收到通知的任务可以解除任务的阻塞状态（因等待任务通知而进入阻塞状态）。相对于以前必须分别创建队列、二进制信号量、计数信号量或事件组的情况，使用任务通知显然更灵活。更好的是，相比于使用信号量解除任务阻塞，使用任务通知可以快45%</p>
+</li>
+<li><p><strong>configGENERATE_RUN_TIME_STATS</strong></p>
+<p>设置宏configGENERATE_RUN_TIME_STATS为1使能运行时间统计功能。一旦设置为1，则下面两个宏必须被定义：</p>
+<ul>
+<li><p>portCONFIGURE_TIMER_FOR_RUN_TIME_STATS()</p>
+<p>使用一个比运行时间更精准的基准定时器使统计更加精确，基准定时器中断频率要比统节拍中断快10~100倍。基准定时器中断频率越快，统计越精准，但能统计的运行时间也越短（比如，基准定时器10ms中断一次，8位无符号整形变量可以计到2.55秒，但如果是1秒中断一次，8位无符号整形变量可以统计到255秒）</p>
+</li>
+<li><p>portGET_RUN_TIME_COUNTER_VALUE()</p>
+<p>返回基准时钟的值以供计数（在定时器中使使长整形变量ulHighFrequencyTimerTicks自增）</p>
+</li>
+</ul>
+<p>当我们配置了一个定时器中断且要使用时间统计时，需要在config.h中添加</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">extern</span> <span class="keyword">volatile</span> <span class="type">unsigned</span> <span class="type">long</span> ulHighFrequencyTimerTicks;</span><br><span class="line"><span class="meta">#<span class="keyword">define</span> portCONFIGURE_TIMER_FOR_RUN_TIME_STATS() ( ulHighFrequencyTimerTicks = 0UL )</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> portGET_RUN_TIME_COUNTER_VALUE() ulHighFrequencyTimerTicks</span></span><br></pre></td></tr></table></figure>
+<h3 id="C语言中的0UL和1UL"><a href="#C语言中的0UL和1UL" class="headerlink" title="C语言中的0UL和1UL"></a>C语言中的0UL和1UL</h3><ul>
+<li>0UL ：无符号长整型0</li>
+<li>1UL ：无符号长整型1</li>
+</ul>
+</li>
+<li><p><strong>LIBRARY_LOWEST_INTERRUPT_PRIORITY</strong> &amp; <strong>LIBRARY_MAX_SYSCALL_INTERRUPT_PRIORITY</strong>  </p>
+<p>由于在使用cortex内核的硬件设备中优先级数值为越小，逻辑优先级越高，所以这里的最小优先级即为硬件的最低逻辑优先级，表现在数值上即为最大数值；而此处的configMAX_SYSCALL_INTERRUPT_PRIORITY是用来设置可以在中断服务程序中安全调用FreeRTOS API函数的最高中断优先级。优先级小于等于这个宏所代表的优先级时，程序可以在中断服务程序中安全的调用FreeRTOS API函数；如果优先级大于这个宏所代表的优先级，表示FreeRTOS无法禁止这个中断，在这个中断服务程序中绝不可以调用任何API函数。</p>
+<img src="/images/loading.png" data-original="/2022/08/18/FreeRTOS-1/freertos_1.jpg" class title="This is an image"> 
+<p>运行在大于configMAX_SYSCALL_INTERRUPT_PRIORITY的优先级中断是不会被RTOS内核所屏蔽的，因此也不受RTOS内核功能影响。这主要用于非常高的实时需求中。比如执行电机转向。但是，这类中断的中断服务例程中绝不可以调用FreeRTOS的API函数。</p>
+<h1 id="4-一些报错"><a href="#4-一些报错" class="headerlink" title="4.一些报错"></a>4.一些报错</h1><p>configASSERT( ( portNVIC_INT_CTRL_REG &amp; portVECTACTIVE_MASK ) == 0 )报错。</p>
+<p>此处报错，第一种是因为高于configMAX_SYSCALL_INTERRUPT_PRIORITY优先级的中断调用了RTOS的API导致的，解决办法，将中断优先级调低，比configMAX_SYSCALL_INTERRUPT_PRIORITY要低，就可以调用RTOS的API了。</p>
+<p>第二种是因为中断发送消息队列，发送信号量等操作使用了不带ISR结尾的API，而是调用了普通不带ISR的API导致的，解决办法，将API替换为带ISR结尾的API便可以解决问题。</p>
+</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2022/08/03/C-%E5%85%B3%E9%94%AE%E5%AD%97/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -616,161 +780,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2022/07/31/C-%E6%8C%87%E9%92%88/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/zoe.gif">
-      <meta itemprop="name" content="dhk">
-      <meta itemprop="description" content="记录一些学习日常">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="小董的BLOG">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/07/31/C-%E6%8C%87%E9%92%88/" class="post-title-link" itemprop="url">指针相关复习</a>
-        </h2>
-
-        <div class="post-meta">
-		  
-		  
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2022-07-31 15:20:51" itemprop="dateCreated datePublished" datetime="2022-07-31T15:20:51+08:00">2022-07-31</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-11-20 14:03:08" itemprop="dateModified" datetime="2022-11-20T14:03:08+08:00">2022-11-20</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="1-基本内容"><a href="#1-基本内容" class="headerlink" title="1.基本内容"></a>1.基本内容</h1><h2 id="什么是指针"><a href="#什么是指针" class="headerlink" title="什么是指针"></a>什么是指针</h2><ul>
-<li>在计算机中所有数据都存储在内存单元中,而每个内存单元都有一个对应的地址, 只要通过这个地址就能找到对应单元中存储的数据.</li>
-<li>由于通过地址能找到所需的变量单元，所以我们说该地址指向了该变量单元。将地址形象化的称为“指针”</li>
-<li>内存单元的指针(地址)和内存单元的内容是两个不同的概念。</li>
-</ul>
-<h2 id="什么是指针变量"><a href="#什么是指针变量" class="headerlink" title="什么是指针变量"></a>什么是指针变量</h2><p>在C语言中,允许用一个变量来存放其它变量的地址, 这种专门用于存储其它变量地址的变量, 我们称之为指针变量。</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">char</span> ch = <span class="string">&#x27;a&#x27;</span>;</span><br><span class="line"><span class="type">char</span> *p; <span class="comment">// 一个用于指向字符型变量的指针</span></span><br><span class="line">p = &amp;ch; </span><br></pre></td></tr></table></figure>
-<p>*表示这是一个指针变量</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> *p;</span><br><span class="line">p =  <span class="number">250</span>; <span class="comment">// 错误写法</span></span><br><span class="line"><span class="comment">/****************************/</span></span><br><span class="line"><span class="type">int</span> *p;</span><br><span class="line">*p=&amp;a; <span class="comment">//错误写法</span></span><br></pre></td></tr></table></figure>
-<ul>
-<li>多个指针变量可以指向同一个地址。</li>
-</ul>
-<h3 id="对指针变量的理解"><a href="#对指针变量的理解" class="headerlink" title="对指针变量的理解"></a>对指针变量的理解</h3><p>指针变量本身的作用是储存一个用户定义的变量的地址，但是其本身作为一个额外的变量，也有自己的地址，<strong>且这个地址不等于其储存的变量的地址；</strong></p>
-<p>例：</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">int</span> a=<span class="number">1</span>;</span><br><span class="line">    <span class="type">int</span> *c;</span><br><span class="line">    c=&amp;a;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;指针变量c自身的地址为：%d&quot;</span>,&amp;c);<span class="comment">//6487568 </span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;指针变量c存储单元内存储的内容(也就是a的地址)为：%d&quot;</span>,c);<span class="comment">//6487576</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;变量a的地址为：%d&quot;</span>,a);<span class="comment">//6487576</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//  c代表c内存放的地址</span></span><br><span class="line"><span class="comment">//  &amp;c代表c自身的地址</span></span><br><span class="line"><span class="comment">//  *c代表c内存放的地址中所存储的值</span></span><br><span class="line"><span class="comment">// (c+1)代表c内存放的地址+1*类型长度</span></span><br><span class="line"><span class="comment">// *c+1代表c内存放的地址中所存储的值本身+1</span></span><br><span class="line"><span class="comment">// *(c+1)代表c内存放的地址+1*类型长度后得到的地址中存储的值</span></span><br></pre></td></tr></table></figure>
-<h2 id="取地址运算符（-amp-）与解引用运算符（-）"><a href="#取地址运算符（-amp-）与解引用运算符（-）" class="headerlink" title="取地址运算符（&amp;）与解引用运算符（*）"></a>取地址运算符（&amp;）与解引用运算符（*）</h2><ul>
-<li><p>取地址运算符：&amp;x，其作用为返回操作对象的地址</p>
-</li>
-<li><p>解引用运算符：<code>*x</code>，其作用是<strong>返回x中存储的地址内存储的值</strong></p>
-<p>例： <code>int a,*p1;p1=&amp;a;</code><strong>则此时*p1代表的就是变量a的内容,而不是a的地址</strong></p>
-<p>这也就是为什么使用<code>printf(&quot;%d&quot;,*p);</code>时是用<em>p而不是p了，因为 </em>p才是代表a的值，p则存储的变量a的地址</p>
-<p><strong>综上：除开定义时，其余时间*p等同a，p等同&amp;a</strong></p>
-<p>在定义时，<code>int *p1=&amp;a;</code>也是合法的且作用与上相同，个人理解为是一种指针格式的“声明”（？）这也解释了当某个函数参数定义为为<code>int *a</code>时实际使用时传入的也是&amp;的取地址变量了（个人理解）</p>
-</li>
-</ul>
-<h1 id="2-一些用法"><a href="#2-一些用法" class="headerlink" title="2.一些用法"></a>2.一些用法</h1><h2 id="二级指针"><a href="#二级指针" class="headerlink" title="二级指针"></a>二级指针</h2><ul>
-<li><p>如果一个指针变量存放的又是另一个指针变量的地址,则称这个指针变量为指向指针的指针￼变量。也称为“二级指针”。</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">char</span> c = <span class="string">&#x27;a&#x27;</span>;</span><br><span class="line"><span class="type">char</span> *cp;</span><br><span class="line">cp = &amp;c;</span><br><span class="line"><span class="type">char</span> **cp2;</span><br><span class="line">cp2 = &amp;cp;</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;c = %c&quot;</span>, **cp2);<span class="comment">//  c=a</span></span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<h2 id="指针访问数组元素"><a href="#指针访问数组元素" class="headerlink" title="指针访问数组元素"></a>指针访问数组元素</h2><ul>
-<li><p>在指针指向数组元素时,允许以下运算:</p>
-<ul>
-<li>加一个整数(用+或+=),如p+1</li>
-<li>减一个整数(用-或-=),如p-1</li>
-<li>自加运算,如p++,++p</li>
-<li>自减运算,如p–,—p</li>
-</ul>
-<p>如果指针变量p已指向数组中的一个元素,则p+1<code>指向</code>同一数组中的下一个元素,p-1<code>指向</code>同 一数组中的上一个元素。【*(p+1)】</p>
-<p>(p+N)在地址上的变化为<code>p内存放的地址+数组元素类型长度*N</code></p>
-<ul>
-<li>其对p所有的基本运算均符合上述规律</li>
-</ul>
-</li>
-</ul>
-<h2 id="指针与字符串"><a href="#指针与字符串" class="headerlink" title="指针与字符串"></a>指针与字符串</h2><p>定义字符串除了使用字符数组存放之外，还可以通过字符串指针的方式指向字符串。</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 数组名保存的是数组第0个元素的地址, 指针也可以保存第0个元素的地址</span></span><br><span class="line"><span class="type">char</span> *str = <span class="string">&quot;abc&quot;</span></span><br></pre></td></tr></table></figure>
-<ul>
-<li><p>使用注意事项</p>
-<ul>
-<li><p>此方法不可修改字符串内容</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//使用字符数组来保存的字符串是保存栈里的,保存栈里面东西是可读可写,所有可以修改字符串中的的字符</span></span><br><span class="line"><span class="comment">//使用字符指针来保存字符串,它保存的是字符串常量地址,常量区是只读的,所以我们不可以修改字符串中的字符</span></span><br><span class="line"><span class="type">char</span> *str = <span class="string">&quot;lnj&quot;</span>;</span><br><span class="line">*(str+<span class="number">2</span>) = <span class="string">&#x27;y&#x27;</span>; <span class="comment">// 错误</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>不能够直接接收键盘输入</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 错误的原因是:str是一个野指针,他并没有指向某一块内存空间</span></span><br><span class="line"><span class="comment">// 所以不允许这样写如果给str分配内存空间是可以这样用 的</span></span><br><span class="line"><span class="type">char</span> *str;</span><br><span class="line"><span class="built_in">scanf</span>(<span class="string">&quot;%s&quot;</span>, str);</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-</li>
-</ul>
-<h2 id="指向函数的指针"><a href="#指向函数的指针" class="headerlink" title="指向函数的指针"></a>指向函数的指针</h2><p>函数在内存中占据空间，因此也有起始地址。</p>
-<p>格式：返回值类型  (*指针变量名)(形参);</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string.h&gt;</span></span></span><br><span class="line"> <span class="type">int</span> <span class="title function_">sum</span><span class="params">(<span class="type">int</span> a,<span class="type">int</span> b)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">return</span> a+b;</span><br><span class="line">&#125;     </span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">int</span> (*p)(<span class="type">int</span> x,<span class="type">int</span> y);</span><br><span class="line">	p=sum;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%d&quot;</span>,(*p)(<span class="number">1</span>,<span class="number">2</span>)); <span class="comment">//打印3</span></span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li><p>函数指针有以下几点特点：</p>
-<ul>
-<li><p>当把一个<strong>函数名（注意是名字，不带输入参数）</strong>作为一个值使用时，该函数会自动转换成指针，指向该函数的内存地址，因此在对指针初始化时取地址符可选:</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">p=sum;</span><br><span class="line">p=&amp;sum;<span class="comment">//都正确</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>当使用指针调用函数时，解引用也是可选的：</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;%d&quot;</span>,(*p)(<span class="number">1</span>,<span class="number">2</span>));</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;%d&quot;</span>,p(<span class="number">1</span>,<span class="number">2</span>));<span class="comment">//都输出3</span></span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-</li>
-<li><p>当函数指针作形参时：</p>
-</li>
-</ul>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;stdio.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;math.h&quot;</span></span></span><br><span class="line"><span class="type">void</span> <span class="title function_">tran</span><span class="params">(<span class="type">double</span> (*a)(<span class="type">double</span> a1),<span class="type">double</span> (*b)(<span class="type">double</span> b1),<span class="type">double</span> x)</span>;</span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">double</span> x=<span class="number">3.141592</span>;</span><br><span class="line">	tran(<span class="built_in">sin</span>,<span class="built_in">cos</span>,x);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="type">void</span> <span class="title function_">tran</span><span class="params">(<span class="type">double</span>(*a)(<span class="type">double</span> a1),<span class="type">double</span>(*b)(<span class="type">double</span> b1),<span class="type">double</span> x)</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%f\n&quot;</span>,(*a)(x/<span class="number">2</span>));</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%f&quot;</span>,(*b)(x/<span class="number">2</span>));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>调用函数时直接传入函数名即可。</p>
-<p>同理的，也可以不声明参数为指针（因为会自动转变为指针）</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">tran</span><span class="params">(<span class="type">double</span> a(<span class="type">double</span> a1),<span class="type">double</span> b(<span class="type">double</span> b1),<span class="type">double</span> x)</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%f\n&quot;</span>,(*a)(x/<span class="number">2</span>));</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%f&quot;</span>,(*b)(x/<span class="number">2</span>));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="通过形参影响实参"><a href="#通过形参影响实参" class="headerlink" title="通过形参影响实参"></a>通过形参影响实参</h2><p>我们都知道，形参值的改变不能改变对应实参的值，把数据从被调用函数返回到调用函数的唯一途径时通过return。<strong>但如果通过传送地址给被调用函数，再在被调用函数中改变地址中存储的值，也就使通过形参改变对应实参的值成为了可能。</strong></p>
-<p>例如：交换值</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">swap</span><span class="params">(<span class="type">int</span> *x, <span class="type">int</span> *y)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">int</span> c; <span class="comment">// 因为c只是用来存放地址内保存的值，所以为一般变量</span></span><br><span class="line">    c=*x;*x=*y;*y=c;  <span class="comment">//将a、b地址中保存的值互换、地址不变</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">int</span> a=<span class="number">1</span>,b=<span class="number">2</span>;</span><br><span class="line">    swap(&amp;a,&amp;b);<span class="comment">//将a、b的地址传给形参x、y，此时指针变量x、y内保存的就是a、b的地址</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d  %d&quot;</span>,a,b);<span class="comment">//此时a、b地址内保存的值已经互换</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>但如果swap函数定义成如下，又会怎么样呢</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">swap</span><span class="params">(<span class="type">int</span> *x, <span class="type">int</span> *y)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">int</span> *c; </span><br><span class="line">    c=x;x=y;y=c;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>如果这样定义函数，则程序的流程为：<strong>①调用swap函数时，x内保存的为a的地址，y内保存的为b的地址；②在swap函数中，x内保存的地址改变为b的地址，y内保存的地址改变为为a的地址；③swap函数调用结束，x，y的内存被释放；④此时a、b变量自身的地址并没有任何改变，改变的只用形参x、y所保存的地址，因此无法起到交换作用</strong></p>
-<h2 id="二维数组地址详解-数组指针-重要！！！！！"><a href="#二维数组地址详解-数组指针-重要！！！！！" class="headerlink" title="二维数组地址详解+数组指针(重要！！！！！)"></a>二维数组地址详解+数组指针(重要！！！！！)</h2><p>详见<a target="_blank" rel="noopener" href="https://dhkkk.gitee.io/2022/07/28/二维数组/">二维数组复习 | 小董的BLOG (gitee.io)</a></p>
-<h2 id="结构体指针"><a href="#结构体指针" class="headerlink" title="结构体指针"></a>结构体指针</h2><p>详见<a target="_blank" rel="noopener" href="https://dhkkk.gitee.io/2022/11/18/数据结构-线性表/">数据结构_链表 | 小董的BLOG (gitee.io)</a>和<a target="_blank" rel="noopener" href="https://dhkkk.gitee.io/2022/08/01/C-结构体/">结构体复习 | 小董的BLOG (gitee.io)</a></p>
-<p>2022.11.20:我是按照自己的理解写的，所以思路那些可能会有点奇怪，我感觉自己写的也不是很精练。。凑合看看吧</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   
   <nav class="pagination">
     <a class="extend prev" rel="prev" href="/page/18/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/18/">18</a><span class="page-number current">19</span><a class="page-number" href="/page/20/">20</a><a class="page-number" href="/page/21/">21</a><a class="extend next" rel="next" href="/page/20/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
@@ -840,7 +849,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">62</span>
+          <span class="site-state-item-count">63</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>

@@ -197,6 +197,229 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2024/02/19/linux%E6%9D%82/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/zoe.gif">
+      <meta itemprop="name" content="dhk">
+      <meta itemprop="description" content="记录一些学习日常">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小董的BLOG">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/02/19/linux%E6%9D%82/" class="post-title-link" itemprop="url">linux、ROS杂</a>
+        </h2>
+
+        <div class="post-meta">
+		  
+		  
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2024-02-19 17:06:26" itemprop="dateCreated datePublished" datetime="2024-02-19T17:06:26+08:00">2024-02-19</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2024-04-19 16:28:13" itemprop="dateModified" datetime="2024-04-19T16:28:13+08:00">2024-04-19</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="Ubuntu网络图标消失"><a href="#Ubuntu网络图标消失" class="headerlink" title="Ubuntu网络图标消失"></a>Ubuntu网络图标消失</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo service network-manager stop</span><br><span class="line">sudo rm /var/lib/NetworkManager/NetworkManager.state </span><br><span class="line">sudo service network-manager start</span><br></pre></td></tr></table></figure>
+<h1 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h1><div class="table-container">
+<table>
+<thead>
+<tr>
+<th>ls</th>
+<th>查看当前目录</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>cd</td>
+<td>进入目标路径</td>
+</tr>
+<tr>
+<td>pwd</td>
+<td>查看当前路径</td>
+</tr>
+<tr>
+<td>mkdir</td>
+<td>创建目录</td>
+</tr>
+<tr>
+<td>rmdir/rm</td>
+<td>删除目录</td>
+</tr>
+<tr>
+<td>touch</td>
+<td>创建空文件</td>
+</tr>
+<tr>
+<td>echo</td>
+<td>将内容回显到标准输出，可重定向</td>
+</tr>
+<tr>
+<td>file</td>
+<td>查看文件类型</td>
+</tr>
+<tr>
+<td>more/less</td>
+<td>查看文件内容，空格翻页，q退出。（less更灵活，/..搜索字符串）</td>
+</tr>
+<tr>
+<td>head/tail</td>
+<td>查看文件头部/尾部</td>
+</tr>
+<tr>
+<td>cat</td>
+<td>将一个或多个文件输出到标准输出，可重定向</td>
+</tr>
+<tr>
+<td>cat -n</td>
+<td>从1开始对输出行进行编号，-s：将多行空白合并</td>
+</tr>
+<tr>
+<td>tar</td>
+<td>-c文件打包；-x解包；-A合并；-f指定文件，加在最后；-C到指定目录</td>
+</tr>
+<tr>
+<td><em>cvf xvf ..-C..</em></td>
+<td>-j调用bzip2；-z调用gzip；-Z调用compress；-t列出列表;-v详细信息</td>
+</tr>
+<tr>
+<td>mv</td>
+<td>文件改名、移动。路径相同则改名，不同则移动</td>
+</tr>
+<tr>
+<td>cp</td>
+<td>文件复制</td>
+</tr>
+<tr>
+<td>clear</td>
+<td>清屏</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+<ul>
+<li><p>find [路径] -name “”</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">无路径默认桌面</span><br><span class="line">find -name &quot;*1*&quot;	名字含1的文件</span><br><span class="line">find -name &quot;*.txt&quot;	为后缀的文件</span><br><span class="line">find -name &quot;1*&quot;	以1为开头的文件</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>tar</p>
+<p>打/解包文件，解包后文件存放路径为当且文件夹</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">tar -cvf test.tar 1 2</span><br><span class="line">tar -xvf test.tar</span><br></pre></td></tr></table></figure>
+<p>tar下的压缩与解压</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">tar -zcvf test.gz 1 2</span><br><span class="line">tar -zxvf test.gz</span><br><span class="line">tar -zxvf test.gz -C 指定路径（必须存在）</span><br><span class="line"></span><br><span class="line">tar -jcvf test.bz2 1 2</span><br><span class="line">tar -jxvf test.bz2</span><br><span class="line">tar -jxvf test.bz2 -C 指定路径（必须存在）</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>软件安装</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># 1. 安装软件</span><br><span class="line">sudo apt install 软件包</span><br><span class="line"># 2. 卸载软件</span><br><span class="line">sudo apt remove 软件名</span><br><span class="line"># 3. 更新已安装的包</span><br><span class="line">sudo apt upgrade</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>which 提示文件/命令所在位置</p>
+</li>
+</ul>
+<h2 id="杀死进程"><a href="#杀死进程" class="headerlink" title="杀死进程"></a>杀死进程</h2><ul>
+<li>xkill    强制关闭窗口</li>
+<li>kill (pid号)     pid号用ps -aux查询</li>
+<li>pkill (程序名)</li>
+</ul>
+<h1 id="ROS无法定位软件包"><a href="#ROS无法定位软件包" class="headerlink" title="ROS无法定位软件包"></a>ROS无法定位软件包</h1><p><a target="_blank" rel="noopener" href="https://fishros.org.cn/forum/topic/149/e-无法定位软件包/3">E：无法定位软件包 | 鱼香ROS (fishros.org.cn)</a></p>
+<p>版本对应or源的问题，ubuntu20对应noetic</p>
+<h1 id="ROS-TF乌龟程序报错"><a href="#ROS-TF乌龟程序报错" class="headerlink" title="ROS TF乌龟程序报错"></a>ROS TF乌龟程序报错</h1><p><code>sudo apt install python-is-python3</code>升级python版本</p>
+<h1 id="view-frames意外停止"><a href="#view-frames意外停止" class="headerlink" title="view_frames意外停止"></a><strong>view_frames</strong>意外停止</h1><ul>
+<li><code>sudo apt-get install vim</code></li>
+<li><code>sudo vim /opt/ros/noetic/lib/tf/view_frames</code> </li>
+<li>89行处，修改为 <code>m = r.search(vstr.decode(&#39;utf-8&#39;))</code> </li>
+</ul>
+<h2 id="Vim的输入模式"><a href="#Vim的输入模式" class="headerlink" title="Vim的输入模式"></a>Vim的输入模式</h2><p>在输入模式下，Vim 可以对文件执行写操作，类似于在 Windows 系统的文档中输入内容。</p>
+<p>使 Vim 进行输入模式的方式是在命令模式状态下输入 i、I、a、A、o、O 等插入命令（各指令的具体功能如表 3 所示），<strong>当编辑文件完成后按 Esc 键即可返回命令模式。</strong></p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>快捷键</th>
+<th>功能描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>i</td>
+<td><strong>在当前光标所在位置插入随后输入的文本，光标后的文本相应向右移动</strong></td>
+</tr>
+<tr>
+<td>I</td>
+<td>在光标所在行的行首插入随后输入的文本，行首是该行的第一个非空白字符，相当于光标移动到行首执行 i 命令</td>
+</tr>
+<tr>
+<td>o</td>
+<td>在光标所在行的下面插入新的一行。光标停在空行首，等待输入文本</td>
+</tr>
+<tr>
+<td>O</td>
+<td>在光标所在行的上面插入新的一行。光标停在空行的行首，等待输入文本</td>
+</tr>
+<tr>
+<td>a</td>
+<td>在当前光标所在位置之后插入随后输入的文本</td>
+</tr>
+<tr>
+<td>A</td>
+<td>在光标所在行的行尾插入随后输入的文本，相当于光标移动到行尾再执行a命令</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 id="退出vim"><a href="#退出vim" class="headerlink" title="退出vim"></a>退出vim</h2><p><strong>按esc</strong>后，输入如下，一般<code>:wq</code>就行</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">:q  </span><br><span class="line">//退出</span><br><span class="line"></span><br><span class="line">:q! </span><br><span class="line">//退出且不保存（:quit!的缩写）</span><br><span class="line"></span><br><span class="line">:wq</span><br><span class="line">//保存并退出</span><br><span class="line"></span><br><span class="line">:wq!</span><br><span class="line">//保存并退出即使文件没有写入权限（强制保存退出）</span><br><span class="line"></span><br><span class="line">:x</span><br><span class="line">//保存并退出（类似:wq，但是只有在有更改的情况下才保存）</span><br><span class="line"></span><br><span class="line">:exit</span><br><span class="line">//保存并退出（和:x相同）</span><br><span class="line"></span><br><span class="line">:qa</span><br><span class="line">//退出所有(:quitall的缩写)</span><br><span class="line"></span><br><span class="line">:cq</span><br><span class="line">//退出且不保存（即便有错误）</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2024/02/05/%E5%9F%BA%E7%A1%80%E4%B9%90%E7%90%86/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -854,358 +1077,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2023/02/09/%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/zoe.gif">
-      <meta itemprop="name" content="dhk">
-      <meta itemprop="description" content="记录一些学习日常">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="小董的BLOG">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/02/09/%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE/" class="post-title-link" itemprop="url">常用的数据通信协议</a>
-        </h2>
-
-        <div class="post-meta">
-		  
-		  
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2023-02-09 22:05:44" itemprop="dateCreated datePublished" datetime="2023-02-09T22:05:44+08:00">2023-02-09</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2023-02-19 00:13:16" itemprop="dateModified" datetime="2023-02-19T00:13:16+08:00">2023-02-19</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>最近又用到了iic，但是原理又有些忘记了，刚好就趁这个机会整理一下一些常用的通信协议，主要是针对协议层和寄存器的整理，均以32为例，32有关内容大部分来自《STM32中文参考手册V10》，方便日后查阅温习。</p>
-<h1 id="串口协议"><a href="#串口协议" class="headerlink" title="串口协议"></a>串口协议</h1><p>因为也不是初学，同步异步和各种标准就不赘述了,主要讲异步</p>
-<h2 id="协议层内容"><a href="#协议层内容" class="headerlink" title="协议层内容"></a>协议层内容</h2><p>串口通讯的数据包由发送设备通过自身的 TXD 接口传输到接收设备的 RXD 接口。在串口通讯 的协议层中，规定了数据包的内容，它由启始位、主体数据、校验位以及停止位组成，通讯双方的数据包格式要约定一致才能正常收发数据</p>
-<p>以32为例，每一帧数据由：</p>
-<ul>
-<li>起始位，为1位逻辑0</li>
-<li>数据内容，8或9位</li>
-<li>校验位，奇偶校验，准确来说包含在数据内容里，如果需要使用校验，则其为数据内容的最后1位</li>
-<li>停止位，常为1or2位逻辑1</li>
-</ul>
-<p>组成，通信的双方对数据帧格式约定一致才可正常收发数据</p>
-<h2 id="奇偶校验"><a href="#奇偶校验" class="headerlink" title="奇偶校验"></a>奇偶校验</h2><p>奇偶校验位分为奇校验和偶校验两种，是一种简单的数据误码校验方法。<strong>奇校验是指每帧数据中，包括数据位和奇偶校验位的全部位中1的个数必须为奇数；偶校验是指每帧数据中，包括数据位和奇偶校验位的全部位中1的个数必须为偶数。</strong></p>
-<h2 id="波特率"><a href="#波特率" class="headerlink" title="波特率"></a>波特率</h2><p>波特率指数据信号对载波的调制速率，它用单位时间内载波调制状态改变次数来表示，单位为波特。而比特率指单位时间内传输的比特数，单位 bit/s(bps)。对于 USART 波特率与比特率相等，波特率越大，传输速率越快。</p>
-<p>而STM32的USART的发送器和接收器使用相同的波特率，计算公式为：</p>
-<img src="/images/loading.png" data-original="/2023/02/09/%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE/1.jpg" class title="image1"> 
-<p>其中：</p>
-<ul>
-<li>fck为USART的时钟，而不同的USART挂载在不同的时钟总线上，例如USART1就是挂载在APB2总线上</li>
-<li><strong>USARTDIV是一个存放在波特率寄存器（USART_BRR）中的一个无符号定点数</strong>：</li>
-</ul>
-<img src="/images/loading.png" data-original="/2023/02/09/%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE/2.jpg" class title="image2">
-<p>​    其中， DIV_Mantissa[15:4] 位定义 USARTDIV 的整数部分，DIV_Fraction[3:0] 位定义 USARTDIV 的小数部分</p>
-<p>​    对于小数部分，寄存器中存储的值为<strong>实际小数*16</strong>，若不为整数则取近似值；整数部分则直接取16进制</p>
-<p>​    例如，假设USARTDIV值为39.0625，则：DIV_Mantissa=39=0x27，DIV_Fraction=0.0625<em>16=1=0x01=0x1,最终USART_BRR存储的值为：0x0271，<em>*此结果是当fck为72MHz时比特率为115200bps的配置值。</em></em></p>
-<h2 id="通信的起始和停止"><a href="#通信的起始和停止" class="headerlink" title="通信的起始和停止"></a>通信的起始和停止</h2><ul>
-<li>空闲帧：在双方没有发送或接收数据时，此时数据帧可以被视作1个完全由1组成的完整数据帧</li>
-<li>断开帧：被视作全为0的帧</li>
-</ul>
-<h2 id="相关寄存器"><a href="#相关寄存器" class="headerlink" title="相关寄存器"></a>相关寄存器</h2><img src="/images/loading.png" data-original="/2023/02/09/%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE/3.jpg" class title="image3">
-<p>一些比较常用的就不写了</p>
-<h3 id="功能引脚"><a href="#功能引脚" class="headerlink" title="功能引脚"></a>功能引脚</h3><ul>
-<li><p>SW_RX：只用于单线和智能卡模式，属于内部引脚，没有具体外部引脚</p>
-</li>
-<li><p>nRTS：请求以发送 (Request To Send)，n 表示低电平有效。如果使能 RTS 流控制，<strong>当 USART 接 收器准备好接收新数据时就会将 nRTS 变成低电平</strong>；当接收寄存器已满时，nRTS 将被设置为高 电平。<strong>该引脚只适用于硬件流控制</strong></p>
-</li>
-<li><p>nCTS：清除以发送 (Clear To Send)，n 表示低电平有效。如果使能 CTS 流控制，发送器在发送下 一帧数据<strong>之前</strong>会检测 nCTS 引脚，<strong>如果为低电平，表示可以发送数据，如果为高电平则在发送完当前数据帧之后停止发送（也就是下一帧不会被发送）</strong>。该引脚<strong>只适用于硬件流控制</strong>。</p>
-<p>| STM32F10x | USART1 | USART2 | USART3 |<br>| :———-: | :——: | :——: | :——: |<br>|   nCTS    |  PA11  |  PA0   |  PB13  |<br>|   nRTS    |  PA12  |  PA1   |  PB14  |</p>
-</li>
-</ul>
-<h3 id="数据寄存器DR"><a href="#数据寄存器DR" class="headerlink" title="数据寄存器DR"></a>数据寄存器DR</h3><p>USART 数据寄存器 (USART_DR) 只有低 9 位有效，并且第 9 位数据是否有效要取决于 USART 控制寄存器 1(USART_CR1) 的 M 位设置，当 M 位为 0 时表示 8 位数据字长，当 M 位为 1 表示 9 位数据字长，我们一般使用 8 位数据字长。</p>
-<p>USART_DR 包含了已发送的数据或者接收到的数据。<strong>USART_DR 实际是包含了两个寄存器，一 个专门用于发送的可写 TDR，一个专门用于接收的可读 RDR。</strong>当进行发送操作时，往 USART_DR 写入数据会自动存储在 TDR 内；当进行读取操作时，向 USART_DR 读取数据会自动提取 RDR 数据。</p>
-<p>TDR 和 RDR 都是<strong>介于系统总线和移位寄存器之间</strong>。串行通信是一个位一个位传输的，<strong>发送时把 TDR 内容转移到发送移位寄存器，然后把移位寄存器数据每一位发送出去，接收时把接收到的每一位顺序保存在接收移位寄存器内然后才转移到 RDR</strong></p>
-<h3 id="控制器CR、SR"><a href="#控制器CR、SR" class="headerlink" title="控制器CR、SR"></a>控制器CR、SR</h3><img src="/images/loading.png" data-original="/2023/02/09/%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE/4.jpg" class title="image4">
-<h4 id="发送器"><a href="#发送器" class="headerlink" title="发送器"></a>发送器</h4><p>USART_CR1分为两部分，一部分为上面一排，用于配置串口的有唤醒单元、中断控制等等，另一部分为图中下面一排，用于控制USART的发送器</p>
-<ul>
-<li><strong>UE：</strong>首先，若要<strong>激活该USART</strong>，需要先将USART_CR1寄存器上的UE位置位</li>
-<li><strong>M：</strong>M用于<strong>定义字长</strong>，8or9</li>
-<li><strong>STOP[1:0] ：</strong>若要<strong>控制帧的停止位长度</strong>，可以通过 USART 控制寄存器 2(USART_CR2) 的 STOP[1:0] 位控制</li>
-<li><strong>TE：</strong>当USART_CR1发送使能位 TE 置 1 之后<strong>（发送使能）</strong>，发送器开始会先发送一个空闲帧 (一个数据帧长度的高电平)，接下 来就可以往 USART_DR 寄存器写入要发送的数据。</li>
-<li><strong>TC：</strong>在写入最后一个数据后，需要等待 USART 状态寄存器 (USART_SR) 的 TC 位为 1，<strong>表示数据传输完成</strong></li>
-<li><strong>TCIE：</strong>如果 USART_CR1 寄存器的 TCIE 位置 1，<strong>TC置位后将产生中断</strong>。</li>
-<li><strong>TXE：</strong>由硬件设置，置位则表明：数据已经从TDR移送到<strong>移位寄存器</strong>，且TDR已清空，数据发送已经开始，下一个数据可以被写进TDR。</li>
-<li><strong>TXEIE：</strong>如果被设置，TXE的置位会产生一个中断</li>
-</ul>
-<p>其他的位不太常用，需要的话再下来查</p>
-<h4 id="接收器"><a href="#接收器" class="headerlink" title="接收器"></a>接收器</h4><ul>
-<li><strong>RE：</strong>USART接收使能，使能后开始等待接收数据帧起始位，对于起始位的侦测有一套严格的侦测方法，但是我没怎么看懂/吹口哨，STM32中文参考手册中有详细讲，感兴趣可以去看下</li>
-<li><strong>RXNE：</strong>与接收器的TXE相似，表示当前数据已被读取（包括有关的错误标志），<strong>数据已经进入RDR</strong>，随时可以被读取</li>
-<li><strong>RXNEIE：</strong>RXNE对应中断</li>
-</ul>
-<p>有关一些错误标志我也不整理了，感觉基本比较少遇到</p>
-<h4 id="校验控制"><a href="#校验控制" class="headerlink" title="校验控制"></a>校验控制</h4><p>将 USART_CR1 寄存器的 PCE 位置 1 就可以启动奇偶校验控制，奇偶校验由硬件自动完成。启 动了奇偶校验控制之后，在发送数据帧时会自动添加校验位，接收数据时自动验证校验位。接收 数据时如果出现奇偶校验位验证失败，会见 USART_SR 寄存器的 PE 位置 1，并可以产生奇偶校验中断。</p>
-<p>偶校验PS位为0，奇校验为1</p>
-<h4 id="中断事件"><a href="#中断事件" class="headerlink" title="中断事件"></a>中断事件</h4><div class="table-container">
-<table>
-<thead>
-<tr>
-<th style="text-align:center">中断事件</th>
-<th style="text-align:center">事件标志位（该位引起中断）</th>
-<th style="text-align:center">中断使能控制位</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">发送数据寄存器TDR为空</td>
-<td style="text-align:center">TXE</td>
-<td style="text-align:center">IXEIE</td>
-</tr>
-<tr>
-<td style="text-align:center">CTS 标志</td>
-<td style="text-align:center">CTS</td>
-<td style="text-align:center">CTSIE</td>
-</tr>
-<tr>
-<td style="text-align:center">发送完成</td>
-<td style="text-align:center">TC</td>
-<td style="text-align:center">TCIE</td>
-</tr>
-<tr>
-<td style="text-align:center">准备好读取接收到的数据（接收移位寄存器为空）</td>
-<td style="text-align:center">RXNE</td>
-<td style="text-align:center">RXNEIE</td>
-</tr>
-<tr>
-<td style="text-align:center">检测到上溢错误</td>
-<td style="text-align:center">ORE</td>
-<td style="text-align:center">RXNEIE</td>
-</tr>
-<tr>
-<td style="text-align:center">测到空闲线路</td>
-<td style="text-align:center">IDLE</td>
-<td style="text-align:center">IDLEIE</td>
-</tr>
-<tr>
-<td style="text-align:center">奇偶校验错误</td>
-<td style="text-align:center">PE</td>
-<td style="text-align:center">PEIE</td>
-</tr>
-<tr>
-<td style="text-align:center">断路标志</td>
-<td style="text-align:center">LBD</td>
-<td style="text-align:center">LBDIE</td>
-</tr>
-<tr>
-<td style="text-align:center">多缓冲通信中的噪声标志、上溢错误和帧错误</td>
-<td style="text-align:center">NF/ORE/FE</td>
-<td style="text-align:center">EIE</td>
-</tr>
-</tbody>
-</table>
-</div>
-<h1 id="IIC协议"><a href="#IIC协议" class="headerlink" title="IIC协议"></a>IIC协议</h1><p>I2C 通讯协议 (Inter － Integrated Circuit) 是由 Phiilps 公司开发的，由于它引脚少，硬件实现简单， 可扩展性强，不需要 USART、CAN 等通讯协议的外部收发设备，现在被广泛地使用在系统内多 个集成电路 (IC) 间的通讯</p>
-<h2 id="物理层"><a href="#物理层" class="headerlink" title="物理层"></a>物理层</h2><p>物理层不是本篇重点，就简单讲一下。</p>
-<img src="/images/loading.png" data-original="/2023/02/09/%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE/5.jpg" class title="image5">
-<p>IIC是一个支持多设备的总线，在一个IIC通讯总线中，可以连接多个通讯设备，它们都可以是主机或从机（主机可以简单理解为发送数据的一端，从机则为接收一端）</p>
-<p>一个 IIC总线只使用两条总线线路，一条双向串行数据线 (SDA) ，一条串行时钟线 (SCL)。 数据线即用来表示数据，时钟线用于数据收发同步，且每个连接到总线的设备都有一个独立的地址，主机可以利用这个地址进行不同设备之间的访问。</p>
-<h2 id="协议层"><a href="#协议层" class="headerlink" title="协议层"></a>协议层</h2><h3 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h3><p>在IIC总线空闲（初始）时，SCL和SDA都为高电平</p>
-<h3 id="特殊信号"><a href="#特殊信号" class="headerlink" title="特殊信号"></a>特殊信号</h3><img src="/images/loading.png" data-original="/2023/02/09/%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE/6.jpg" class title="image6">
-<p>I2C 总线在传送数据过程中共有三种类型信号， 它们分别是：<strong>开始信号、结束信号和应答信号</strong></p>
-<ul>
-<li><p>起始信号：SCL 为<strong>高电平</strong>时，SDA 由<strong>高电平向低电平跳变</strong>，开始传送数据。</p>
-</li>
-<li><p>停止信号：SCL 为<strong>高电平</strong>时，<strong>SDA 由低电平向高电平跳变</strong>，结束传送数据。</p>
-</li>
-<li><p>应答信号：接收数据的设备<strong>在接收到8位数据后</strong>，<strong>向发送数据的设备发出特定的低电平脉冲</strong>，表示已收到数据。应答信号的出现次数与数据长度有关，每接收8位数据后接收端都会向发送端发出一个应答信号</p>
-<ul>
-<li>有效应答位：SCL为高电平时，SDA为低电平</li>
-<li>非应答位：~，SDA为高电平</li>
-</ul>
-<p><strong>当一个字节按数据位从高位到低位的顺序传输完后，紧接着从设备将拉低SDA线，回传给主设备一个应答位ACK， 此时才认为一个数据帧真正地被传输完成</strong> </p>
-</li>
-</ul>
-<p>为确保稳定性，每次电平转换的时间要&gt;4.7us</p>
-<h3 id="数据有效性"><a href="#数据有效性" class="headerlink" title="数据有效性"></a>数据有效性</h3><img src="/images/loading.png" data-original="/2023/02/09/%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE/7.jpg" class title="image7">
-<p>为了不将刚刚讲到的起始、停止信号误识别为数据内容，IIC协议规定了在数据传输过程中，<strong>当SCL=1高电平时，数据线SDA必须保持稳定状态，不允许有电平跳变</strong>，而起始、停止信号则刚好是在SCL=1高电平时在SDA上发生电平跳变，这样起始、停止信号就和数据传输很好的区分开了。并且当<strong>SCL=1时，数据线SDA的任何电平变换会看做是总线的起始信号或者停止信号而不是数据内容。</strong>只有在时钟线上的信号为低电平期间，数据线上的高电平或低电平状态才允许变化，因为SCL为低时，SDA的数据是无效的，不读取的。</p>
-<p>这样就可以理解为，当SCL=1高电平时为读取SDA也就是数据的过程，每一次SCL的高电平读取1位SDA数据，在SCL=0低电平时，SDA可以改变，为下一次SCL高电平的读取做准备</p>
-<h3 id="地址"><a href="#地址" class="headerlink" title="地址"></a>地址</h3><p>多数IIC设备的地址为7位或10位，通常位7位。在地址最后还要加上1位的读/写地址，<strong>所以设备地址为8位</strong></p>
-<p>对于读/写地址位：</p>
-<ul>
-<li>0表示主设备向从设备<strong>写数据</strong></li>
-<li>1表示主设备从从设备<strong>读数据</strong></li>
-</ul>
-<p>例如，对于手势识别模块PAJ7620，当我们要向模块发送数据时，就要先向该模块的地址发送指定数据内容将其读/写地址位设置为0.次数该设备才可以接收主设备写来的数据</p>
-<h3 id="整体流程"><a href="#整体流程" class="headerlink" title="整体流程"></a>整体流程</h3><ul>
-<li>主机先产生<strong>起始信号</strong></li>
-<li>紧接着发送一个<strong>设备地址</strong>，该设备地址由7位从机地址+1位数据方向位组成，此时方向位为0</li>
-<li>主机将地址发送到总线上的过程中，总线上的其他设备会同时将地址逐位<strong>与自己的地址相比较</strong>，当7位从机地址匹配成功后，根据第八位数据方向位将该设备确定为发送/接收器。</li>
-<li>由于地址数据也算作一帧数据，所以在设备匹配成功后，从机将会发送1个应答信号</li>
-<li>对于PAJ7620，此时需要对其寄存器进行初始化，初始化成功后从机会返回1个应答信号</li>
-<li>此后主机、从机之间便可正常通讯</li>
-<li>若要停止该通信，需要主机发送<strong>1个停止信号</strong></li>
-<li>若要改变数据传输方向，在从机初始化完成后，主机需要再重新产生1个起始信号；之后发送设备地址，此时方向位应为1；最后主机将自身SDA的IO口设置为输入模式；</li>
-</ul>
-<h2 id="STM32的IIC硬件"><a href="#STM32的IIC硬件" class="headerlink" title="STM32的IIC硬件"></a>STM32的IIC硬件</h2><p>STM32 的 I2C 外设可用作通讯的主机及从机，支持 100Kbit/s 和 400Kbit/s 的速率，支持 7 位、10 位设备地址，支持 DMA 数据传输，并具有数据校验功能</p>
-<div class="table-container">
-<table>
-<thead>
-<tr>
-<th style="text-align:center">STM32F10x</th>
-<th style="text-align:center">IIC1</th>
-<th style="text-align:center">IIC2</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">SCL</td>
-<td style="text-align:center">PB6/PB8（重映射）</td>
-<td style="text-align:center">PB10</td>
-</tr>
-<tr>
-<td style="text-align:center">SDA</td>
-<td style="text-align:center">PB7/PB9（重映射）</td>
-<td style="text-align:center">PB11</td>
-</tr>
-</tbody>
-</table>
-</div>
-<img src="/images/loading.png" data-original="/2023/02/09/%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE/8.jpg" class title="image8">
-<h3 id="时钟逻辑"><a href="#时钟逻辑" class="headerlink" title="时钟逻辑"></a>时钟逻辑</h3><p>STM32 的I2C外设都挂载在APB1总线上，使用APB1的时钟源 PCLK1，具体的SCL时钟计算不细讲了</p>
-<h3 id="数据控制逻辑"><a href="#数据控制逻辑" class="headerlink" title="数据控制逻辑"></a>数据控制逻辑</h3><p>I2C 的 SDA 信号主要连接到数据移位寄存器上，数据移位寄存器的数据来源及目标是数据寄存器 (DR)、地址寄存器 (OAR)、PEC 寄存器以及 SDA 数据线。</p>
-<h4 id="数据寄存器DR-1"><a href="#数据寄存器DR-1" class="headerlink" title="数据寄存器DR"></a>数据寄存器DR</h4><p>当向外发送数据的时候，数据移位寄存器以DR为数据源，把数据一位一位地通过 SDA 信号线发送出去；当从外部接收数据的时候，数据移位寄存器把 SDA 信号线采样到的数据一位一位地存储到DR中。 </p>
-<h4 id="帧错误校验计算PEC"><a href="#帧错误校验计算PEC" class="headerlink" title="帧错误校验计算PEC"></a>帧错误校验计算PEC</h4><p>若使能了数据校验，接收到的数据会经过 PCE 计算器运算，运算结果存储在“PEC 寄存器”中。 </p>
-<h4 id="比较器"><a href="#比较器" class="headerlink" title="比较器"></a>比较器</h4><p>当 STM32 的 I2C 工作在<strong>从机模式</strong>的时候，接收到设备地址信号时，数据移位寄存器会把接收到 的地址与 STM32 的自身的“I2C 地址寄存器”的值作比较，以便响应主机的寻址。STM32 的自 身 I2C 地址可通过修改“自身地址寄存器”修改，<strong>支持同时使用两个 I2C 设备地址，两个地址分别存储在 OAR1 和 OAR2 中</strong></p>
-<h3 id="整体控制逻辑"><a href="#整体控制逻辑" class="headerlink" title="整体控制逻辑"></a>整体控制逻辑</h3><p>整体控制逻辑负责协调整个 I2C 外设，控制逻辑的工作模式根据我们配置的“控制寄存器 (CR1/CR2)”的参数而改变。在外设工作时，控制逻辑会根据外设的工作状态修改“状态寄存器 (SR1 和 SR2)”，我们只要读取这些寄存器相关的寄存器位，就可以了解 I2C 的工作状态。除此之外，控制逻辑还根据要求，负责控制产生 I2C 中断信号、DMA 请求及各种 I2C 的通讯信号 (起始、停止、响应信号等)。</p>
-<h3 id="硬件通讯过程"><a href="#硬件通讯过程" class="headerlink" title="硬件通讯过程"></a>硬件通讯过程</h3><h4 id="发送器-1"><a href="#发送器-1" class="headerlink" title="发送器"></a>发送器</h4><img src="/images/loading.png" data-original="/2023/02/09/%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE/9.jpg" class title="image9">
-<p>发送流程：</p>
-<ul>
-<li>当发生起始信号后，它产生事件“EV5”，并会对 SR1 寄存器的“SB” 位置 1，表示起始信号已经发送</li>
-<li>紧接着发送设备地址并等待应答信号，若有从机应答，则产生事件“EV6”及“EV8”，这 时 SR1 寄存器的“ADDR”位及“TXE”位被置 1，<strong>ADDR 为 1 表示地址已经发送，TXE 为 1 表示数据寄存器为空</strong></li>
-<li>以上步骤正常执行并对 ADDR 位清零后，我们往 I2C 的“数据寄存器 DR”写入要发送的数据，这时 TXE 位会被重置 0，表示数据寄存器非空，I2C 外设通过 SDA 信号线一位位把数据发送 出去后，又会产生“EV8”事件，即 TXE 位被置 1，重复这个过程，就可以发送多个字节数据了</li>
-<li>发送数据完成后，控制 I2C 设备产生一个停止信号 (P)，这个时候会产生 EV8_2 事件，SR1 的 TXE 位及 BTF 位都被置 1，表示通讯结束</li>
-</ul>
-<h4 id="接收器-1"><a href="#接收器-1" class="headerlink" title="接收器"></a>接收器</h4><img src="/images/loading.png" data-original="/2023/02/09/%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE/10.jpg" class title="image10">
-<p>可以参考发送器，应该可以推测出来</p>
-<h2 id="软件IIC和硬件IIC的选择"><a href="#软件IIC和硬件IIC的选择" class="headerlink" title="软件IIC和硬件IIC的选择"></a>软件IIC和硬件IIC的选择</h2><p>由硬件处理IIC可以减轻CPU的负担，但是配置和使用起来都较为复杂；软件模拟IIC由于是由CPU控制整个通讯时序和引脚状态，CPU占用会更多，但是相对的使用起来会比较方便，且便于移植。</p>
-<h1 id="SPI协议"><a href="#SPI协议" class="headerlink" title="SPI协议"></a>SPI协议</h1><p>SPI 协议是由摩托罗拉公司提出的通讯协议 (Serial Peripheral Interface)，即串行外围设备接口，是 一种高速全双工的通信总线。它被广泛地使用在 ADC、LCD 等设备与 MCU 间，要求通讯速率 较高的场合。</p>
-<h2 id="物理层-1"><a href="#物理层-1" class="headerlink" title="物理层"></a>物理层</h2><img src="/images/loading.png" data-original="/2023/02/09/%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE/11.jpg" class title="image11">
-<p>SPI使用3条总线和片选线，3 条总线分别为 SCK、MOSI、MISO；片选线（也称为 NSS、CS）用于主机片选设备：</p>
-<ul>
-<li><p>片选信号线：当有多个 SPI 从设备与 SPI 主机相连时，设备的其它信号线 SCK、MOSI 及 MIS O 同时并联到相同的 SPI 总线上，<strong>即无论有多少个从设备，都共同只使用这 3 条总线</strong>；而每个从设备都有独立的这一条 NSS 信号线，本信号线独占主机的一个引脚，<strong>即有多少个从设备，就 有多少条片选信号线。</strong></p>
-<p>当主机要选择从设备时， 把该从设备的 NSS 信号线设置为低电平，该从设备即被选中，即片选有效，接着主机开始与被选中的从设备进行 SPI 通讯。<strong>所以 SPI 通讯以 NSS 线置低电平为开始信号，以 NSS 线被拉高作为结束信号。</strong></p>
-</li>
-<li><p>SCK时钟线：用于通讯数据同步。它由通讯主机产生，决定了通讯的速率</p>
-</li>
-<li><p>MOSI：主设备输出/从设备输入引脚。</p>
-</li>
-<li><p>MISO：主设备输入/从设备输出引脚。</p>
-</li>
-</ul>
-<p>需要注意的是，不同于串口中，主机的TX对应从机的RX，SPI中主机和从机的MOSI和MISO是<strong>一一对应的</strong></p>
-<h2 id="协议层-1"><a href="#协议层-1" class="headerlink" title="协议层"></a>协议层</h2><h3 id="时钟极性与相位"><a href="#时钟极性与相位" class="headerlink" title="时钟极性与相位"></a>时钟极性与相位</h3><p>对于STM32，SPI_CR寄存器中有CPOL和CPHA位，其中CPOL位控制时钟极性，CPHA控制时钟相位。</p>
-<ul>
-<li>CPOL时钟极性：<ul>
-<li>置0：SCK在空闲时为低电平</li>
-<li>置1：SCK在空闲时为高电平</li>
-</ul>
-</li>
-<li>CPHA时钟相位：<ul>
-<li>置0：将SCK时钟第一边沿用作数据位采样</li>
-<li>置1：将SCK时钟第二边沿用作数据采样</li>
-</ul>
-</li>
-</ul>
-<p>因此，基于不同配置的CPOL和CPHA，SPI一共有四种通讯时序：</p>
-<div class="table-container">
-<table>
-<thead>
-<tr>
-<th style="text-align:center">CPOL \ CPHA</th>
-<th style="text-align:center">0</th>
-<th style="text-align:center">1</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">0</td>
-<td style="text-align:center">检测上升沿</td>
-<td style="text-align:center">检测下降沿</td>
-</tr>
-<tr>
-<td style="text-align:center">1</td>
-<td style="text-align:center">检测下降沿</td>
-<td style="text-align:center">检测上升沿</td>
-</tr>
-</tbody>
-</table>
-</div>
-<img src="/images/loading.png" data-original="/2023/02/09/%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE/12.jpg" class title="image12">
-<h3 id="起始信号和停止信号"><a href="#起始信号和停止信号" class="headerlink" title="起始信号和停止信号"></a>起始信号和停止信号</h3><p>通讯的开始与结束由片选信号线控制，当主机要选择从设备时， 把该从设备的 NSS 信号线设置为低电平，该从设备即被选中，即片选有效，接着主机开始与被选中的从设备进行 SPI 通讯。<strong>所以 SPI 通讯以 NSS 线置低电平为开始信号，以 NSS 线被拉高作为结束信号。</strong></p>
-<h3 id="数据位切换"><a href="#数据位切换" class="headerlink" title="数据位切换"></a>数据位切换</h3><p>由上图可以观察出，数据位根据时钟配置不同，采样点也不同</p>
-<ul>
-<li>当CPHA时钟相位为0时，SCK第一个信号边沿用于采集数据，第二个信号边沿用于切换数据位，为下一次采样做准备</li>
-<li>当CPHA时钟相位为1时，SCK第一个信号边沿用于数据位切换，第二个信号边沿用于采集数据</li>
-</ul>
-<p>同时，每个数据帧根据寄存器SPI_CR1寄存器的DFF的配置可以配置为8位或16位</p>
-<h2 id="STM32的SPI硬件"><a href="#STM32的SPI硬件" class="headerlink" title="STM32的SPI硬件"></a>STM32的SPI硬件</h2><img src="/images/loading.png" data-original="/2023/02/09/%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE/13.jpg" class title="image13">
-<p>具体的寄存器每一位的功能请参考<a target="_blank" rel="noopener" href="https://blog.csdn.net/k666499436/article/details/124882583?ops_request_misc=%7B%22request%5Fid%22%3A%22167673150616800182736214%22%2C%22scm%22%3A%2220140713.130102334..%22%7D&amp;request_id=167673150616800182736214&amp;biz_id=0&amp;utm_medium=distribute.pc_search_result.none-task-blog-2~all~baidu_landing_v2~default-6-124882583-null-null.142^v73^insert_down3,201^v4^add_ask,239^v2^insert_chatgpt&amp;utm_term=spi协议stm32&amp;spm=1018.2226.3001.4187">STM32SPI协议通信详解_rivencode的博客-CSDN博客_stm32spi通信</a>，讲的很详细，这里我主要讲一下主机模式下的发送流程：</p>
-<img src="/images/loading.png" data-original="/2023/02/09/%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE/14.jpg" class title="主机发送流程">
-<ul>
-<li><p>NSS片选线产生信号，选择设备</p>
-</li>
-<li><p>第一次发送时，发送缓冲区为空，因此表示其为空的TXE标志在最开始会一直为高电平</p>
-</li>
-<li><p>第一次发送时，第一帧数据0xF1在时钟信号产生的同时被存入发送缓冲区中，等待被发出，此时TXE为0，表示发送缓冲区非空</p>
-</li>
-<li><p><strong>1个时钟周期之后</strong>，0xF1从发送缓冲区被移入移位寄存器，同时把第0位数据从移位寄存器发出，此时发送寄存器被清空，TXE硬件置1</p>
-<p><strong>与此同时，</strong>从机端也发送了1位数据至接收缓冲区中</p>
-</li>
-<li><p>在这之后，<strong>第二帧数据（不是第二位！）</strong>在1个时钟周期后被存入发送缓冲区中等待下一次的转移。发送缓冲区非空，TXE置0</p>
-</li>
-<li><p>与此同时，每过1个时钟周期，主机端移位寄存器发送出1位数据，接收缓冲区存入1位数据，1帧数据在8个时钟周期后被完全发送出。同时主机也收到1帧完整数据，此时RXNE标志置位，此时第一帧数据正式发送完毕</p>
-</li>
-<li><p>此后数据从上述第四点开始循环</p>
-</li>
-</ul>
-<p>假如我们使能了 TXE 或 RXNE 中断，TXE 或 RXNE 置 1 时会产生 SPI 中断信号，进入同一个中断服务函数，到 SPI 中断服务程序后，可通过检查寄存器位来了解是哪一个事件，再分别进行处理。也可以使用 DMA 方式来收发接收缓冲区中的数据。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   
   <nav class="pagination">
     <a class="extend prev" rel="prev" href="/page/9/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><span class="page-number current">10</span><a class="page-number" href="/page/11/">11</a><span class="space">&hellip;</span><a class="page-number" href="/page/21/">21</a><a class="extend next" rel="next" href="/page/11/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
@@ -1275,7 +1146,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">62</span>
+          <span class="site-state-item-count">63</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>

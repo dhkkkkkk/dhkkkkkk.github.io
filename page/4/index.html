@@ -197,6 +197,97 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2025/10/05/DL-attention/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/zoe.gif">
+      <meta itemprop="name" content="dhk">
+      <meta itemprop="description" content="记录一些学习日常">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小董的BLOG">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/10/05/DL-attention/" class="post-title-link" itemprop="url">注意力机制原理与实现</a>
+        </h2>
+
+        <div class="post-meta">
+		  
+		  
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2025-10-05 15:18:37 / 修改时间：15:31:12" itemprop="dateCreated datePublished" datetime="2025-10-05T15:18:37+08:00">2025-10-05</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="注意力机制原理"><a href="#注意力机制原理" class="headerlink" title="注意力机制原理"></a>注意力机制原理</h1><p>在传统的序列处理模型中，如循环神经网络（RNN）和长短时记忆网络（LSTM），捕捉<strong>长距离依赖关系是一个难题</strong>。因为随着序列长度的增加，模型很容易丢失早期输入的信息。</p>
+<p>注意力机制允许模型在序列的不同位置之间建立直接联系，无论这些位置相距多远，都能够有效地捕捉到它们之间的依赖关系。</p>
+<h2 id="最原始的注意力"><a href="#最原始的注意力" class="headerlink" title="最原始的注意力"></a>最原始的注意力</h2><p>对于输入X=(N,D)，其中D为每个token的embedding dimension，N为序列长度，为了得到某个特定任务的相关信息，引入一个和token同维度的查询向量q（q是一个和任务相关的表示，这里暂时理解为一个抽象的概念，后续会详细说明实际中的生成方式），通过计算每个token和q的相关性以得到注意力分布：</p>
+<script type="math/tex; mode=display">
+\alpha_n=softmax(s(x_n,q))</script><p>x_n为X中的第n个token；α为q对x_n的<strong>关注程度</strong>；s(.)为一个<strong>打分函数</strong>，用于计算token和q的相关性，最长用的是缩放点积模型：</p>
+<script type="math/tex; mode=display">
+s(x,q)=\frac{qx^T}{\sqrt{D}}</script><p>当token维度D较大时，如果不对点积结果进行缩放，会由于较大的方差导致softmax梯度较小</p>
+<p>若想得到输入X与查询向量q的整体相关性，则可以通过加权平均获得，即直接将关注程度与token相乘再求和：</p>
+<script type="math/tex; mode=display">
+att(X,q)=\sum_{n=1}^{N} \alpha_n x_n</script><p>因此attention机制<strong>可以单独使用</strong>，但其更多地还是作为神经网络中的一个组件使用，并且现在主流的attention算法与上述还存在一定差别</p>
+<h2 id="自注意力模型"><a href="#自注意力模型" class="headerlink" title="自注意力模型"></a>自注意力模型</h2><p>为了提高模型的表达能力，现在主流的attention模型使用查询-键-值(qkv)模式进行自注意力计算，对于上一小节中的打分函数，即缩放点积模型则变为一个矩阵：</p>
+<script type="math/tex; mode=display">
+s(K,Q)=\frac{QK^T}{\sqrt{D_k}}</script><p>其中Q和K为X分别经过一个线性变换得到的(D_k,N)的矩阵：</p>
+<script type="math/tex; mode=display">
+Q(K)=W_{q(k)}X</script><p>对于pytorch中则通常直接通过linear实现：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Q = nn.Linear(embedding_dim, mid_dim, bias=<span class="literal">False</span>)</span><br></pre></td></tr></table></figure>
+<p>最终自注意模型输出仍为一个序列：</p>
+<script type="math/tex; mode=display">
+Y=softmax(s(K,Q)) V=AV</script><p>输出Y的embedding 维度取决于V，而V也是由X进行线性变换而来，因此输出的embedding维度等于V线性变换矩阵的行数；</p>
+<p><strong>自注意机制的“自”就体现在Q，K，V都是由同一个X经过三个不同的线性变换得来</strong></p>
+<p>对于关注度与V相乘的理解，我是这样理解的：</p>
+<p>将Y的矩阵乘法展开，有：</p>
+<script type="math/tex; mode=display">
+Y_i=\sum_{j=1}^nA_{ij}V_j</script><p>因此对于Y_i，也就是每个输出的token，其是由注意力权重（关注程度）A对<strong>所有输入token的加权<u>求和</u></strong>得来，<strong>其包含了与所有输入token的相关程度</strong>；对于A的理解，感觉不用过于较真，只需要知道A的每<strong>一个</strong>元素都代表了某个q和某个k之间的相关程度就行（这里的小写指向量而非矩阵）</p>
+<p>(真要说的话，由公式可知，举个例子：A_12则为q_1对k_2的关注度)</p>
+<h2 id="多头注意力"><a href="#多头注意力" class="headerlink" title="多头注意力"></a>多头注意力</h2><p>多头注意力其实就是在计算注意力的过程中（线性变换之后），<strong>将embedding dim拆为n份</strong>，每份单独计算注意力，最后再进行拼接回完整输出。这样做的好处就是每个token之间存在的一些<strong>局部相关性</strong>会被更好地表示，论文原话是：</p>
+<p><em>Multi-head attention allows the model to jointly attend to information from different representation subspaces at different positions.多头注意力允许模型共同关注来自不同位置的不同表示子空间的信息。</em></p>
+<p>需要澄清的一点概念是，对于多头注意力在训练的过程中，<strong>其权重（线性变换参数）仍然只训练了一次</strong>，只是该次的训练综合了每个头的注意力结果，使训练后的模型能<strong>同时捕捉多种类型的依赖关系</strong>，这种依赖关系在物理意义上可以理解为两个词之间的语法关系、语义关系、位置关系、情感关系等</p>
+<h2 id="交叉注意力"><a href="#交叉注意力" class="headerlink" title="交叉注意力"></a>交叉注意力</h2><p>对于自注意力，其Q，K，V都来自于同一个输入，始终是一个序列内的不同token在相互计算相关程度；而对于交叉注意力，K，V则来自于另一个序列；因此交叉注意力常出现在需要处理多种不同输入的场景（如机器翻译，语义生图等），以翻译为例，K，V为源语言，则Q为目标翻译语言</p>
+<h1 id="代码解读"><a href="#代码解读" class="headerlink" title="代码解读"></a>代码解读</h1><p>该代码为多头注意力的实现：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">MultiHeadAttention</span>(nn.Module):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, hidden_size, dropout_rate, head_size=<span class="number">8</span></span>):</span><br><span class="line">        <span class="built_in">super</span>(MultiHeadAttention, self).__init__()</span><br><span class="line"></span><br><span class="line">        self.head_size = head_size	<span class="comment">#多头数</span></span><br><span class="line"></span><br><span class="line">        self.att_size = att_size = hidden_size // head_size</span><br><span class="line">        self.scale = att_size ** -<span class="number">0.5</span> <span class="comment">#缩放点积模型中的缩放值</span></span><br><span class="line"></span><br><span class="line">        self.linear_q = nn.Linear(hidden_size, hidden_size, bias=<span class="literal">False</span>)</span><br><span class="line">        self.linear_k = nn.Linear(hidden_size, hidden_size, bias=<span class="literal">False</span>)</span><br><span class="line">        self.linear_v = nn.Linear(hidden_size, hidden_size, bias=<span class="literal">False</span>)</span><br><span class="line"></span><br><span class="line">        self.att_dropout = nn.Dropout(dropout_rate)</span><br><span class="line"></span><br><span class="line">        self.output_layer = nn.Linear(head_size * att_size, hidden_size,</span><br><span class="line">                                      bias=<span class="literal">False</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, q, k, v, mask=<span class="literal">None</span>, cache=<span class="literal">None</span></span>):</span><br><span class="line">        orig_q_size = q.size()</span><br><span class="line"></span><br><span class="line">        d_k = self.att_size</span><br><span class="line">        d_v = self.att_size</span><br><span class="line">        batch_size = q.size(<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line">		<span class="comment">#在经过线性变换后，将(b,n,d) -&gt; (b,n, 8, 原dim/8)</span></span><br><span class="line">        q = self.linear_q(q).view(batch_size, -<span class="number">1</span>, self.head_size, d_k)</span><br><span class="line">        k = self.linear_k(k).view(batch_size, -<span class="number">1</span>, self.head_size, d_k)</span><br><span class="line">        v = self.linear_v(v).view(batch_size, -<span class="number">1</span>, self.head_size, d_v)</span><br><span class="line"></span><br><span class="line">        <span class="comment">#将头数前置方便运算，k也在这里顺便进行了转置</span></span><br><span class="line">        q = q.transpose(<span class="number">1</span>, <span class="number">2</span>)                  <span class="comment"># [b, h, q_len, d_k]</span></span><br><span class="line">        v = v.transpose(<span class="number">1</span>, <span class="number">2</span>)                  <span class="comment"># [b, h, v_len, d_v]</span></span><br><span class="line">        k = k.transpose(<span class="number">1</span>, <span class="number">2</span>).transpose(<span class="number">2</span>, <span class="number">3</span>)  <span class="comment"># [b, h, d_k, k_len]</span></span><br><span class="line"></span><br><span class="line">        <span class="comment"># Scaled Dot-Product Attention.</span></span><br><span class="line">        <span class="comment"># Attention(Q, K, V) = softmax((QK^T)/sqrt(d_k))V</span></span><br><span class="line">        <span class="comment">#这里先进行了缩放，缩放先后无影响</span></span><br><span class="line">        q.mul_(self.scale)</span><br><span class="line">        x = torch.matmul(q, k)  <span class="comment"># [b, h, q_len, k_len]</span></span><br><span class="line">		</span><br><span class="line">        <span class="comment">#由之前的矩阵乘法展开可知，对于每一个最终输出的token，其使用的是A_ij(j=0,1,2...)，因此要对A的排维度进行softmax</span></span><br><span class="line">        x = torch.softmax(x, dim=-<span class="number">1</span>)</span><br><span class="line">        x = self.att_dropout(x)</span><br><span class="line">        x = x.matmul(v)  <span class="comment"># [b, h, q_len, attn]</span></span><br><span class="line">		</span><br><span class="line">        <span class="comment">#拼接token embedding 维度</span></span><br><span class="line">        x = x.transpose(<span class="number">1</span>, <span class="number">2</span>).contiguous()  <span class="comment"># [b, q_len, h, attn]</span></span><br><span class="line">        x = x.view(batch_size, -<span class="number">1</span>, self.head_size * d_v)</span><br><span class="line"></span><br><span class="line">        x = self.output_layer(x)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">assert</span> x.size() == orig_q_size</span><br><span class="line">        <span class="keyword">return</span> x</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2025/10/05/DL-conv/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -411,88 +502,6 @@ z=\frac{1}{y}=\frac{1}{e^{(-(2x+1)+1)}+1}</script><p>其计算图为：</p>
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2025/10/05/beamform/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/zoe.gif">
-      <meta itemprop="name" content="dhk">
-      <meta itemprop="description" content="记录一些学习日常">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="小董的BLOG">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2025/10/05/beamform/" class="post-title-link" itemprop="url">麦克风阵列与延迟求和波束形成</a>
-        </h2>
-
-        <div class="post-meta">
-		  
-		  
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2025-10-05 15:10:49 / 修改时间：15:30:52" itemprop="dateCreated datePublished" datetime="2025-10-05T15:10:49+08:00">2025-10-05</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="导向矢量"><a href="#导向矢量" class="headerlink" title="导向矢量"></a>导向矢量</h1><img src="/images/loading.png" data-original="/2025/10/05/beamform/1.jpg" class title="This is an image"> 
-<p>选定参考阵元后，后面阵元接收到的信号比参考阵元晚：</p>
-<script type="math/tex; mode=display">
-\Delta t = \left[0,\ \frac{\delta \cos(\theta_d)}{c},\ \frac{2\delta \cos(\theta_d)}{c},\ \cdots,\ \frac{(M-1)\delta \cos(\theta_d)}{c}\right]</script><p>其中c为声速，δ为后续阵元相对参考阵元的间距（针对复杂阵元δ不为定值），θ为信号入射角度，将其反应到信号的相位变化上（假设输入为单频信号）：</p>
-<p><em>对于使用减法的理解：由于后续信号接收都晚于参考信号，对于参考信号的波形，在绝对时间轴上需要<u>右移（x轴减法）</u>才会露出更早部分的信号，而在同一时刻，后续麦克风受到的波形就是包含更早部分的参考波形（不包含更新、更晚的波形）</em></p>
-<script type="math/tex; mode=display">
-y(n) = \left[ x(n),\ x(n)e^{-j2\pi f_0\frac{\delta\cos(\theta_d)}{c}},\ x(n)e^{-j2\pi f_0\frac{2\delta\cos(\theta_d)}{c}},\ \cdots,\ x(n)e^{-j2\pi f_0\frac{(M-1)\delta\cos(\theta_d)}{c}} \right]  \\ = \left[ 1,\ e^{-j2\pi f_0\frac{\delta\cos(\theta_d)}{c}},\ e^{-j2\pi f_0\frac{2\delta\cos(\theta_d)}{c}},\ \cdots,\ e^{-j2\pi f_0\frac{(M-1)\delta\cos(\theta_d)}{c}} \right]x(n) \\
-=a(\theta_d) \cdot x(n)</script><p>其中a反应了不同a阵元的空间相位差，即导向矢量，受到以下变量影响：</p>
-<ul>
-<li>阵元布置结构，影响阵元间距</li>
-<li>来波方向，影响入射角</li>
-<li>参考阵元位置，影响其他阵元计算间距，不影响阵元间相对相位差</li>
-</ul>
-<p>若多个声源从不同角度入射，则导向矢量变为一个MxN的矩阵，M为阵元个数，N为信号数量</p>
-<h2 id="利用导向矢量估计声源入射方向"><a href="#利用导向矢量估计声源入射方向" class="headerlink" title="利用导向矢量估计声源入射方向"></a>利用导向矢量估计声源入射方向</h2><p>当入射角未知时，当阵元布置和参考阵元确定时，导向矢量的形式是确定的，且只受到入射角影响，因此可以构造一个方向为α的导向矢量形式的向量（共轭转置）与输入信号做<strong>内积</strong>计算：</p>
-<script type="math/tex; mode=display">
-a^H(\alpha) \cdot a(\theta_d) \cdot x(n) \\= \left[ 1 + e^{-j2\pi f_0\delta \frac{[\cos(\alpha) - \cos(\theta_d)]}{c}} + e^{-j2\pi f_0\delta \frac{2[\cos(\alpha) - \cos(\theta_d)]}{c}} + \cdots + e^{-j2\pi f_0\delta \frac{(M-1)[\cos(\alpha) - \cos(\theta_d)]}{c}} \right] \\\leq M \cdot x(n)</script><p>当角度重合时，内积最大</p>
-<h1 id="延迟求和"><a href="#延迟求和" class="headerlink" title="延迟求和"></a>延迟求和</h1><p>由上一章得知麦克风信号为对参考信号相位分别进行了减法的信号，因此只要对麦克风信号的相位分别进行相反的加法（加权）即可得到原始的信号波形：</p>
-<script type="math/tex; mode=display">
-z(n)=\frac{1}{M}(1,e^{j2\pi f \tau_1},e^{j2\pi f \tau_2}...) \cdot y(n)^T
-\\= \frac{1}{M}\omega(\theta) \cdot y(n)^T</script><p>因此，在进行某个方向的波束求和时，频率f为变量（f依次变化计算出每个频率上的响应）</p>
-<p>（其实原理和上一小节的估计声源方向一样）</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   
   <nav class="pagination">
     <a class="extend prev" rel="prev" href="/page/3/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/21/">21</a><a class="extend next" rel="next" href="/page/5/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
@@ -562,7 +571,7 @@ z(n)=\frac{1}{M}(1,e^{j2\pi f \tau_1},e^{j2\pi f \tau_2}...) \cdot y(n)^T
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">62</span>
+          <span class="site-state-item-count">63</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>

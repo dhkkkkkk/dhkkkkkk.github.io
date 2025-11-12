@@ -22,25 +22,28 @@
     var CONFIG = {"hostname":"dhkkkkkk.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="记录一些学习日常">
-<meta property="og:type" content="website">
-<meta property="og:title" content="小董的BLOG">
-<meta property="og:url" content="https://dhkkkkkk.github.io/index.html">
+  <meta name="description" content="来源：(PyBullet笔记（二）从hello world开始的杂谈（引擎连接，URDF模型加载，查看信息） - 知乎，开源好人一生平安！ 连接引擎使用pybullet的第一件事就是连接物理引擎，整个pybullet的结构可以理解为客户端和服务端，客户端发送指令，服务端来执行。为了让我们在客户端编写的脚本能够被解释，并在物理引擎运行整个环境，需要使用pybullet的connect方法。 1234">
+<meta property="og:type" content="article">
+<meta property="og:title" content="pybullet基础">
+<meta property="og:url" content="https://dhkkkkkk.github.io/2025/11/11/pybullet/index.html">
 <meta property="og:site_name" content="小董的BLOG">
-<meta property="og:description" content="记录一些学习日常">
+<meta property="og:description" content="来源：(PyBullet笔记（二）从hello world开始的杂谈（引擎连接，URDF模型加载，查看信息） - 知乎，开源好人一生平安！ 连接引擎使用pybullet的第一件事就是连接物理引擎，整个pybullet的结构可以理解为客户端和服务端，客户端发送指令，服务端来执行。为了让我们在客户端编写的脚本能够被解释，并在物理引擎运行整个环境，需要使用pybullet的connect方法。 1234">
 <meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-11-11T02:19:08.000Z">
+<meta property="article:modified_time" content="2025-11-12T07:22:47.552Z">
 <meta property="article:author" content="dhk">
+<meta property="article:tag" content="机器人学">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="https://dhkkkkkk.github.io/">
+<link rel="canonical" href="https://dhkkkkkk.github.io/2025/11/11/pybullet/">
 
 
 <script id="page-configurations">
   // https://hexo.io/docs/variables.html
   CONFIG.page = {
     sidebar: "",
-    isHome : true,
-    isPost : false,
+    isHome : false,
+    isPost : true,
     lang   : 'zh-CN'
   };
 </script>
@@ -58,7 +61,7 @@
   padding: 1px 4px;
 }
 </style>
-  <title>小董的BLOG</title>
+  <title>pybullet基础 | 小董的BLOG</title>
   
 
 
@@ -191,90 +194,10 @@
         <div class="content-wrap">
           
 
-          <div class="content index posts-expand">
+          <div class="content post posts-expand">
             
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2022/09/08/%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/zoe.gif">
-      <meta itemprop="name" content="dhk">
-      <meta itemprop="description" content="记录一些学习日常">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="小董的BLOG">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/09/08/%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E/" class="post-title-link" itemprop="url">使用说明</a>
-        </h2>
-
-        <div class="post-meta">
-		  
-		  
-    <i class="fa fa-thumb-tack"></i>
-    <font color=green>TOP</font>
-    <span class="post-meta-divider">|</span>
-		  
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2022-09-08 18:51:12" itemprop="dateCreated datePublished" datetime="2022-09-08T18:51:12+08:00">2022-09-08</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-09-20 21:57:48" itemprop="dateModified" datetime="2022-09-20T21:57:48+08:00">2022-09-20</time>
-              </span>
-
-          
-
-        </div>
-      </header>
 
     
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="欢迎访问DHK的个人博客！以下是一些使用说明："><a href="#欢迎访问DHK的个人博客！以下是一些使用说明：" class="headerlink" title="欢迎访问DHK的个人博客！以下是一些使用说明："></a>欢迎访问DHK的个人博客！以下是一些使用说明：</h1><h2 id="1-写的目的"><a href="#1-写的目的" class="headerlink" title="1.写的目的"></a>1.写的目的</h2><p>主要是为了记录自己在一些学习中的笔记和感想，方便日后回忆与查阅，仅供内部学习，未经同意请勿转载！</p>
-<p>由于大部分是将自己的理解总结出来，所以有些地方不一定正确，也欢迎读者随时给予斧正，一些联系方式也已经放在侧边栏。</p>
-<h2 id="2-如何查找需要内容"><a href="#2-如何查找需要内容" class="headerlink" title="2.如何查找需要内容"></a>2.如何查找需要内容</h2><ul>
-<li>左侧目录有相关分类tag，以供查找</li>
-<li>也可以通过左侧搜索功能搜索想要的内容</li>
-<li>左侧我的GitHub仓库中也上传过之前使用过的一些例程模板</li>
-</ul>
-<h2 id="3-注意事项"><a href="#3-注意事项" class="headerlink" title="3.注意事项"></a>3.注意事项</h2><ul>
-<li><u>如果你曾经打开过此博客网站，<strong>请务必在阅读相关博客之前先Ctrl+F5</strong>强制清理之前的缓存，不然你可能会看不到最新更新的内容！！！</u><em>（感觉是gitee的问题，之前部署到GitHub时并未遇见此问题）</em></li>
-<li>如果想定位到想查找的内容的具体位置，建议先用博客的搜索功能定位到文章，再通过ctrl F搜索关键字即可。</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
@@ -290,10 +213,9 @@
       <meta itemprop="name" content="小董的BLOG">
     </span>
       <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2025/11/11/pybullet/" class="post-title-link" itemprop="url">pybullet基础</a>
-        </h2>
+        <h1 class="post-title" itemprop="name headline">
+          pybullet基础
+        </h1>
 
         <div class="post-meta">
 		  
@@ -325,7 +247,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>来源：<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/347177629">(PyBullet笔记（二）从hello world开始的杂谈（引擎连接，URDF模型加载，查看信息） - 知乎</a>，开源好人一生平安！</p>
+        <p>来源：<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/347177629">(PyBullet笔记（二）从hello world开始的杂谈（引擎连接，URDF模型加载，查看信息） - 知乎</a>，开源好人一生平安！</p>
 <h1 id="连接引擎"><a href="#连接引擎" class="headerlink" title="连接引擎"></a>连接引擎</h1><p>使用pybullet的第一件事就是连接物理引擎，整个pybullet的结构可以理解为客户端和服务端，客户端发送指令，服务端来执行。为了<u>让我们在客户端编写的脚本能够被解释</u>，并在物理引擎运行整个环境，需要使用pybullet的connect方法。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pybullet <span class="keyword">as</span> p</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">import</span> pybullet_data</span><br><span class="line"></span><br><span class="line"><span class="comment"># 连接物理引擎</span></span><br><span class="line">physicsCilent = p.connect(p.GUI)</span><br></pre></td></tr></table></figure>
 <p>connect函数接受一个参数，代表用户选择连接的物理引擎服务器（<strong>physics server</strong>），可选的有<code>pybullet.GUI</code>和<code>pybullet.DIRECT</code> ，返回一个数字代表服务器的ID。这两个物理引擎执行的内容，返回的结果等方面完全一致，唯一区别是，<u>GUI可以实时渲染场景到gui上，而DIRECT则不会且不允许用户调用内置的渲染器</u>，（即不进行画面渲染等可视化，在RL训练时，这些不必要操作会使训练变慢）也不允许用户调用外部的openGL，VR之类的硬件特征。</p>
@@ -401,154 +323,41 @@
 <li><code>setCollisionFilterPair</code>:忽略关节之间碰撞</li>
 </ul>
 
-      
     </div>
 
     
     
-    
+    <div class="post-widgets">
+      <div id="needsharebutton-postbottom">
+        <span class="btn">
+          <i class="fa fa-share-alt" aria-hidden="true"></i>
+        </span>
+      </div>
+    </div>
+
       <footer class="post-footer">
-        <div class="post-eof"></div>
+          <div class="post-tags">
+              <a href="/tags/%E6%9C%BA%E5%99%A8%E4%BA%BA%E5%AD%A6/" rel="tag"><i class="fa fa-tag"></i># 机器人学</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2025/11/05/RL-1/" rel="prev" title="强化学习">
+      <i class="fa fa-chevron-left"></i> 强化学习
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
       </footer>
+    
   </article>
   
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2025/11/05/RL-1/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/zoe.gif">
-      <meta itemprop="name" content="dhk">
-      <meta itemprop="description" content="记录一些学习日常">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="小董的BLOG">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2025/11/05/RL-1/" class="post-title-link" itemprop="url">强化学习</a>
-        </h2>
-
-        <div class="post-meta">
-		  
-		  
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2025-11-05 16:28:49" itemprop="dateCreated datePublished" datetime="2025-11-05T16:28:49+08:00">2025-11-05</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-11-06 19:14:12" itemprop="dateModified" datetime="2025-11-06T19:14:12+08:00">2025-11-06</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="强化学习概念"><a href="#强化学习概念" class="headerlink" title="强化学习概念"></a>强化学习概念</h1><p>强化学习是一种解决控制任务（也称为决策问题）的框架，通过构建智能体，这些智能体通过与环境互动、试错并接收奖励（正面或负面）作为独特的反馈来从环境中学习。</p>
-<h2 id="强化学习框架"><a href="#强化学习框架" class="headerlink" title="强化学习框架"></a>强化学习框架</h2><p>在下图中，以机器人为例，agent则为机器人的控制中心，environment则可以为机器人的各个关节电机</p>
-<img src="/images/loading.png" data-original="/2025/11/05/RL-1/1.png" class title="This is an image"> 
-<p>当控制中心（agent）得到关节电机（environment）0时刻的角度（state）时，会控制其进行转动（action），在转动过后，t1时刻会产生一个新的角度，如果该转角达到了预期，则会产生一个奖励（reward）</p>
-<p>因此，强化学习的目标应该是<strong>最大化累积奖励</strong>，称为<strong><u>预期回报</u></strong>的最大化</p>
-<h3 id="状态和观测空间"><a href="#状态和观测空间" class="headerlink" title="状态和观测空间"></a>状态和观测空间</h3><ul>
-<li>状态（state）是对世界状态的完整描述，没有隐藏信息</li>
-<li>观测（observation）是对状态的<strong>部分描述</strong></li>
-</ul>
-<h3 id="行动空间"><a href="#行动空间" class="headerlink" title="行动空间"></a>行动空间</h3><p>行动空间是环境中所有可能行动（action）的合集，分为离散和连续行动。</p>
-<ul>
-<li>离散空间：可能的行动数量有限（例如游戏的移动只有上左下右）</li>
-<li>连续空间：可能的行动数量无限（例如汽车的移动方向）</li>
-</ul>
-<h3 id="奖励与折扣"><a href="#奖励与折扣" class="headerlink" title="奖励与折扣"></a>奖励与折扣</h3><p>强化学习中的唯一反馈是累积奖励，而在较早时间步上奖励更有可能发生，为了表达对不同时间步奖励的关心程度，在积累奖励中引入折扣率gamma：</p>
-<script type="math/tex; mode=display">
-R(\tau)=r_{t}+\gamma r_{t+1}+ \gamma^2 r_{t+2}+ \gamma^3r_{t+3}+...</script><p>gamma大多数情况介于0.95与0.99之间，越大代表折扣越小，即<strong>更关心长期奖励</strong>，反之成立。</p>
-<h3 id="任务类型"><a href="#任务类型" class="headerlink" title="任务类型"></a>任务类型</h3><ul>
-<li>情景式任务：存在起始与终结点的任务</li>
-<li>持续式任务：没有终止状态的任务</li>
-</ul>
-<h3 id="探索与利用"><a href="#探索与利用" class="headerlink" title="探索与利用"></a>探索与利用</h3><ul>
-<li>利用：利用已知信息来最大化奖励</li>
-<li>探索：通过随机行动探索环境，获取更多的信息</li>
-</ul>
-<p>简单来说，探索就是风险更大的获取奖励的方式，相比利用，可能获得更大奖励，但也可能<strong>获得更大惩罚（负奖励值）</strong>，因此，必须定义一个有助于<strong>权衡二者的规则</strong>。</p>
-<h2 id="强化学习的目标"><a href="#强化学习的目标" class="headerlink" title="强化学习的目标"></a>强化学习的目标</h2><p>我们需要得到一个函数，该函数在得到当前环境状态（state）时，会给出最优的行动（action）</p>
-<ul>
-<li>基于策略的方法：直接学习一个策略函数，该函数将定义<strong>每个状态到最佳动作的直接映射（或概率分布）</strong></li>
-<li>基于价值的方法：学习一个价值函数，该函数将每个状态映射到对应的一个预期价值，因此行动策略即“走向价值最高的状态”</li>
-</ul>
-<h1 id="Gymnasium"><a href="#Gymnasium" class="headerlink" title="Gymnasium"></a>Gymnasium</h1><p>Gymnasium是一个用于强化学习创建环境的库</p>
-<p>Gymnasium 的核心是 <code>Env</code>，一个表示强化学习理论中马尔可夫决策过程（MDP）的高级 Python 类（注意：这不是一个完美的重构，缺少 MDP 的几个组件）。该类为用户提供了开始新情节、采取行动和可视化智能体当前状态的能力。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> gymnasium <span class="keyword">as</span> gym</span><br><span class="line"></span><br><span class="line">env = gym.make(<span class="string">&#x27;CartPole-v1&#x27;</span>) <span class="comment">#通过调用make函数返回一个env类，此处为倒立摆环境</span></span><br><span class="line">observation, info = env.reset() <span class="comment">#初始化环境</span></span><br></pre></td></tr></table></figure>
-<p>上述代码创建了一个倒立摆模型，现在我们可以通过<code>env.step()</code>对环境执行动作（action）：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span> <span class="keyword">not</span> episode_over:</span><br><span class="line">    <span class="comment">#随机动作，对于倒立摆来说，其动作空间只有左0或右1，也就是说其动作空间为离散空间 </span></span><br><span class="line">    action = env.action_space.sample()</span><br><span class="line">    observation, reward, terminated, truncated, info = env.step(action)</span><br><span class="line">    total_reward += reward</span><br><span class="line">    episode_over = terminated <span class="keyword">or</span> truncated</span><br></pre></td></tr></table></figure>
-<p>对于step的返回如下，对于每个环境，其返回的各元素具体内容都不同：</p>
-<ul>
-<li><code>observation</code>：新状态 (st+1)，取决于环境，对于倒立摆，其为(4,)，分别为小车位置、速度、杆角度、角速度</li>
-<li><code>reward</code>：执行动作后获得的奖励</li>
-<li><code>terminated</code>：指奖励是否到达阈值</li>
-<li><code>truncated</code>：指环境是否因超出边界而结束，对于倒立摆，杆角度过大、小车位置超出屏幕或时间到达上限都会结束</li>
-<li><code>info</code>：一个提供额外信息的字典（取决于环境）。</li>
-</ul>
-<h2 id="月球车实践"><a href="#月球车实践" class="headerlink" title="月球车实践"></a>月球车实践</h2><p>首先创建对应环境，对于月球车，其奖励方案较为复杂，具体可查阅<a target="_blank" rel="noopener" href="https://gymnasium.org.cn/environments/box2d/lunar_lander/">月球着陆器 - Gymnasium 文档 - Gymnasium 文档</a></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> gymnasium <span class="keyword">as</span> gym</span><br><span class="line"></span><br><span class="line">lunar = gym.make(<span class="string">&quot;LunarLander-v3&quot;</span>)</span><br><span class="line">lunar.reset()</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;Observation Space Shape&quot;</span>, lunar.observation_space.shape) <span class="comment">#环境形状</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;Sample observation&quot;</span>, lunar.observation_space.sample())<span class="comment">#随机取一个环境观测值</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;Action Space Shape&quot;</span>, lunar.action_space) <span class="comment">#动作空间形状</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;Action Space Sample&quot;</span>, lunar.action_space.sample()) <span class="comment">#随机取动作空间</span></span><br></pre></td></tr></table></figure>
-<p>现在我们已经有了环境、可执行的动作以及奖励，就差引入agent进行强化学习，这里我们引入stable_baselines3库中的PPO深度强化学习方法：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">model = sb3.PPO(<span class="string">&#x27;MlpPolicy&#x27;</span>, lunar, verbose=<span class="number">1</span>,device=<span class="string">&#x27;cpu&#x27;</span>)</span><br><span class="line"><span class="comment">#PPO算法在cpu的表现上更好</span></span><br><span class="line">model.learn(total_timesteps=<span class="number">1000000</span>)</span><br><span class="line">model.save(<span class="string">&quot;ppo&quot;</span>)</span><br></pre></td></tr></table></figure>
-<p>对于强化学习，其总学习时长不再由epoch决定，有以下几个关键的训练参数：</p>
-<ul>
-<li><p>total_timesteps：指<strong>整个训练过程中</strong>模型一共会与环境交互多少个时间步</p>
-</li>
-<li><p>n_step：每个rollout的长度，可以将其<strong>理解为训练数据集的大小</strong>，只不过在强化学习中数据集在不断更新，数据集更新次数为<code>total_timesteps\n_step</code></p>
-<p>（注：当在rollout的过程中如果环境终止而时间步未达到<code>n_step</code>，则会立即reset环境继续采样）</p>
-</li>
-<li><p>batchsize：每次<strong>梯度更新</strong>的数据长度，即将<code>n_step</code>切分为<code>n_step/batchsize</code>份，与常规深度学习同理</p>
-</li>
-<li><p>n_epoch：对于每个数据集，其都会重复利用<code>n_epoch</code>次，但每次数据集都会被打乱</p>
-</li>
-</ul>
-<p>综上所述，深度强化学习的训练相比于一般深度学习，多了一个类似“更新数据集的操作”（即rollout），除此之外其他的操作是类似的</p>
-<p><strong><u>由于笔者暂时未接触其他强化学习算法，因此以上结论均只针对PPO</u></strong></p>
-<h3 id="可视化"><a href="#可视化" class="headerlink" title="可视化"></a>可视化</h3><p>在训练完成后，我们可以通过动画观察模型训练效果：<strong>（设置<code>render_mode=&quot;human&quot;</code>）</strong></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> gymnasium <span class="keyword">as</span> gym</span><br><span class="line"><span class="keyword">from</span> stable_baselines3 <span class="keyword">import</span> PPO</span><br><span class="line"></span><br><span class="line">env = gym.make(<span class="string">&quot;LunarLander-v3&quot;</span>, render_mode=<span class="string">&quot;human&quot;</span>)</span><br><span class="line">model = PPO.load(<span class="string">&quot;ppo&quot;</span>, env=env,device=<span class="string">&quot;cpu&quot;</span>)</span><br><span class="line"></span><br><span class="line">obs, info = env.reset()</span><br><span class="line">total_reward = <span class="number">0</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1000</span>):	<span class="comment">#随便取的值，可能会执行多次episode</span></span><br><span class="line">    action, _ = model.predict(obs, deterministic=<span class="literal">True</span>)</span><br><span class="line">    obs, reward, terminated, truncated, info = env.step(action)</span><br><span class="line">    total_reward += reward</span><br><span class="line">    <span class="keyword">if</span> terminated <span class="keyword">or</span> truncated:</span><br><span class="line">        obs, info = env.reset()</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;episode reward:<span class="subst">&#123;total_reward&#125;</span>&quot;</span>)</span><br><span class="line">        total_reward = <span class="number">0</span></span><br><span class="line">env.close()</span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-  
-  <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/21/">21</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
-  </nav>
 
 
           </div>
@@ -599,6 +408,7 @@ R(\tau)=r_{t}+\gamma r_{t+1}+ \gamma^2 r_{t+2}+ \gamma^3r_{t+3}+...</script><p>g
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%BF%9E%E6%8E%A5%E5%BC%95%E6%93%8E"><span class="nav-number">1.</span> <span class="nav-text">连接引擎</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B3%E9%97%AD%E6%9C%8D%E5%8A%A1%E5%99%A8%EF%BC%88%E5%BC%95%E6%93%8E%EF%BC%89"><span class="nav-number">1.1.</span> <span class="nav-text">关闭服务器（引擎）</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%B0%83%E8%AF%95%E9%85%8D%E7%BD%AE"><span class="nav-number">2.</span> <span class="nav-text">调试配置</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#ui%E7%95%8C%E9%9D%A2%E9%85%8D%E7%BD%AE"><span class="nav-number">2.1.</span> <span class="nav-text">ui界面配置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BB%98%E5%88%B6%E8%BE%85%E5%8A%A9%E7%BA%BF"><span class="nav-number">2.1.1.</span> <span class="nav-text">绘制辅助线</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B7%BB%E5%8A%A0%E6%96%87%E5%AD%97"><span class="nav-number">2.1.2.</span> <span class="nav-text">添加文字</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B7%BB%E5%8A%A0%E6%8E%A7%E4%BB%B6"><span class="nav-number">2.1.3.</span> <span class="nav-text">添加控件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B7%BB%E5%8A%A0%E5%90%88%E6%88%90%E6%91%84%E5%83%8F%E6%9C%BA%E8%A7%86%E8%A7%92"><span class="nav-number">2.1.4.</span> <span class="nav-text">添加合成摄像机视角</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A7%BB%E9%99%A4debug%E9%85%8D%E7%BD%AE"><span class="nav-number">2.1.5.</span> <span class="nav-text">移除debug配置</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%8E%B7%E5%8F%96%E9%94%AE%E7%9B%98%E3%80%81%E9%BC%A0%E6%A0%87%E4%BA%8B%E4%BB%B6"><span class="nav-number">2.2.</span> <span class="nav-text">获取键盘、鼠标事件</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8A%A0%E8%BD%BD%E6%A8%A1%E5%9E%8B"><span class="nav-number">3.</span> <span class="nav-text">加载模型</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9B%B4%E6%8E%A5%E5%8A%A0%E8%BD%BDurdf%E6%A8%A1%E5%9E%8B"><span class="nav-number">3.1.</span> <span class="nav-text">直接加载urdf模型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%80%9A%E8%BF%873D%E6%96%87%E4%BB%B6%E5%88%9B%E5%BB%BA%E6%A8%A1%E5%9E%8B"><span class="nav-number">3.2.</span> <span class="nav-text">通过3D文件创建模型</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%BC%80%E5%A7%8B%E6%A8%A1%E6%8B%9F"><span class="nav-number">4.</span> <span class="nav-text">开始模拟</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%AD%A5%E8%BF%9B%E6%A8%A1%E6%8B%9F"><span class="nav-number">4.1.</span> <span class="nav-text">步进模拟</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9E%E6%97%B6%E6%A8%A1%E6%8B%9F"><span class="nav-number">4.2.</span> <span class="nav-text">实时模拟</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E6%9C%BA%E5%99%A8%E4%BA%BA%E4%BF%A1%E6%81%AF"><span class="nav-number">5.</span> <span class="nav-text">查看机器人信息</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%8D%E5%A7%BF%E6%9F%A5%E7%9C%8B"><span class="nav-number">5.1.</span> <span class="nav-text">位姿查看</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B3%E8%8A%82%E4%BF%A1%E6%81%AF%E6%9F%A5%E7%9C%8B"><span class="nav-number">5.2.</span> <span class="nav-text">关节信息查看</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%8E%A7%E5%88%B6%E5%85%B3%E8%8A%82%E7%94%B5%E6%9C%BA"><span class="nav-number">6.</span> <span class="nav-text">控制关节电机</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%9B%B8%E6%9C%BA%E8%B7%9F%E8%B8%AA"><span class="nav-number">7.</span> <span class="nav-text">相机跟踪</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%8A%B6%E6%80%81%E4%BF%9D%E5%AD%98%E4%B8%8E%E5%8A%A0%E8%BD%BD"><span class="nav-number">8.</span> <span class="nav-text">状态保存与加载</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%A2%B0%E6%92%9E%E6%A3%80%E6%B5%8B"><span class="nav-number">9.</span> <span class="nav-text">碰撞检测</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -719,59 +529,6 @@ R(\tau)=r_{t}+\gamma r_{t+1}+ \gamma^2 r_{t+2}+ \gamma^3r_{t+3}+...</script><p>g
   
 
   
-      
-
-<script>
-  if (typeof MathJax === 'undefined') {
-    window.MathJax = {
-      loader: {
-        source: {
-          '[tex]/amsCd': '[tex]/amscd',
-          '[tex]/AMScd': '[tex]/amscd'
-        }
-      },
-      tex: {
-        inlineMath: {'[+]': [['$', '$']]},
-        tags: 'ams'
-      },
-      options: {
-        renderActions: {
-          findScript: [10, doc => {
-            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
-              const display = !!node.type.match(/; *mode=display/);
-              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
-              const text = document.createTextNode('');
-              node.parentNode.replaceChild(text, node);
-              math.start = {node: text, delim: '', n: 0};
-              math.end = {node: text, delim: '', n: 0};
-              doc.math.push(math);
-            });
-          }, '', false],
-          insertedScript: [200, () => {
-            document.querySelectorAll('mjx-container').forEach(node => {
-              let target = node.parentNode;
-              if (target.nodeName.toLowerCase() === 'li') {
-                target.parentNode.classList.add('has-jax');
-              }
-            });
-          }, '', false]
-        }
-      }
-    };
-    (function () {
-      var script = document.createElement('script');
-      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
-      script.defer = true;
-      document.head.appendChild(script);
-    })();
-  } else {
-    MathJax.startup.document.state(0);
-    MathJax.texReset();
-    MathJax.typeset();
-  }
-</script>
-
-    
 
   
 
