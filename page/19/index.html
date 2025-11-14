@@ -197,6 +197,182 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2022/08/23/FreeRTOS-2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/zoe.gif">
+      <meta itemprop="name" content="dhk">
+      <meta itemprop="description" content="记录一些学习日常">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小董的BLOG">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/08/23/FreeRTOS-2/" class="post-title-link" itemprop="url">FreeRTOS的任务相关</a>
+        </h2>
+
+        <div class="post-meta">
+		  
+		  
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-08-23 18:16:08" itemprop="dateCreated datePublished" datetime="2022-08-23T18:16:08+08:00">2022-08-23</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-08-24 10:50:28" itemprop="dateModified" datetime="2022-08-24T10:50:28+08:00">2022-08-24</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="任务相关"><a href="#任务相关" class="headerlink" title="任务相关"></a>任务相关</h1><h2 id="1、RTOS调度器"><a href="#1、RTOS调度器" class="headerlink" title="1、RTOS调度器"></a>1、RTOS调度器</h2><p>在任何时刻，只有一个任务得到运行，RTOS调度器决定运行哪个任务。调度器会不断的启动、停止每一个任务，宏观看上去就像整个应用程序都在执行。作为任务，不需要对调度器的活动有所了解，在任务切入切出时保存上下文环境（寄存器值、堆栈内容）是调度器主要的职责。为了实现这点，每个任务都需要有自己的堆栈。当任务切出时，它的执行环境会被保存在该任务的堆栈中，这样当再次运行时，就能从堆栈中正确的恢复上次的运行环境。</p>
+<h2 id="2、任务状态"><a href="#2、任务状态" class="headerlink" title="2、任务状态"></a>2、任务状态</h2><img src="/images/loading.png" data-original="/2022/08/23/FreeRTOS-2/%E4%BB%BB%E5%8A%A1.jpg" class title="This is an image"> 
+<h2 id="3、任务例子（用户）"><a href="#3、任务例子（用户）" class="headerlink" title="3、任务例子（用户）"></a>3、任务例子（用户）</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">vATaskFunction</span><span class="params">( <span class="type">void</span> *pvParameters )</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">while</span>(<span class="number">1</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">/*-- 应用程序代码放在这里. --*/</span></span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    <span class="comment">/* 任务不可以从这个函数返回或退出。在较新的FreeRTOS移植包中，如果</span></span><br><span class="line"><span class="comment">    试图从一个任务中返回，将会调用configASSERT()（如果定义的话）。</span></span><br><span class="line"><span class="comment">    如果一个任务确实要退出函数，那么这个任务应调用vTaskDelete(NULL)</span></span><br><span class="line"><span class="comment">    函数，以便处理一些清理工作。*/</span></span><br><span class="line">    vTaskDelete( <span class="literal">NULL</span> );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>例如步兵v2.6中底盘任务</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">chassis_task</span><span class="params">(<span class="type">void</span> *pvParameters)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//空闲一段时间</span></span><br><span class="line">    vTaskDelay(CHASSIS_TASK_INIT_TIME);</span><br><span class="line">    <span class="comment">//底盘初始化</span></span><br><span class="line">    chassis_init(&amp;chassis_move);</span><br><span class="line">	<span class="comment">//判断遥控器在线状态</span></span><br><span class="line">    <span class="keyword">while</span> (toe_is_error(DBUSTOE))</span><br><span class="line">	&#123;</span><br><span class="line">      vTaskDelay(CHASSIS_CONTROL_TIME_MS);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//底盘循环代码</span></span><br><span class="line">    <span class="keyword">while</span> (<span class="number">1</span>)</span><br><span class="line">    &#123;</span><br><span class="line">	  <span class="comment">//底盘模式设置</span></span><br><span class="line">      chassis_set_mode(&amp;chassis_move);</span><br><span class="line">      <span class="comment">//状态切换数据保存与处理</span></span><br><span class="line">      chassis_mode_change_control_transit(&amp;chassis_move);</span><br><span class="line">      <span class="comment">//底盘相关反馈数据更新</span></span><br><span class="line">      chassis_feedback_update(&amp;chassis_move);</span><br><span class="line">        。。。。。。。。</span><br><span class="line">	  <span class="comment">//系统延时</span></span><br><span class="line">	  vTaskDelay(CHASSIS_CONTROL_TIME_MS);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;	</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>任务函数决不应该返回，因此通常任务函数都是一个死循环。</p>
+</li>
+<li><p>任务由xTaskCreate()函数创建，由vTaskDelete()函数删除。（后面会详细讲到）</p>
+</li>
+</ul>
+<h2 id="4、空闲任务"><a href="#4、空闲任务" class="headerlink" title="4、空闲任务"></a>4、空闲任务</h2><p> 空闲任务是启动RTOS调度器时由内核自动创建的任务，这样可以确保至少有一个任务在运行。空闲任务具有最低任务优先级，这样如果有其它更高优先级的任务进入就绪态就可以立刻让出CPU。</p>
+<h3 id="空闲任务钩子函数"><a href="#空闲任务钩子函数" class="headerlink" title="空闲任务钩子函数"></a>空闲任务钩子函数</h3><p>空闲任务钩子是一个函数，每一个空闲任务周期被调用一次。</p>
+<ul>
+<li><strong>因为FreeRTOS必须至少有一个任务处于就绪或运行状态，因此钩子函数不可以调用可能引起空闲任务阻塞的API函数（比如vTaskDelay()或者带有超时事件的队列或信号量函数）。</strong></li>
+</ul>
+<p>创建一个空闲钩子步骤如下：</p>
+<ul>
+<li><p>在FreeRTOSConfig.h头文件中设置configUSE_IDLE_HOOK为1；</p>
+</li>
+<li><p>定义一个函数，名字和参数原型如下所示：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">vApplicationIdleHook</span><span class="params">( <span class="type">void</span> )</span>;</span><br></pre></td></tr></table></figure>
+<p>通常，<strong>使用这个空闲钩子函数设置CPU进入低功耗模式</strong>。</p>
+</li>
+</ul>
+<h2 id="5、任务的创建"><a href="#5、任务的创建" class="headerlink" title="5、任务的创建"></a>5、任务的创建</h2><p>任务创建和删除API函数位于文件task.c中，需要包含task.h头文件</p>
+<p>具体函数定义如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">BaseType_t xTaskCreate(</span><br><span class="line">           TaskFunction_t pvTaskCode,</span><br><span class="line">           const char * const pcName,</span><br><span class="line">           unsigned short usStackDepth,</span><br><span class="line">           void *pvParameters,</span><br><span class="line">           UBaseType_t uxPriority,</span><br><span class="line">           TaskHandle_t * pvCreatedTask</span><br><span class="line">            );</span><br><span class="line">  例：          </span><br><span class="line">    xTaskCreate( (TaskFunction_t)chassis_task,//底盘任务</span><br><span class="line">                 (const char *)&quot;chassis_task&quot;,</span><br><span class="line">                 (uint16_t)CHASSIS_STK_SIZE,</span><br><span class="line">                 (void *)NULL,</span><br><span class="line">                 (UBaseType_t)CHASSIS_TASK_PRIO,</span><br><span class="line">                 (TaskHandle_t *)&amp;CHASSISTask_Handler</span><br><span class="line">               );</span><br></pre></td></tr></table></figure>
+<h3 id="参数描述"><a href="#参数描述" class="headerlink" title="参数描述"></a>参数描述</h3><ul>
+<li><p>pvTaskCode：指针，指向任务函数的入口。</p>
+<p>追溯到TaskFunction_t的定义可以找到</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="title function_">void</span> <span class="params">(*TaskFunction_t)</span><span class="params">( <span class="type">void</span> * )</span>;</span><br></pre></td></tr></table></figure>
+<p>此处涉及C语言中typedef的一个使用方法</p>
+<p>​    void (<em>TaskFunction_t)( void </em> )意为定义了一个名为TaskFunction_t，入口参数类型为void*型，返回值为void型的函数指针变量；而在使用typedef后再进行TaskFunction_t  pvTaskCode的操作，则意为TaskFunction_t在这里作为类的别名，而 pvTaskCode作为类的变量。也就是说，在使用typedef后，可以将此处的TaskFunction_t理解为一个类似于int，void之类的类型</p>
+<p>做个总结：此处</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="title function_">void</span> <span class="params">(*TaskFunction_t)</span><span class="params">( <span class="type">void</span> * )</span>;</span><br><span class="line">TaskFunction_t pvTaskCode;</span><br></pre></td></tr></table></figure>
+<p>等同于：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">void (*pvTaskCode)( void * );</span><br></pre></td></tr></table></figure>
+<p><strong>也就是说，pvTaskCode其实就是一个函数指针</strong></p>
+<p>（此用法同步收录于“C语言学习-一些关键字-typedef-指针”一栏）</p>
+</li>
+<li><p>pcName：任务描述，名字。字符串的最大长度由宏configMAX_TASK_NAME_LEN指定</p>
+</li>
+<li><p>usStackDepth：指定任务堆栈大小，能够支持的堆栈变量数量，而<strong>不是字节数</strong>。</p>
+</li>
+</ul>
+<ul>
+<li>pvParameters：指针，当任务创建时，作为一个参数传递给任务。</li>
+</ul>
+<ul>
+<li><p>uxPriority：任务的优先级。</p>
+</li>
+<li><p>pvCreatedTask：用于回传一个句柄（ID），创建任务后可以使用这个句柄引用任务</p>
+</li>
+</ul>
+<h3 id="返回值"><a href="#返回值" class="headerlink" title="返回值"></a>返回值</h3><p> 如果任务成功创建并加入就绪列表函数返回pdPASS，否则函数返回错误码，具体参见projdefs.h。</p>
+<h3 id="用法（个人）"><a href="#用法（个人）" class="headerlink" title="用法（个人）"></a>用法（个人）</h3><ul>
+<li>创建任务具体内容，例如上面的chassis_task</li>
+<li>创建针对freertos的任务（xTaskCreate）</li>
+<li>使用freertos调度任务</li>
+</ul>
+<h2 id="6-任务的删除"><a href="#6-任务的删除" class="headerlink" title="6.任务的删除"></a>6.任务的删除</h2><p>函数定义：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">vTaskDelete</span><span class="params">( TaskHandle_t xTask )</span>;</span><br></pre></td></tr></table></figure>
+<p>从RTOS内核管理器中删除一个任务。任务删除后将会从就绪、阻塞、暂停和事件列表中移除。在配置头文件中，必须定义宏INCLUDE_vTaskDelete 为1，本函数才有效。被删除的任务，其在任务创建时由内核分配的存储空间，会由空闲任务释放。如果有应用程序调用xTaskDelete()，必须保证空闲任务获取一定的微控制器处理时间。任务代码自己分配的内存是不会自动释放的，因此删除任务前，应该将这些内存释放。</p>
+<h1 id="任务控制"><a href="#任务控制" class="headerlink" title="任务控制"></a>任务控制</h1><h2 id="延时（阻塞）"><a href="#延时（阻塞）" class="headerlink" title="延时（阻塞）"></a>延时（阻塞）</h2><h3 id="1-相对延时"><a href="#1-相对延时" class="headerlink" title="1.相对延时"></a>1.相对延时</h3><ul>
+<li><p>void vTaskDelay( portTickType xTicksToDelay )；</p>
+<p>参数描述：xTicksToDelay：延时时间总数，单位是系统时钟节拍周期</p>
+</li>
+</ul>
+<p>vTaskDelay()指定的延时时间是从调用vTaskDelay()后开始计算的相对时间。比如vTaskDelay(100)，那么从调用vTaskDelay()后，任务进入阻塞状态，经过100个系统时钟节拍周期，任务解除阻塞。因此，vTaskDelay()并不适用与周期性执行任务的场合。因为调用vTaskDelay()到任务解除阻塞的时间不总是固定的并且该任务下一次调用vTaskDelay()函数的时间也不总是固定的（两次执行同一任务的时间间隔本身就不固定，中断或高优先级任务抢占也可能会改变每一次执行时间）。</p>
+<p>在文件FreeRTOSConfig.h中，宏INCLUDE_vTaskDelay 必须设置成1，此函数才能有效。</p>
+<h3 id="2-绝对延时"><a href="#2-绝对延时" class="headerlink" title="2.绝对延时"></a>2.绝对延时</h3><ul>
+<li><p>void vTaskDelayUntil( TickType_t *pxPreviousWakeTime, const TickType_tx TimeIncrement );</p>
+<p>参数描述：</p>
+<ul>
+<li>pxPreviousWakeTime：指针，指向一个变量，该变量保存任务最后一次解除阻塞的时间。第一次使用前，<strong>该变量必须初始化为当前时间</strong>。之后这个变量会在vTaskDelayUntil()函数内<strong>自动更新</strong>。</li>
+<li>xTimeIncrement：周期循环时间。当<strong>当前时间</strong>等于pxPreviousWakeTime+xTimeIncrement时任务会解除阻塞。</li>
+</ul>
+</li>
+</ul>
+<p>应当指出的是，如果指定的唤醒时间已经达到，vTaskDelayUntil()立刻返回（不会有阻塞）。因此，使用vTaskDelayUntil()周期性执行的任务，无论任何原因（比如，任务临时进入挂起状态）停止了周期性执行，使得任务少运行了一个或多个执行周期，<strong>那么需要重新计算所需要的唤醒时间</strong>。（例如任务挂起态结束后，当前的绝对时间已经超过指定的唤醒时间，vTaskDelayUntil()会立刻返回，且此时需要重新获得当前时间）这可以通过传递给函数的指针参数pxPreviousWake指向的值与当前系统时钟计数值比较来检测。<br>例：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//每10次系统节拍执行一次</span></span><br><span class="line"> <span class="type">void</span> <span class="title function_">vTaskFunction</span><span class="params">( <span class="type">void</span> * pvParameters )</span></span><br><span class="line"> &#123;</span><br><span class="line">     <span class="type">static</span> portTickType xLastWakeTime;</span><br><span class="line">     <span class="type">const</span> portTickType xFrequency = <span class="number">10</span>;</span><br><span class="line"> </span><br><span class="line">     <span class="comment">// 使用当前时间初始化变量xLastWakeTime</span></span><br><span class="line">     xLastWakeTime = xTaskGetTickCount();</span><br><span class="line"> </span><br><span class="line">     <span class="keyword">while</span>(<span class="number">1</span>)</span><br><span class="line">     &#123;</span><br><span class="line">     	<span class="comment">// 需要周期性执行代码放在这里</span></span><br><span class="line">     	.........</span><br><span class="line">     	<span class="comment">//等待下一个周期</span></span><br><span class="line">         vTaskDelayUntil( &amp;xLastWakeTime,xFrequency ); </span><br><span class="line">     &#125;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<p>在文件FreeRTOSConfig.h中，宏INCLUDE_vTaskDelayUntil 必须设置成1，此函数才有效。</p>
+<h2 id="获取优先级"><a href="#获取优先级" class="headerlink" title="获取优先级"></a>获取优先级</h2><ul>
+<li><p>UBaseType_t uxTaskPriorityGet(TaskHandle_t xTask )；</p>
+<p>参数描述：</p>
+<ul>
+<li>xTask：任务句柄。NULL表示获取当前任务的优先级。</li>
+</ul>
+</li>
+</ul>
+<p>例：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">vAFunction</span><span class="params">( <span class="type">void</span> )</span></span><br><span class="line"> &#123;</span><br><span class="line">    xTaskHandle xHandle;</span><br><span class="line">    <span class="comment">// 创建另一个任务，并保存任务句柄</span></span><br><span class="line">    xTaskCreate( vTaskCode, <span class="string">&quot;NAME&quot;</span>,STACK_SIZE, <span class="literal">NULL</span>, tskIDLE_PRIORITY, &amp;xHandle );</span><br><span class="line">    <span class="comment">// 当前任务优先级比新创建的任务优先级高？</span></span><br><span class="line">    <span class="keyword">if</span>( uxTaskPriorityGet( xHandle ) &lt;uxTaskPriorityGet( <span class="literal">NULL</span> ) )</span><br><span class="line">    &#123;</span><br><span class="line">         <span class="comment">// 当前优先级较高</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">      ......</span><br><span class="line">    &#125;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<p>在文件FreeRTOSConfig.h中，宏INCLUDE_vTaskPrioritySet 必须设置成1，此函数才有效。</p>
+<h2 id="任务挂起"><a href="#任务挂起" class="headerlink" title="任务挂起"></a>任务挂起</h2><ul>
+<li><p>void vTaskSuspend( TaskHandle_txTaskToSuspend );</p>
+<p><strong>被挂起的任务绝不会得到处理器时间，不管该任务具有什么优先级。</strong></p>
+<p>参数描述：</p>
+<ul>
+<li>xTask：任务句柄。NULL表示表示挂起当前任务。</li>
+</ul>
+</li>
+</ul>
+<p>在文件FreeRTOSConfig.h中，宏INCLUDE_vTaskSuspend必须设置成1，此函数才有效。</p>
+<h2 id="解除任务挂起状态"><a href="#解除任务挂起状态" class="headerlink" title="解除任务挂起状态"></a>解除任务挂起状态</h2><ul>
+<li>void vTaskResume( TaskHandle_txTaskToResume );</li>
+</ul>
+<p>宏INCLUDE_vTaskSuspend必须置1，此函数才有效。</p>
+<h2 id="解除任务挂起状态（用于中断服务函数）"><a href="#解除任务挂起状态（用于中断服务函数）" class="headerlink" title="解除任务挂起状态（用于中断服务函数）"></a>解除任务挂起状态（用于中断服务函数）</h2><p>还在学习中，暂不记录。</p>
+<h1 id="任务辅助调试类函数"><a href="#任务辅助调试类函数" class="headerlink" title="任务辅助调试类函数"></a>任务辅助调试类函数</h1><p>这类函数主要用于调试信息输出、获取任务句柄、获取任务状态、操作任务标签值等等，种类繁多，不再单独总结，具体可跳至<a target="_blank" rel="noopener" href="https://freertos.blog.csdn.net/article/details/50498173">FreeRTOS任务应用函数_研究是为了理解的博客-CSDN博客</a>中讲解的很详细。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2022/08/18/FreeRTOS-1/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -628,161 +804,9 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2022/08/01/C-%E7%BB%93%E6%9E%84%E4%BD%93/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/zoe.gif">
-      <meta itemprop="name" content="dhk">
-      <meta itemprop="description" content="记录一些学习日常">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="小董的BLOG">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/08/01/C-%E7%BB%93%E6%9E%84%E4%BD%93/" class="post-title-link" itemprop="url">结构体复习</a>
-        </h2>
-
-        <div class="post-meta">
-		  
-		  
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2022-08-01 10:09:45" itemprop="dateCreated datePublished" datetime="2022-08-01T10:09:45+08:00">2022-08-01</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-11-18 22:36:15" itemprop="dateModified" datetime="2022-11-18T22:36:15+08:00">2022-11-18</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="1-基本内容"><a href="#1-基本内容" class="headerlink" title="1.基本内容"></a>1.基本内容</h1><h2 id="几种初始化"><a href="#几种初始化" class="headerlink" title="几种初始化"></a>几种初始化</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Student</span> </span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">     <span class="type">char</span> *name;</span><br><span class="line">     <span class="type">int</span> age;</span><br><span class="line"> &#125;;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Student</span> <span class="title">stu</span> =</span> &#123;“lnj<span class="string">&quot;, 27&#125;; //定义的同时按顺序初始化</span></span><br><span class="line"><span class="string">/**************************************************************************/</span></span><br><span class="line"><span class="string">struct Student stu = &#123;.age = 35, .name = “lnj&quot;</span>&#125;;<span class="comment">//定义的同时不按顺序初始化</span></span><br><span class="line"><span class="comment">/**************************************************************************/</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Student</span> <span class="title">stu</span>;</span></span><br><span class="line">stu.name = <span class="string">&quot;lnj&quot;</span>;</span><br><span class="line">stu.age = <span class="number">35</span>;  <span class="comment">//先定义后逐个初始化</span></span><br><span class="line"><span class="comment">/**************************************************************************/</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Student</span> <span class="title">stu</span>;</span></span><br><span class="line">stu = (<span class="keyword">struct</span> Student)&#123;<span class="string">&quot;lnj&quot;</span>, <span class="number">35</span>&#125;;    <span class="comment">// 先定义后,再一次性初始化   </span></span><br></pre></td></tr></table></figure>
-<h2 id="结构体数组"><a href="#结构体数组" class="headerlink" title="结构体数组"></a>结构体数组</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">struct Student </span><br><span class="line">&#123;</span><br><span class="line">    char *name;</span><br><span class="line">    int age;</span><br><span class="line">&#125;;</span><br><span class="line">struct Student stu[2]; </span><br><span class="line">stu[0] = &#123;&quot;lnj&quot;, 35&#125;;</span><br><span class="line">stu[1] = &#123;&quot;zs&quot;, 18&#125;;</span><br></pre></td></tr></table></figure>
-<h2 id="结构体指针"><a href="#结构体指针" class="headerlink" title="结构体指针"></a>结构体指针</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">     <span class="comment">// 定义一个结构体类型</span></span><br><span class="line">     <span class="class"><span class="keyword">struct</span> <span class="title">Student</span> </span></span><br><span class="line"><span class="class">     &#123;</span></span><br><span class="line">         <span class="type">char</span> *name;</span><br><span class="line">         <span class="type">int</span> age;</span><br><span class="line">     &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 定义一个结构体变量</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">Student</span> <span class="title">stu</span> =</span> &#123;“lnj<span class="string">&quot;, 18&#125;;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    // 定义一个指向结构体的指针变量</span></span><br><span class="line"><span class="string">    struct Student *p;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">   // 指向结构体变量stu</span></span><br><span class="line"><span class="string">   p = &amp;stu;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    /*</span></span><br><span class="line"><span class="string">     这时候可以用3种方式访问结构体的成员</span></span><br><span class="line"><span class="string">     */</span></span><br><span class="line"><span class="string">    // 方式1：结构体变量名.成员名</span></span><br><span class="line"><span class="string">    printf(&quot;</span>name=%s, age = %d \n<span class="string">&quot;, stu.name, stu.age);</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    // 方式2：(*指针变量名).成员名</span></span><br><span class="line"><span class="string">    printf(&quot;</span>name=%s, age = %d \n<span class="string">&quot;, (*p).name, (*p).age);</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    // 方式3：指针变量名-&gt;成员名</span></span><br><span class="line"><span class="string">    printf(&quot;</span>name=%s, age = %d \n<span class="string">&quot;, p-&gt;name, p-&gt;age);</span></span><br><span class="line"><span class="string">  //-&gt;运算符只用于指针结构体</span></span><br><span class="line"><span class="string">    return 0;</span></span><br><span class="line"><span class="string">&#125;</span></span><br></pre></td></tr></table></figure>
-<h2 id="结构体嵌套"><a href="#结构体嵌套" class="headerlink" title="结构体嵌套"></a>结构体嵌套</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Date</span>&#123;</span></span><br><span class="line">     <span class="type">int</span> month;</span><br><span class="line">     <span class="type">int</span> day;</span><br><span class="line">     <span class="type">int</span> year;</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">struct</span>  <span class="title">stu</span>&#123;</span></span><br><span class="line">     <span class="type">int</span> num;</span><br><span class="line">    <span class="type">char</span> *name;</span><br><span class="line">    <span class="type">char</span> sex;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">Date</span> <span class="title">birthday</span>;</span></span><br><span class="line">    Float score;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li><p>成员访问</p>
-<p>如果某个成员也是结构体变量，可以连续使用成员运算符”.”访问最低一级成员。</p>
-</li>
-</ul>
-<h1 id="2-内存分析"><a href="#2-内存分析" class="headerlink" title="2.内存分析"></a>2.内存分析</h1><ul>
-<li><p>结构体变量占用的内存空间永远是所有成员中占用内存最大成员的倍数(对齐问题)</p>
-<p>这种强制的要求一来简化了处理器与内存之间传输系统的设计,二来可以提升读取数据的速度。比如这么一种处理器,它每次读写内存的时候都从某个8倍数的地址开始,一次读出或写入8个字节的数据,假如软件能 保证double类型的数据都从8倍数地址开始,那么读或写一个double类型数据就只需要一次内存操作。否则,我们就可能需要两次内存操作才能完成这个动作,因为数据或许恰好横跨在两个符合对齐要求的8字节。</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Person</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">   <span class="type">int</span> age; <span class="comment">// 4</span></span><br><span class="line">   <span class="type">char</span> ch; <span class="comment">// 1</span></span><br><span class="line">   <span class="type">double</span> score; <span class="comment">// 8</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Person</span> <span class="title">p</span>;</span></span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;sizeof = %i\n&quot;</span>, <span class="keyword">sizeof</span>(p)); <span class="comment">// 16</span></span><br></pre></td></tr></table></figure>
-<ul>
-<li>占用内存最大属性是score, 占8个字节, 所以第一次会分配8个字节</li>
-<li>将第一次分配的8个字节分配给age4个,分配给ch1个, 还剩下3个字节</li>
-<li>当需要分配给score时, 发现只剩下3个字节, 所以会再次开辟8个字节存储空间</li>
-<li>一共开辟了两次8个字节空间, 所以最终p占用16个字节</li>
-</ul>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Person</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">  <span class="type">int</span> age; <span class="comment">// 4</span></span><br><span class="line">  <span class="type">double</span> score; <span class="comment">// 8</span></span><br><span class="line">  <span class="type">char</span> ch; <span class="comment">// 1</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Person</span> <span class="title">p</span>;</span></span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;sizeof = %i\n&quot;</span>, <span class="keyword">sizeof</span>(p)); <span class="comment">// 24</span></span><br></pre></td></tr></table></figure>
-<ul>
-<li>占用内存最大属性是score, 占8个字节, 所以第一次会分配8个字节</li>
-<li>将第一次分配的8个字节分配给age4个,还剩下4个字节</li>
-<li>当需要分配给score时, 发现只剩下4个字节, 所以会再次开辟8个字节存储空间<br>将新分配的8个字节分配给score, 还剩下0个字节</li>
-<li>当需要分配给ch时, 发现上一次分配的已经没有了, 所以会再次开辟8个字节存储空间<br>一共开辟了3次8个字节空间, 所以最终p占用24个字节</li>
-</ul>
-</li>
-</ul>
-<p><strong>需要注意的是，对占用内存最大的变量的判断仅限基本类型，同时不包括数组，也就是说当一个结构体同时包括</strong></p>
-<p><strong><code>chara[5];int b;</code>时仍然用int的大小计算。</strong></p>
-<h1 id="3-结构体之间赋值"><a href="#3-结构体之间赋值" class="headerlink" title="3.结构体之间赋值"></a>3.结构体之间赋值</h1><ul>
-<li><p>结构体虽然是构造类型, <strong>但是结构体之间赋值是值拷贝, 而不是地址传递</strong>。所以结构体变量作为函数形参时也是值传递, <strong>在函数内修改形参, 不会影响外界实参</strong>。</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Person</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="type">char</span> *name;</span><br><span class="line">    <span class="type">int</span> age;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="type">void</span> <span class="title function_">test</span><span class="params">(<span class="keyword">struct</span> Person per)</span>;</span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">Person</span> <span class="title">p1</span> =</span> &#123;<span class="string">&quot;lnj&quot;</span>, <span class="number">35</span>&#125;;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;p1.name = %s\n&quot;</span>, p1.name); <span class="comment">// lnj</span></span><br><span class="line">    test(p1);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;p1.name = %s\n&quot;</span>, p1.name); <span class="comment">// lnj</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="type">void</span> <span class="title function_">test</span><span class="params">(<span class="keyword">struct</span> Person per)</span></span><br><span class="line">&#123;</span><br><span class="line">    per.name = <span class="string">&quot;zs&quot;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<h1 id="共用体"><a href="#共用体" class="headerlink" title="共用体"></a>共用体</h1><ul>
-<li><p>和结构体不同的是, 结构体的每个成员都是占用一块独立的存储空间, 而共用体<strong>所有的成员都占用同一块存储空间，因此所有成员的地址都是相同的</strong></p>
-</li>
-<li><p>特点: 由于所有属性共享同一块内存空间, <strong>所以只要其中一个属性发生了改变, 其它的属性都会受到影响</strong>。</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">union</span> <span class="title">Test</span>&#123;</span></span><br><span class="line">    <span class="type">int</span> age;</span><br><span class="line">    <span class="type">char</span> ch;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="class"><span class="keyword">union</span> <span class="title">Test</span> <span class="title">t</span>;</span></span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;sizeof(p) = %i\n&quot;</span>, <span class="keyword">sizeof</span>(t)); <span class="comment">//4</span></span><br><span class="line">  </span><br><span class="line">t.age = <span class="number">33</span>;</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;t.age = %i\n&quot;</span>, t.age); <span class="comment">// 33</span></span><br><span class="line">t.ch = <span class="string">&#x27;a&#x27;</span>;</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;t.ch = %c\n&quot;</span>, t.ch); <span class="comment">// a</span></span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;t.age = %i\n&quot;</span>, t.age); <span class="comment">// 97</span></span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<h1 id="枚举"><a href="#枚举" class="headerlink" title="枚举"></a>枚举</h1><ul>
-<li>枚举使用的注意<ul>
-<li>C语言编译器会将枚举元素(spring、summer等)作为<strong>整型常量</strong>处理，称为枚举常量。</li>
-<li>枚举元素的值取决于定义时各枚举元素排列的先后顺序。默认情况下，第一个枚举元素的值为0，第二个为1，依次顺序加1。</li>
-<li>也可以在定义枚举类型时改变枚举元素的值</li>
-</ul>
-</li>
-</ul>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">enum</span> <span class="title">Season</span> &#123;</span></span><br><span class="line">    Spring = <span class="number">9</span>,</span><br><span class="line">    Summer,</span><br><span class="line">    Autumn = <span class="number">20</span>,</span><br><span class="line">    Winter</span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">// 也就是说spring的值为9，summer的值为10，autumn的值为20，winter的值为21</span></span><br></pre></td></tr></table></figure>
-<ul>
-<li>关于枚举类型的内存大小：<ul>
-<li>若为没有在其中赋值的操作，默认4字节</li>
-<li>若有赋值，大小取决于赋值数的类型</li>
-</ul>
-</li>
-</ul>
-<h1 id="利用结构体实现动态链表"><a href="#利用结构体实现动态链表" class="headerlink" title="利用结构体实现动态链表"></a>利用结构体实现动态链表</h1><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&quot;stdio.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;stdlib.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&quot;windows.h&quot;</span></span></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">list</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">	<span class="type">int</span> num;</span><br><span class="line">	<span class="type">char</span> name[<span class="number">30</span>];</span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">list</span> *<span class="title">next</span>;</span></span><br><span class="line">&#125;test;</span><br><span class="line"></span><br><span class="line">test *<span class="title function_">creat</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">	test *linkhead,*linkend,*pt;</span><br><span class="line">	<span class="type">int</span> i;</span><br><span class="line">	<span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;<span class="number">3</span>;i++)</span><br><span class="line">	&#123;</span><br><span class="line">		pt=(test*)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(test));<span class="comment">//分配动态内存</span></span><br><span class="line">		<span class="built_in">scanf</span>(<span class="string">&quot;%d %s&quot;</span>,&amp;pt-&gt;num,pt-&gt;name);</span><br><span class="line">		<span class="keyword">if</span>(i==<span class="number">0</span>)</span><br><span class="line">		&#123;</span><br><span class="line">			linkhead=pt;<span class="comment">//第一次先将当前节点赋给链头链尾</span></span><br><span class="line">			linkend=pt;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span><span class="comment">//若不是第一次，先将当前节点存入上一个节点的next中，再将linkend更新为当前节点以供下一次访问</span></span><br><span class="line">		&#123;                                                                <span class="comment">//当前节点的next</span></span><br><span class="line">			linkend-&gt;next=pt;</span><br><span class="line">			linkend=pt;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	linkend-&gt;next=<span class="literal">NULL</span>;</span><br><span class="line">	<span class="keyword">return</span> linkhead;</span><br><span class="line">&#125;</span><br><span class="line"><span class="type">void</span> <span class="title function_">destroy</span><span class="params">(test *linkHead)</span></span><br><span class="line">&#123;</span><br><span class="line">	test *p;</span><br><span class="line">	p=linkHead; </span><br><span class="line">	<span class="keyword">while</span>(p!=<span class="literal">NULL</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		linkHead=linkHead-&gt;next;</span><br><span class="line">		<span class="built_in">free</span>(p);</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;clear\n&quot;</span>);</span><br><span class="line">		p=linkHead;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;	</span><br><span class="line">	test *LH，*Free_item;</span><br><span class="line">	LH=creat();</span><br><span class="line">   Free_item=LH;</span><br><span class="line">	<span class="keyword">while</span>(LH!=<span class="literal">NULL</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;NUM:%d   NAME:%s\n&quot;</span>,LH-&gt;num,LH-&gt;name);</span><br><span class="line">		LH=LH-&gt;next;</span><br><span class="line">	&#125;</span><br><span class="line">	destroy(Free_item);</span><br><span class="line">	system(<span class="string">&quot;pause&quot;</span>);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><strong>以下解释存在一定问题，我修改后的内容以及写在下一节！！！</strong></p>
-<ul>
-<li><p><em>注：其实这里最开始打印也应该单独写个函数，但是由于我懒得去写了，因此直接在main中操作参数，并且在操作完后我意识到好像无法再以LH为参数去使用destroy函数，按照一般地址与指针的理解，在打印完成过后应该已经改变了在creat()函数中分配的内存所对应的值，但是我抱着尝试的心理用main中的Free_item作为参数使用destroy函数竟然成功了，这一度让我以为我在指针的学习中是不是疏忽了什么重要内容！之后自己以简单的函数间的指针交互写了一些程序发现自己的理解好像也并没有什么问题，最后，在以”形参”为关键字搜索我的个人博客后终于找到如下一段话：</em></p>
-<p><em>“结构体虽然是构造类型, 但是结构体之间赋值是值拷贝, 而不是地址传递。所以结构体变量作为函数形参时也是值传递, 在函数内修改形参, 不会影响外界实参。”（完全忘记了捏😋，所以要多多复习原来的内容！！）</em></p>
-<p><em>因此LH也只是拷贝了creat函数所创建的linkhead的值而已，对LH的任何操作都不会影响creat函数所创建的linkhead的值，而Free_item拷贝的也是LH改变前的值，因此LH的改变也不会影响Free_item的内容。</em></p>
-</li>
-</ul>
-<h2 id="2022-11-17改"><a href="#2022-11-17改" class="headerlink" title="2022.11.17改"></a>2022.11.17改</h2><p>因为最近又在学习FreeRTOS的相关内容，再次复习了一下链表的相关原理，顺便又读了一下上面写的内容，发现对于上一节最后这里的解释好像并不正确，因为当时是按照结构体赋值解释的，<strong>但是在这个链表程序中，传递的内容明显是地址而不是值！</strong>于是我再次查阅了结构指针的相关文献，解释如下：</p>
-<p><strong>我们一步一步来捋一下</strong>：</p>
-<h3 id="①creat函数"><a href="#①creat函数" class="headerlink" title="①creat函数"></a>①creat函数</h3><p>首先我们可以确定，在这个链表程序中的所有test类型变量均为指针变量，也就是说，在creat()函数中:</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">test *<span class="title function_">creat</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">	test *linkhead,*linkend,*pt;</span><br><span class="line">	<span class="type">int</span> i;</span><br><span class="line">	<span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;<span class="number">3</span>;i++)</span><br><span class="line">	&#123;</span><br><span class="line">		pt=(test*)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(test));<span class="comment">//分配动态内存</span></span><br><span class="line">		<span class="built_in">scanf</span>(<span class="string">&quot;%d %s&quot;</span>,&amp;pt-&gt;num,pt-&gt;name);</span><br><span class="line">		<span class="keyword">if</span>(i==<span class="number">0</span>)</span><br><span class="line">		&#123;</span><br><span class="line">			linkhead=pt;<span class="comment">//第一次先将当前节点赋给链头链尾</span></span><br><span class="line">			linkend=pt;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span><span class="comment">//若不是第一次，先将当前节点存入上一个节点的next中，再将linkend更新为当前节点以供下一次访问</span></span><br><span class="line">		&#123;                                                                <span class="comment">//当前节点的next</span></span><br><span class="line">			linkend-&gt;next=pt;</span><br><span class="line">			linkend=pt;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	linkend-&gt;next=<span class="literal">NULL</span>;</span><br><span class="line">	<span class="keyword">return</span> linkhead;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>在<code>scanf(&quot;%d %s&quot;,&amp;pt-&gt;num,pt-&gt;name);</code>中，其实是让pt这个结构体指针指向了一个整型数字和一个字符串，按照C++的说法就是<strong>直接使指针指向了两个字符值常量。</strong></li>
-<li>在三次循环中，分别开辟了三个动态内存区域。</li>
-<li>creat函数返回的也是一个结构体指针</li>
-</ul>
-<h3 id="②main-函数"><a href="#②main-函数" class="headerlink" title="②main()函数"></a>②main()函数</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;	</span><br><span class="line">	test *LH，*Free_item;</span><br><span class="line">	LH=creat();</span><br><span class="line">   Free_item=LH;</span><br><span class="line">	<span class="keyword">while</span>(LH!=<span class="literal">NULL</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;NUM:%d   NAME:%s\n&quot;</span>,LH-&gt;num,LH-&gt;name);</span><br><span class="line">		LH=LH-&gt;next;</span><br><span class="line">	&#125;</span><br><span class="line">	destroy(Free_item);</span><br><span class="line">	system(<span class="string">&quot;pause&quot;</span>);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>creat函数返回的指针<strong>赋值</strong>给结构体指针LH，并且在这里，所有的指针都不是二重指针，因此，creat的返回值linkhead的成员num和name都是直接指向的字符值常量，<strong>因此LH也通过linkhead直接指向这两个成员，而不是LH指向linkhead这个指针变量的地址</strong>，可以理解为linkhead和LH是并列的，没有先后顺序的。</li>
-<li>下一步的<code>Free_item=LH;</code>也是同理，字面意义是Free_item指向了LH的地址，但是实际上Free_item也是直接指向的动态内存中的字符值常量，因为Free_item是一个一重指针，<strong>它不具有保存另一个指针变量地址的功能，所以它会通过LH直接指向动态内存</strong></li>
-<li>综上，实际上Free_item和LH也是并列关系，因此循环中LH的指向的改变不会影响到Free_item的指向，即使LH已经指向null，Free_item也还是指向的链头。</li>
-</ul>
-<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>其实说到底，是我自己对指针理解一直存在的误区，例如如下例程：</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">int</span> a=<span class="number">10</span>;</span><br><span class="line">	<span class="type">int</span> *p1,*p2;</span><br><span class="line">	p1=&amp;a;</span><br><span class="line">	p2=p1;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%d %d %d %d&quot;</span>,p1,&amp;p1,p2,&amp;a); <span class="comment">//6422036 6422024 6422036 6422036</span></span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>我之前一直认为一个指针指向另一个指针，该指针的便会指向另一个指针变量自己的地址，<strong>但实际上，一重指针并不具有保存另一个指针变量地址的功能，所以该指针会直接指向另一个指针指向的内容。</strong></p>
-<p>就像上述例程中,p1指向整型变量a的地址，再将p1赋值给p2，但打印结果中p2指向的地址是a的地址(&amp;a)，而不是p1本身的地址（&amp;p1)。</p>
-<p>这也从另一方面说明了二重指针的一些重要性吧。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/18/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/18/">18</a><span class="page-number current">19</span><a class="page-number" href="/page/20/">20</a><a class="page-number" href="/page/21/">21</a><a class="extend next" rel="next" href="/page/20/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/18/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/18/">18</a><span class="page-number current">19</span><a class="page-number" href="/page/20/">20</a><span class="space">&hellip;</span><a class="page-number" href="/page/22/">22</a><a class="extend next" rel="next" href="/page/20/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -849,7 +873,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">63</span>
+          <span class="site-state-item-count">64</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -966,11 +990,11 @@
         pbOptions.networks = "Wechat,QQZone,Weibo,Douban,Twitter,Facebook";
       new needShareButton('#needsharebutton-postbottom', pbOptions);
   </script>
-<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script><script>
+<script>
             window.imageLazyLoadSetting = {
                 isSPA: false,
                 preloadRatio: 1,
                 processImages: null,
             };
-        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(e.href.match(t)||e.href.match(r))&&(e.href=a.dataset.original)})});</script><script>!function(n){n.imageLazyLoadSetting.processImages=o;var e=n.imageLazyLoadSetting.isSPA,i=n.imageLazyLoadSetting.preloadRatio||1,r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]"));function o(){e&&(r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")));for(var t,a=0;a<r.length;a++)0<=(t=(t=r[a]).getBoundingClientRect()).bottom&&0<=t.left&&t.top<=(n.innerHeight*i||document.documentElement.clientHeight*i)&&function(){var t,e,n,i,o=r[a];t=o,e=function(){r=r.filter(function(t){return o!==t})},n=new Image,i=t.getAttribute("data-original"),n.onload=function(){t.src=i,e&&e()},t.src!==i&&(n.src=i)}()}o(),n.addEventListener("scroll",function(){var t,e;t=o,e=n,clearTimeout(t.tId),t.tId=setTimeout(function(){t.call(e)},500)})}(this);</script></body>
+        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(e.href.match(t)||e.href.match(r))&&(e.href=a.dataset.original)})});</script><script>!function(n){n.imageLazyLoadSetting.processImages=o;var e=n.imageLazyLoadSetting.isSPA,i=n.imageLazyLoadSetting.preloadRatio||1,r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]"));function o(){e&&(r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")));for(var t,a=0;a<r.length;a++)0<=(t=(t=r[a]).getBoundingClientRect()).bottom&&0<=t.left&&t.top<=(n.innerHeight*i||document.documentElement.clientHeight*i)&&function(){var t,e,n,i,o=r[a];t=o,e=function(){r=r.filter(function(t){return o!==t})},n=new Image,i=t.getAttribute("data-original"),n.onload=function(){t.src=i,e&&e()},t.src!==i&&(n.src=i)}()}o(),n.addEventListener("scroll",function(){var t,e;t=o,e=n,clearTimeout(t.tId),t.tId=setTimeout(function(){t.call(e)},500)})}(this);</script><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script></body>
 </html>

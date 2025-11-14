@@ -197,6 +197,66 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2024/06/30/%E9%9F%B3%E8%89%B2%E9%93%BE%E5%AD%A6%E4%B9%A0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/zoe.gif">
+      <meta itemprop="name" content="dhk">
+      <meta itemprop="description" content="记录一些学习日常">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小董的BLOG">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/06/30/%E9%9F%B3%E8%89%B2%E9%93%BE%E5%AD%A6%E4%B9%A0/" class="post-title-link" itemprop="url">音色链学习</a>
+        </h2>
+
+        <div class="post-meta">
+		  
+		  
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2024-06-30 15:53:23 / 修改时间：16:23:16" itemprop="dateCreated datePublished" datetime="2024-06-30T15:53:23+08:00">2024-06-30</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="箱体AMP"><a href="#箱体AMP" class="headerlink" title="箱体AMP"></a>箱体AMP</h1>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2024/04/18/ROS-3/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -483,182 +543,9 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2024/04/10/ROS-1/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/zoe.gif">
-      <meta itemprop="name" content="dhk">
-      <meta itemprop="description" content="记录一些学习日常">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="小董的BLOG">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/04/10/ROS-1/" class="post-title-link" itemprop="url">ROS的一些基础概念与配置</a>
-        </h2>
-
-        <div class="post-meta">
-		  
-		  
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2024-04-10 15:17:26" itemprop="dateCreated datePublished" datetime="2024-04-10T15:17:26+08:00">2024-04-10</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-04-19 18:59:20" itemprop="dateModified" datetime="2024-04-19T18:59:20+08:00">2024-04-19</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="1-关键概念"><a href="#1-关键概念" class="headerlink" title="1.关键概念"></a>1.关键概念</h1><h2 id="节点Node"><a href="#节点Node" class="headerlink" title="节点Node"></a>节点Node</h2><p>执行运算任务的进程，一个系统一般由多个节点组成。</p>
-<h2 id="消息Message"><a href="#消息Message" class="headerlink" title="消息Message"></a>消息Message</h2><p>节点之间的通信机制就是基于发布/订阅模型的消息通信，消息有多种数据结构。</p>
-<h2 id="话题Topic"><a href="#话题Topic" class="headerlink" title="话题Topic"></a>话题Topic</h2><p>消息的传递方式。</p>
-<p>一个节点可以针对一个给定的话题发布消息，也可以关注某个话题并订阅特定类型的数据。</p>
-<h2 id="服务Service"><a href="#服务Service" class="headerlink" title="服务Service"></a>服务Service</h2><p>双向同步传输模式，两节点一个用于请求，一个用于应答。ROS只允许一个节点提供指定命名的服务。</p>
-<h2 id="节点管理器ROS-Master"><a href="#节点管理器ROS-Master" class="headerlink" title="节点管理器ROS Master"></a>节点管理器ROS Master</h2><p>管理节点</p>
-<h1 id="2-文件系统"><a href="#2-文件系统" class="headerlink" title="2.文件系统"></a>2.文件系统</h1><h2 id="功能包"><a href="#功能包" class="headerlink" title="功能包"></a>功能包</h2><p>ROS软件的基本单元，包含节点、库、配置文件等</p>
-<h3 id="对应文件夹内容"><a href="#对应文件夹内容" class="headerlink" title="对应文件夹内容"></a>对应文件夹内容</h3><ul>
-<li><p>config：功能包的配置文件</p>
-</li>
-<li><p>include：功能包需要用到的头文件</p>
-</li>
-<li><p>scripts：可以直接运行的py脚本</p>
-</li>
-<li><p>src：需要编译的cpp代码</p>
-</li>
-<li><p>launch：所有启动文件</p>
-</li>
-<li><p>msg：功能包自定义的消息类型</p>
-</li>
-<li><p>srv：自定义的服务类型</p>
-</li>
-<li><p>action：自定义的动作指令</p>
-</li>
-<li><p>CMakeLists.txt：编译器编一功能包的规则</p>
-</li>
-<li><p>package.xml：功能包清单，包含该功能包名称、版本号等信息。</p>
-<p><build_depend>定义了代码编译所依赖的其他功能包</build_depend></p>
-<p><run_depend>定义了功能包中可执行程序运行时所依赖的其他功能包</run_depend></p>
-</li>
-</ul>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">针对功能包的常用命令：</span><br><span class="line">catkin_create_pkg 创建功能包</span><br><span class="line">rospack 获取功能包信息</span><br><span class="line">catkin_make 编译工作空间中的功能包</span><br><span class="line">rosdep 自动安装功能包依赖的其他包</span><br><span class="line">roscd 功能包目录跳转</span><br><span class="line">roscp 拷贝功能包中的文件</span><br><span class="line">rosed 编辑功能包中的文件</span><br><span class="line">rosrun 运行功能包中的可执行文件</span><br><span class="line">roslaunch 运行启动文件</span><br></pre></td></tr></table></figure>
-<h2 id="元功能包"><a href="#元功能包" class="headerlink" title="元功能包"></a>元功能包</h2><p>只包含一个package.xml，将多个功能包整合成一个逻辑上的独立功能包</p>
-<p>与功能包中的类似，需额外包含一个</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;export&gt;</span><br><span class="line">	&lt;metapackage/&gt;</span><br><span class="line">&lt;/export&gt;</span><br></pre></td></tr></table></figure>
-<h1 id="3-ROS的通信机制"><a href="#3-ROS的通信机制" class="headerlink" title="3.ROS的通信机制"></a>3.ROS的通信机制</h1><h2 id="话题通信"><a href="#话题通信" class="headerlink" title="话题通信"></a>话题通信</h2><ul>
-<li>Talker/Listener注册</li>
-<li>ROS Master进行信息匹配，根据Listener的订阅信息从注册列表找Talker，没找到则等</li>
-<li>Listener发送连接请求</li>
-<li>Talker确认连接请求</li>
-<li>Listener尝试与Talker建立网络连接</li>
-<li>Talker向Listener发布数据</li>
-</ul>
-<h2 id="服务通信"><a href="#服务通信" class="headerlink" title="服务通信"></a>服务通信</h2><p>与话题相比减少了RPC通信，即匹配后直接进行网络连接</p>
-<p>服务是一种带应答的通信，最后一步为Talker接收到Listener的请求和参数后开始执行服务功能，完成后Talker发送应答数据。</p>
-<h2 id="区别"><a href="#区别" class="headerlink" title="区别"></a>区别</h2><ul>
-<li>异步；同步</li>
-<li>无反馈；有反馈</li>
-<li>有缓冲区；无缓冲区</li>
-<li>多对多；一对一</li>
-</ul>
-<p>话题适用于不断更新的数据通信；服务适用于逻辑处理复杂的数据同步交换</p>
-<h1 id="4-小乌龟仿真"><a href="#4-小乌龟仿真" class="headerlink" title="4.小乌龟仿真"></a>4.小乌龟仿真</h1><ul>
-<li><p>roscore为运行ROS Master</p>
-</li>
-<li><p>rosrun …   …    <strong>启动…功能包中的…节点</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">rosrun turtlesim ...	启动turtlesim功能包中的某个节点</span><br><span class="line">rosrun turtlesim 	turtlesim_node	启动turtlesim仿真器节点</span><br><span class="line">rosrun turtlesim turtle_teleop_key	运行键盘控制节点</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<h1 id="5-创建工作空间和功能包"><a href="#5-创建工作空间和功能包" class="headerlink" title="5.创建工作空间和功能包"></a>5.创建工作空间和功能包</h1><p>工作空间是存放工程开发相关文件的文件夹，现默认使用Catkin编译系统。</p>
-<p>一个典型的工作空间包含以下目录空间：</p>
-<ul>
-<li>src：代码空间，储存所有ROS功能包的源码</li>
-<li>build：编译空间，用于存储工作空间编译过程中产生的缓存信息和中间文件</li>
-<li>devel：开发空间，放置编译生成的可执行文件</li>
-<li>install：安装空间，编译成功后，可以使用make install命令将可执行文件安装到当前工作空间。运行该空间中的环境变量脚本即可在终端中运行这些可执行文件。该空间非必要。</li>
-</ul>
-<h2 id="创建工作空间"><a href="#创建工作空间" class="headerlink" title="创建工作空间"></a>创建工作空间</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">mkdir catkin_ws/src</span><br><span class="line">进入src后</span><br><span class="line">catkin_init_workspace	创建工作空间</span><br><span class="line">cd ..	回到工作空间</span><br><span class="line">catkin_make	编译</span><br></pre></td></tr></table></figure>
-<p>编译成功后，自动生成build和devel。devel中生成几个setup.*sh形式的环境变量设置脚本，可使用source运行。</p>
-<p>运行后该工作空间环境变量生效。可在工作空间外使用？</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">source devel/setup.bash</span><br><span class="line">该命令设置的环境变量只能在当前终端中剩下</span><br></pre></td></tr></table></figure>
-<img src="/images/loading.png" data-original="/2024/04/10/ROS-1/1.jpg" class title="This is an image"> 
-<h2 id="创建功能包"><a href="#创建功能包" class="headerlink" title="创建功能包"></a>创建功能包</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">catkin_create_pkg &lt;package_name&gt; [depend1] [depend2]...</span><br></pre></td></tr></table></figure>
-<ul>
-<li><package_name>为功能包名字</package_name></li>
-<li>depend为当前创建的功能包编译所依赖的其他功能包c’d</li>
-<li>ROS不允许功能包嵌套，所有功能包<strong>平行放置在<u>src</u>中</strong></li>
-<li>任何添加操作完后都应回到根目录source添加其环境变量</li>
-</ul>
-<h2 id="工作空间覆盖"><a href="#工作空间覆盖" class="headerlink" title="工作空间覆盖"></a>工作空间覆盖</h2><p>ROS允许多个工作空间并存，当遇到工作空间中<strong>名字相同</strong>（内容不一定相同）的功能包时，新设置的路径会自动放到最前端，在运行时，ROS也会优先查找最前端的工作空间是否存在指定的功能包。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">rospack find ... 查找...功能包的位置</span><br><span class="line">/opt/ros为ROS的默认工作空间</span><br></pre></td></tr></table></figure>
-<p>如果一个工作空间下的b功能包<strong>依赖</strong>同空间的a功能包，而a功能包又被另一工作空间下的新a功能包覆盖，<strong>该新a功能包名字与a功能包相同，但内容可能不同，</strong>因此可能导致b功能包存在潜在风险。</p>
-<h1 id="6-vocode配置ROS环境"><a href="#6-vocode配置ROS环境" class="headerlink" title="6.vocode配置ROS环境"></a>6.vocode配置ROS环境</h1><h2 id="1打开工作空间"><a href="#1打开工作空间" class="headerlink" title="1打开工作空间"></a>1打开工作空间</h2><p>在工作空间的根目录下输入：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">code .</span><br></pre></td></tr></table></figure>
-<p>因为安装了ROS插件，VScode会直接识别catkin环境，并且自动生成.vscode文件夹，里面保含c_cpp_properties.json、settings.json 两个文件。</p>
-<h2 id="2创建功能包"><a href="#2创建功能包" class="headerlink" title="2创建功能包"></a>2创建功能包</h2><p>在vscode资源管理中右键src选择create catkin package</p>
-<h2 id="3配置相关文件"><a href="#3配置相关文件" class="headerlink" title="3配置相关文件"></a>3配置相关文件</h2><p>1.在.vscoce下的task.json（记得加逗号和引号）</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&quot;args&quot;: [</span><br><span class="line">	&quot;--directory&quot;,</span><br><span class="line">	&quot;/home/dhk/catkin_ws&quot;,</span><br><span class="line">	&quot;-DCMAKE_BUILD_TYPE=RelWithDebInfo&quot;, </span><br><span class="line">	&quot;-DCMAKE_EXPORT_COMPILE_COMMANDS=ON&quot;</span><br><span class="line">],</span><br></pre></td></tr></table></figure>
-<p>2.在c_cpp_properties.json中添加 （记得逗号和引号）</p>
-<p>“compileCommands”: “${workspaceFolder}/build/compile_commands.json” </p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">&quot;configurations&quot;: [</span><br><span class="line">   &#123;</span><br><span class="line">     &quot;browse&quot;: &#123;</span><br><span class="line">       &quot;databaseFilename&quot;: &quot;$&#123;default&#125;&quot;,</span><br><span class="line">       &quot;limitSymbolsToIncludedHeaders&quot;: false</span><br><span class="line">     &#125;,</span><br><span class="line">     &quot;includePath&quot;: [</span><br><span class="line">       &quot;/opt/ros/noetic/include/**&quot;,</span><br><span class="line">       &quot;/home/dhk/catkin_ws/src/learning_communication/include/**&quot;,</span><br><span class="line">       &quot;/usr/include/**&quot;</span><br><span class="line">     ],</span><br><span class="line">     &quot;name&quot;: &quot;ROS&quot;,</span><br><span class="line">     &quot;intelliSenseMode&quot;: &quot;gcc-x64&quot;,</span><br><span class="line">     &quot;compilerPath&quot;: &quot;/usr/bin/gcc&quot;,</span><br><span class="line">     &quot;cStandard&quot;: &quot;gnu11&quot;,</span><br><span class="line">     &quot;cppStandard&quot;: &quot;c++14&quot;,</span><br><span class="line">     &quot;compileCommands&quot;: &quot;$&#123;workspaceFolder&#125;/build/compile_commands.json&quot;   </span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
-<p><strong>若后续对节点提示找不到ros头文件且确实无法编译，应该与这两项有关</strong></p>
-<h2 id="4编写测试节点"><a href="#4编写测试节点" class="headerlink" title="4编写测试节点"></a>4编写测试节点</h2><p>在新功能包的src中创建helloworld.cpp，编写如下</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;ros/ros.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span> *argv[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//执行 ros 节点初始化</span></span><br><span class="line">    ros::<span class="built_in">init</span>(argc,argv,<span class="string">&quot;hello&quot;</span>);<span class="comment">//节点名为hello</span></span><br><span class="line">    <span class="comment">//创建 ros 节点句柄(非必须)</span></span><br><span class="line">    ros::NodeHandle n;</span><br><span class="line">    <span class="comment">//控制台输出 hello world</span></span><br><span class="line">    <span class="built_in">ROS_INFO</span>(<span class="string">&quot;hello world!&quot;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>在<strong><u>新功能包</u></strong>中的的CmakeLsit.txt添加：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">add_executable(hello src/helloworld.cpp)</span><br><span class="line">target_link_libraries(hello $&#123;catkin_LIBRARIES&#125;)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">其中</span><br><span class="line">add_executable(节点名 src/文件名)</span><br><span class="line">target_link_libraries(节点名  $&#123;catkin_LIBRARIES&#125;)</span><br></pre></td></tr></table></figure>
-<p>vscode编译，效果同catkin_make</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">执行快捷键：ctrl+shift+b</span><br></pre></td></tr></table></figure>
-<h2 id="5运行ROS-Master"><a href="#5运行ROS-Master" class="headerlink" title="5运行ROS Master"></a>5运行ROS Master</h2><p>建议还是用roscore</p>
-<p>vscode中 c+s+p</p>
-<p>ros:start和ros:stop对应开关，但是运行后没有提示？</p>
-<h2 id="6运行节点"><a href="#6运行节点" class="headerlink" title="6运行节点"></a>6运行节点</h2><p>执行快捷键ctrl + shfit + p输入ROS：Run a Ros executable， 依次输入你创建的功能包的名称以及节点名称（即编译成功后二进制文件的名称）</p>
-<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>当工作空间可以正常编译但却找不到功能包中的某个节点时：</p>
-<p>将第4节中的</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">add_executable(hello src/helloworld.cpp)</span><br><span class="line">target_link_libraries(hello $&#123;catkin_LIBRARIES&#125;)</span><br></pre></td></tr></table></figure>
-<p>一定要放在该功能包中的CmakeLsit.txt的<strong><u>末尾处！！</u></strong></p>
-<h2 id="快捷键"><a href="#快捷键" class="headerlink" title="快捷键"></a>快捷键</h2><p>ctrl+shift+p：调出用于执行命令的输入框<br>ctrl+shift+b：编译</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/8/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><span class="page-number current">9</span><a class="page-number" href="/page/10/">10</a><span class="space">&hellip;</span><a class="page-number" href="/page/21/">21</a><a class="extend next" rel="next" href="/page/10/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/8/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><span class="page-number current">9</span><a class="page-number" href="/page/10/">10</a><span class="space">&hellip;</span><a class="page-number" href="/page/22/">22</a><a class="extend next" rel="next" href="/page/10/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -725,7 +612,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">63</span>
+          <span class="site-state-item-count">64</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -842,11 +729,11 @@
         pbOptions.networks = "Wechat,QQZone,Weibo,Douban,Twitter,Facebook";
       new needShareButton('#needsharebutton-postbottom', pbOptions);
   </script>
-<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script><script>
+<script>
             window.imageLazyLoadSetting = {
                 isSPA: false,
                 preloadRatio: 1,
                 processImages: null,
             };
-        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(e.href.match(t)||e.href.match(r))&&(e.href=a.dataset.original)})});</script><script>!function(n){n.imageLazyLoadSetting.processImages=o;var e=n.imageLazyLoadSetting.isSPA,i=n.imageLazyLoadSetting.preloadRatio||1,r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]"));function o(){e&&(r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")));for(var t,a=0;a<r.length;a++)0<=(t=(t=r[a]).getBoundingClientRect()).bottom&&0<=t.left&&t.top<=(n.innerHeight*i||document.documentElement.clientHeight*i)&&function(){var t,e,n,i,o=r[a];t=o,e=function(){r=r.filter(function(t){return o!==t})},n=new Image,i=t.getAttribute("data-original"),n.onload=function(){t.src=i,e&&e()},t.src!==i&&(n.src=i)}()}o(),n.addEventListener("scroll",function(){var t,e;t=o,e=n,clearTimeout(t.tId),t.tId=setTimeout(function(){t.call(e)},500)})}(this);</script></body>
+        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(e.href.match(t)||e.href.match(r))&&(e.href=a.dataset.original)})});</script><script>!function(n){n.imageLazyLoadSetting.processImages=o;var e=n.imageLazyLoadSetting.isSPA,i=n.imageLazyLoadSetting.preloadRatio||1,r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]"));function o(){e&&(r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")));for(var t,a=0;a<r.length;a++)0<=(t=(t=r[a]).getBoundingClientRect()).bottom&&0<=t.left&&t.top<=(n.innerHeight*i||document.documentElement.clientHeight*i)&&function(){var t,e,n,i,o=r[a];t=o,e=function(){r=r.filter(function(t){return o!==t})},n=new Image,i=t.getAttribute("data-original"),n.onload=function(){t.src=i,e&&e()},t.src!==i&&(n.src=i)}()}o(),n.addEventListener("scroll",function(){var t,e;t=o,e=n,clearTimeout(t.tId),t.tId=setTimeout(function(){t.call(e)},500)})}(this);</script><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script></body>
 </html>

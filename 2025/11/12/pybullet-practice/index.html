@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/xxw/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="/xxw/pace/pace-theme-minimal.min.css">
+  <script src="/xxw/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"dhkkkkkk.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="本章使用pubullet完成常规机器人学相关计算，使用六自由度机械臂 配置与初始化12345678910111213141516171819202122232425262728293031323334353637383940import pybullet as pimport timeimport pybullet_dataimport numpy as npphysicsCilent &#x3D; p.c">
+<meta property="og:type" content="article">
+<meta property="og:title" content="基于机械臂的pybullet实战">
+<meta property="og:url" content="https://dhkkkkkk.github.io/2025/11/12/pybullet-practice/index.html">
+<meta property="og:site_name" content="小董的BLOG">
+<meta property="og:description" content="本章使用pubullet完成常规机器人学相关计算，使用六自由度机械臂 配置与初始化12345678910111213141516171819202122232425262728293031323334353637383940import pybullet as pimport timeimport pybullet_dataimport numpy as npphysicsCilent &#x3D; p.c">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://dhkkkkkk.github.io/images/loading.png">
+<meta property="article:published_time" content="2025-11-12T10:37:52.000Z">
+<meta property="article:modified_time" content="2025-11-13T11:16:13.940Z">
+<meta property="article:author" content="dhk">
+<meta property="article:tag" content="机器人学">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://dhkkkkkk.github.io/images/loading.png">
+
+<link rel="canonical" href="https://dhkkkkkk.github.io/2025/11/12/pybullet-practice/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+<link rel="stylesheet" href="//cdn.jsdelivr.net/gh/theme-next/theme-next-needmoreshare2@1/needsharebutton.min.css"><style>
+#needsharebutton-postbottom {
+  cursor: pointer;
+  height: 26px;
+  margin-top: 10px;
+  position: relative;
+}
+#needsharebutton-postbottom .btn {
+  border: 1px solid $btn-default-border-color;
+  border-radius: 3px;
+  display: initial;
+  padding: 1px 4px;
+}
+</style>
+  <title>基于机械臂的pybullet实战 | 小董的BLOG</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">小董的BLOG</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-目录">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tag fa-fw"></i>目录</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2025/11/12/pybullet-practice/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/zoe.gif">
+      <meta itemprop="name" content="dhk">
+      <meta itemprop="description" content="记录一些学习日常">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小董的BLOG">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          基于机械臂的pybullet实战
+        </h1>
+
+        <div class="post-meta">
+		  
+		  
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2025-11-12 18:37:52" itemprop="dateCreated datePublished" datetime="2025-11-12T18:37:52+08:00">2025-11-12</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-11-13 19:16:13" itemprop="dateModified" datetime="2025-11-13T19:16:13+08:00">2025-11-13</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>本章使用pubullet完成常规机器人学相关计算，使用六自由度机械臂</p>
+<h1 id="配置与初始化"><a href="#配置与初始化" class="headerlink" title="配置与初始化"></a>配置与初始化</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pybullet <span class="keyword">as</span> p</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">import</span> pybullet_data</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line">physicsCilent = p.connect(p.DIRECT)</span><br><span class="line"></span><br><span class="line">p.setAdditionalSearchPath(pybullet_data.getDataPath())</span><br><span class="line">p.configureDebugVisualizer(p.COV_ENABLE_RENDERING, <span class="number">0</span>)</span><br><span class="line">planeId = p.loadURDF(<span class="string">&quot;plane.urdf&quot;</span>)</span><br><span class="line">robotId = p.loadURDF(<span class="string">&#x27;E:/robo_prj/pybullet/examples/urdf/ur5.urdf&#x27;</span>,useFixedBase=<span class="literal">True</span>)  <span class="comment">#记得固定基座</span></span><br><span class="line">p.setGravity(<span class="number">0</span>, <span class="number">0</span>, -<span class="number">9.8</span>)</span><br><span class="line">p.configureDebugVisualizer(p.COV_ENABLE_RENDERING, <span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">q0 = np.array([<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>])</span><br><span class="line">q1 = np.array([-<span class="number">1.5</span>, -<span class="number">1.0</span>, <span class="number">1.0</span>, -<span class="number">1.57</span>, -<span class="number">1.57</span>, -<span class="number">1.57</span>])</span><br><span class="line"></span><br><span class="line">controllable_joints = [i <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(p.getNumJoints(robotId)) <span class="keyword">if</span> p.getJointInfo(robotId, i)[<span class="number">2</span>] != p.JOINT_FIXED]</span><br><span class="line"></span><br><span class="line"><span class="comment">#################初始化角度##############################</span></span><br><span class="line">zero_vec = [<span class="number">0.0</span>] * <span class="built_in">len</span>(controllable_joints)</span><br><span class="line">kp = <span class="number">1.0</span></span><br><span class="line">kv = <span class="number">1.0</span></span><br><span class="line">p.setJointMotorControlArray(</span><br><span class="line">    robotId,</span><br><span class="line">    controllable_joints,</span><br><span class="line">    p.POSITION_CONTROL,</span><br><span class="line">    targetPositions=q1,</span><br><span class="line">    targetVelocities=zero_vec,</span><br><span class="line">    positionGains=[kp] * <span class="built_in">len</span>(controllable_joints),</span><br><span class="line">    velocityGains=[kv] * <span class="built_in">len</span>(controllable_joints)</span><br><span class="line">)</span><br><span class="line"><span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">100</span>):  <span class="comment"># to settle the robot to its position</span></span><br><span class="line">    p.stepSimulation()</span><br><span class="line"></span><br><span class="line">joint_state = p.getJointStates(robotId,controllable_joints)</span><br><span class="line">joint_theta = [i[<span class="number">0</span>] <span class="keyword">for</span> i <span class="keyword">in</span> joint_state]</span><br><span class="line">joint_velocity = [i[<span class="number">1</span>] <span class="keyword">for</span> i <span class="keyword">in</span> joint_state]</span><br><span class="line">joint_torque = [i[<span class="number">3</span>] <span class="keyword">for</span> i <span class="keyword">in</span> joint_state]</span><br><span class="line"><span class="comment">#########################################################</span></span><br></pre></td></tr></table></figure>
+<p>该部分代码完成了模型加载、重力设置、遍历可运动关节、设置当前角度为q1并计算关节角及其一阶二阶导</p>
+<ul>
+<li><code>controllable_joints = [i for i in range(p.getNumJoints(robotId)) if p.getJointInfo(robotId, i)[2] != p.JOINT_FIXED]</code>是常用的遍历可运动关节的操作</li>
+<li>对于当前情况，机器人是静止的，因此关节速度和加速度都为0</li>
+</ul>
+<h1 id="运动学"><a href="#运动学" class="headerlink" title="运动学"></a>运动学</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">###############运动学正解#################################</span></span><br><span class="line">link_state = p.getLinkState(robotId, controllable_joints[-<span class="number">1</span>])</span><br><span class="line">link_pos = link_state[<span class="number">0</span>]</span><br><span class="line">link_orn = link_state[<span class="number">1</span>] <span class="comment">#笛卡尔坐标姿态</span></span><br><span class="line">link_R = np.array(p.getMatrixFromQuaternion(link_orn)).reshape(<span class="number">3</span>, <span class="number">3</span>)</span><br><span class="line">link_T = np.eye(<span class="number">4</span>) <span class="comment">#齐次变换矩阵</span></span><br><span class="line">link_T[:<span class="number">3</span>, :<span class="number">3</span>] = link_R</span><br><span class="line">link_T[:<span class="number">3</span>, <span class="number">3</span>] = link_pos</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;q1下末端质心齐次矩阵为：<span class="subst">&#123;link_T&#125;</span>&quot;</span>)</span><br><span class="line"><span class="comment">########################################################</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">###############运动学逆解#################################</span></span><br><span class="line">joint_angle_solve = p.calculateInverseKinematics(robotId,</span><br><span class="line">                                                 controllable_joints[-<span class="number">1</span>],</span><br><span class="line">                                                 targetPosition = link_pos,</span><br><span class="line">                                                 targetOrientation = link_orn)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;q1下运动学逆解为：<span class="subst">&#123;joint_angle_solve&#125;</span>&quot;</span>)</span><br><span class="line"><span class="comment">########################################################</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li><p><code>p.getLinkState</code>会返回所查询关节<strong>对应子连杆</strong>的位姿等信息</p>
+<p>在pybullet中，</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">base → joint0 → link1 → joint1 → link2 → joint2 → link3</span><br></pre></td></tr></table></figure>
+<p>对于joint2，其子连杆为link3，父连杆为link2</p>
+</li>
+<li><p>默认的姿态表示是基于笛卡尔坐标系的，pybullet提供其与矩阵、欧拉坐标的转换api</p>
+</li>
+</ul>
+<h1 id="雅可比矩阵相关"><a href="#雅可比矩阵相关" class="headerlink" title="雅可比矩阵相关"></a>雅可比矩阵相关</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#################雅可比计算##############################</span></span><br><span class="line">J_v, J_w = p.calculateJacobian(robotId,</span><br><span class="line">                               controllable_joints[-<span class="number">1</span>],</span><br><span class="line">                               link_pos,</span><br><span class="line">                               joint_theta,</span><br><span class="line">                               zero_vec, zero_vec)</span><br><span class="line">J = np.concatenate((np.asarray(J_v),np.asarray(J_w)),axis=<span class="number">0</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;q1下末端的雅可比矩阵为<span class="subst">&#123;J&#125;</span>&quot;</span>)</span><br><span class="line"><span class="comment">#######################################################</span></span><br></pre></td></tr></table></figure>
+<p>pybullet提供的雅可比函数默认分开返回线速度雅可比和角速度雅可比，需要输入所计算连杆的位置和所有关节的转角，关节速度和加速度默认0即可（形状需与机器人自由度DOF匹配）</p>
+<h1 id="机械臂控制-逆动力学"><a href="#机械臂控制-逆动力学" class="headerlink" title="机械臂控制(逆动力学)"></a>机械臂控制(逆动力学)</h1><p>大致流程：</p>
+<ul>
+<li>规划轨迹，得到q，qd，qdd</li>
+<li>逆动力学计算（pybullet使用牛顿欧拉法）</li>
+<li>控制电机</li>
+</ul>
+<p>首先定义如下轨迹规划函数：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">getTrajectory</span>(<span class="params">thi, thf, tf, dt</span>):</span><br><span class="line">    desired_position, desired_velocity, desired_acceleration = [], [], []</span><br><span class="line">    t = <span class="number">0</span></span><br><span class="line">    <span class="keyword">while</span> t &lt;= tf:</span><br><span class="line">        th = thi + ((thf - thi) / tf) * (t - (tf / (<span class="number">2</span> * np.pi)) * np.sin((<span class="number">2</span> * np.pi / tf) * t))</span><br><span class="line">        dth = ((thf - thi) / tf) * (<span class="number">1</span> - np.cos((<span class="number">2</span> * np.pi / tf) * t))</span><br><span class="line">        ddth = (<span class="number">2</span> * np.pi * (thf - thi) / (tf * tf)) * np.sin((<span class="number">2</span> * np.pi / tf) * t)</span><br><span class="line">        desired_position.append(th)</span><br><span class="line">        desired_velocity.append(dth)</span><br><span class="line">        desired_acceleration.append(ddth)</span><br><span class="line">        t += dt</span><br><span class="line">    desired_position = np.array(desired_position)</span><br><span class="line">    desired_velocity = np.array(desired_velocity)</span><br><span class="line">    desired_acceleration = np.array(desired_acceleration)</span><br><span class="line">    <span class="keyword">return</span> desired_position, desired_velocity, desired_acceleration</span><br></pre></td></tr></table></figure>
+<p>该函数根据始末关节角规划n个关节空间点</p>
+<h2 id="位置控制"><a href="#位置控制" class="headerlink" title="位置控制"></a>位置控制</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">sim_time = <span class="number">2</span></span><br><span class="line">dt = <span class="number">1e-3</span></span><br><span class="line">q,qd,qdd = getTrajectory(q0,q1,tf=sim_time,dt=dt)</span><br><span class="line"></span><br><span class="line"><span class="comment">#不设置阻尼</span></span><br><span class="line"><span class="keyword">for</span> link_idx <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">9</span>):</span><br><span class="line">    p.changeDynamics(robotId, link_idx, linearDamping=<span class="number">0.0</span>, angularDamping=<span class="number">0.0</span>, 								jointDamping=<span class="number">0.0</span>)</span><br><span class="line">    p.changeDynamics(robotId, link_idx, maxJointVelocity=<span class="number">200</span>)</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">n = <span class="number">0</span></span><br><span class="line">kp = <span class="number">1</span></span><br><span class="line">kv = <span class="number">1</span></span><br><span class="line"><span class="keyword">while</span> n &lt; q.shape[<span class="number">0</span>]:</span><br><span class="line">	<span class="comment">#位置控制</span></span><br><span class="line">    p.setJointMotorControlArray(robotId,controllable_joints,p.POSITION_CONTROL,</span><br><span class="line">                                targetPositions = <span class="built_in">list</span>(q[n]),</span><br><span class="line">                                targetVelocities = <span class="built_in">list</span>(qd[n]),</span><br><span class="line">                                positionGains=[kp] * <span class="built_in">len</span>(controllable_joints),</span><br><span class="line">                                velocityGains=[kv] * <span class="built_in">len</span>(controllable_joints)</span><br><span class="line">                                )</span><br><span class="line">    p.stepSimulation()</span><br><span class="line">    <span class="built_in">print</span>(tau)</span><br><span class="line">    time.sleep(dt)</span><br><span class="line">    n += <span class="number">1</span></span><br><span class="line">p.disconnect()</span><br></pre></td></tr></table></figure>
+<p>查阅官方手册可知，输入模式为<code>p.POSITION_CONTROL</code>时，误差函数如图：</p>
+<img src="/images/loading.png" data-original="/2025/11/12/pybullet-practice/1.png" class title="This is an image"> 
+<p>因此，为达到最佳控制效果，我们最好额外输入角速度项，也就是qd</p>
+<h2 id="速度控制"><a href="#速度控制" class="headerlink" title="速度控制"></a>速度控制</h2><p>只需将控制电机函数改为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">p.setJointMotorControlArray(robotId,controllable_joints,p.VELOCITY_CONTROL,</span><br><span class="line">                            targetVelocities = <span class="built_in">list</span>(qd[n]),</span><br><span class="line">                            forces = [<span class="number">200</span>]*<span class="built_in">len</span>(controllable_joints),</span><br><span class="line">                            )</span><br></pre></td></tr></table></figure>
+<p>由误差函数可知，单速度项控制非常简单，因此其效果也不好，一般在机械臂中不使用</p>
+<h2 id="力控制"><a href="#力控制" class="headerlink" title="力控制"></a>力控制</h2><h3 id="简单版"><a href="#简单版" class="headerlink" title="简单版"></a>简单版</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">p.setPhysicsEngineParameter(fixedTimeStep=dt, numSolverIterations=<span class="number">100</span>, numSubSteps=<span class="number">10</span>)</span><br><span class="line"><span class="comment">#重要，此处fixedTimeStep应与getTrajectory和p.setTimeStep(dt)一致！！！！</span></span><br><span class="line">...</span><br><span class="line">...</span><br><span class="line">...</span><br><span class="line"><span class="comment">#初始化力控制</span></span><br><span class="line">p.setJointMotorControlArray(robotId,controllable_joints,p.VELOCITY_CONTROL,</span><br><span class="line">                            forces = [<span class="number">0</span>]*<span class="built_in">len</span>(controllable_joints))</span><br><span class="line">n = <span class="number">0</span></span><br><span class="line"><span class="keyword">while</span> n &lt; q.shape[<span class="number">0</span>]:</span><br><span class="line"></span><br><span class="line">    tau = p.calculateInverseDynamics(robotId,<span class="built_in">list</span>(q[n]),<span class="built_in">list</span>(qd[n]),<span class="built_in">list</span>(qdd[n]))</span><br><span class="line">    p.setJointMotorControlArray(robotId,controllable_joints,p.TORQUE_CONTROL,</span><br><span class="line">                                forces = tau,</span><br><span class="line">                                )</span><br><span class="line">    p.stepSimulation()</span><br><span class="line">    <span class="built_in">print</span>(tau)</span><br><span class="line">    time.sleep(dt)</span><br><span class="line">    n += <span class="number">1</span></span><br><span class="line">p.disconnect()</span><br></pre></td></tr></table></figure>
+<p>如果在此之前使用过位置控制，需要先进行一次初始化力控制（不知道为什么），然后就是一定要注意在创建环境时使用如下代码保证物理引擎计算稳定性：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">p.setTimeStep(dt)</span><br><span class="line">p.setPhysicsEngineParameter(fixedTimeStep=dt, numSolverIterations=<span class="number">100</span>, numSubSteps=<span class="number">10</span>)</span><br></pre></td></tr></table></figure>
+<h3 id="带反馈版"><a href="#带反馈版" class="headerlink" title="带反馈版"></a>带反馈版</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span> n &lt; q.shape[<span class="number">0</span>]:</span><br><span class="line">    joint_states = p.getJointStates(robotId,controllable_joints)</span><br><span class="line">    q_actual = np.array([state[<span class="number">0</span>] <span class="keyword">for</span> state <span class="keyword">in</span> joint_states])</span><br><span class="line">    qd_actual = np.array([state[<span class="number">1</span>] <span class="keyword">for</span> state <span class="keyword">in</span> joint_states])</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    q_e = q[n] - q_actual</span><br><span class="line">    qd_e = qd[n] - qd_actual</span><br><span class="line"></span><br><span class="line">    aq = qdd[n] + <span class="number">400</span> * q_e + <span class="number">40</span> * qd_e</span><br><span class="line"></span><br><span class="line">    tau = p.calculateInverseDynamics(robotId,<span class="built_in">list</span>(q_actual),<span class="built_in">list</span>(qd_actual),<span class="built_in">list</span>(aq))</span><br><span class="line">    p.setJointMotorControlArray(robotId,controllable_joints,p.TORQUE_CONTROL,</span><br><span class="line">                                forces = tau,</span><br><span class="line">                                )</span><br><span class="line">    p.stepSimulation()</span><br><span class="line">    <span class="built_in">print</span>(tau)</span><br><span class="line">    time.sleep(dt)</span><br><span class="line">    n += <span class="number">1</span></span><br></pre></td></tr></table></figure>
+<p>实际上，对于逆动力学或者<code>p.calculateInverseDynamics</code>函数来说，我们在构建动力学方程时，都应该使用系统<strong>当前</strong>位置、<strong>当前</strong>速度和<strong>期望</strong>加速度，因为在机器人控制系统中，<strong><u>加速度项才是真正的唯一前馈项</u></strong>，而要构建动力学方程中的M，C，G矩阵则需要<strong>当前</strong>系统的位置和速度（即q_actual，qd_actual决定动力学方程内容，aq根据当前动力学方程输出<strong>在我们期望的加速度下对应的关节力</strong>，以车为例，即我们要控制车速，最终只能通过改变加速度来控制，而要达到期望加速度，我们就需要构建动力学方程将期望加速度映射到电机输出力上）</p>
+<p>因此我们若要引入反馈控制，也应该<strong>仅对</strong>期望加速度项进行调整，因此真正的动力学方程才是：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tau = p.calculateInverseDynamics(robotId,<span class="built_in">list</span>(q_actual),<span class="built_in">list</span>(qd_actual),<span class="built_in">list</span>(aq))</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    <div class="post-widgets">
+      <div id="needsharebutton-postbottom">
+        <span class="btn">
+          <i class="fa fa-share-alt" aria-hidden="true"></i>
+        </span>
+      </div>
+    </div>
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%9C%BA%E5%99%A8%E4%BA%BA%E5%AD%A6/" rel="tag"><i class="fa fa-tag"></i># 机器人学</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2025/11/11/pybullet/" rel="prev" title="pybullet基础">
+      <i class="fa fa-chevron-left"></i> pybullet基础
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE%E4%B8%8E%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="nav-number">1.</span> <span class="nav-text">配置与初始化</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%BF%90%E5%8A%A8%E5%AD%A6"><span class="nav-number">2.</span> <span class="nav-text">运动学</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%9B%85%E5%8F%AF%E6%AF%94%E7%9F%A9%E9%98%B5%E7%9B%B8%E5%85%B3"><span class="nav-number">3.</span> <span class="nav-text">雅可比矩阵相关</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%9C%BA%E6%A2%B0%E8%87%82%E6%8E%A7%E5%88%B6-%E9%80%86%E5%8A%A8%E5%8A%9B%E5%AD%A6"><span class="nav-number">4.</span> <span class="nav-text">机械臂控制(逆动力学)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%8D%E7%BD%AE%E6%8E%A7%E5%88%B6"><span class="nav-number">4.1.</span> <span class="nav-text">位置控制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%80%9F%E5%BA%A6%E6%8E%A7%E5%88%B6"><span class="nav-number">4.2.</span> <span class="nav-text">速度控制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8A%9B%E6%8E%A7%E5%88%B6"><span class="nav-number">4.3.</span> <span class="nav-text">力控制</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AE%80%E5%8D%95%E7%89%88"><span class="nav-number">4.3.1.</span> <span class="nav-text">简单版</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%A6%E5%8F%8D%E9%A6%88%E7%89%88"><span class="nav-number">4.3.2.</span> <span class="nav-text">带反馈版</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="dhk"
+      src="/images/zoe.gif">
+  <p class="site-author-name" itemprop="name">dhk</p>
+  <div class="site-description" itemprop="description">记录一些学习日常</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">64</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/dhkkkkkk" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;dhkkkkkk" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/1154012965@qq.com" title="QQ email → 1154012965@qq.com"><i class="fa fa-envelope fa-fw"></i>QQ email</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"> </div>
+
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">dhk</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/xxw/anime.min.js"></script>
+  <script src="/xxw/velocity/velocity.min.js"></script>
+  <script src="/xxw/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  <script src="//cdn.jsdelivr.net/gh/theme-next/theme-next-needmoreshare2@1/needsharebutton.min.js"></script>
+  <script>
+      pbOptions = {};
+        pbOptions.iconStyle = "box";
+        pbOptions.boxForm = "horizontal";
+        pbOptions.position = "bottomCenter";
+        pbOptions.networks = "Wechat,QQZone,Weibo,Douban,Twitter,Facebook";
+      new needShareButton('#needsharebutton-postbottom', pbOptions);
+  </script>
+<script>
+            window.imageLazyLoadSetting = {
+                isSPA: false,
+                preloadRatio: 1,
+                processImages: null,
+            };
+        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(e.href.match(t)||e.href.match(r))&&(e.href=a.dataset.original)})});</script><script>!function(n){n.imageLazyLoadSetting.processImages=o;var e=n.imageLazyLoadSetting.isSPA,i=n.imageLazyLoadSetting.preloadRatio||1,r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]"));function o(){e&&(r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")));for(var t,a=0;a<r.length;a++)0<=(t=(t=r[a]).getBoundingClientRect()).bottom&&0<=t.left&&t.top<=(n.innerHeight*i||document.documentElement.clientHeight*i)&&function(){var t,e,n,i,o=r[a];t=o,e=function(){r=r.filter(function(t){return o!==t})},n=new Image,i=t.getAttribute("data-original"),n.onload=function(){t.src=i,e&&e()},t.src!==i&&(n.src=i)}()}o(),n.addEventListener("scroll",function(){var t,e;t=o,e=n,clearTimeout(t.tId),t.tId=setTimeout(function(){t.call(e)},500)})}(this);</script><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script></body>
+</html>
