@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/xxw/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="/xxw/pace/pace-theme-minimal.min.css">
+  <script src="/xxw/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"dhkkkkkk.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="PID原理PID控制算法是一种线性控制器，它根据给定值（目标值）和实际输出值之间的偏差，利用比例（Proportional）、积分（Integral）、微分（Derivative）三种控制方式的组合来调整控制量，从而实现对被控对象的精确控制。 比例控制根据偏差的大小，线性调整控制量。偏差越大，控制作用越强。  优点：响应速度快，能快速对偏差做出反应。 缺点：比例项较大时，会出现震荡，较小时会出现静">
+<meta property="og:type" content="article">
+<meta property="og:title" content="经典控制算法">
+<meta property="og:url" content="https://dhkkkkkk.github.io/2025/11/17/control-algorithm/index.html">
+<meta property="og:site_name" content="小董的BLOG">
+<meta property="og:description" content="PID原理PID控制算法是一种线性控制器，它根据给定值（目标值）和实际输出值之间的偏差，利用比例（Proportional）、积分（Integral）、微分（Derivative）三种控制方式的组合来调整控制量，从而实现对被控对象的精确控制。 比例控制根据偏差的大小，线性调整控制量。偏差越大，控制作用越强。  优点：响应速度快，能快速对偏差做出反应。 缺点：比例项较大时，会出现震荡，较小时会出现静">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://dhkkkkkk.github.io/images/loading.png">
+<meta property="og:image" content="https://dhkkkkkk.github.io/images/loading.png">
+<meta property="og:image" content="https://dhkkkkkk.github.io/images/loading.png">
+<meta property="og:image" content="https://dhkkkkkk.github.io/images/loading.png">
+<meta property="article:published_time" content="2025-11-17T02:16:11.000Z">
+<meta property="article:modified_time" content="2025-11-19T11:23:09.235Z">
+<meta property="article:author" content="dhk">
+<meta property="article:tag" content="杂项">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://dhkkkkkk.github.io/images/loading.png">
+
+<link rel="canonical" href="https://dhkkkkkk.github.io/2025/11/17/control-algorithm/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+<link rel="stylesheet" href="//cdn.jsdelivr.net/gh/theme-next/theme-next-needmoreshare2@1/needsharebutton.min.css"><style>
+#needsharebutton-postbottom {
+  cursor: pointer;
+  height: 26px;
+  margin-top: 10px;
+  position: relative;
+}
+#needsharebutton-postbottom .btn {
+  border: 1px solid $btn-default-border-color;
+  border-radius: 3px;
+  display: initial;
+  padding: 1px 4px;
+}
+</style>
+  <title>经典控制算法 | 小董的BLOG</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">小董的BLOG</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-目录">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tag fa-fw"></i>目录</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2025/11/17/control-algorithm/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/zoe.gif">
+      <meta itemprop="name" content="dhk">
+      <meta itemprop="description" content="记录一些学习日常">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小董的BLOG">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          经典控制算法
+        </h1>
+
+        <div class="post-meta">
+		  
+		  
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2025-11-17 10:16:11" itemprop="dateCreated datePublished" datetime="2025-11-17T10:16:11+08:00">2025-11-17</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-11-19 19:23:09" itemprop="dateModified" datetime="2025-11-19T19:23:09+08:00">2025-11-19</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="PID"><a href="#PID" class="headerlink" title="PID"></a>PID</h1><h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h2><p>PID控制算法是一种线性控制器，它根据给定值（目标值）和实际输出值之间的偏差，利用比例（Proportional）、积分（Integral）、微分（Derivative）三种控制方式的组合来调整控制量，从而实现对被控对象的精确控制。</p>
+<h3 id="比例控制"><a href="#比例控制" class="headerlink" title="比例控制"></a>比例控制</h3><p>根据偏差的大小，<strong>线性</strong>调整控制量。偏差越大，控制作用越强。</p>
+<ul>
+<li>优点：<strong>响应速度快</strong>，能快速对偏差做出反应。</li>
+<li>缺点：比例项较大时，会出现<strong>震荡</strong>，较小时会出现<strong>静态误差</strong></li>
+</ul>
+<h3 id="积分控制"><a href="#积分控制" class="headerlink" title="积分控制"></a>积分控制</h3><p>根据偏差的积分来调整控制量。它会<strong>累积过去的偏差</strong>，随着时间的推移，即使偏差很小，积分项也会不断积累，从而推动系统消除偏差</p>
+<ul>
+<li>优点：能够<strong>消除稳态误差（静差）</strong>，保证系统的精度。</li>
+<li>缺点：积分作用较强时，<strong>容易导致系统超调</strong>，甚至使系统不稳定。</li>
+</ul>
+<img src="/images/loading.png" data-original="/2025/11/17/control-algorithm/1.png" class title="This is an image"> 
+<h3 id="微分控制"><a href="#微分控制" class="headerlink" title="微分控制"></a>微分控制</h3><p>是根据偏差的<strong>变化率</strong>来调整控制量。它能够<u>预测偏差的变化趋势</u>，提前做出调整。</p>
+<ul>
+<li><strong>优点</strong>：可以抑制偏差的变化，<strong>减少系统的超调</strong>，提高系统的稳定性。</li>
+<li><strong>缺点</strong>：对噪声比较敏感。如果测量的偏差信号中存在噪声，微分项<strong>会放大噪声</strong>的影响，导致控制量出现不必要的波动。微分项较大时也会出现震荡</li>
+</ul>
+<h2 id="常见组合"><a href="#常见组合" class="headerlink" title="常见组合"></a>常见组合</h2><h3 id="PI控制"><a href="#PI控制" class="headerlink" title="PI控制"></a>PI控制</h3><ul>
+<li><p>优点：将比列调节的快速反应与积分调节消除静差的特点结合；</p>
+</li>
+<li><p>缺点：不对未来控制误差进行预测，限制了控制性能。</p>
+</li>
+</ul>
+<p>适用于控制通道滞后较小、<strong>负荷变化不大</strong>、 工艺参数<strong>不允许有静差</strong>的系统。</p>
+<h3 id="PD控制"><a href="#PD控制" class="headerlink" title="PD控制"></a>PD控制</h3><ul>
+<li>优点：对惯性较大对象，可改善控制质量，减小偏差，缩短控制时间。有利于<strong>提高系统响应速度，抑制动态偏差</strong></li>
+<li>缺点：<strong>抗干扰能力差</strong>，一般只能应用于被调参数 变化平稳的生产过程；微分作用太强时，容易造成系统<strong>振荡</strong>。</li>
+</ul>
+<h2 id="位置式与增量式"><a href="#位置式与增量式" class="headerlink" title="位置式与增量式"></a>位置式与增量式</h2><p>位置式输出：</p>
+<script type="math/tex; mode=display">
+u(t) = K_p e(t) + K_i \int_{0}^{t} e(\tau) \,d\tau + K_d \frac{de(t)}{dt}</script><p>增量式输出：</p>
+<script type="math/tex; mode=display">
+\Delta u(k) = K_p [e(k) - e(k-1)] + K_i  e(k) + K_d ({e(k) - 2e(k-1) + e(k-2)})</script><script type="math/tex; mode=display">
+u(k) = u(k-1) + \Delta u(k)</script><p>位置式PID控制的输出与整个过去的状态有关，用到了误差的累加值;而增量式PID的输出只与当前拍和前两拍的误差有关，因此<strong>位置式PID控制的累积误差相对更大</strong>;</p>
+<p>由于输出为增量形式，可以减小控制器对控制量的冲击，使得系统更加平稳。</p>
+<h2 id="抗积分饱和"><a href="#抗积分饱和" class="headerlink" title="抗积分饱和"></a>抗积分饱和</h2><p>PID控制器的输出由于积分作用的不断累加而扩大，从而导致控制器输出不断增大超出正常范围进入饱和区。为了防止这种情况，需要在某些情况下限制积分的增长：</p>
+<ul>
+<li>积分分离：设置一个误差阈值，只有当误差较小（系统输出接近期望）时，才加入积分控制，平时则使用PD控制</li>
+<li>积分限幅：设置一个输出阈值范围，计算U(k)的时候，先判断上一时刻的控制量U(k-1)是否已经超出了限制范围。若U(k-1)&gt;Umax，则只累加负偏差；若U(k-1)&lt;Umin，则只累加正偏差。</li>
+</ul>
+<h2 id="串级PID"><a href="#串级PID" class="headerlink" title="串级PID"></a>串级PID</h2><p>以电机控制为例，在很多时候，我们的期望是位置（电机转角），但我们最终对电机的控制量都是电流（力矩，或者说是加速度），因此在使用单位置PID时，该控制是间接的，也就是说在该情况下，<strong>速度和加速度的变化都是未知的，也就是不平滑的</strong>；最终会表现为电机经过了目标位置，然后出现持续震荡，因为仅仅使用位置pid是难以让速度和加速度都达到期望的）</p>
+<p>因此，我们引入串级PID：（由外到内）</p>
+<ul>
+<li>位置环：根据上层规划算法给出的期望位置进行PID，输出期望速度</li>
+<li>速度环：根据位置环得到的期望速度进行PID，输出期望转矩/加速度/电流</li>
+<li>电流环：根据速度环输出进行PID，最终控制电机转矩</li>
+</ul>
+<p>需要注意的是，位置-速度-电流这个控制顺序<strong>是我们主动给定</strong>的，给定的理由是这三者两两间存在着较为简单的映射关系，即微积分关系，对于加速度啊转矩啊电流啊，根据牛二、欧拉和电机参数都可以得到明确的对应关系，因此在最内环的控制中，我们可以将他们看作同一控制量，一般用电流的原因可能只是实际电流值要更好测量一点？</p>
+<h3 id="在机器人中"><a href="#在机器人中" class="headerlink" title="在机器人中"></a>在机器人中</h3><p>由于我们已经可以通过一些轨迹规划算法（模型）平滑地得到关节电机的期望角度、角速度、角加速度，再结合动力学模型便可得到期望力矩，因此在机器人控制中，上述的<strong>前馈控制</strong>已经完成了绝大部分的控制工作，在理想条件下，前馈足矣</p>
+<p>但如果机器人在运行过程中受到了干扰呢，前馈控制给定了力矩是在最开始确定的，无法应对额外干扰，因此需要反馈控制来减弱干扰，提高系统稳定性：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">joint_states = p.getJointStates(robotId,controllable_joints)</span><br><span class="line">q_actual = np.array([state[<span class="number">0</span>] <span class="keyword">for</span> state <span class="keyword">in</span> joint_states])</span><br><span class="line">qd_actual = np.array([state[<span class="number">1</span>] <span class="keyword">for</span> state <span class="keyword">in</span> joint_states])</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">q_e = q[n] - q_actual</span><br><span class="line">qd_e = qd[n] - qd_actual</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">aq = qdd[n] + <span class="number">400</span> * q_e + <span class="number">40</span> * qd_e</span><br><span class="line"></span><br><span class="line">tau = p.calculateInverseDynamics(robotId,<span class="built_in">list</span>(q_actual),<span class="built_in">list</span>(qd_actual),<span class="built_in">list</span>(aq))</span><br><span class="line">p.setJointMotorControlArray(robotId,controllable_joints,p.TORQUE_CONTROL,</span><br><span class="line">                            forces = tau,</span><br><span class="line">                            )</span><br></pre></td></tr></table></figure>
+<p>这里仅对位置环和速度环进行了比例控制，因为在实际中在外环部分添加积分(I)后，导致响应变慢，添加微分(D)容易引入噪声；而由于我们已经有期望位置、速度，因此也不需要像传统串级pid一样进行串联位置环与速度环，而是将两环同时作用于力矩控制</p>
+<h2 id="PID参数调节经验"><a href="#PID参数调节经验" class="headerlink" title="PID参数调节经验"></a>PID参数调节经验</h2><ul>
+<li>KP：先设Ki=Kd=0，调Kp至系统出现轻微振荡；取此时Kp值的50%作为初始值</li>
+<li>KI：逐步增加Ki至静差在3~5个控制周期内消除</li>
+<li>KD：从Kp值的10%~20%开始调整</li>
+</ul>
+<h1 id="LQR"><a href="#LQR" class="headerlink" title="LQR"></a>LQR</h1><p><strong>线性二次型调节器（Linear Quadratic Regulator）</strong>，其中，线性指线性系统，二次型指目标函数</p>
+<h2 id="系统模型构建"><a href="#系统模型构建" class="headerlink" title="系统模型构建"></a>系统模型构建</h2><img src="/images/loading.png" data-original="/2025/11/17/control-algorithm/2.png" class title="This is an image"> 
+<p>首先，LQR作用于线性系统（对于非线性系统，需要先线性化），对于上图系统，其系统模型为</p>
+<script type="math/tex; mode=display">
+\dot x = Ax + Bu</script><p>其中，x为当前状态的集合，对于倒立摆，其可以为{位置，速度，角度，角速度}；u为我们的控制输入，A和B为系统决定的参数，系统模型<strong>建立了x（当前状态） 和 x_dot（状态随时间的变化趋势） 之间的关系</strong>。</p>
+<p>现在我们要设计一个状态反馈u=-Kx，带入系统方程中则有：</p>
+<script type="math/tex; mode=display">
+\dot x = (A-BK)x</script><p>由于A和B在LQR设计阶段是已知矩阵，因此我们只需得到一个合适的增益矩阵K，即可实现期望控制</p>
+<h2 id="LQR控制目标"><a href="#LQR控制目标" class="headerlink" title="LQR控制目标"></a>LQR控制目标</h2><p>相比于PID的尽可能减小误差，LQR定义了一种代价函数，通过让该能量函数最小以实现最优控制：</p>
+<img src="/images/loading.png" data-original="/2025/11/17/control-algorithm/3.png" class title="This is an image"> 
+<p>其中，Q（状态权重矩阵）和R（控制输入权重矩阵）即是我们的期望闭环性能（也就是要调的参数），即当控制目标确定时，我们想要用最小的控制代价u得到最优的控制。通常，Q越大，系统相应越快；R越大，控制力惩罚越大（即力作用越平稳温柔）</p>
+<p>现在，我们已经确定了A，B，Q，R，如何根据“代价函数最小”这个目标得到K呢？</p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_36133747/article/details/123413115">线性二次型调节器(LQR)原理详解-CSDN博客</a></p>
+<p>在假设系统稳定的情况下，我们可以通过一个riccati里卡提方程由“J最小”这个条件得到一个满足条件的辅助矩阵P，再由P得到K，对于求解里卡提方程，matlab，scipy都提供了对应函数</p>
+<h3 id="Q和R的选择"><a href="#Q和R的选择" class="headerlink" title="Q和R的选择"></a>Q和R的选择</h3><p>Q：半正定矩阵，通常选用对角矩阵，对角线元素表示各状态的权重（因此形状应为nxn，n为状态数量），因此需根据各状态的重要性分配权重；重点关注的状态应分配较大权重；<strong>如果系统响应较慢也可增加Q</strong></p>
+<p>R：正定矩阵，通常选用对角矩阵，对角线元素表示各控制输入的权重（因此形状应为mxm，m为控制量）；初始应选择较小值；如果<strong>控制输入幅度较大则增加R</strong>，如果<strong>系统响应较慢则减小R</strong></p>
+<h2 id="倒立摆中的LQR"><a href="#倒立摆中的LQR" class="headerlink" title="倒立摆中的LQR"></a>倒立摆中的LQR</h2><h3 id="建立动力学方程"><a href="#建立动力学方程" class="headerlink" title="建立动力学方程"></a>建立动力学方程</h3><p>对于每个广义坐标q_i，拉格朗日方程为：</p>
+<script type="math/tex; mode=display">
+\frac d {dt}(\frac{\part L}{\part \dot{q_i}})-\frac {\part L}{\part q_i} = Q_i</script><p>其中，Q_i是广义坐标q_i对应广义力。在倒立摆中，q={x,θ}，则Q={F,0}（因为没有非保守力直接对摆杆做功）</p>
+<p>则分别将q_i替换为x和θ后则可得到倒立摆的动力学模型（方程组）：</p>
+<script type="math/tex; mode=display">
+(M + m)\ddot{x} + m l \ddot{\theta} \cos\theta - m l \dot{\theta}^2 \sin\theta = F</script><script type="math/tex; mode=display">
+(m l^2 + I) \ddot{\theta}+m l \ddot{x} \cos\theta - m g l \sin\theta = 0</script><h3 id="线性化"><a href="#线性化" class="headerlink" title="线性化"></a>线性化</h3><p>由于现在的动力学方程是非线性的，因此我们需要先将其线性化。而在倒立摆中，平衡点即为θ=0(cosθ=0,sinθ=θ)，则线性化后有：</p>
+<script type="math/tex; mode=display">
+(M + m)\ddot{x} + m l \ddot{\theta}  = F</script><script type="math/tex; mode=display">
+(m l^2 + I) \ddot{\theta}+m l \ddot{x} - m g l \theta = 0</script><p>将其转换为线性系统标准模型：</p>
+<script type="math/tex; mode=display">
+\dot x = Ax + Bu</script><p>则有：</p>
+<script type="math/tex; mode=display">
+\begin{bmatrix}\dot x \\ \ddot x \\\dot{\theta} \\ \ddot{\theta}\end{bmatrix}
+=A
+\begin{bmatrix} x \\ \dot x \\\theta \\ \dot{\theta}\end{bmatrix}+BF</script><p>其中：</p>
+<img src="/images/loading.png" data-original="/2025/11/17/control-algorithm/4.png" class title="This is an image"> 
+<p>得到A，B后，我们令Q=diag(1,1,1,1)，R=1（随便给的），即可通过riccati方程得到一个1x4矩阵K，最终得到我们的控制输入：</p>
+<script type="math/tex; mode=display">
+u = -Kx</script><p>u即为当前状态下<strong><u>保持平衡</u></strong>应施加的力F</p>
+
+    </div>
+
+    
+    
+    <div class="post-widgets">
+      <div id="needsharebutton-postbottom">
+        <span class="btn">
+          <i class="fa fa-share-alt" aria-hidden="true"></i>
+        </span>
+      </div>
+    </div>
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%9D%82%E9%A1%B9/" rel="tag"><i class="fa fa-tag"></i># 杂项</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2025/11/12/pybullet-practice/" rel="prev" title="基于机械臂的pybullet实战">
+      <i class="fa fa-chevron-left"></i> 基于机械臂的pybullet实战
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#PID"><span class="nav-number">1.</span> <span class="nav-text">PID</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8E%9F%E7%90%86"><span class="nav-number">1.1.</span> <span class="nav-text">原理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%AF%94%E4%BE%8B%E6%8E%A7%E5%88%B6"><span class="nav-number">1.1.1.</span> <span class="nav-text">比例控制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A7%AF%E5%88%86%E6%8E%A7%E5%88%B6"><span class="nav-number">1.1.2.</span> <span class="nav-text">积分控制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BE%AE%E5%88%86%E6%8E%A7%E5%88%B6"><span class="nav-number">1.1.3.</span> <span class="nav-text">微分控制</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%B8%E8%A7%81%E7%BB%84%E5%90%88"><span class="nav-number">1.2.</span> <span class="nav-text">常见组合</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#PI%E6%8E%A7%E5%88%B6"><span class="nav-number">1.2.1.</span> <span class="nav-text">PI控制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#PD%E6%8E%A7%E5%88%B6"><span class="nav-number">1.2.2.</span> <span class="nav-text">PD控制</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%8D%E7%BD%AE%E5%BC%8F%E4%B8%8E%E5%A2%9E%E9%87%8F%E5%BC%8F"><span class="nav-number">1.3.</span> <span class="nav-text">位置式与增量式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8A%97%E7%A7%AF%E5%88%86%E9%A5%B1%E5%92%8C"><span class="nav-number">1.4.</span> <span class="nav-text">抗积分饱和</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%B2%E7%BA%A7PID"><span class="nav-number">1.5.</span> <span class="nav-text">串级PID</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9C%A8%E6%9C%BA%E5%99%A8%E4%BA%BA%E4%B8%AD"><span class="nav-number">1.5.1.</span> <span class="nav-text">在机器人中</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PID%E5%8F%82%E6%95%B0%E8%B0%83%E8%8A%82%E7%BB%8F%E9%AA%8C"><span class="nav-number">1.6.</span> <span class="nav-text">PID参数调节经验</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#LQR"><span class="nav-number">2.</span> <span class="nav-text">LQR</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B3%BB%E7%BB%9F%E6%A8%A1%E5%9E%8B%E6%9E%84%E5%BB%BA"><span class="nav-number">2.1.</span> <span class="nav-text">系统模型构建</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#LQR%E6%8E%A7%E5%88%B6%E7%9B%AE%E6%A0%87"><span class="nav-number">2.2.</span> <span class="nav-text">LQR控制目标</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Q%E5%92%8CR%E7%9A%84%E9%80%89%E6%8B%A9"><span class="nav-number">2.2.1.</span> <span class="nav-text">Q和R的选择</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%80%92%E7%AB%8B%E6%91%86%E4%B8%AD%E7%9A%84LQR"><span class="nav-number">2.3.</span> <span class="nav-text">倒立摆中的LQR</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BB%BA%E7%AB%8B%E5%8A%A8%E5%8A%9B%E5%AD%A6%E6%96%B9%E7%A8%8B"><span class="nav-number">2.3.1.</span> <span class="nav-text">建立动力学方程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BA%BF%E6%80%A7%E5%8C%96"><span class="nav-number">2.3.2.</span> <span class="nav-text">线性化</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="dhk"
+      src="/images/zoe.gif">
+  <p class="site-author-name" itemprop="name">dhk</p>
+  <div class="site-description" itemprop="description">记录一些学习日常</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">65</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/dhkkkkkk" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;dhkkkkkk" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/1154012965@qq.com" title="QQ email → 1154012965@qq.com"><i class="fa fa-envelope fa-fw"></i>QQ email</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"> </div>
+
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">dhk</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/xxw/anime.min.js"></script>
+  <script src="/xxw/velocity/velocity.min.js"></script>
+  <script src="/xxw/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  <script src="//cdn.jsdelivr.net/gh/theme-next/theme-next-needmoreshare2@1/needsharebutton.min.js"></script>
+  <script>
+      pbOptions = {};
+        pbOptions.iconStyle = "box";
+        pbOptions.boxForm = "horizontal";
+        pbOptions.position = "bottomCenter";
+        pbOptions.networks = "Wechat,QQZone,Weibo,Douban,Twitter,Facebook";
+      new needShareButton('#needsharebutton-postbottom', pbOptions);
+  </script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script><script>
+            window.imageLazyLoadSetting = {
+                isSPA: false,
+                preloadRatio: 1,
+                processImages: null,
+            };
+        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(e.href.match(t)||e.href.match(r))&&(e.href=a.dataset.original)})});</script><script>!function(n){n.imageLazyLoadSetting.processImages=o;var e=n.imageLazyLoadSetting.isSPA,i=n.imageLazyLoadSetting.preloadRatio||1,r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]"));function o(){e&&(r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")));for(var t,a=0;a<r.length;a++)0<=(t=(t=r[a]).getBoundingClientRect()).bottom&&0<=t.left&&t.top<=(n.innerHeight*i||document.documentElement.clientHeight*i)&&function(){var t,e,n,i,o=r[a];t=o,e=function(){r=r.filter(function(t){return o!==t})},n=new Image,i=t.getAttribute("data-original"),n.onload=function(){t.src=i,e&&e()},t.src!==i&&(n.src=i)}()}o(),n.addEventListener("scroll",function(){var t,e;t=o,e=n,clearTimeout(t.tId),t.tId=setTimeout(function(){t.call(e)},500)})}(this);</script></body>
+</html>
