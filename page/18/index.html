@@ -197,6 +197,263 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2022/09/09/C++-2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/zoe.gif">
+      <meta itemprop="name" content="dhk">
+      <meta itemprop="description" content="记录一些学习日常">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小董的BLOG">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/09/09/C++-2/" class="post-title-link" itemprop="url">C++变量和基本类型</a>
+        </h2>
+
+        <div class="post-meta">
+		  
+		  
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-09-09 17:16:42" itemprop="dateCreated datePublished" datetime="2022-09-09T17:16:42+08:00">2022-09-09</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-10-30 19:11:12" itemprop="dateModified" datetime="2022-10-30T19:11:12+08:00">2022-10-30</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="第二章——变量和基本类型"><a href="#第二章——变量和基本类型" class="headerlink" title="第二章——变量和基本类型"></a>第二章——变量和基本类型</h1><h2 id="说在前面"><a href="#说在前面" class="headerlink" title="说在前面"></a>说在前面</h2><p>C++这个板块是我在学习了C之后才学的，因此我只会记录一些重要的或者在C中没有的东西</p>
+<p><em>C++板块是基于C++primer的方案学习的</em></p>
+<h2 id="1、基本内置类型"><a href="#1、基本内置类型" class="headerlink" title="1、基本内置类型"></a>1、基本内置类型</h2><ul>
+<li><p>bool类型取值只为真（1）和假（0）</p>
+</li>
+<li><p>当一个算术表达式中既有无符号数（unsigned）又有int型时，int型的值会转换成无符号数。且值大于0时会正常显示，小于零时会异常显示（当int为4字节时，值为2^32 + 计算结果（负数））也就是4294967295加上</p>
+<p>(-n)。</p>
+</li>
+</ul>
+<h3 id="指定字面值类型："><a href="#指定字面值类型：" class="headerlink" title="指定字面值类型："></a>指定字面值类型：</h3><ul>
+<li>字符和字符串字面值</li>
+</ul>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">前缀</th>
+<th style="text-align:center">含义</th>
+<th style="text-align:center">代表类型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">u</td>
+<td style="text-align:center">Unicode16字符</td>
+<td style="text-align:center">char16_t</td>
+</tr>
+<tr>
+<td style="text-align:center">U</td>
+<td style="text-align:center">Unicode32字符</td>
+<td style="text-align:center">char32_t</td>
+</tr>
+<tr>
+<td style="text-align:center">L</td>
+<td style="text-align:center">宽字符（2字节）</td>
+<td style="text-align:center">wchar_t</td>
+</tr>
+<tr>
+<td style="text-align:center">u8</td>
+<td style="text-align:center">Unicode8字符</td>
+<td style="text-align:center">char</td>
+</tr>
+</tbody>
+</table>
+</div>
+<ul>
+<li>整型字面值</li>
+</ul>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">后缀</th>
+<th style="text-align:center">最小匹配类型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">u or U</td>
+<td style="text-align:center">unsigned</td>
+</tr>
+<tr>
+<td style="text-align:center">l or L</td>
+<td style="text-align:center">long</td>
+</tr>
+<tr>
+<td style="text-align:center">ll or LL</td>
+<td style="text-align:center">long long</td>
+</tr>
+</tbody>
+</table>
+</div>
+<ul>
+<li>浮点型</li>
+</ul>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">后缀</th>
+<th style="text-align:center">代表的类型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">f or F</td>
+<td style="text-align:center">float</td>
+</tr>
+<tr>
+<td style="text-align:center">l or L</td>
+<td style="text-align:center">long double</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 id="2、变量"><a href="#2、变量" class="headerlink" title="2、变量"></a>2、变量</h2><ul>
+<li><p>一种初始化字符串的方法</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">std::string <span class="title">a</span><span class="params">(<span class="string">&quot;test&quot;</span>)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>字符串变量名a，内容为test</p>
+</li>
+</ul>
+<h2 id="3、对象"><a href="#3、对象" class="headerlink" title="3、对象"></a>3、对象</h2><p>通常情况下，对象是指<strong>一块能存储数据并具有某种类型的内存空间</strong></p>
+<h3 id="关于初始化的问题"><a href="#关于初始化的问题" class="headerlink" title="关于初始化的问题"></a>关于初始化的问题</h3><p>在学C的时候我自己也是一直把初始化理解成赋值，但是也一直感觉怪怪的，特别是对于指针变量的初始化，感觉明显是不符合“赋值”这一操作的，今天在阅读书籍时书中也指出了初始化≠赋值，但是具体的区别目前我也不能讲的很明白，学到后面如果搞懂了再说吧。</p>
+<ul>
+<li>定义在函数体内部的变量将不被初始化。</li>
+</ul>
+<h3 id="列表初始化"><a href="#列表初始化" class="headerlink" title="列表初始化"></a>列表初始化</h3><p>用花括号来初始化变量，在C++中以下四种初始化都是正确的：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> a =<span class="number">1</span>;</span><br><span class="line"><span class="type">int</span> a =&#123;<span class="number">1</span>&#125;;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">a</span><span class="params">(<span class="number">1</span>)</span></span>;</span><br><span class="line"><span class="type">int</span> a&#123;<span class="number">1</span>&#125;;</span><br></pre></td></tr></table></figure>
+<h2 id="4、标识符"><a href="#4、标识符" class="headerlink" title="4、标识符"></a>4、标识符</h2><p>虽然感觉很怪异，但是<code>int _=1;</code>是合法的。</p>
+<h2 id="5、复合类型变量"><a href="#5、复合类型变量" class="headerlink" title="5、复合类型变量"></a>5、复合类型变量</h2><h3 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h3><p>为对象起另外一个名字，<strong>同时引用必须被初始化。</strong></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">a</span><span class="params">(<span class="number">1</span>)</span></span>;</span><br><span class="line"><span class="type">int</span> &amp;b=a;</span><br><span class="line">b=<span class="number">2</span>;<span class="comment">//等同于 a=2;</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>引用并非对象，可以只是理解为一个已存在变量的别名。</li>
+<li>一旦使用引用，引用对象将和引用的初始化变量绑定，无法更改，因此引用必须初始化。</li>
+<li><strong>引用只能绑定在对象上，而不能与某个字面值或某个计算结果绑定</strong>。</li>
+</ul>
+<p><strong>指向指针的引用：</strong></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> i=<span class="number">1</span>;</span><br><span class="line"><span class="type">int</span> *p;</span><br><span class="line"><span class="type">int</span> *&amp;r=p; <span class="comment">//注意这里是*&amp;r</span></span><br><span class="line">r=&amp;i;</span><br><span class="line">*r=<span class="number">0</span>;</span><br></pre></td></tr></table></figure>
+<h3 id="指针"><a href="#指针" class="headerlink" title="指针"></a>指针</h3><p>规则与C基本一样，不再赘述。</p>
+<h2 id="6、const-限定符"><a href="#6、const-限定符" class="headerlink" title="6、const 限定符"></a>6、const 限定符</h2><ul>
+<li><p>作用：定义一个变量后，它的值不能再被改变</p>
+<p>因此，const的对象必须初始化。</p>
+</li>
+<li><p>当多个文件出现了同名的const变量时，视作分别定义了独立的变量，也就是说默认情况下const对象只在本文件内有效。（当然也可以使用extern关键字，具体可见<a target="_blank" rel="noopener" href="https://dhkkk.gitee.io/2022/08/03/C-关键字/">一些关键字 | 小董的BLOG (gitee.io)</a>）</p>
+<p><strong>对于使用extern，如果要在多个文件之间共享const对象，则在定义该对象时也必须添加extern</strong></p>
+</li>
+</ul>
+<h3 id="对const对象的引用"><a href="#对const对象的引用" class="headerlink" title="对const对象的引用"></a>对const对象的引用</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">const</span> <span class="type">int</span> a=<span class="number">10</span>;</span><br><span class="line"><span class="type">const</span> <span class="type">int</span> &amp;b1=a;<span class="comment">//对</span></span><br><span class="line"><span class="type">int</span> &amp;b2=a;<span class="comment">//错，引用的类型必须与引用对象类型一致</span></span><br></pre></td></tr></table></figure>
+<p>假设第三行操作合法，则可以通过b2改变a的值，这显然是不正确的</p>
+<ul>
+<li><p>若初始化引用的对象为表达式，<strong>只要该表达式的结果能转化成引用的类型即可</strong></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> a=<span class="number">10</span>;</span><br><span class="line"><span class="type">const</span> <span class="type">int</span> &amp;b=a;</span><br><span class="line"><span class="comment">//允许将const int型引用绑定到普通的int对象上（其他普通变量也可以视情况转化）</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//因此，可以有以下操作</span></span><br><span class="line"><span class="type">int</span> a=<span class="number">10</span>;</span><br><span class="line"><span class="type">int</span> &amp;b1=a;</span><br><span class="line"><span class="type">const</span> <span class="type">int</span> &amp;b2=a;</span><br><span class="line"><span class="comment">//可以通过b1改变a的值，但不允许通过b2改变a的值</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="指向const对象的指针和const指针"><a href="#指向const对象的指针和const指针" class="headerlink" title="指向const对象的指针和const指针"></a>指向const对象的指针和const指针</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//指向const对象的指针</span></span><br><span class="line"><span class="type">const</span> <span class="type">int</span> a=<span class="number">10</span>,b=<span class="number">20</span>;</span><br><span class="line"><span class="type">int</span> *p=&amp;a;</span><br><span class="line">*p=b; <span class="comment">//错误，不可修改p指向的对象的值</span></span><br><span class="line">p=&amp;b; <span class="comment">//合法，并没有更改a的值，只是更改了一般指针p的值</span></span><br></pre></td></tr></table></figure>
+<p>说明一下，上述中的<code>int *p=&amp;a;</code>也可以改为<code>const int *p=&amp;a;</code><strong>且二者完全一致</strong>，原因与后文中的顶/底层const有关</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//const指针</span></span><br><span class="line"><span class="type">int</span> a=<span class="number">10</span>,b=<span class="number">20</span>;</span><br><span class="line"><span class="type">int</span> *<span class="type">const</span> p=&amp;a;</span><br><span class="line">p=&amp;b; <span class="comment">//错误，const指针一旦初始化便会一直指向初始化时的对象</span></span><br><span class="line">*p=b; <span class="comment">//正确，因为指针指向的值为普通int型，可以改变</span></span><br></pre></td></tr></table></figure>
+<p>将指针本身定义为const型（不太好用语言描述感觉），即一旦初始化完成，该指针便无法再指向其他对象。</p>
+<p>下面还是一个const指针的说明：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//const指针</span></span><br><span class="line"><span class="type">const</span> <span class="type">int</span> a=<span class="number">10</span>,b=<span class="number">20</span>;</span><br><span class="line"><span class="type">const</span> <span class="type">int</span> *<span class="type">const</span> p=&amp;a;</span><br><span class="line"><span class="comment">//此时p和*p都是无法改变的</span></span><br></pre></td></tr></table></figure>
+<p>当使用const指针指向的值也是const类型时，const指针本身必须再次使用一次const，因为要保持类型的一致</p>
+<h3 id="顶-底层const"><a href="#顶-底层const" class="headerlink" title="顶/底层const"></a>顶/底层const</h3><p>对于指针，指针本身是一个对象，而它也指向了另一个对象，<strong>因此用顶层const表示指针本身是个const类型，用底层const表示指针所指的对象时一个const型</strong>。一般来说，顶层const可以表示任意对象。</p>
+<ul>
+<li><p>当const + 类型 时，意为使这个类型的值为常量，如</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">const</span> <span class="type">int</span> *p;</span><br></pre></td></tr></table></figure>
+<p>定义一个指针变量，该变量所指的值为int型，因此该值（*p）不可被修改，但是p可以被修改。</p>
+</li>
+<li><p>当const + 变量 时，意为使该变量为常量，如：</p>
+</li>
+<li><p>```c++<br>int* const p;</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">  指针变量p为常量，因此其指向的地址无法被改变，但是地址中的值(*p)可以被改变。</span><br><span class="line"></span><br><span class="line">## 7、constexpr类型</span><br><span class="line"></span><br><span class="line">* 常量表达式：指值不会改变**并且在编译过程就能得到结果的表达式**；字面值、用常量表达式初始化的const对象也是常量表达式。</span><br><span class="line"></span><br><span class="line">  ```c</span><br><span class="line">  const int i = 10;			//字面值是常量表达式</span><br><span class="line">  const int j = i+1;			//j是常量表达式</span><br><span class="line">  int k = i;					//k不是const对象，所以k不是是常量表达式</span><br><span class="line">  const int m = get_val(); 	//m的值直到运行时才能获得，所以m不是常量表达是</span><br></pre></td></tr></table></figure>
+<p>从上面我们可以看出，使用const进行声明时，我们需要<strong>人为的验证</strong>赋给const对象的初始值是不是常量表达是，在复杂系统中，有时候很难分辨，而使用constexpr进行声明时，可以由<strong>编译器来验证</strong>变量是不是常量表达式</p>
+</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">constexpr</span> <span class="type">int</span> <span class="title">func</span><span class="params">(<span class="type">int</span> n)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">return</span> n;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="type">int</span> n=<span class="number">10</span>;</span><br><span class="line">	<span class="type">const</span> <span class="type">int</span> m=<span class="number">10</span>;</span><br><span class="line">	<span class="keyword">constexpr</span> <span class="type">int</span> i = <span class="built_in">func1</span>(<span class="number">10</span>);<span class="comment">//正确，i是一个常量表达式</span></span><br><span class="line">	<span class="keyword">constexpr</span> <span class="type">int</span> j = <span class="built_in">func1</span>(n);<span class="comment">//错误,n为变量，不是字面值</span></span><br><span class="line">	<span class="keyword">constexpr</span> <span class="type">int</span> k = <span class="built_in">func1</span>(m+<span class="number">1</span>);<span class="comment">//正确，k是一个常量表达式</span></span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="const和constexpr的区别"><a href="#const和constexpr的区别" class="headerlink" title="const和constexpr的区别"></a>const和constexpr的区别</h3><ul>
+<li>对于修饰对象来说，const并未区分出编译期常量和运行期常量，constexpr限定在了编译期常量</li>
+<li>在constexpr声明中如果定义了一个指针，限定符constexpr仅对指针有效，与指针所指的对象无关。</li>
+<li>constexpr将它所定义的对象置为顶层const</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">const</span> <span class="type">int</span>*p1=<span class="literal">nullptr</span>;  			<span class="comment">//p1是一个指向常量的指针</span></span><br><span class="line"><span class="keyword">constexpr</span> <span class="type">int</span>*p2=<span class="literal">nullptr</span>;		<span class="comment">//p2是一个指向整数的常量指针</span></span><br><span class="line"><span class="keyword">constexpr</span> <span class="type">const</span> <span class="type">int</span>*p3=<span class="literal">nullptr</span>; </span><br><span class="line"><span class="comment">//p3是一个指向常量的常量指针，由于constexpr只对指针有效，需要再加一个底层const才可以限制指针指向的对象</span></span><br></pre></td></tr></table></figure>
+<h2 id="8、处理类型"><a href="#8、处理类型" class="headerlink" title="8、处理类型"></a>8、处理类型</h2><h3 id="（1）类型别名"><a href="#（1）类型别名" class="headerlink" title="（1）类型别名"></a>（1）类型别名</h3><p>类型别名是一个<strong>名字</strong>，<strong>是某种类型的同义词</strong>。有两种办法可用于定义类型别名：</p>
+<ul>
+<li><p>使用关键字typedef，详见<u>一些关键字 | 小董的BLOG</u> </p>
+</li>
+<li><p>使用别名声明：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> INT =<span class="type">int</span>;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="类型别名与指针、常量"><a href="#类型别名与指针、常量" class="headerlink" title="类型别名与指针、常量"></a>类型别名与指针、常量</h4><p>有以下代码：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> abc=<span class="type">char</span>*;</span><br><span class="line"><span class="type">char</span> a=<span class="number">10</span>;</span><br><span class="line"><span class="type">const</span> abc p=&amp;a;<span class="comment">//此处等同于char *const p=&amp;a;而不是 const char *p=&amp;a;</span></span><br><span class="line"><span class="comment">//也就是说此处是常量指针，而不是指向常量的指针，因此：</span></span><br><span class="line">*p=<span class="number">20</span>;<span class="comment">//合法</span></span><br></pre></td></tr></table></figure>
+<p>感觉可以直接理解为这里的const为顶层const型</p>
+<h3 id="（2）auto类型说明符"><a href="#（2）auto类型说明符" class="headerlink" title="（2）auto类型说明符"></a>（2）auto类型说明符</h3><p>这里auto和C中用法有所出入，在C++11新标准中，auto用于让编译器通过初始值来推算变量的类型</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> a=<span class="number">1</span>,b=<span class="number">2</span>;</span><br><span class="line"><span class="keyword">auto</span> c=a+b;</span><br></pre></td></tr></table></figure>
+<p>此时c的类型就为int</p>
+<ul>
+<li>auto定义的变量必须有初始值</li>
+<li>参与初始化的各对象类型必须相同，否则会报错</li>
+</ul>
+<h4 id="在复合类型与常量参与的情况下："><a href="#在复合类型与常量参与的情况下：" class="headerlink" title="在复合类型与常量参与的情况下："></a>在复合类型与常量参与的情况下：</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">const</span> <span class="type">int</span> a=<span class="number">1</span>; &amp;a1=a;</span><br><span class="line"><span class="keyword">auto</span> b=a; <span class="comment">//b为int型</span></span><br><span class="line"><span class="keyword">auto</span> c=a1;<span class="comment">//c为int型</span></span><br><span class="line"><span class="keyword">auto</span> d=&amp;a;<span class="comment">//d为指向常量的指针</span></span><br><span class="line"><span class="type">const</span> <span class="keyword">auto</span> e=a; <span class="comment">//顶层const需专门声明</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>auto一般会忽略顶层const</p>
+</li>
+<li><p>对一个常量对象取地址是一种底层const</p>
+</li>
+</ul>
+<h3 id="（3）decltype类型指示符"><a href="#（3）decltype类型指示符" class="headerlink" title="（3）decltype类型指示符"></a>（3）decltype类型指示符</h3><p>当我们定义一个变量时希望用一个表达式返回的类型定义该变量，但是又不想用该表达式的结果的值初始化变量，为满足这一要求，C++11新标准引入了decltype，它的作用是选择并返回操作数的数据类型，在此过程中，编译器分析表达式的类型，却不实际计算它的值。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> a=<span class="number">1</span>;</span><br><span class="line"><span class="keyword">decltype</span>(a) b=<span class="number">2</span>;</span><br></pre></td></tr></table></figure>
+<p>decltype()内的参数可以为变量、函数、甚至引用</p>
+<h4 id="decltype和引用："><a href="#decltype和引用：" class="headerlink" title="decltype和引用："></a>decltype和引用：</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> a=<span class="number">1</span>,&amp;a1=a,*p=&amp;a;</span><br><span class="line"><span class="type">int</span> b=<span class="number">2</span>;</span><br><span class="line"><span class="keyword">decltype</span>(a1) c=b;<span class="comment">//c为int&amp;，也就是引用类型</span></span><br><span class="line"><span class="keyword">decltype</span>(a1+<span class="number">0</span>) d=<span class="number">1</span>; <span class="comment">//d为int型，原因是a1+0的结果为int型</span></span><br><span class="line"><span class="keyword">decltype</span>(*p) e=b; <span class="comment">//*p的值按道理来说是1，书上讲这里讲为int&amp;型，也就是与c一样</span></span><br></pre></td></tr></table></figure>
+<p>当decltype传入的参数添加上一对以上的括号后，例如decltype((a))，<strong>结果永远为引用</strong></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2022/09/07/C++-1/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -675,223 +932,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2022/08/28/C%E8%AF%AD%E8%A8%80%E4%BA%8C%E7%BA%A7%E7%9F%A5%E8%AF%86%E7%82%B9/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/zoe.gif">
-      <meta itemprop="name" content="dhk">
-      <meta itemprop="description" content="记录一些学习日常">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="小董的BLOG">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/08/28/C%E8%AF%AD%E8%A8%80%E4%BA%8C%E7%BA%A7%E7%9F%A5%E8%AF%86%E7%82%B9/" class="post-title-link" itemprop="url">C语言二级查漏补缺（自用）</a>
-        </h2>
-
-        <div class="post-meta">
-		  
-		  
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2022-08-28 20:33:07" itemprop="dateCreated datePublished" datetime="2022-08-28T20:33:07+08:00">2022-08-28</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-09-28 14:01:38" itemprop="dateModified" datetime="2022-09-28T14:01:38+08:00">2022-09-28</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <ul>
-<li>一个Ｃ语言的源程序（扩展名为．ｃ）在经过编译器编译后，首先生成一个汇编语言程序，然后由编译程序再将汇编语言程序翻译成机器指令程序，即目标程序（扩展名为．ｏｂｊ）。目标程序不可以直接运行，它要和库函数或其他目标程序连接成可执行文件（扩展名为．ｅｘｅ）后方可运行</li>
-</ul>
-<p>.obj文件不可直接运行</p>
-<ul>
-<li><p>算法的５个特性为：</p>
-<ul>
-<li>有穷性</li>
-<li>确定性</li>
-<li>可行性</li>
-<li>有零个或多个输入（可以无输入）</li>
-<li>有１个或多个输出（必须有输出）</li>
-</ul>
-</li>
-<li><p>逗号运算符</p>
-<p>在C语言中逗号“,”也是一种运算符，称为逗号运算符。 其功能是把两个表达式连接起来组成一个表达式， 称为逗号表达式。其一般形式为：<br>  表达式1, 表达式2<br>其求值过程是分别求两个表达式的值，并以表达式<strong>2(即最右边的一个表达式)</strong>的值作为整个逗号表达式的值。</p>
-</li>
-</ul>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> x=<span class="number">2</span>;</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;%d&quot;</span>,(x++,<span class="number">2</span>*x)); <span class="number">6</span></span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;%d&quot;</span>,x); <span class="number">3</span></span><br></pre></td></tr></table></figure>
-<p>​        <strong>逗号仅计算结果，并不具有赋值作用</strong>（但是x++有赋值作用）</p>
-<ul>
-<li><p>算术运算符优先级</p>
-<p>优先级的次序如下（由高到低）：（）、++、—、＊、／、％、＋、－</p>
-<p>以上所列的运算符，<strong>只有单目运算符正“＋”和负“－”的结合性是从右到左，其余运算符的结合性都是从左到右</strong></p>
-<ul>
-<li>%对象必须为整型</li>
-</ul>
-</li>
-<li><p>运算库函数</p>
-<ul>
-<li>abs：绝对值</li>
-<li>fabs：双字节型绝对值</li>
-<li>pow：x的y次方</li>
-<li>exp：求10的x次方</li>
-<li>sqrt：x的平方根</li>
-</ul>
-</li>
-</ul>
-<p>BCCAA <strong>A</strong>DBB<strong>D</strong> DAC</p>
-<ul>
-<li>数字的默认类型为整型</li>
-</ul>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;%lf&quot;</span>,<span class="number">1</span>/<span class="number">2</span>); <span class="comment">//0.000000</span></span><br></pre></td></tr></table></figure>
-<ul>
-<li><p>c的基本数据类型：单精度型、双精度型、字符型、整型、枚举型</p>
-</li>
-<li><p>c负整数补码：所得反码还要+1</p>
-</li>
-</ul>
-<h1 id="三、顺序结构"><a href="#三、顺序结构" class="headerlink" title="三、顺序结构"></a>三、顺序结构</h1><ul>
-<li><p>格式字符：</p>
-<ul>
-<li>%i同%d</li>
-<li>%o 八进制</li>
-<li>%g/G 系统决定采用什么格式（f或e）使输出宽度最小</li>
-<li>%p 输出变量地址</li>
-</ul>
-<p>%m.ns，输出占ｍ列，但只取字符串中左边ｎ个字符。这ｎ个字符输出在ｍ列的右边，<strong>左边补空格</strong></p>
-<p>%-m.ns，ｎ个字符<strong>输出在ｍ列范围的左边，右边补空格</strong>。若ｎ＞ｍ，则ｍ自动取ｎ值，即保证ｎ个字符正常输出。</p>
-</li>
-</ul>
-<p>B<strong>BA</strong>BD DACD<strong>D</strong> <strong>C</strong>C<strong>A</strong></p>
-<p>BDCBD DACDB DCB    34页</p>
-<ul>
-<li><p>八进制格式输出开头不带0</p>
-</li>
-<li><p>逗号优先级低于赋值</p>
-</li>
-</ul>
-<h1 id="四、选择结构"><a href="#四、选择结构" class="headerlink" title="四、选择结构"></a>四、选择结构</h1><ul>
-<li><p>逻辑或运算的短路性</p>
-<p>如果||前的表达式为真，则不会进行||后的表达式运算(&amp;&amp;以此类推)</p>
-</li>
-</ul>
-<p>DBADD <strong>A</strong>A<strong>A</strong>A<strong>A</strong> AC</p>
-<p>DBADD DACAB AC    54页</p>
-<h1 id="五、循环结构"><a href="#五、循环结构" class="headerlink" title="五、循环结构"></a>五、循环结构</h1><ul>
-<li>while((ch=getchar())!=’\n’);符合语法</li>
-</ul>
-<p>AA<strong>AD</strong>C DBBC<strong>C</strong> B<strong>CA</strong></p>
-<p>AACBC DBBCB BBC    75页</p>
-<h1 id="六、字符型数据"><a href="#六、字符型数据" class="headerlink" title="六、字符型数据"></a>六、字符型数据</h1><ul>
-<li><p>转义字符</p>
-<p>\f:换页</p>
-<p>\ddd: 1~3位八进制数对应字符例如’\123’</p>
-<p>\xhh: 1~2位16进制数对应字符例如’\x12’</p>
-</li>
-</ul>
-<p>BA<em><u>A</u></em>DD DBCB</p>
-<p>BA<u><em>C</em></u>DD D<strong>C</strong>CB    85页</p>
-<p>3忽略</p>
-<ul>
-<li>default后无break也会执行（？）</li>
-</ul>
-<h1 id="七、函数"><a href="#七、函数" class="headerlink" title="七、函数"></a>七、函数</h1><p><strong>C</strong>DD<strong>CB</strong> D<strong>D</strong>D<strong>A</strong>D C</p>
-<p>BDDDC DADCD C    102页</p>
-<ul>
-<li>简单变量作实参时与形参数据的传输方式为单向值传递</li>
-<li>return语句中带有++时，返回之后并且作用之后才会++</li>
-</ul>
-<h1 id="八、指针"><a href="#八、指针" class="headerlink" title="八、指针"></a>八、指针</h1><ul>
-<li><p>有<code>int a,*p1=&amp;a;</code>由于&amp;和<em>运算优先级相同，&amp; </em>p1则从右至左运算，则&amp; *p1等同于&amp;a</p>
-<p><em>&amp;a则是等同于 </em>p1等同于a</p>
-</li>
-<li><p><strong><code>*</code>的优先级高于+、-,因此<code>*p1</code>=<code>*p1</code>+1是将a+1的值存进p内存储的地址所指向的内容中，也就是相当于a=a+1；但是a的地址是不变的。</strong></p>
-</li>
-</ul>
-<p>具体对指针的一些理解已添加在<a target="_blank" rel="noopener" href="https://dhkkk.gitee.io/2022/07/31/C-指针/">指针相关复习 | 小董的BLOG (gitee.io)</a>中</p>
-<p>DADBB A<u><em>D</em></u>BDB BCC</p>
-<p>DADDB A<u><strong><em>C</em></strong></u>BDB BCC  116页</p>
-<p>7忽略（第一次全对捏）</p>
-<h1 id="九、数组"><a href="#九、数组" class="headerlink" title="九、数组"></a>九、数组</h1><p>CDDBC CBBCD ACA<strong>B</strong></p>
-<p>CDDBC CBBCD ACAC   146页</p>
-<h1 id="十、字符串"><a href="#十、字符串" class="headerlink" title="十、字符串"></a>十、字符串</h1><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;stdio.h&quot;</span></span></span><br><span class="line"><span class="type">void</span> <span class="title function_">swap</span><span class="params">(<span class="type">char</span> *x, <span class="type">char</span> *y)</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">while</span>(*x==<span class="string">&#x27;*&#x27;</span>) x++;</span><br><span class="line">	<span class="keyword">while</span>(*y=*x) <span class="comment">//将x所指向的字符赋值给y，直到遇到&#x27;/0&#x27;为止，这样写是正确的</span></span><br><span class="line">	&#123;</span><br><span class="line">		x++;y++;	</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">char</span> s[<span class="number">30</span>]=<span class="string">&quot;******a*b***&quot;</span>,t[<span class="number">30</span>];</span><br><span class="line">	swap(s,t);</span><br><span class="line">	<span class="built_in">puts</span>(t);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>AADCC <strong>DA</strong>BB<strong>D</strong> C<strong>A</strong></p>
-<p>AADCC CBBBA CB              173页  6、10、12</p>
-<p><strong>strcpy会覆盖原来的整个字符串，而strncpy只会覆盖n个字节原来的字符串，剩下的保留</strong></p>
-<h1 id="十一、对函数的进一步讨论"><a href="#十一、对函数的进一步讨论" class="headerlink" title="十一、对函数的进一步讨论"></a>十一、对函数的进一步讨论</h1><ul>
-<li><p>传入main的参数</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">main(<span class="type">int</span> argc, <span class="type">char</span> *argv[])</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<p>当我们对一个名为test的c文件进行编译时，在终端输入： test  ok  good后：</p>
-<ul>
-<li>argc值为3，即存入argv的字符串个数</li>
-<li>argv[0]存放</li>
-</ul>
-<ul>
-<li>对指向函数的指针变量进行加减法无意义</li>
-</ul>
-<p>CDCD<strong>D</strong> BBCB</p>
-<p>CDCDC BBCB 184页</p>
-<h1 id="十二、用户标识符的作用域和存储类"><a href="#十二、用户标识符的作用域和存储类" class="headerlink" title="十二、用户标识符的作用域和存储类"></a>十二、用户标识符的作用域和存储类</h1><p>ACDB<strong>A</strong> A<strong>C</strong>CC<strong><u>D</u></strong> <strong>C</strong></p>
-<p>ACDBB ADCCA D  195页</p>
-<ul>
-<li>若全局变量和某一函数中局部变量同名，则在函数内全局变量被屏蔽</li>
-</ul>
-<h1 id="十三、编译预处理和动态存储分配"><a href="#十三、编译预处理和动态存储分配" class="headerlink" title="十三、编译预处理和动态存储分配"></a>十三、编译预处理和动态存储分配</h1><p>详见<a target="_blank" rel="noopener" href="https://dhkkk.gitee.io/2022/08/03/C-关键字/">一些关键字 | 小董的BLOG (gitee.io)</a></p>
-<p><strong>AACD</strong>C A<strong>D</strong>AA</p>
-<p>DBBBC ACAA</p>
-<p>define只作替换！！！！</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> D1(a) (2*a)</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> D2(a) (2*(a))</span></span><br><span class="line"><span class="comment">//计算结果最好也用括号括起来,小型计算不括问题应该不大</span></span><br><span class="line">  <span class="type">int</span> <span class="title function_">main</span> <span class="params">()</span></span><br><span class="line">  &#123;</span><br><span class="line">     <span class="type">int</span> b = D1(<span class="number">3</span>+<span class="number">4</span>);</span><br><span class="line">     <span class="type">int</span> c = D2(<span class="number">3</span>+<span class="number">4</span>);</span><br><span class="line">     <span class="built_in">printf</span>(<span class="string">&quot;%d&quot;</span>, b);  <span class="comment">//输出等价于2*3+4=10 ※※※※※※※※※※※※※</span></span><br><span class="line">     <span class="built_in">printf</span>(<span class="string">&quot;%d&quot;</span>, c);  <span class="comment">//2*(3+4)=14</span></span><br><span class="line">     <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
-<h1 id="十四、结构体、共用体和用户自定义型"><a href="#十四、结构体、共用体和用户自定义型" class="headerlink" title="十四、结构体、共用体和用户自定义型"></a>十四、结构体、共用体和用户自定义型</h1><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> &#123;</span><span class="type">int</span> a;<span class="type">int</span> b;&#125;a;<span class="comment">//合法</span></span><br></pre></td></tr></table></figure>
-<p>关于动态链表详见<a target="_blank" rel="noopener" href="https://dhkkk.gitee.io/2022/08/01/C-结构体/">结构体复习 | 小董的BLOG (gitee.io)</a></p>
-<p>AABB×    <strong>C</strong>CBDD    BC</p>
-<p>ADBBA    DCBCD    BD    6题看题不仔细捏</p>
-<h1 id="十五、位运算"><a href="#十五、位运算" class="headerlink" title="十五、位运算"></a>十五、位运算</h1><p>长度不同的数据进行位运算时先将最低位对齐，然后将短的一方扩充</p>
-<p>D<strong>C</strong>DAA    BCD</p>
-<p>DADAA    BCD</p>
-<p>看清楚输出的格式声明</p>
-<p>240</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   
   <nav class="pagination">
     <a class="extend prev" rel="prev" href="/page/17/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/17/">17</a><span class="page-number current">18</span><a class="page-number" href="/page/19/">19</a><span class="space">&hellip;</span><a class="page-number" href="/page/22/">22</a><a class="extend next" rel="next" href="/page/19/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
@@ -961,7 +1001,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">65</span>
+          <span class="site-state-item-count">66</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1078,11 +1118,11 @@
         pbOptions.networks = "Wechat,QQZone,Weibo,Douban,Twitter,Facebook";
       new needShareButton('#needsharebutton-postbottom', pbOptions);
   </script>
-<script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script><script>
             window.imageLazyLoadSetting = {
                 isSPA: false,
                 preloadRatio: 1,
                 processImages: null,
             };
-        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(e.href.match(t)||e.href.match(r))&&(e.href=a.dataset.original)})});</script><script>!function(n){n.imageLazyLoadSetting.processImages=o;var e=n.imageLazyLoadSetting.isSPA,i=n.imageLazyLoadSetting.preloadRatio||1,r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]"));function o(){e&&(r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")));for(var t,a=0;a<r.length;a++)0<=(t=(t=r[a]).getBoundingClientRect()).bottom&&0<=t.left&&t.top<=(n.innerHeight*i||document.documentElement.clientHeight*i)&&function(){var t,e,n,i,o=r[a];t=o,e=function(){r=r.filter(function(t){return o!==t})},n=new Image,i=t.getAttribute("data-original"),n.onload=function(){t.src=i,e&&e()},t.src!==i&&(n.src=i)}()}o(),n.addEventListener("scroll",function(){var t,e;t=o,e=n,clearTimeout(t.tId),t.tId=setTimeout(function(){t.call(e)},500)})}(this);</script><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script></body>
+        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(e.href.match(t)||e.href.match(r))&&(e.href=a.dataset.original)})});</script><script>!function(n){n.imageLazyLoadSetting.processImages=o;var e=n.imageLazyLoadSetting.isSPA,i=n.imageLazyLoadSetting.preloadRatio||1,r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]"));function o(){e&&(r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")));for(var t,a=0;a<r.length;a++)0<=(t=(t=r[a]).getBoundingClientRect()).bottom&&0<=t.left&&t.top<=(n.innerHeight*i||document.documentElement.clientHeight*i)&&function(){var t,e,n,i,o=r[a];t=o,e=function(){r=r.filter(function(t){return o!==t})},n=new Image,i=t.getAttribute("data-original"),n.onload=function(){t.src=i,e&&e()},t.src!==i&&(n.src=i)}()}o(),n.addEventListener("scroll",function(){var t,e;t=o,e=n,clearTimeout(t.tId),t.tId=setTimeout(function(){t.call(e)},500)})}(this);</script></body>
 </html>

@@ -197,6 +197,470 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2022/11/28/%E5%8D%95%E7%89%87%E6%9C%BA%E5%A4%8D%E4%B9%A0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/zoe.gif">
+      <meta itemprop="name" content="dhk">
+      <meta itemprop="description" content="记录一些学习日常">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小董的BLOG">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/11/28/%E5%8D%95%E7%89%87%E6%9C%BA%E5%A4%8D%E4%B9%A0/" class="post-title-link" itemprop="url">单片机复习(考试复习自用)</a>
+        </h2>
+
+        <div class="post-meta">
+		  
+		  
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-11-28 22:13:02" itemprop="dateCreated datePublished" datetime="2022-11-28T22:13:02+08:00">2022-11-28</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2024-02-25 15:32:22" itemprop="dateModified" datetime="2024-02-25T15:32:22+08:00">2024-02-25</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="计算机基础"><a href="#计算机基础" class="headerlink" title="计算机基础"></a>计算机基础</h1><ul>
+<li><p>原码、反码、补码</p>
+<p>正数的三者相同，负数反码为原码除符号位其余取反，补码为其反码+1</p>
+<p><u><strong>负数的机器码是其原码的补码</strong></u></p>
+</li>
+<li><p>微型计算机配置高速缓冲存储器是为了解决： CPU于内存储器速度不匹配</p>
+</li>
+<li><p>ROM和RAM</p>
+<ul>
+<li>ROM：只读存储器，在单片机中用于存放程序，配有较大空间，<strong>掉电数据不丢失</strong></li>
+<li>RAM：随机存储器，存放临时数据，使单片机<strong>更适用于实时控制系统</strong>，<strong>掉电数据丢失</strong></li>
+<li><strong>计算机的内存容量主要指RAM</strong></li>
+</ul>
+</li>
+<li><p><u><strong>系统总线：地址总线 AB，控制总线 CB 和双向数据总线 DB。</strong></u></p>
+<ul>
+<li>数据总线（Data Bus―DB）双向、三态：数据总线的根数决定了一次可以传递二进制数的<strong>位数</strong>。 </li>
+<li>地址总线（Address Bus―AB）单向、三态：地址总线的位数决定了<strong>可以直接访问的存储单元(或 I/O 口)的最大可能数 量（即容量）</strong>。 </li>
+<li>控制总线（Control Bus―CB）：控制总线用来<strong>传输控制信号</strong>，数据总线和每个元件的数据线相连，为了使 CPU 能够和 其中一个元件正确通信，必须使用三态逻辑元件（特别针对输入元件）。</li>
+</ul>
+</li>
+</ul>
+<h2 id="题"><a href="#题" class="headerlink" title="题"></a>题</h2><img src="/images/loading.png" data-original="/2022/11/28/%E5%8D%95%E7%89%87%E6%9C%BA%E5%A4%8D%E4%B9%A0/1_1.jpg" class title="This is an image"> 
+<h1 id="单片机硬件结构"><a href="#单片机硬件结构" class="headerlink" title="单片机硬件结构"></a>单片机硬件结构</h1><h2 id="CPU"><a href="#CPU" class="headerlink" title="CPU"></a>CPU</h2><p>分为运算器和控制器</p>
+<ul>
+<li><p>控制器：依次取出ROM中存储单元的指令</p>
+<ul>
+<li>程序计数器：PC，16位，指向下一条指令的<strong>地址</strong>，复位后为0000H</li>
+<li>指令寄存器</li>
+<li>指令译码器</li>
+<li>定时控制电路</li>
+</ul>
+</li>
+<li><p>运算器ALU：对数据进行算术、逻辑运算</p>
+<ul>
+<li>算术逻辑运算部件ALU，负责运算，结果传回ACC，结果的状态传回PSW</li>
+<li>累加器ACC</li>
+<li><strong>程序状态寄存器PSW</strong></li>
+</ul>
+</li>
+</ul>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">位</th>
+<th style="text-align:center">7</th>
+<th style="text-align:center">6</th>
+<th style="text-align:center">5</th>
+<th style="text-align:center">4</th>
+<th style="text-align:center">3</th>
+<th style="text-align:center">2</th>
+<th style="text-align:center">1</th>
+<th style="text-align:center">0</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">位名</td>
+<td style="text-align:center">Cy</td>
+<td style="text-align:center">AC</td>
+<td style="text-align:center">F0</td>
+<td style="text-align:center">RS1</td>
+<td style="text-align:center">RS0</td>
+<td style="text-align:center">OV</td>
+<td style="text-align:center">F1</td>
+<td style="text-align:center">P</td>
+</tr>
+<tr>
+<td style="text-align:center">作用</td>
+<td style="text-align:center">进位/借位</td>
+<td style="text-align:center">辅助进位</td>
+<td style="text-align:center">自定义</td>
+<td style="text-align:center">寄存器选择</td>
+<td style="text-align:center">寄存器选择</td>
+<td style="text-align:center">溢出</td>
+<td style="text-align:center">自定义</td>
+<td style="text-align:center">奇偶效验</td>
+</tr>
+</tbody>
+</table>
+</div>
+<ul>
+<li>Cy：运算结果最高位有无进位/错位</li>
+<li>AC：运算结果低四位有无向高四位进位</li>
+<li>F0、F1：用户自定义</li>
+<li>RS1、RS0：一起决定当前寄存器组(00对应寄存器0组，依次增加)</li>
+<li>OV：数据是否溢出</li>
+<li>P：1的个数为奇/偶</li>
+</ul>
+<h2 id="时钟电路"><a href="#时钟电路" class="headerlink" title="时钟电路"></a>时钟电路</h2><ul>
+<li>XTAL1:片内振荡电路输入端</li>
+<li>XTAL2：输出端</li>
+</ul>
+<p>当外部信号源为单片机提供时钟时，1接地，2接信号源</p>
+<h2 id="EA"><a href="#EA" class="headerlink" title="EA"></a>EA</h2><p><strong>EA（反）</strong>为1时CPU从片内读取指令，为0时访问外部</p>
+<h2 id="并行IO口"><a href="#并行IO口" class="headerlink" title="并行IO口"></a>并行IO口</h2><h3 id="P1"><a href="#P1" class="headerlink" title="P1"></a>P1</h3><p>通用输入、输出接口</p>
+<img src="/images/loading.png" data-original="/2022/11/28/%E5%8D%95%E7%89%87%E6%9C%BA%E5%A4%8D%E4%B9%A0/p1.jpg" class title="This is an image"> 
+<h4 id="作输出时："><a href="#作输出时：" class="headerlink" title="作输出时："></a>作输出时：</h4><ul>
+<li><p><strong>输出的数据通过内部总线送入锁存器保存</strong></p>
+</li>
+<li><p>判断数据的每一位。</p>
+<p>为1时，Q=1，Q（反）=0，VT截止，Vcc向引脚输出高电平。</p>
+</li>
+</ul>
+<p><strong>上拉电阻的作用</strong>：当VT截止时，使输出强制为1，若没有上拉电阻，输出可能由于噪音上下浮动。</p>
+<h4 id="作输入时："><a href="#作输入时：" class="headerlink" title="作输入时："></a>作输入时：</h4><ul>
+<li><strong>先向锁存器写1（准双向），使VT一直为截止状态。</strong>否则VT导通会拉低输入信号。</li>
+<li>CPU执行读指令时，2导通，<strong>数据通过2直接进入</strong>内部总线，因此内部总线信号跟随引脚变化。</li>
+</ul>
+<h3 id="P2"><a href="#P2" class="headerlink" title="P2"></a>P2</h3><img src="/images/loading.png" data-original="/2022/11/28/%E5%8D%95%E7%89%87%E6%9C%BA%E5%A4%8D%E4%B9%A0/p2.jpg" class title="This is an image"> 
+<p>有两种用途，准双向IO和高8位地址总线</p>
+<p>当用作IO时，控制信号使开关接左侧，Q输出1使VT截止。</p>
+<h3 id="P3"><a href="#P3" class="headerlink" title="P3"></a>P3</h3><img src="/images/loading.png" data-original="/2022/11/28/%E5%8D%95%E7%89%87%E6%9C%BA%E5%A4%8D%E4%B9%A0/p3.jpg" class title="This is an image"> 
+<p><strong>用户可自行操作第二功能实现相关功能，P3默认为准双向IO</strong></p>
+<p>第二功能包括：串口收发、外部中断、定时器输出等</p>
+<h3 id="P0"><a href="#P0" class="headerlink" title="P0"></a>P0</h3><img src="/images/loading.png" data-original="/2022/11/28/%E5%8D%95%E7%89%87%E6%9C%BA%E5%A4%8D%E4%B9%A0/p0.jpg" class title="This is an image"> 
+<p>可作为准双向IO，<strong>IO时必须外接上拉电阻</strong>。第二功能时提供外部存储地址低8位<strong>和P2组成16位地址</strong>，之后用作数据总线（此时锁存器会保存低八位地址）。</p>
+<p>P0具有高阻态</p>
+<h3 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h3><ul>
+<li>四个IO均为准双向，<strong>在用作输入时都应向锁存器写“1”</strong></li>
+<li>除P1外，其余端口都有第二功能：<ul>
+<li>P0：低八位地址和数据总线</li>
+<li>P2：高八位地址</li>
+<li>P3：自定义功能</li>
+</ul>
+</li>
+<li><strong>P0作为通用IO时需要外接上拉电阻！</strong></li>
+<li><strong><u>P0、P2作地址时剩下引脚不能作为IO使用；但是P3各个口独立，未用作第二功能的可以作为IO使用</u></strong></li>
+</ul>
+<h2 id="存储结构"><a href="#存储结构" class="headerlink" title="存储结构"></a>存储结构</h2><p>51单片机存储器<strong>物理</strong>上分为四个空间：</p>
+<ul>
+<li>片内<strong>程序</strong>存储器</li>
+<li>片外<strong>程序</strong>存储器</li>
+<li>片内<strong>数据</strong>存储器</li>
+<li>片外<strong>数据</strong>存储器</li>
+</ul>
+<p>从用户使用的逻辑上分为三个区域：</p>
+<ul>
+<li>片内外统一编址的程序存储器    0000H-FFFFH(64KB)</li>
+<li>片内数据存储    00-FFH 128B </li>
+<li>片外数据存储    0000H-FFFFH</li>
+</ul>
+<h3 id="程序存储器"><a href="#程序存储器" class="headerlink" title="程序存储器"></a>程序存储器</h3><p>程序存储器由ROM和EPROM构成，掉电后数据不丢失</p>
+<p>用于存放程序和程序运行时所需的常数。<strong>51片内有4K ROM，但地址线为16位，因此做多可以扩展到64KB</strong>。当PC值超过内部ROM容量时会自动转向外部寻址。\EA=1时为寻址内部ROM。</p>
+<p>MOVC指令用于访问程序存储器。</p>
+<h3 id="数据存储器"><a href="#数据存储器" class="headerlink" title="数据存储器"></a>数据存储器</h3><p>数据存储器由RAM和专用寄存器组成，掉电后数据丢失</p>
+<p>用于存放程序运算的中间结果、标志位、数据缓冲等。51片内有128+128B的数据存储器，可扩充至64KB</p>
+<p>内部数据存储器分为低128B和高128B</p>
+<img src="/images/loading.png" data-original="/2022/11/28/%E5%8D%95%E7%89%87%E6%9C%BA%E5%A4%8D%E4%B9%A0/ram.jpg" class title="This is an image"> 
+<h4 id="低128B：RAM区"><a href="#低128B：RAM区" class="headerlink" title="低128B：RAM区"></a>低128B：RAM区</h4><ul>
+<li><p><strong>通用寄存器区</strong>，供用户使用，用于临时存放8位数据</p>
+<p>通过修改程序状态寄存器PSW中的RS1和RS0实现选择，00H-1FH 128位</p>
+</li>
+<li><p><strong>位寻址区</strong>，提供地址读写数据 </p>
+<p>RAM中的20H-2FH，128位</p>
+</li>
+<li><p><strong>数据缓存区</strong></p>
+</li>
+</ul>
+<h4 id="特殊功能寄存器SFR"><a href="#特殊功能寄存器SFR" class="headerlink" title="特殊功能寄存器SFR"></a>特殊功能寄存器SFR</h4><p>包括51中有特殊功能的寄存器，如ACC、PSW、P0-P3等</p>
+<p><u><strong>不包括PC</strong></u></p>
+<h2 id="时序"><a href="#时序" class="headerlink" title="时序"></a>时序</h2><h3 id="时钟周期（振荡周期）"><a href="#时钟周期（振荡周期）" class="headerlink" title="时钟周期（振荡周期）"></a>时钟周期（振荡周期）</h3><p>也叫振荡周期，<strong>为振荡器频率的倒数</strong>，是时序中的<strong>最小单位</strong></p>
+<h3 id="状态周期"><a href="#状态周期" class="headerlink" title="状态周期"></a>状态周期</h3><p>两个振荡周期，一个完成运算，一个完成传送</p>
+<h3 id="机器周期"><a href="#机器周期" class="headerlink" title="机器周期"></a>机器周期</h3><p>执行一条指令的一个阶段的时间。<strong>是单片机的基本操作周期</strong>。1个机器周期=6个状态周期=12个振荡周期</p>
+<h3 id="指令周期"><a href="#指令周期" class="headerlink" title="指令周期"></a>指令周期</h3><p>执行一条指令的周期，通常含有1~4个机器周期。</p>
+<p>51单片机分为单周期指令、双周期指令、四周期指令，分别对应n个机器周期。<strong>只有乘法和除法是四周砌指令。</strong></p>
+<p>因此，晶振周期为12MHz时：</p>
+<ul>
+<li>振荡周期=1/12us</li>
+<li>机器周期=1us</li>
+<li>指令周期：1、2、4us</li>
+</ul>
+<h2 id="工作方式"><a href="#工作方式" class="headerlink" title="工作方式"></a>工作方式</h2><h3 id="复位方式"><a href="#复位方式" class="headerlink" title="复位方式"></a>复位方式</h3><ul>
+<li>上电复位</li>
+<li>按键复位</li>
+</ul>
+<h3 id="复位后寄存器状态"><a href="#复位后寄存器状态" class="headerlink" title="复位后寄存器状态"></a>复位后寄存器状态</h3><ul>
+<li><strong>P0~P3：0FFH（全高电平）</strong></li>
+<li><strong>PC：0000H</strong></li>
+<li><strong>SP：07H</strong></li>
+<li><strong>PSW:  00H</strong></li>
+</ul>
+<p><strong>51单片机在电复位时RAM保持不变</strong></p>
+<h3 id="低功耗模式"><a href="#低功耗模式" class="headerlink" title="低功耗模式"></a>低功耗模式</h3><ul>
+<li>休眠模式：只有外部中断工作</li>
+<li>空闲模式（待机）：只有CPU停止工作</li>
+</ul>
+<h2 id="错题"><a href="#错题" class="headerlink" title="错题"></a>错题</h2><img src="/images/loading.png" data-original="/2022/11/28/%E5%8D%95%E7%89%87%E6%9C%BA%E5%A4%8D%E4%B9%A0/1.jpg" class title="This is an image"> 
+<img src="/images/loading.png" data-original="/2022/11/28/%E5%8D%95%E7%89%87%E6%9C%BA%E5%A4%8D%E4%B9%A0/2.jpg" class title="This is an image"> 
+<img src="/images/loading.png" data-original="/2022/11/28/%E5%8D%95%E7%89%87%E6%9C%BA%E5%A4%8D%E4%B9%A0/7.jpg" class title="This is an image"> 
+<p><strong><u>由于RAM片内外访问指令一个是MOV一个是MOVX，因此其地址可以重叠。外部地址总线16位对应64KB，而内部地址可以与其重合，因此RAM最大总量是大于64KB的</u></strong></p>
+<h1 id="51指令系统"><a href="#51指令系统" class="headerlink" title="51指令系统"></a>51指令系统</h1><p><a target="_blank" rel="noopener" href="https://dhkkk.gitee.io/2022/10/14/51单片机汇编语言/">51单片机汇编指令查询 | 小董的BLOG (gitee.io)</a></p>
+<h2 id="题-1"><a href="#题-1" class="headerlink" title="题"></a>题</h2><img src="/images/loading.png" data-original="/2022/11/28/%E5%8D%95%E7%89%87%E6%9C%BA%E5%A4%8D%E4%B9%A0/3.jpg" class title="This is an image"> 
+<img src="/images/loading.png" data-original="/2022/11/28/%E5%8D%95%E7%89%87%E6%9C%BA%E5%A4%8D%E4%B9%A0/4.jpg" class title="This is an image"> 
+<p><strong>一般只有A能参与这些逻辑运算</strong></p>
+<img src="/images/loading.png" data-original="/2022/11/28/%E5%8D%95%E7%89%87%E6%9C%BA%E5%A4%8D%E4%B9%A0/5.jpg" class title="This is an image"> 
+<p><strong>经典</strong></p>
+<img src="/images/loading.png" data-original="/2022/11/28/%E5%8D%95%E7%89%87%E6%9C%BA%E5%A4%8D%E4%B9%A0/6.jpg" class title="This is an image"> 
+<p><strong>规定</strong></p>
+<h1 id="中断"><a href="#中断" class="headerlink" title="中断"></a>中断</h1><h2 id="中断请求标志寄存器"><a href="#中断请求标志寄存器" class="headerlink" title="中断请求标志寄存器"></a>中断请求标志寄存器</h2><h3 id="定时器-计数器控制寄存器TCON"><a href="#定时器-计数器控制寄存器TCON" class="headerlink" title="定时器/计数器控制寄存器TCON"></a>定时器/计数器控制寄存器TCON</h3><img src="/images/loading.png" data-original="/2022/11/28/%E5%8D%95%E7%89%87%E6%9C%BA%E5%A4%8D%E4%B9%A0/tcon.jpg" class title="This is an image"> 
+<ul>
+<li>IT 0/1:外部中断触发方式，0低电平触发，1下降沿触发</li>
+<li>IE 0/1:中断请求标志位，触发中断后硬件自动清零</li>
+<li>TF 0/1:定时器/计数器溢出中断标志位，触发中断后自动清零</li>
+<li>TR 0/1:启停定时器</li>
+</ul>
+<p>一般就只需设置IT和TR</p>
+<h3 id="串行口控制寄存器SCON"><a href="#串行口控制寄存器SCON" class="headerlink" title="串行口控制寄存器SCON"></a>串行口控制寄存器SCON</h3><img src="/images/loading.png" data-original="/2022/11/28/%E5%8D%95%E7%89%87%E6%9C%BA%E5%A4%8D%E4%B9%A0/scon.jpg" class title="This is an image"> 
+<ul>
+<li>TI:发送中断标志位，每发送完一帧数据后硬件会对其置1，<strong>需用户自行软件清零！</strong></li>
+<li>RI:接收中断标志位，规则同上。</li>
+</ul>
+<h3 id="中断允许寄存器IE"><a href="#中断允许寄存器IE" class="headerlink" title="中断允许寄存器IE"></a>中断允许寄存器IE</h3><img src="/images/loading.png" data-original="/2022/11/28/%E5%8D%95%E7%89%87%E6%9C%BA%E5%A4%8D%E4%B9%A0/ie.jpg" class title="This is an image"> 
+<ul>
+<li>EA：总中断允许位</li>
+<li>ES：串口中断允许位</li>
+<li>ET：定时器中断允许位</li>
+<li>EX：外部中断允许位</li>
+</ul>
+<p>都是置1允许</p>
+<p>若要使用某个中断，必须先开启中断允许位，复位后清零</p>
+<h3 id="总结：-1"><a href="#总结：-1" class="headerlink" title="总结："></a>总结：</h3><ul>
+<li>I开头为TCON寄存器，控制<strong>定时器</strong>中断触发的方法和标志位</li>
+<li>RI和TI为SCON寄存器，控制<strong>串口</strong>相关</li>
+<li>E开头为中断允许寄存器IE</li>
+</ul>
+<h2 id="中断优先级"><a href="#中断优先级" class="headerlink" title="中断优先级"></a>中断优先级</h2><p>由中断优先级寄存器IP控制</p>
+<img src="/images/loading.png" data-original="/2022/11/28/%E5%8D%95%E7%89%87%E6%9C%BA%E5%A4%8D%E4%B9%A0/ip.jpg" class title="This is an image"> 
+<ul>
+<li>PX:外部中断优先级设置</li>
+<li>PT:定时器中断优先级设置</li>
+<li>PS:串口中断优先级设置</li>
+</ul>
+<h2 id="中断响应过程"><a href="#中断响应过程" class="headerlink" title="中断响应过程"></a>中断响应过程</h2><h3 id="中断请求"><a href="#中断请求" class="headerlink" title="中断请求"></a>中断请求</h3><p>硬件完成，请求完成后对应标志位置1</p>
+<h3 id="中断查询"><a href="#中断查询" class="headerlink" title="中断查询"></a>中断查询</h3><p>CPU检测TCON和SCON中各标志位状态，确定是哪个中断</p>
+<h3 id="中断响应"><a href="#中断响应" class="headerlink" title="中断响应"></a>中断响应</h3><p>响应条件：</p>
+<ul>
+<li><strong>EA使能</strong></li>
+<li><strong>该中断允许位也使能</strong></li>
+<li>有中断请求</li>
+<li>无同级或高级中断正在运行</li>
+</ul>
+<h3 id="中断处理"><a href="#中断处理" class="headerlink" title="中断处理"></a>中断处理</h3><p>中断服务程序</p>
+<h3 id="中断返回"><a href="#中断返回" class="headerlink" title="中断返回"></a>中断返回</h3><p>复位置位的标志位，重新执行原程序（PC被弹出堆栈）</p>
+<h2 id="操作流程"><a href="#操作流程" class="headerlink" title="操作流程"></a>操作流程</h2><ul>
+<li>打开对应中断允许位</li>
+<li>设置触发方式</li>
+<li>开启总中断允许</li>
+<li>编写服务函数</li>
+</ul>
+<h2 id="题-2"><a href="#题-2" class="headerlink" title="题"></a>题</h2><img src="/images/loading.png" data-original="/2022/11/28/%E5%8D%95%E7%89%87%E6%9C%BA%E5%A4%8D%E4%B9%A0/zd1.jpg" class title="This is an image"> 
+<h1 id="定时器-计数器"><a href="#定时器-计数器" class="headerlink" title="定时器/计数器"></a>定时器/计数器</h1><h2 id="基本结构"><a href="#基本结构" class="headerlink" title="基本结构"></a>基本结构</h2><p>T1、T2分别由两个8位特殊功能寄存器TH和TL组成。当它对外部事件进行计数时，作为计数器使用；当对内部固<strong>定频率的机器周期进行计数时</strong>，便可以达到定时的目的。</p>
+<h2 id="两种工作模式"><a href="#两种工作模式" class="headerlink" title="两种工作模式"></a>两种工作模式</h2><ul>
+<li><p>计数器工作模式</p>
+<p>对外部事件进行计数，计数脉冲来自P3中的对应引脚。</p>
+<p>下降沿触发</p>
+<p><strong>最高频率为振荡频率的1/24，因为识别下降沿需要2个机器周期，即24个振荡周期</strong></p>
+</li>
+<li><p>定时器工作模式</p>
+<p>计数脉冲为内部时钟脉冲，也就是每个机器周期+1，<strong>因此计数频率为振荡频率的1/12</strong>，得到的时间：定时器计数值*机器周期时间</p>
+</li>
+</ul>
+<p>当设置好定时器后，定时器就将独立工作，不再占用CPU，只有溢出时才会申请中断。</p>
+<h2 id="控制寄存器"><a href="#控制寄存器" class="headerlink" title="控制寄存器"></a>控制寄存器</h2><h3 id="工作模式寄存器TMOD"><a href="#工作模式寄存器TMOD" class="headerlink" title="工作模式寄存器TMOD"></a>工作模式寄存器TMOD</h3><img src="/images/loading.png" data-original="/2022/11/28/%E5%8D%95%E7%89%87%E6%9C%BA%E5%A4%8D%E4%B9%A0/tmod.jpg" class title="This is an image"> 
+<ul>
+<li>GATE：门控位，使用外部中断引脚的高电平来启动定时器（前提是该定时器已被置位运行）</li>
+<li>C/(/T)：1为计数器模式，0为定时器模式</li>
+<li>M1，M0：同时控制定时器的工作模式，同PSW中的RS用法</li>
+</ul>
+<h3 id="控制寄存器TCON"><a href="#控制寄存器TCON" class="headerlink" title="控制寄存器TCON"></a>控制寄存器TCON</h3><p>上一节中断中已讲过，控制定时器的开启。</p>
+<h2 id="定时器的工作方式"><a href="#定时器的工作方式" class="headerlink" title="定时器的工作方式"></a>定时器的工作方式</h2><h3 id="方式0"><a href="#方式0" class="headerlink" title="方式0"></a>方式0</h3><img src="/images/loading.png" data-original="/2022/11/28/%E5%8D%95%E7%89%87%E6%9C%BA%E5%A4%8D%E4%B9%A0/mod0.jpg" class title="This is an image"> 
+<p>易得其定时时间为：(2^13 - 初值)*机器周期</p>
+<p>计算后的值低5位赋给TL，高8位赋给TH</p>
+<h3 id="方式1"><a href="#方式1" class="headerlink" title="方式1"></a>方式1</h3><p>16位计数器，其余与方式0一样。</p>
+<h3 id="方式2"><a href="#方式2" class="headerlink" title="方式2"></a>方式2</h3><p>方式2为8位定时器</p>
+<ul>
+<li>TL用作定时，TH用于保存初值。当TL溢出后，中断标志置位，<strong>同时自动将TH中的值重新装载进TL</strong>，无需用户再手动重新装入初值。</li>
+</ul>
+<p>更加精准，但计时范围小。</p>
+<h3 id="方式3"><a href="#方式3" class="headerlink" title="方式3"></a>方式3</h3><ul>
+<li>只有T0能被设置为模式3，T1若为模式3，则停止计数，保存原样。</li>
+</ul>
+<h4 id="T0为模式3时"><a href="#T0为模式3时" class="headerlink" title="T0为模式3时"></a>T0为模式3时</h4><p>TH和TL分别单独工作</p>
+<ul>
+<li>TL：使用T0的状态控制位，同方式2，但是溢出后需用户手动装入初值</li>
+<li>TH：<strong>被固定为一个内部定时器</strong>，受T1控制位的TR1控制启停，同上占用T1的中断请求TF1</li>
+</ul>
+<h4 id="T0为模式3时，T1的设置"><a href="#T0为模式3时，T1的设置" class="headerlink" title="T0为模式3时，T1的设置"></a>T0为模式3时，T1的设置</h4><p>T1仍可设置为方式0、1、2，但由于中断被占用，只能将输出送往串口</p>
+<h2 id="使用流程"><a href="#使用流程" class="headerlink" title="使用流程"></a>使用流程</h2><ul>
+<li>设置模式TMOD</li>
+<li>赋初值TL、TH</li>
+<li><p>开启中断ET、EA</p>
+</li>
+<li><p>开启定时器TR</p>
+</li>
+</ul>
+<h1 id="串口通信"><a href="#串口通信" class="headerlink" title="串口通信"></a>串口通信</h1><p>串行通信：数据的各位在同一根数据线上逐位发送、接收。</p>
+<p>串行通信按同步方式分为异步通信和同步通信</p>
+<h2 id="同步通信"><a href="#同步通信" class="headerlink" title="同步通信"></a>同步通信</h2><p>数据传输速率高，但是要求发送时钟和接收时钟严格同步</p>
+<h2 id="异步通信"><a href="#异步通信" class="headerlink" title="异步通信"></a>异步通信</h2><p>数据组成数据帧方式，收、发端相互独立、互不同步，只需规定收发数据的帧格式即可相互识别。</p>
+<h3 id="数据帧格式"><a href="#数据帧格式" class="headerlink" title="数据帧格式"></a>数据帧格式</h3><ul>
+<li>起始位：低电平有效</li>
+<li>数据位：5~8位</li>
+<li>奇偶校验位</li>
+<li>停止位：高电平有效</li>
+</ul>
+<h3 id="波特率"><a href="#波特率" class="headerlink" title="波特率"></a>波特率</h3><p>每秒传输二进制数码的位数，每位的传输时间为1/波特率</p>
+<h2 id="51单片机的串口通信"><a href="#51单片机的串口通信" class="headerlink" title="51单片机的串口通信"></a>51单片机的串口通信</h2><p>51内部有一个可编程全双工串口。</p>
+<h3 id="串口相关寄存器"><a href="#串口相关寄存器" class="headerlink" title="串口相关寄存器"></a>串口相关寄存器</h3><h4 id="串行数据缓冲器SBUF"><a href="#串行数据缓冲器SBUF" class="headerlink" title="串行数据缓冲器SBUF"></a>串行数据缓冲器SBUF</h4><p>包括发送和接收寄存器，但在逻辑上只有一个SBUF，在使用时可用作发送和接收。（物理上有两个完全独立的SBUF，但是他们地址是一样的）</p>
+<h4 id="串行控制寄存器SCON"><a href="#串行控制寄存器SCON" class="headerlink" title="串行控制寄存器SCON"></a>串行控制寄存器SCON</h4><img src="/images/loading.png" data-original="/2022/11/28/%E5%8D%95%E7%89%87%E6%9C%BA%E5%A4%8D%E4%B9%A0/scon2.jpg" class title="This is an image"> 
+<ul>
+<li><p>SM0、1工作方式选择位</p>
+<img src="/images/loading.png" data-original="/2022/11/28/%E5%8D%95%E7%89%87%E6%9C%BA%E5%A4%8D%E4%B9%A0/smod.jpg" class title="This is an image"> 
+</li>
+<li><p>SM2:多机通信控制位</p>
+</li>
+<li><p>REN：<strong>允许接收控制位</strong></p>
+</li>
+<li><p>TB8：方式2、3的<strong>发送</strong>第九位</p>
+</li>
+<li><p>RB8：方式2、3的接收第九位</p>
+</li>
+</ul>
+<h4 id="电源控制寄存器PCON"><a href="#电源控制寄存器PCON" class="headerlink" title="电源控制寄存器PCON"></a>电源控制寄存器PCON</h4><p>其中第七位SMOD为1波特率加倍</p>
+<h2 id="基础流程"><a href="#基础流程" class="headerlink" title="基础流程"></a>基础流程</h2><ul>
+<li><strong><u>配置SCON</u></strong></li>
+<li><strong><u>数据送往SBUF</u></strong></li>
+<li><strong><u>发送、接收数据</u></strong></li>
+<li><strong><u>中断置位</u></strong></li>
+</ul>
+<h2 id="题-3"><a href="#题-3" class="headerlink" title="题"></a>题</h2><img src="/images/loading.png" data-original="/2022/11/28/%E5%8D%95%E7%89%87%E6%9C%BA%E5%A4%8D%E4%B9%A0/8.jpg" class title="This is an image"> 
+<h1 id="常用的一些寄存器"><a href="#常用的一些寄存器" class="headerlink" title="常用的一些寄存器"></a>常用的一些寄存器</h1><h2 id="片内特殊功能寄存器SFR"><a href="#片内特殊功能寄存器SFR" class="headerlink" title="片内特殊功能寄存器SFR"></a>片内特殊功能寄存器SFR</h2><img src="/images/loading.png" data-original="/2022/11/28/%E5%8D%95%E7%89%87%E6%9C%BA%E5%A4%8D%E4%B9%A0/sfr.jpg" class title="This is an image"> 
+<p>大多数特殊寄存器都在这里，<strong>但不包括PC！！</strong></p>
+<h2 id="程序状态寄存器PSW"><a href="#程序状态寄存器PSW" class="headerlink" title="程序状态寄存器PSW"></a>程序状态寄存器PSW</h2><p>用于表示运算结果的状态</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">位</th>
+<th style="text-align:center">7</th>
+<th style="text-align:center">6</th>
+<th style="text-align:center">5</th>
+<th style="text-align:center">4</th>
+<th style="text-align:center">3</th>
+<th style="text-align:center">2</th>
+<th style="text-align:center">1</th>
+<th style="text-align:center">0</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">位名</td>
+<td style="text-align:center">Cy</td>
+<td style="text-align:center">AC</td>
+<td style="text-align:center">F0</td>
+<td style="text-align:center">RS1</td>
+<td style="text-align:center">RS0</td>
+<td style="text-align:center">OV</td>
+<td style="text-align:center">F1</td>
+<td style="text-align:center">P</td>
+</tr>
+<tr>
+<td style="text-align:center">作用</td>
+<td style="text-align:center">进位/借位</td>
+<td style="text-align:center">辅助进位</td>
+<td style="text-align:center">自定义</td>
+<td style="text-align:center">寄存器选择</td>
+<td style="text-align:center">寄存器选择</td>
+<td style="text-align:center">溢出</td>
+<td style="text-align:center">自定义</td>
+<td style="text-align:center">奇偶效验</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 id="中断允许寄存器IE（管理中断允许）E开头"><a href="#中断允许寄存器IE（管理中断允许）E开头" class="headerlink" title="中断允许寄存器IE（管理中断允许）E开头"></a>中断允许寄存器IE（管理中断允许）E开头</h2><p>用于管理所有中断</p>
+<img src="/images/loading.png" data-original="/2022/11/28/%E5%8D%95%E7%89%87%E6%9C%BA%E5%A4%8D%E4%B9%A0/ie.jpg" class title="This is an image"> 
+<h2 id="中断优先级寄存器IP（管理中断优先级）P开头"><a href="#中断优先级寄存器IP（管理中断优先级）P开头" class="headerlink" title="中断优先级寄存器IP（管理中断优先级）P开头"></a>中断优先级寄存器IP（管理中断优先级）P开头</h2><img src="/images/loading.png" data-original="/2022/11/28/%E5%8D%95%E7%89%87%E6%9C%BA%E5%A4%8D%E4%B9%A0/ip.jpg" class title="This is an image"> 
+<p>外部中断2位，定时器2位，串口1位，共5位</p>
+<h2 id="定时器工作模式寄存器TMOD（管理定时器工作模式）"><a href="#定时器工作模式寄存器TMOD（管理定时器工作模式）" class="headerlink" title="定时器工作模式寄存器TMOD（管理定时器工作模式）"></a>定时器工作模式寄存器TMOD（管理定时器工作模式）</h2><p>8位，下4位控制T0，上4位控制T1</p>
+<h2 id="定时器中断控制寄存器TCON（管理定时器启动、定时器和外部中断的中断标志位）"><a href="#定时器中断控制寄存器TCON（管理定时器启动、定时器和外部中断的中断标志位）" class="headerlink" title="定时器中断控制寄存器TCON（管理定时器启动、定时器和外部中断的中断标志位）"></a>定时器中断控制寄存器TCON（管理定时器启动、定时器和外部中断的中断标志位）</h2><img src="/images/loading.png" data-original="/2022/11/28/%E5%8D%95%E7%89%87%E6%9C%BA%E5%A4%8D%E4%B9%A0/tcon.jpg" class title="This is an image"> 
+<p>其中IT和IE为控制外部中断的位</p>
+<p>需要操作的位只有IT和TR，其他都会自动复位</p>
+<h2 id="串行控制寄存器SCON（管理串口中断位和串口配置）"><a href="#串行控制寄存器SCON（管理串口中断位和串口配置）" class="headerlink" title="串行控制寄存器SCON（管理串口中断位和串口配置）"></a>串行控制寄存器SCON（管理串口中断位和串口配置）</h2><img src="/images/loading.png" data-original="/2022/11/28/%E5%8D%95%E7%89%87%E6%9C%BA%E5%A4%8D%E4%B9%A0/scon2.jpg" class title="This is an image"> 
+<h2 id="电源控制寄存器PCON（波特率翻倍）"><a href="#电源控制寄存器PCON（波特率翻倍）" class="headerlink" title="电源控制寄存器PCON（波特率翻倍）"></a>电源控制寄存器PCON（波特率翻倍）</h2><p>仅串口中需使用其第七位翻倍波特率</p>
+<h1 id="题-4"><a href="#题-4" class="headerlink" title="题"></a>题</h1><ul>
+<li><p>堆栈的作用：保护现场和断点</p>
+</li>
+<li><p>JB为判断当前位，为1则跳转</p>
+</li>
+</ul>
+<img src="/images/loading.png" data-original="/2022/11/28/%E5%8D%95%E7%89%87%E6%9C%BA%E5%A4%8D%E4%B9%A0/wxz.jpg" class title="This is an image"> 
+<p>如果是A，就是直接寻址，C则为位寻址，位寻址只能操作位</p>
+<img src="/images/loading.png" data-original="/2022/11/28/%E5%8D%95%E7%89%87%E6%9C%BA%E5%A4%8D%E4%B9%A0/ct.jpg" class title="This is an image"> 
+<ul>
+<li>C/(/T)：<strong>0为定时器模式</strong></li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2022/11/18/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E7%BA%BF%E6%80%A7%E8%A1%A8/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1178,349 +1642,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2022/10/31/C++-7/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/zoe.gif">
-      <meta itemprop="name" content="dhk">
-      <meta itemprop="description" content="记录一些学习日常">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="小董的BLOG">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/10/31/C++-7/" class="post-title-link" itemprop="url">C++_IO库</a>
-        </h2>
-
-        <div class="post-meta">
-		  
-		  
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2022-10-31 19:05:26" itemprop="dateCreated datePublished" datetime="2022-10-31T19:05:26+08:00">2022-10-31</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2023-01-11 19:27:55" itemprop="dateModified" datetime="2023-01-11T19:27:55+08:00">2023-01-11</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="IO类"><a href="#IO类" class="headerlink" title="IO类"></a>IO类</h1><p>在之前的一些用到输入与输出的程序都是用户对流的读写，也就是使用的iostream类，但是C++中的IO处理并不止通过流进行读写，为了支持不同的IO操作，标准库中还定义了其他的一些IO类，他们被包含在不同的头文件中：</p>
-<div class="table-container">
-<table>
-<thead>
-<tr>
-<th style="text-align:center">头文件</th>
-<th style="text-align:center">类</th>
-<th style="text-align:center">作用</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">iostream</td>
-<td style="text-align:center">(w)istream<br>(w)ostream<br>(w)iostream</td>
-<td style="text-align:center">从<strong>普通流</strong>中读写数据</td>
-</tr>
-<tr>
-<td style="text-align:center">fstream</td>
-<td style="text-align:center">(w)ifstream<br>(w)ofstream<br>(w)fstream</td>
-<td style="text-align:center">从<strong>文件流</strong>中读写数据</td>
-</tr>
-<tr>
-<td style="text-align:center">sstream</td>
-<td style="text-align:center">(w)istringstream<br>(w)ostringstream<br>(w)stringstream</td>
-<td style="text-align:center">从<strong>字符串流</strong>中读写数据</td>
-</tr>
-</tbody>
-</table>
-</div>
-<ul>
-<li>在类和其函数前添加w则为正常类对象、函数等（例如wcin，wcout）的宽字符版。</li>
-</ul>
-<h2 id="IO类型间的关系"><a href="#IO类型间的关系" class="headerlink" title="IO类型间的关系"></a>IO类型间的关系</h2><p>类型ifstream和istringstream都<strong>继承</strong>自istream，因此，我们如何使用istream，就如何使用其他IO类型。在之后介绍的标准库的流特性<strong>均可以无差别地使用于各个IO类型</strong>。</p>
-<h1 id="IO类型的特性"><a href="#IO类型的特性" class="headerlink" title="IO类型的特性"></a>IO类型的特性</h1><h2 id="IO对象不能拷贝"><a href="#IO对象不能拷贝" class="headerlink" title="IO对象不能拷贝"></a>IO对象不能拷贝</h2><p>当我们定义了一些IO对象时（通常是用于IO操作的一些函数），之前也使用过，是不能对这些对象进行拷贝或赋值的操作的，<strong>因此当我们操作流时，通常都是使用引用的方式传递和返回流</strong>，这也意味着这些IO操作函数的返回类型要定义为IO类的引用，参数中的流也需定义为IO类的引用。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">istream &amp;<span class="title">read</span><span class="params">(istream &amp;in, person &amp;item)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    in&gt;&gt;item.name&gt;&gt;item.addr;</span><br><span class="line">    <span class="keyword">return</span> in;</span><br><span class="line">&#125;<span class="comment">//上一章讲到的read函数就是一个IO操作函数</span></span><br></pre></td></tr></table></figure>
-<h2 id="条件状态"><a href="#条件状态" class="headerlink" title="条件状态"></a>条件状态</h2><p>当使用IO操作流时可能会发生多种错误，为了查询这些错误，标准库中定义了相关函数和标准以访问当前流的条件状态。</p>
-<p>流分为以下几个状态：（这些状态为IO类中定义）</p>
-<div class="table-container">
-<table>
-<thead>
-<tr>
-<th style="text-align:center">badbit</th>
-<th style="text-align:center">当前流已崩溃</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">failbit</td>
-<td style="text-align:center">当前IO操作失败了</td>
-</tr>
-<tr>
-<td style="text-align:center">eofbit</td>
-<td style="text-align:center">当前流到达了文件结束</td>
-</tr>
-<tr>
-<td style="text-align:center">goodbit</td>
-<td style="text-align:center">为0代表流正常</td>
-</tr>
-</tbody>
-</table>
-</div>
-<ul>
-<li>可以对这些状态位进行位运算</li>
-<li>badbit表示系统级错误，是不可恢复的错误。通常一旦被置位，流就无法再使用了。</li>
-<li>failbit表示可恢复的错误，修正后流可以机械使用。<strong>badbit被置位后failbit也会被置位</strong>。</li>
-<li>如果文件结束，failbit和eofbit<strong>都会被置位</strong>。</li>
-<li>上面三位<strong>任意一位有置位情况goodbit都会被置位</strong>。</li>
-</ul>
-<p>以下是IO类的一些查询函数：</p>
-<div class="table-container">
-<table>
-<thead>
-<tr>
-<th style="text-align:center">类的子函数</th>
-<th style="text-align:center">作用</th>
-<th style="text-align:center">返回值</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">eof()</td>
-<td style="text-align:center">查询eofbit状态</td>
-<td style="text-align:center">若对应状态位<strong>置位</strong>则返回ture</td>
-</tr>
-<tr>
-<td style="text-align:center">fail()</td>
-<td style="text-align:center">查询failbit状态</td>
-<td style="text-align:center">若对应状态位<strong>置位</strong>则返回ture</td>
-</tr>
-<tr>
-<td style="text-align:center">bad()</td>
-<td style="text-align:center">查询badbit状态</td>
-<td style="text-align:center">若对应状态位<strong>置位</strong>则返回ture</td>
-</tr>
-<tr>
-<td style="text-align:center">good()</td>
-<td style="text-align:center">查询goodbit状态</td>
-<td style="text-align:center">若对应状态位<strong>置位</strong>则返回ture</td>
-</tr>
-<tr>
-<td style="text-align:center">clear()</td>
-<td style="text-align:center">将流中所有条件状态位复位</td>
-<td style="text-align:center">void</td>
-</tr>
-<tr>
-<td style="text-align:center">rdstate()</td>
-<td style="text-align:center">返回当前流的状态</td>
-<td style="text-align:center">一种包含所有状态位信息的类，但类型同状态位</td>
-</tr>
-<tr>
-<td style="text-align:center">clear(flag)</td>
-<td style="text-align:center">复位指定状态位</td>
-<td style="text-align:center">void</td>
-</tr>
-<tr>
-<td style="text-align:center">setstate(flag)</td>
-<td style="text-align:center">置位指定状态位</td>
-<td style="text-align:center">void</td>
-</tr>
-</tbody>
-</table>
-</div>
-<h3 id="管理条件状态"><a href="#管理条件状态" class="headerlink" title="管理条件状态"></a>管理条件状态</h3><p>每进行一次流操作后恢复上一次的条件状态：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">auto</span> oldstate = cin.<span class="built_in">rdstate</span>();</span><br><span class="line">cin.<span class="built_in">clear</span>();</span><br><span class="line">cin&gt;&gt;....<span class="comment">//一次输入流操作</span></span><br><span class="line">cin.<span class="built_in">setstate</span>(oldstate);</span><br></pre></td></tr></table></figure>
-<p>通过位操作一次操作多个状态位：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//假设当前所有状态置位</span></span><br><span class="line">cin.<span class="built_in">clear</span>(cin.<span class="built_in">rdstate</span>() &amp; ~cin.failbit &amp; ~cin.badbit)<span class="comment">//只复位failbit，badbit</span></span><br></pre></td></tr></table></figure>
-<h2 id="输出流的缓冲"><a href="#输出流的缓冲" class="headerlink" title="输出流的缓冲"></a>输出流的缓冲</h2><h3 id="刷新缓冲区"><a href="#刷新缓冲区" class="headerlink" title="刷新缓冲区"></a>刷新缓冲区</h3><p>之前讲到过输出endl可以刷新缓冲区，还有以下操作也可以刷新</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cout&lt;&lt;endl; <span class="comment">//换行</span></span><br><span class="line">cout&lt;&lt;flush; <span class="comment">//不添加任何额外字符</span></span><br><span class="line">cout&lt;&lt;ends; <span class="comment">//添加一个空字符</span></span><br></pre></td></tr></table></figure>
-<h3 id="刷新缓冲区的作用"><a href="#刷新缓冲区的作用" class="headerlink" title="刷新缓冲区的作用"></a>刷新缓冲区的作用</h3><p>我其实也不是特别理解，姑且谈一下我的理解，这是网上的一个例程</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="built_in">setvbuf</span>( stdout, <span class="literal">NULL</span>, _IOLBF, <span class="number">1024</span> );  <span class="comment">//设置控制台输出为行缓存模式，把缓冲区与流相关 </span></span><br><span class="line">	cout &lt;&lt;<span class="string">&quot;hello world\n&quot;</span>&lt;&lt;endl;                </span><br><span class="line">	<span class="built_in">Sleep</span>(<span class="number">5000</span>);                            </span><br><span class="line">	cout &lt;&lt;<span class="string">&quot;leeboy&quot;</span> &lt;&lt;endl;                 </span><br><span class="line">	<span class="built_in">system</span>(<span class="string">&quot;pause&quot;</span>);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>如果第四行不刷新缓冲区，则4行内容会和7行在5s后一起输出，所以刷新缓冲区的作用应该是立即输出当前内容？而按照网上说法，如果不刷新缓冲区，输出是由系统每隔一段时间检测输出流是否有内容。</p>
-<h3 id="unitbuf操作符"><a href="#unitbuf操作符" class="headerlink" title="unitbuf操作符"></a>unitbuf操作符</h3><p>如果想设置每一次输出后自动刷新缓冲区，可以：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cout&lt;&lt;std::unitbuf;</span><br><span class="line">cout&lt;&lt;std::nounitbuf;<span class="comment">//恢复正常缓冲模式</span></span><br></pre></td></tr></table></figure>
-<h3 id="关联输入和输出流"><a href="#关联输入和输出流" class="headerlink" title="关联输入和输出流"></a>关联输入和输出流</h3><p>关联后任何试图从输入流读取数据的操作都会先刷新关联的输出流</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cin&gt;&gt;std::ival;<span class="comment">//默认情况下cin和cerr都关联到了cout</span></span><br></pre></td></tr></table></figure>
-<h1 id="文件的输入与输出"><a href="#文件的输入与输出" class="headerlink" title="文件的输入与输出"></a>文件的输入与输出</h1><p>头文件fstream中定义了三个类来支持关于文件的IO操作：</p>
-<ul>
-<li>ifstream：用于文件读操作，从给定文件读取内容</li>
-<li>ofstream：用于文件写操作</li>
-<li>fstream：读写操作，可以通过不同配置实现上两类的功能</li>
-</ul>
-<p>这些类都继承了iostream的相关操作，同时还定义了一些新的成员来管理与流相关的文件，以下列出了部分特有操作，<strong>这些操作都适用于上三个类</strong>，但不能对其他IO类调用</p>
-<div class="table-container">
-<table>
-<thead>
-<tr>
-<th style="text-align:center">操作</th>
-<th style="text-align:center">功能</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">fstream a;</td>
-<td style="text-align:center">创建一个未绑定的文件流</td>
-</tr>
-<tr>
-<td style="text-align:center">fstream a(s);</td>
-<td style="text-align:center">创建一个文件流，并打开名为s的文件，s为string类型或C风格字符串指针</td>
-</tr>
-<tr>
-<td style="text-align:center">a.open()</td>
-<td style="text-align:center">打开一个文件，并绑定至流a</td>
-</tr>
-<tr>
-<td style="text-align:center">a.close()</td>
-<td style="text-align:center">关闭绑定的文件</td>
-</tr>
-<tr>
-<td style="text-align:center">a.is_open()</td>
-<td style="text-align:center">返回一个bool值，指出文件是否成功打开</td>
-</tr>
-</tbody>
-</table>
-</div>
-<h2 id="文件的打开"><a href="#文件的打开" class="headerlink" title="文件的打开"></a>文件的打开</h2><p>刚刚讲到了有两种方式打开一个文件，分别是</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">fstream <span class="title">a</span><span class="params">(<span class="string">&quot;dhk.txt&quot;</span>)</span></span>;</span><br><span class="line"><span class="comment">///////////////////////</span></span><br><span class="line">fstream b;</span><br><span class="line">b.<span class="built_in">open</span>(<span class="string">&quot;dhk.txt&quot;</span>);</span><br></pre></td></tr></table></figure>
-<p>我们先详解一下open函数：</p>
-<h3 id="open-函数"><a href="#open-函数" class="headerlink" title="open()函数"></a>open()函数</h3><p>根据输入的参数数量，该函数有以下几个定义</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">public</span> member function</span></span><br><span class="line"><span class="function"> </span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">open</span> <span class="params">( <span class="type">const</span> <span class="type">char</span> * filename,</span></span></span><br><span class="line"><span class="params"><span class="function">            ios_base::openmode mode = ios_base::in | ios_base::out )</span></span>;</span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">open</span><span class="params">(<span class="type">const</span> <span class="type">wchar_t</span> *_Filename,</span></span></span><br><span class="line"><span class="params"><span class="function">        ios_base::openmode mode= ios_base::in | ios_base::out,</span></span></span><br><span class="line"><span class="params"><span class="function">        <span class="type">int</span> prot = ios_base::_Openprot)</span>；</span></span><br><span class="line"><span class="function"> </span></span><br></pre></td></tr></table></figure>
-<p>参数：</p>
-<ul>
-<li>filename：文件名</li>
-<li>open mode：打开方式</li>
-<li>prot：打开文件的属性，一般很少用到</li>
-</ul>
-<p>这里重点讲一下打开方式，刚刚我们讲过：头文件fstream中的fstream类可以实现读和写的操作，也就是可以通过不同的配置实现ifstream和ofstream的操作，也就是通过这里的打开方式配置。</p>
-<p>打开方式在ios类中定义：</p>
-<div class="table-container">
-<table>
-<thead>
-<tr>
-<th style="text-align:center">ios::in</th>
-<th style="text-align:center">为输入(读)而打开文件</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">ios::out</td>
-<td style="text-align:center">为输出(写)而打开文件</td>
-</tr>
-<tr>
-<td style="text-align:center">ios::ate</td>
-<td style="text-align:center">初始位置：文件尾</td>
-</tr>
-<tr>
-<td style="text-align:center">ios::app</td>
-<td style="text-align:center">所有输出附加在文件末尾</td>
-</tr>
-<tr>
-<td style="text-align:center">ios::trunc</td>
-<td style="text-align:center">如果文件已存在则先删除该文件</td>
-</tr>
-<tr>
-<td style="text-align:center">ios::binary</td>
-<td style="text-align:center">二进制方式</td>
-</tr>
-</tbody>
-</table>
-</div>
-<p><strong>这些方式可以通过或运算|组合使用</strong></p>
-<ul>
-<li>ate和binary通常用于打开任何类型的文件流对象</li>
-</ul>
-<h3 id="默认打开方式"><a href="#默认打开方式" class="headerlink" title="默认打开方式"></a>默认打开方式</h3><p>对于第二种方式<code>fstream a(&quot;dhk.txt&quot;);</code>其实是隐式地调用了open()函数，直接使用了默认打开方式：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">ofstream <span class="title">out</span><span class="params">(<span class="string">&quot;...&quot;</span>, ios::out)</span></span>;</span><br><span class="line"><span class="function">ifstream <span class="title">in</span><span class="params">(<span class="string">&quot;...&quot;</span>, ios::in)</span></span>;</span><br><span class="line"><span class="function">fstream <span class="title">foi</span><span class="params">(<span class="string">&quot;...&quot;</span>, ios::in|ios::out)</span></span>;</span><br></pre></td></tr></table></figure>
-<h3 id="以写模式打开一个文件会丢弃已有数据"><a href="#以写模式打开一个文件会丢弃已有数据" class="headerlink" title="以写模式打开一个文件会丢弃已有数据"></a>以写模式打开一个文件会丢弃已有数据</h3><p>默认情况下，当打开一个ofstream对象时，若没有指定模式，默认是隐含的使用截断(ios::trunc)，即每次打开该文件时会清空之前的内容，若要阻止清空，<strong>需显式地设置为ios::app模式</strong>，同时，使用app模式则隐式地包含了ios::out。</p>
-<h2 id="使用fstream对象代替iostream-amp"><a href="#使用fstream对象代替iostream-amp" class="headerlink" title="使用fstream对象代替iostream&amp;"></a>使用fstream对象代替iostream&amp;</h2><p>由于fstream类继承自iostream，因此，接受一个iostream类型引用参数的函数也可以接收fstream类型：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"> <span class="keyword">struct</span> <span class="title class_">person</span></span><br><span class="line"> &#123;</span><br><span class="line">    string name;</span><br><span class="line">    string addr;</span><br><span class="line"> &#125;;</span><br><span class="line"></span><br><span class="line"><span class="function">istream &amp;<span class="title">read</span><span class="params">(istream &amp;in, person &amp;item)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    in&gt;&gt;item.name&gt;&gt;item.addr;</span><br><span class="line">    <span class="keyword">return</span> in;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">ostream &amp;<span class="title">print</span><span class="params">(ostream &amp;out, person &amp;item)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    out&lt;&lt;<span class="string">&quot;NAME: &quot;</span>&lt;&lt;item.name&lt;&lt;endl;</span><br><span class="line">    out&lt;&lt;<span class="string">&quot;ADDR: &quot;</span>&lt;&lt;item.addr&lt;&lt;endl;</span><br><span class="line">    <span class="keyword">return</span> out;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"> <span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"> </span>&#123;</span><br><span class="line">    person man;</span><br><span class="line">    <span class="function">ifstream <span class="title">in</span><span class="params">(<span class="string">&quot;D.txt&quot;</span>)</span></span>;</span><br><span class="line">    <span class="function">ofstream <span class="title">out</span><span class="params">(<span class="string">&quot;dhk.txt&quot;</span>)</span></span>;</span><br><span class="line">    <span class="built_in">read</span>(in,man);	<span class="comment">//使用ifstream代替istream</span></span><br><span class="line">    <span class="built_in">print</span>(out,man); 	<span class="comment">//使用ofstream代替ostream</span></span><br><span class="line">    out.<span class="built_in">close</span>();</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
-<h2 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h2><p>对一个已经打开的文件流再调用open函数会导致该流的failbit置位，后续操作都会失败</p>
-<ul>
-<li>查看文件是否成功打开的快捷方式：if(a);</li>
-</ul>
-<h2 id="文件打开路径的问题"><a href="#文件打开路径的问题" class="headerlink" title="文件打开路径的问题"></a>文件打开路径的问题</h2><p>文件的默认打开路径我也没搞懂，最好使用相对路径打开相关文件</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">ifstream <span class="title">in</span><span class="params">(<span class="string">&quot;.vscode\\fstream\\D.txt&quot;</span>)</span></span>;</span><br></pre></td></tr></table></figure>
-<p><u><strong>并且这里要使用双斜杠！！！</strong></u></p>
-<h1 id="字符串流"><a href="#字符串流" class="headerlink" title="字符串流"></a>字符串流</h1><p>在头文件sstream中定义了三个类来支持操作字符串IO，分别是：</p>
-<ul>
-<li>istringstream</li>
-<li>ostirngstream</li>
-<li>stringstream</li>
-</ul>
-<p>这些类同样继承自iostream，用法同文件流，类特有操作有：</p>
-<div class="table-container">
-<table>
-<thead>
-<tr>
-<th style="text-align:center">stringstream a;</th>
-<th style="text-align:center">创建一个未绑定string的流</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">stringstream a(s);</td>
-<td style="text-align:center">与string对象s绑定的一个字符串流</td>
-</tr>
-<tr>
-<td style="text-align:center">a.str();</td>
-<td style="text-align:center">返回a中所保存的所有字符串</td>
-</tr>
-<tr>
-<td style="text-align:center">a.str();</td>
-<td style="text-align:center">将s拷贝至a中，返回void</td>
-</tr>
-<tr>
-<td style="text-align:center">a.clear();</td>
-<td style="text-align:center">清空流</td>
-</tr>
-</tbody>
-</table>
-</div>
-<h2 id="读取string"><a href="#读取string" class="headerlink" title="读取string"></a>读取string</h2><p>与文件流相同，stringstream也可以实现读取和输入的功能</p>
-<p>下面以一个例程说明string流的用法 </p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;fstream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;string&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;windows.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;sstream&gt;</span></span></span><br><span class="line"> <span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"> <span class="keyword">struct</span> <span class="title class_">person</span></span><br><span class="line"> &#123;</span><br><span class="line">    string name;</span><br><span class="line">    string addr;</span><br><span class="line"> &#125;;</span><br><span class="line"><span class="function">istream &amp;<span class="title">read</span><span class="params">(istream &amp;in, person &amp;item)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    in&gt;&gt;item.name&gt;&gt;item.addr;</span><br><span class="line">    <span class="keyword">return</span> in;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function">ostream &amp;<span class="title">print</span><span class="params">(ostream &amp;out, person &amp;item)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    out&lt;&lt;<span class="string">&quot;NAME: &quot;</span>&lt;&lt;item.name&lt;&lt;endl;</span><br><span class="line">    out&lt;&lt;<span class="string">&quot;ADDR: &quot;</span>&lt;&lt;item.addr&lt;&lt;endl;</span><br><span class="line">    <span class="keyword">return</span> out;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    person man;</span><br><span class="line">    string line;</span><br><span class="line">    <span class="function">ifstream <span class="title">in</span><span class="params">(<span class="string">&quot;sstream\\D.txt&quot;</span>)</span></span>;	<span class="comment">//打开一个txt文件并绑定一个输入文件流in</span></span><br><span class="line">   <span class="comment">/*D.txt的内容：</span></span><br><span class="line"><span class="comment">   dhk 12</span></span><br><span class="line"><span class="comment">   aca 34</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">    <span class="keyword">while</span>(<span class="built_in">getline</span>(in,line))	<span class="comment">//分别处理文件中每一行的数据</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="function">stringstream <span class="title">s</span><span class="params">(line)</span></span>;<span class="comment">//将该行内容与字符串流s绑定，s的寿命为当次循环，当次循环结束s自动销毁</span></span><br><span class="line">        s&gt;&gt;man.name;<span class="comment">//将该行第一个词输入进类成员</span></span><br><span class="line">        s&gt;&gt;man.addr;<span class="comment">//该行第二个词输入进类成员</span></span><br><span class="line">        <span class="built_in">print</span>(cout,man);<span class="comment">//通过iostream输出类成员</span></span><br><span class="line">    &#125;</span><br><span class="line">    in.<span class="built_in">close</span>();<span class="comment">//关闭打开的文件</span></span><br><span class="line">    <span class="built_in">system</span>(<span class="string">&quot;pause&quot;</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>可以看出，流每次输出（入）的内容为一个“词”，也就是说空格和换行都会结束该次输出（入）的内容</li>
-</ul>
-<h2 id="输出到字符串流"><a href="#输出到字符串流" class="headerlink" title="输出到字符串流"></a>输出到字符串流</h2><p>当我们想逐步构造想要输出的内容，最后一口气打印时，就可以使用字符串的输出流，将构造好的内容分布写入到ostingstream（或stringstream的输出流）中，最后通过函数.str()输出到cout或者你想要的其他流中</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   
   <nav class="pagination">
     <a class="extend prev" rel="prev" href="/page/13/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/13/">13</a><span class="page-number current">14</span><a class="page-number" href="/page/15/">15</a><span class="space">&hellip;</span><a class="page-number" href="/page/22/">22</a><a class="extend next" rel="next" href="/page/15/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
@@ -1590,7 +1711,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">65</span>
+          <span class="site-state-item-count">66</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1707,11 +1828,11 @@
         pbOptions.networks = "Wechat,QQZone,Weibo,Douban,Twitter,Facebook";
       new needShareButton('#needsharebutton-postbottom', pbOptions);
   </script>
-<script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script><script>
             window.imageLazyLoadSetting = {
                 isSPA: false,
                 preloadRatio: 1,
                 processImages: null,
             };
-        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(e.href.match(t)||e.href.match(r))&&(e.href=a.dataset.original)})});</script><script>!function(n){n.imageLazyLoadSetting.processImages=o;var e=n.imageLazyLoadSetting.isSPA,i=n.imageLazyLoadSetting.preloadRatio||1,r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]"));function o(){e&&(r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")));for(var t,a=0;a<r.length;a++)0<=(t=(t=r[a]).getBoundingClientRect()).bottom&&0<=t.left&&t.top<=(n.innerHeight*i||document.documentElement.clientHeight*i)&&function(){var t,e,n,i,o=r[a];t=o,e=function(){r=r.filter(function(t){return o!==t})},n=new Image,i=t.getAttribute("data-original"),n.onload=function(){t.src=i,e&&e()},t.src!==i&&(n.src=i)}()}o(),n.addEventListener("scroll",function(){var t,e;t=o,e=n,clearTimeout(t.tId),t.tId=setTimeout(function(){t.call(e)},500)})}(this);</script><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script></body>
+        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(e.href.match(t)||e.href.match(r))&&(e.href=a.dataset.original)})});</script><script>!function(n){n.imageLazyLoadSetting.processImages=o;var e=n.imageLazyLoadSetting.isSPA,i=n.imageLazyLoadSetting.preloadRatio||1,r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]"));function o(){e&&(r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")));for(var t,a=0;a<r.length;a++)0<=(t=(t=r[a]).getBoundingClientRect()).bottom&&0<=t.left&&t.top<=(n.innerHeight*i||document.documentElement.clientHeight*i)&&function(){var t,e,n,i,o=r[a];t=o,e=function(){r=r.filter(function(t){return o!==t})},n=new Image,i=t.getAttribute("data-original"),n.onload=function(){t.src=i,e&&e()},t.src!==i&&(n.src=i)}()}o(),n.addEventListener("scroll",function(){var t,e;t=o,e=n,clearTimeout(t.tId),t.tId=setTimeout(function(){t.call(e)},500)})}(this);</script></body>
 </html>

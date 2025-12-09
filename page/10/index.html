@@ -197,6 +197,134 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2024/04/18/ROS-3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/zoe.gif">
+      <meta itemprop="name" content="dhk">
+      <meta itemprop="description" content="记录一些学习日常">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小董的BLOG">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/04/18/ROS-3/" class="post-title-link" itemprop="url">ROS中的常用组件</a>
+        </h2>
+
+        <div class="post-meta">
+		  
+		  
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2024-04-18 15:50:30" itemprop="dateCreated datePublished" datetime="2024-04-18T15:50:30+08:00">2024-04-18</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2024-04-21 22:46:14" itemprop="dateModified" datetime="2024-04-21T22:46:14+08:00">2024-04-21</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="1-launch启动文件"><a href="#1-launch启动文件" class="headerlink" title="1.launch启动文件"></a>1.launch启动文件</h1><h2 id="基本元素"><a href="#基本元素" class="headerlink" title="基本元素"></a>基本元素</h2><p>启动文件Launch File是ROS中一种同时启动多个节点的途径。可以自动启动ROS Master并实现多个节点的各种配置，为多个节点的操作提供了很大便利。</p>
+<p>先来看一个简单的.launch文件：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">launch</span>&gt;</span></span><br><span class="line">   <span class="comment">&lt;!-- Turtlesim Node，注意注释的格式--&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">node</span> <span class="attr">pkg</span>=<span class="string">&quot;turtlesim&quot;</span> <span class="attr">type</span>=<span class="string">&quot;turtlesim_node&quot;</span> <span class="attr">name</span>=<span class="string">&quot;sim&quot;</span>/&gt;</span></span><br><span class="line"></span><br><span class="line">   <span class="tag">&lt;<span class="name">node</span> <span class="attr">pkg</span>=<span class="string">&quot;turtlesim&quot;</span> <span class="attr">type</span>=<span class="string">&quot;turtle_teleop_key&quot;</span> <span class="attr">name</span>=<span class="string">&quot;teleop&quot;</span> <span class="attr">output</span>=<span class="string">&quot;screen&quot;</span>/&gt;</span></span><br><span class="line">   <span class="comment">&lt;!-- Axes --&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;scale_linear&quot;</span> <span class="attr">value</span>=<span class="string">&quot;2&quot;</span> <span class="attr">type</span>=<span class="string">&quot;double&quot;</span>/&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;scale_angular&quot;</span> <span class="attr">value</span>=<span class="string">&quot;2&quot;</span> <span class="attr">type</span>=<span class="string">&quot;double&quot;</span>/&gt;</span></span><br><span class="line"></span><br><span class="line">   <span class="tag">&lt;<span class="name">node</span> <span class="attr">pkg</span>=<span class="string">&quot;learning_tf&quot;</span> <span class="attr">type</span>=<span class="string">&quot;turtle_tf_broadcaster&quot;</span></span></span><br><span class="line"><span class="tag">         <span class="attr">args</span>=<span class="string">&quot;/turtle1&quot;</span> <span class="attr">name</span>=<span class="string">&quot;turtle1_tf_broadcaster&quot;</span> /&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">node</span> <span class="attr">pkg</span>=<span class="string">&quot;learning_tf&quot;</span> <span class="attr">type</span>=<span class="string">&quot;turtle_tf_broadcaster&quot;</span></span></span><br><span class="line"><span class="tag">         <span class="attr">args</span>=<span class="string">&quot;/turtle2&quot;</span> <span class="attr">name</span>=<span class="string">&quot;turtle2_tf_broadcaster&quot;</span> /&gt;</span></span><br><span class="line"></span><br><span class="line"> <span class="tag">&lt;/<span class="name">launch</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>其中：</p>
+<ul>
+<li><p><code>&lt;launch&gt;...&lt;/launch&gt;</code>为XML语法中的根元素，XML语法要求每个文件必须包含一个根元素，文件中其他内容都必须包含在该标签内。</p>
+</li>
+<li><p><code>&lt;node.../&gt;</code>为启动ROS节点的标签元素，由上述定义规则可知，在launch文件中启动一个节点需要三个属性：</p>
+<ul>
+<li>pkg：该节点所在<strong>功能包</strong>的名字</li>
+<li>type：该节点的<strong>可执行文件</strong>名字，可执行文件是在为CMake_Lists中通过add_executable定义的</li>
+<li>name：用于定义节点运行中的名字，<strong>会覆盖掉init()中定义的节点名字</strong></li>
+</ul>
+<p>此外，还有可能用到：</p>
+<ul>
+<li>output=”screen”：将节点的标准输出打印到终端屏幕</li>
+<li>respawn=”ture”：当节点停止时会自动重启，默认false</li>
+<li>require=”ture”：必要节点，当该节点终止时launch中的其他节点也终止</li>
+<li>ns=”namespace”：为节点内的相对名称添加命名空间前缀</li>
+<li>args=”arguments”：节点需要的输入参数</li>
+</ul>
+</li>
+</ul>
+<h2 id="参数设置"><a href="#参数设置" class="headerlink" title="参数设置"></a>参数设置</h2><p>变量声明，由param和arg两种标签元素，它们的作用是不同的</p>
+<ul>
+<li><p><code>&lt;param.../&gt;</code>：设置ros中运行的参数：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">&quot;scale_linear&quot;</span> <span class="attr">value</span>=<span class="string">&quot;2&quot;</span> <span class="attr">type</span>=<span class="string">&quot;double&quot;</span>/&gt;</span></span><br></pre></td></tr></table></figure>
+<p>作用显而易见：名为scale_linear的参数（parameter）的值被设置为了2，类型为double</p>
+</li>
+<li><p><code>&lt;arg.../&gt;</code>设置仅限于launch内部使用的局部变量</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">arg</span> <span class="attr">name</span>=<span class="string">&quot;aca&quot;</span> <span class="attr">default</span>=<span class="string">&quot;value&quot;</span>/&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="重映射机制（重要）"><a href="#重映射机制（重要）" class="headerlink" title="重映射机制（重要）"></a>重映射机制（重要）</h2><p>ROS提供一种重映射机制，便于将社区中其他人的功能包提供的接口进行重映射，而不是直接修改。</p>
+<p>例如乌龟控制节点发布的控制话题可能是/turtlebot/cmd_vel，但是我们机器人订阅的话题是/cmd_vel，此时只需要重映射，我们的机器人就能收到话题消息了</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">remap</span> <span class="attr">from</span>=<span class="string">&quot;/turtlebot/cmd_vel&quot;</span> <span class="attr">to</span>=<span class="string">&quot;/com_vel&quot;</span>/&gt;</span></span><br></pre></td></tr></table></figure>
+<h1 id="2-TF变换"><a href="#2-TF变换" class="headerlink" title="2.TF变换"></a>2.TF变换</h1><p>TF功能包使用树形数据结构，可以让用户跟踪多个坐标系，以时间为轴跟踪这些坐标系（默认10s内），并允许开发者请求如下数据：</p>
+<ul>
+<li>5s前，机器人头部坐标系相对于全局坐标系是怎样的？</li>
+<li>机器人夹取的物体相对于机器人中心坐标系的位置在哪？</li>
+<li>机器人中心坐标系相对于全局坐标系的位置在哪？</li>
+</ul>
+<p>想要使用TF功能包，总体来说要以下两个步骤：</p>
+<ul>
+<li>监听TF变换，接收并缓存系统中发布的所有坐标数据，并查询需要的坐标变换关系</li>
+<li>广播TF变换，向系统广播坐标变换关系</li>
+</ul>
+<h2 id="乌龟例程中的TF"><a href="#乌龟例程中的TF" class="headerlink" title="乌龟例程中的TF"></a>乌龟例程中的TF</h2><p>该环境若出现问题可看<a target="_blank" rel="noopener" href="https://dhkkk.gitee.io/2024/02/19/linux杂/">linux、ROS杂 | 小董的BLOG</a></p>
+<ul>
+<li>准备库环境：<code>sudo apt-get install ros-noetic-turtle-tf</code></li>
+<li>启动launch文件进行实验：<code>roslaunch turtle_tf turtle_tf_dmeo.launch</code></li>
+<li>开启键盘控制：<code>rosrun turtlesim turtle_teleop_key</code></li>
+</ul>
+<p>可得到两只乌龟，一只会跟踪另一只</p>
+<ul>
+<li><code>rosrun tf view_frames</code>后可在用户根目录下找到frames.pdf。可得当前系统中存在三个坐标系：world、turtle1、turtle2，其中world为TF树的根节点。</li>
+<li><code>rosrun tf tf_echo turtle1 turtle2</code>可实时查看当前turtle2跟随turtle1所需的坐标变换</li>
+</ul>
+<p>得到坐标变换后，便可以计算两乌龟间的距离和角度。</p>
+<h2 id="创建TF广播器"><a href="#创建TF广播器" class="headerlink" title="创建TF广播器"></a>创建TF广播器</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;ros/ros.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;tf/transform_broadcaster.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;turtlesim/Pose.h&gt;</span></span></span><br><span class="line"></span><br><span class="line">std::string turtle_name;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">poseCallback</span><span class="params">(<span class="type">const</span> turtlesim::PoseConstPtr&amp; msg)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">// tf广播器</span></span><br><span class="line">    <span class="type">static</span> tf::TransformBroadcaster br;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 根据乌龟当前的位姿，设置相对于世界坐标系的坐标变换</span></span><br><span class="line">    tf::Transform transform;</span><br><span class="line">    transform.<span class="built_in">setOrigin</span>( tf::<span class="built_in">Vector3</span>(msg-&gt;x, msg-&gt;y, <span class="number">0.0</span>) );<span class="comment">//平移矩阵，因为为平面移动，第三项z为0</span></span><br><span class="line">    tf::Quaternion q;</span><br><span class="line">    q.<span class="built_in">setRPY</span>(<span class="number">0</span>, <span class="number">0</span>, msg-&gt;theta);<span class="comment">//旋转矩阵，平面上只有yaw有值</span></span><br><span class="line">    transform.<span class="built_in">setRotation</span>(q);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 发布坐标变换</span></span><br><span class="line">    br.<span class="built_in">sendTransform</span>(tf::<span class="built_in">StampedTransform</span>(transform, ros::Time::<span class="built_in">now</span>(), <span class="string">&quot;world&quot;</span>, turtle_name));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span>** argv)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">// 初始化节点</span></span><br><span class="line">    ros::<span class="built_in">init</span>(argc, argv, <span class="string">&quot;my_tf_broadcaster&quot;</span>);</span><br><span class="line">    <span class="keyword">if</span> (argc != <span class="number">2</span>)<span class="comment">//argc为输入字符串个数</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">ROS_ERROR</span>(<span class="string">&quot;need turtle name as argument&quot;</span>); </span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">    &#125;;</span><br><span class="line">    turtle_name = argv[<span class="number">1</span>];<span class="comment">//输入的参数从argv[1]开始存放</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 订阅乌龟的pose信息</span></span><br><span class="line">    ros::NodeHandle node;</span><br><span class="line">    ros::Subscriber sub = node.<span class="built_in">subscribe</span>(turtle_name+<span class="string">&quot;/pose&quot;</span>, <span class="number">10</span>, &amp;poseCallback);</span><br><span class="line"></span><br><span class="line">    ros::<span class="built_in">spin</span>();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h2 id="创建TF监听器"><a href="#创建TF监听器" class="headerlink" title="创建TF监听器"></a>创建TF监听器</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;ros/ros.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;tf/transform_listener.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;geometry_msgs/Twist.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;turtlesim/Spawn.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span>** argv)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">// 初始化节点</span></span><br><span class="line">    ros::<span class="built_in">init</span>(argc, argv, <span class="string">&quot;my_tf_listener&quot;</span>);</span><br><span class="line"></span><br><span class="line">    ros::NodeHandle node;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 通过服务调用，产生第二只乌龟turtle2</span></span><br><span class="line">    ros::service::<span class="built_in">waitForService</span>(<span class="string">&quot;spawn&quot;</span>);</span><br><span class="line">    ros::ServiceClient add_turtle =</span><br><span class="line">    node.<span class="built_in">serviceClient</span>&lt;turtlesim::Spawn&gt;(<span class="string">&quot;spawn&quot;</span>);</span><br><span class="line">    turtlesim::Spawn srv;</span><br><span class="line">    add_turtle.<span class="built_in">call</span>(srv);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 定义turtle2的速度控制发布器</span></span><br><span class="line">    ros::Publisher turtle_vel =</span><br><span class="line">    node.<span class="built_in">advertise</span>&lt;geometry_msgs::Twist&gt;(<span class="string">&quot;turtle2/cmd_vel&quot;</span>, <span class="number">10</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// tf监听器,创建后自动接收TF树的消息并缓存10s</span></span><br><span class="line">    tf::TransformListener listener;</span><br><span class="line"></span><br><span class="line">    <span class="function">ros::Rate <span class="title">rate</span><span class="params">(<span class="number">10.0</span>)</span></span>;</span><br><span class="line">    <span class="keyword">while</span> (node.<span class="built_in">ok</span>())</span><br><span class="line">    &#123;</span><br><span class="line">        tf::StampedTransform transform;</span><br><span class="line">        <span class="keyword">try</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">// 查找turtle2与turtle1的坐标变换</span></span><br><span class="line">            listener.<span class="built_in">waitForTransform</span>(<span class="string">&quot;/turtle2&quot;</span>, <span class="string">&quot;/turtle1&quot;</span>, ros::<span class="built_in">Time</span>(<span class="number">0</span>), ros::<span class="built_in">Duration</span>(<span class="number">3.0</span>));<span class="comment">//给定目标坐标系和源坐标系，等待两个坐标系之间一定周期下的变换关系，第四个参数为超时时间（该函数会产生堵塞）</span></span><br><span class="line">            listener.<span class="built_in">lookupTransform</span>(<span class="string">&quot;/turtle2&quot;</span>, <span class="string">&quot;/turtle1&quot;</span>, ros::<span class="built_in">Time</span>(<span class="number">0</span>), transform);<span class="comment">//给定目标坐标系和源坐标系，得到两个坐标系之间一定周期下的坐标变换（存入第四个参数中），ros::Time(0)表示想要的是最新的一次坐标变换</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">catch</span> (tf::TransformException &amp;ex) </span><br><span class="line">        &#123;</span><br><span class="line">            <span class="built_in">ROS_ERROR</span>(<span class="string">&quot;%s&quot;</span>,ex.<span class="built_in">what</span>());</span><br><span class="line">            ros::<span class="built_in">Duration</span>(<span class="number">1.0</span>).<span class="built_in">sleep</span>();</span><br><span class="line">            <span class="keyword">continue</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 根据turtle1和turtle2之间的坐标变换，计算turtle2需要运动的线速度和角速度</span></span><br><span class="line">        <span class="comment">// 并发布速度控制指令，使turtle2向turtle1移动</span></span><br><span class="line">        geometry_msgs::Twist vel_msg;</span><br><span class="line">        vel_msg.angular.z = <span class="number">4.0</span> * <span class="built_in">atan2</span>(transform.<span class="built_in">getOrigin</span>().<span class="built_in">y</span>(),</span><br><span class="line">                                        transform.<span class="built_in">getOrigin</span>().<span class="built_in">x</span>());</span><br><span class="line">        vel_msg.linear.x = <span class="number">0.5</span> * <span class="built_in">sqrt</span>(<span class="built_in">pow</span>(transform.<span class="built_in">getOrigin</span>().<span class="built_in">x</span>(), <span class="number">2</span>) +</span><br><span class="line">                                      <span class="built_in">pow</span>(transform.<span class="built_in">getOrigin</span>().<span class="built_in">y</span>(), <span class="number">2</span>));</span><br><span class="line">        turtle_vel.<span class="built_in">publish</span>(vel_msg);</span><br><span class="line"></span><br><span class="line">        rate.<span class="built_in">sleep</span>();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h2 id="通过launch文件运行这些节点"><a href="#通过launch文件运行这些节点" class="headerlink" title="通过launch文件运行这些节点"></a>通过launch文件运行这些节点</h2><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">launch</span>&gt;</span></span><br><span class="line">   <span class="comment">&lt;!-- 海龟仿真器 --&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">node</span> <span class="attr">pkg</span>=<span class="string">&quot;turtlesim&quot;</span> <span class="attr">type</span>=<span class="string">&quot;turtlesim_node&quot;</span> <span class="attr">name</span>=<span class="string">&quot;sim&quot;</span>/&gt;</span></span><br><span class="line"></span><br><span class="line">   <span class="comment">&lt;!-- 键盘控制 --&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">node</span> <span class="attr">pkg</span>=<span class="string">&quot;turtlesim&quot;</span> <span class="attr">type</span>=<span class="string">&quot;turtle_teleop_key&quot;</span> <span class="attr">name</span>=<span class="string">&quot;teleop&quot;</span> <span class="attr">output</span>=<span class="string">&quot;screen&quot;</span>/&gt;</span></span><br><span class="line"></span><br><span class="line">   <span class="comment">&lt;!-- 两只海龟的tf广播,用同一可执行文件创建两个广播节点 --&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">node</span> <span class="attr">pkg</span>=<span class="string">&quot;learning_tf&quot;</span> <span class="attr">type</span>=<span class="string">&quot;turtle_tf_broadcaster&quot;</span></span></span><br><span class="line"><span class="tag">         <span class="attr">args</span>=<span class="string">&quot;/turtle1&quot;</span> <span class="attr">name</span>=<span class="string">&quot;turtle1_tf_broadcaster&quot;</span> /&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">node</span> <span class="attr">pkg</span>=<span class="string">&quot;learning_tf&quot;</span> <span class="attr">type</span>=<span class="string">&quot;turtle_tf_broadcaster&quot;</span></span></span><br><span class="line"><span class="tag">         <span class="attr">args</span>=<span class="string">&quot;/turtle2&quot;</span> <span class="attr">name</span>=<span class="string">&quot;turtle2_tf_broadcaster&quot;</span> /&gt;</span></span><br><span class="line"></span><br><span class="line">   <span class="comment">&lt;!-- 监听tf广播，并且控制turtle2移动 --&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">node</span> <span class="attr">pkg</span>=<span class="string">&quot;learning_tf&quot;</span> <span class="attr">type</span>=<span class="string">&quot;turtle_tf_listener&quot;</span></span></span><br><span class="line"><span class="tag">         <span class="attr">name</span>=<span class="string">&quot;listener&quot;</span> /&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">launch</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2024/04/15/ROS-2/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -528,229 +656,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2024/02/19/linux%E6%9D%82/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/zoe.gif">
-      <meta itemprop="name" content="dhk">
-      <meta itemprop="description" content="记录一些学习日常">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="小董的BLOG">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/02/19/linux%E6%9D%82/" class="post-title-link" itemprop="url">linux、ROS杂</a>
-        </h2>
-
-        <div class="post-meta">
-		  
-		  
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2024-02-19 17:06:26" itemprop="dateCreated datePublished" datetime="2024-02-19T17:06:26+08:00">2024-02-19</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-04-19 16:28:13" itemprop="dateModified" datetime="2024-04-19T16:28:13+08:00">2024-04-19</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="Ubuntu网络图标消失"><a href="#Ubuntu网络图标消失" class="headerlink" title="Ubuntu网络图标消失"></a>Ubuntu网络图标消失</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo service network-manager stop</span><br><span class="line">sudo rm /var/lib/NetworkManager/NetworkManager.state </span><br><span class="line">sudo service network-manager start</span><br></pre></td></tr></table></figure>
-<h1 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h1><div class="table-container">
-<table>
-<thead>
-<tr>
-<th>ls</th>
-<th>查看当前目录</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>cd</td>
-<td>进入目标路径</td>
-</tr>
-<tr>
-<td>pwd</td>
-<td>查看当前路径</td>
-</tr>
-<tr>
-<td>mkdir</td>
-<td>创建目录</td>
-</tr>
-<tr>
-<td>rmdir/rm</td>
-<td>删除目录</td>
-</tr>
-<tr>
-<td>touch</td>
-<td>创建空文件</td>
-</tr>
-<tr>
-<td>echo</td>
-<td>将内容回显到标准输出，可重定向</td>
-</tr>
-<tr>
-<td>file</td>
-<td>查看文件类型</td>
-</tr>
-<tr>
-<td>more/less</td>
-<td>查看文件内容，空格翻页，q退出。（less更灵活，/..搜索字符串）</td>
-</tr>
-<tr>
-<td>head/tail</td>
-<td>查看文件头部/尾部</td>
-</tr>
-<tr>
-<td>cat</td>
-<td>将一个或多个文件输出到标准输出，可重定向</td>
-</tr>
-<tr>
-<td>cat -n</td>
-<td>从1开始对输出行进行编号，-s：将多行空白合并</td>
-</tr>
-<tr>
-<td>tar</td>
-<td>-c文件打包；-x解包；-A合并；-f指定文件，加在最后；-C到指定目录</td>
-</tr>
-<tr>
-<td><em>cvf xvf ..-C..</em></td>
-<td>-j调用bzip2；-z调用gzip；-Z调用compress；-t列出列表;-v详细信息</td>
-</tr>
-<tr>
-<td>mv</td>
-<td>文件改名、移动。路径相同则改名，不同则移动</td>
-</tr>
-<tr>
-<td>cp</td>
-<td>文件复制</td>
-</tr>
-<tr>
-<td>clear</td>
-<td>清屏</td>
-</tr>
-<tr>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td></td>
-</tr>
-</tbody>
-</table>
-</div>
-<ul>
-<li><p>find [路径] -name “”</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">无路径默认桌面</span><br><span class="line">find -name &quot;*1*&quot;	名字含1的文件</span><br><span class="line">find -name &quot;*.txt&quot;	为后缀的文件</span><br><span class="line">find -name &quot;1*&quot;	以1为开头的文件</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>tar</p>
-<p>打/解包文件，解包后文件存放路径为当且文件夹</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">tar -cvf test.tar 1 2</span><br><span class="line">tar -xvf test.tar</span><br></pre></td></tr></table></figure>
-<p>tar下的压缩与解压</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">tar -zcvf test.gz 1 2</span><br><span class="line">tar -zxvf test.gz</span><br><span class="line">tar -zxvf test.gz -C 指定路径（必须存在）</span><br><span class="line"></span><br><span class="line">tar -jcvf test.bz2 1 2</span><br><span class="line">tar -jxvf test.bz2</span><br><span class="line">tar -jxvf test.bz2 -C 指定路径（必须存在）</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>软件安装</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># 1. 安装软件</span><br><span class="line">sudo apt install 软件包</span><br><span class="line"># 2. 卸载软件</span><br><span class="line">sudo apt remove 软件名</span><br><span class="line"># 3. 更新已安装的包</span><br><span class="line">sudo apt upgrade</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>which 提示文件/命令所在位置</p>
-</li>
-</ul>
-<h2 id="杀死进程"><a href="#杀死进程" class="headerlink" title="杀死进程"></a>杀死进程</h2><ul>
-<li>xkill    强制关闭窗口</li>
-<li>kill (pid号)     pid号用ps -aux查询</li>
-<li>pkill (程序名)</li>
-</ul>
-<h1 id="ROS无法定位软件包"><a href="#ROS无法定位软件包" class="headerlink" title="ROS无法定位软件包"></a>ROS无法定位软件包</h1><p><a target="_blank" rel="noopener" href="https://fishros.org.cn/forum/topic/149/e-无法定位软件包/3">E：无法定位软件包 | 鱼香ROS (fishros.org.cn)</a></p>
-<p>版本对应or源的问题，ubuntu20对应noetic</p>
-<h1 id="ROS-TF乌龟程序报错"><a href="#ROS-TF乌龟程序报错" class="headerlink" title="ROS TF乌龟程序报错"></a>ROS TF乌龟程序报错</h1><p><code>sudo apt install python-is-python3</code>升级python版本</p>
-<h1 id="view-frames意外停止"><a href="#view-frames意外停止" class="headerlink" title="view_frames意外停止"></a><strong>view_frames</strong>意外停止</h1><ul>
-<li><code>sudo apt-get install vim</code></li>
-<li><code>sudo vim /opt/ros/noetic/lib/tf/view_frames</code> </li>
-<li>89行处，修改为 <code>m = r.search(vstr.decode(&#39;utf-8&#39;))</code> </li>
-</ul>
-<h2 id="Vim的输入模式"><a href="#Vim的输入模式" class="headerlink" title="Vim的输入模式"></a>Vim的输入模式</h2><p>在输入模式下，Vim 可以对文件执行写操作，类似于在 Windows 系统的文档中输入内容。</p>
-<p>使 Vim 进行输入模式的方式是在命令模式状态下输入 i、I、a、A、o、O 等插入命令（各指令的具体功能如表 3 所示），<strong>当编辑文件完成后按 Esc 键即可返回命令模式。</strong></p>
-<div class="table-container">
-<table>
-<thead>
-<tr>
-<th>快捷键</th>
-<th>功能描述</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>i</td>
-<td><strong>在当前光标所在位置插入随后输入的文本，光标后的文本相应向右移动</strong></td>
-</tr>
-<tr>
-<td>I</td>
-<td>在光标所在行的行首插入随后输入的文本，行首是该行的第一个非空白字符，相当于光标移动到行首执行 i 命令</td>
-</tr>
-<tr>
-<td>o</td>
-<td>在光标所在行的下面插入新的一行。光标停在空行首，等待输入文本</td>
-</tr>
-<tr>
-<td>O</td>
-<td>在光标所在行的上面插入新的一行。光标停在空行的行首，等待输入文本</td>
-</tr>
-<tr>
-<td>a</td>
-<td>在当前光标所在位置之后插入随后输入的文本</td>
-</tr>
-<tr>
-<td>A</td>
-<td>在光标所在行的行尾插入随后输入的文本，相当于光标移动到行尾再执行a命令</td>
-</tr>
-</tbody>
-</table>
-</div>
-<h2 id="退出vim"><a href="#退出vim" class="headerlink" title="退出vim"></a>退出vim</h2><p><strong>按esc</strong>后，输入如下，一般<code>:wq</code>就行</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">:q  </span><br><span class="line">//退出</span><br><span class="line"></span><br><span class="line">:q! </span><br><span class="line">//退出且不保存（:quit!的缩写）</span><br><span class="line"></span><br><span class="line">:wq</span><br><span class="line">//保存并退出</span><br><span class="line"></span><br><span class="line">:wq!</span><br><span class="line">//保存并退出即使文件没有写入权限（强制保存退出）</span><br><span class="line"></span><br><span class="line">:x</span><br><span class="line">//保存并退出（类似:wq，但是只有在有更改的情况下才保存）</span><br><span class="line"></span><br><span class="line">:exit</span><br><span class="line">//保存并退出（和:x相同）</span><br><span class="line"></span><br><span class="line">:qa</span><br><span class="line">//退出所有(:quitall的缩写)</span><br><span class="line"></span><br><span class="line">:cq</span><br><span class="line">//退出且不保存（即便有错误）</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   
   <nav class="pagination">
     <a class="extend prev" rel="prev" href="/page/9/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><span class="page-number current">10</span><a class="page-number" href="/page/11/">11</a><span class="space">&hellip;</span><a class="page-number" href="/page/22/">22</a><a class="extend next" rel="next" href="/page/11/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
@@ -820,7 +725,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">65</span>
+          <span class="site-state-item-count">66</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -937,11 +842,11 @@
         pbOptions.networks = "Wechat,QQZone,Weibo,Douban,Twitter,Facebook";
       new needShareButton('#needsharebutton-postbottom', pbOptions);
   </script>
-<script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script><script>
             window.imageLazyLoadSetting = {
                 isSPA: false,
                 preloadRatio: 1,
                 processImages: null,
             };
-        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(e.href.match(t)||e.href.match(r))&&(e.href=a.dataset.original)})});</script><script>!function(n){n.imageLazyLoadSetting.processImages=o;var e=n.imageLazyLoadSetting.isSPA,i=n.imageLazyLoadSetting.preloadRatio||1,r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]"));function o(){e&&(r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")));for(var t,a=0;a<r.length;a++)0<=(t=(t=r[a]).getBoundingClientRect()).bottom&&0<=t.left&&t.top<=(n.innerHeight*i||document.documentElement.clientHeight*i)&&function(){var t,e,n,i,o=r[a];t=o,e=function(){r=r.filter(function(t){return o!==t})},n=new Image,i=t.getAttribute("data-original"),n.onload=function(){t.src=i,e&&e()},t.src!==i&&(n.src=i)}()}o(),n.addEventListener("scroll",function(){var t,e;t=o,e=n,clearTimeout(t.tId),t.tId=setTimeout(function(){t.call(e)},500)})}(this);</script><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script></body>
+        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(e.href.match(t)||e.href.match(r))&&(e.href=a.dataset.original)})});</script><script>!function(n){n.imageLazyLoadSetting.processImages=o;var e=n.imageLazyLoadSetting.isSPA,i=n.imageLazyLoadSetting.preloadRatio||1,r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]"));function o(){e&&(r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")));for(var t,a=0;a<r.length;a++)0<=(t=(t=r[a]).getBoundingClientRect()).bottom&&0<=t.left&&t.top<=(n.innerHeight*i||document.documentElement.clientHeight*i)&&function(){var t,e,n,i,o=r[a];t=o,e=function(){r=r.filter(function(t){return o!==t})},n=new Image,i=t.getAttribute("data-original"),n.onload=function(){t.src=i,e&&e()},t.src!==i&&(n.src=i)}()}o(),n.addEventListener("scroll",function(){var t,e;t=o,e=n,clearTimeout(t.tId),t.tId=setTimeout(function(){t.call(e)},500)})}(this);</script></body>
 </html>

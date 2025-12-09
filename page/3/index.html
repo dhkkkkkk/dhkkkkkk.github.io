@@ -197,6 +197,218 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2025/10/22/robo-dynamic/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/zoe.gif">
+      <meta itemprop="name" content="dhk">
+      <meta itemprop="description" content="记录一些学习日常">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小董的BLOG">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/10/22/robo-dynamic/" class="post-title-link" itemprop="url">机器人动力学</a>
+        </h2>
+
+        <div class="post-meta">
+		  
+		  
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2025-10-22 14:49:42" itemprop="dateCreated datePublished" datetime="2025-10-22T14:49:42+08:00">2025-10-22</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-10-31 09:11:23" itemprop="dateModified" datetime="2025-10-31T09:11:23+08:00">2025-10-31</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="速度与静力"><a href="#速度与静力" class="headerlink" title="速度与静力"></a>速度与静力</h1><h2 id="位置矢量的微分（线速度矢量）"><a href="#位置矢量的微分（线速度矢量）" class="headerlink" title="位置矢量的微分（线速度矢量）"></a>位置矢量的微分（线速度矢量）</h2><p>对于位置矢量的速度可以看成是用<strong>位置矢量描述的空间上<u>一点的速度</u></strong>，如果想在坐标系{A}表达一个{B}中位置矢量的速度，则有：</p>
+<script type="math/tex; mode=display">
+^A(^BV_Q)=\frac{^Ad}{dt} {^BQ} \Leftrightarrow \lim_{\Delta t \to 0} \frac{^A Q(t + \Delta t) - ^A Q(t)}{\Delta t}</script><p>因为旋转矩阵可以表示坐标系的映射，因此有：</p>
+<script type="math/tex; mode=display">
+^A(^BV_Q)=^A_BR{^BV_Q}</script><p>由于速度矢量为自由矢量，因此不需要使用平移矩阵即可表达。因此当我们已知一个坐标系{A}原点在{W}中的速度表达时，便可通过旋转矩阵得到其在其他坐标系{B}下的<strong>表达</strong>：</p>
+<script type="math/tex; mode=display">
+^B(^WV_{A_{org}})=^BV_{A_{org}}=^B_WR{^WV_{A_{org}}}=^W_BR^{-1}{^WV_{A_{org}}}</script><p>可以看出，上述计算与{A}无关</p>
+<h2 id="角速度矢量"><a href="#角速度矢量" class="headerlink" title="角速度矢量"></a>角速度矢量</h2><p>线速度描述的是一个点的速度属性，而角速度则描述了刚体的<strong>自转</strong>运动（坐标系固连在刚体上）</p>
+<p>由于自转肯定是绕着某一轴，因此对于</p>
+<script type="math/tex; mode=display">
+^A\Omega_B</script><p>其方向则代表了{B}相对于{A}的瞬时旋转轴的方向，大小则表示旋转速度</p>
+<p>对于线速度和角速度，我们规定：</p>
+<script type="math/tex; mode=display">
+v_A=^WV_{A_{org}}</script><script type="math/tex; mode=display">
+\omega_A = ^W\Omega_A</script><h2 id="刚体（上一点）的速度表达"><a href="#刚体（上一点）的速度表达" class="headerlink" title="刚体（上一点）的速度表达"></a>刚体（上一点）的速度表达</h2><p>上面我们讨论的线速度与角速度都是针对于坐标系的原点，现在讨论在刚体中的情况。</p>
+<p>假设参考坐标系为{A}，将{B}固连在一刚体上，刚体上存在一点Q（不在原点上），则有：</p>
+<script type="math/tex; mode=display">
+^AV_Q=(^AV_{B_{org}}+^A_BR^BV_Q)+(^A\Omega_B \times^A_BR^BQ)</script><p>前一个括号表示线速度项，后一个表示角速度项</p>
+<h3 id="关于线速度、角速度和刚体的速度"><a href="#关于线速度、角速度和刚体的速度" class="headerlink" title="关于线速度、角速度和刚体的速度"></a>关于线速度、角速度和刚体的速度</h3><p>线速度描述的是空间上<strong>一个点</strong>沿某轨迹运动的快慢与方向，在坐标系中则为位置矢量Q<strong>发生变化</strong>的大小与方向；而角加速度针对的是坐标系的自转情况；将这两个概念引入到刚体中，对于<strong>刚体速度</strong>的描述，即是<u>刚体上某一点Q在参考坐标系{A}下的<strong>坐标变化情况与自转情况</strong></u>，说的更全面一点，即是：在{A}中观测{B}中一位置矢量Q的速度变化，{B}代表这个刚体，Q代表刚体上一点</p>
+<p>另外，由于我们通常都是讨论刚体上的固定一点，因此其位置矢量的微分为0，所以其实<strong>线速度项</strong>就是坐标系{B}原点的移动速度：</p>
+<script type="math/tex; mode=display">
+^AV_Q=^AV_{B_{org}}+(^A\Omega_B \times^A_BR^BQ)</script><h2 id="连杆间的速度传递"><a href="#连杆间的速度传递" class="headerlink" title="连杆间的速度传递"></a>连杆间的速度传递</h2><p>由于连杆是链式结构，每一个连杆的运动都与其相邻杆有关，<strong>因此对于i+1连杆，其速度就是连杆i的速度加上附加到关节i+1上的新速度分量</strong>（对于连杆的速度，我们通常讨论的是连杆坐标系原<strong>点</strong>的线速度和连杆坐标系的角速度）</p>
+<p>对于角速度，根据上述规则，则有：</p>
+<script type="math/tex; mode=display">
+^i\omega_{i+1}={^i\omega}_{i}+{^i_{i+1}R \dot{\theta}_{i+1}{^{i+1}\hat{Z}_{i+1}}}</script><p>此处乘Z是为了让关节角加速度匹配R矩阵维度，并且该加速度只在Z轴上存在，将上式两边同左乘<strong>i相对于i+1</strong>的旋转矩阵，则有：</p>
+<script type="math/tex; mode=display">
+^{i+1}\omega_{i+1}=^{i+1}_{i}R {^i\omega}_{i}+{ \dot{\theta}_{i+1}{^{i+1}\hat{Z}_{i+1}}}</script><p>对于线速度，其等于{i}原点线速度加上由于<strong>i角速度</strong>引起的新分量：</p>
+<script type="math/tex; mode=display">
+{^iv_{i+1}}={^iv_{i}}+{^i\omega}_{i}\times{^iP_{i+1}}</script><p>其中P为两坐标系原点形成的矢量，同样的，通过左乘旋转矩阵可得到{i+1}下的速度表达：</p>
+<script type="math/tex; mode=display">
+{^{i+1}v_{i+1}}={^{i+1}_iR}({^iv_{i}}+{^i\omega}_{i}\times{^iP_{i+1}})</script><p>对于移动关节，则额外有：</p>
+<script type="math/tex; mode=display">
+{^{i+1}v_{i+1}}={^{i+1}_iR}({^iv_{i}}+{^i\omega}_{i}\times{^iP_{i+1}})+\dot{d}_{i+1}\hat{Z}_{i+1}</script><h2 id="雅可比矩阵"><a href="#雅可比矩阵" class="headerlink" title="雅可比矩阵"></a>雅可比矩阵</h2><p>对于一个6自由度机器人，我们可以设其正运动学方程为：</p>
+<script type="math/tex; mode=display">
+x=f(q)</script><p>其中x是一个包含位姿与姿态的6x1向量，q为机器人的六个关节变量组成的6x1向量，因此f为一个6x6矩阵，代表了x每一个元素与q的非线性函数关系，将上式两边同时对时间求导，则有：</p>
+<script type="math/tex; mode=display">
+\text{v}=J(q)\dot{q}</script><p>此时，该式表示了<strong>连杆速度v（笛卡尔表示）</strong>（取决于选择的连杆和参考坐标系）与<strong>关节角速度</strong>之间的<strong>映射关系</strong></p>
+<p>对于常见的求末端速度的雅各比矩阵，有：</p>
+<script type="math/tex; mode=display">
+^0\text{v}_6=\begin{bmatrix}^0v_6\\^0\omega_6 \end{bmatrix}={^0J(q)}\dot{q}</script><p>此时，该矩阵代表了在{0}坐标下，各<strong>关节角速度</strong>对<strong>末端速度</strong>（线+角）的共享</p>
+<h3 id="奇异性"><a href="#奇异性" class="headerlink" title="奇异性"></a>奇异性</h3><p>因此，当已知机器人结构（<strong>等同于已知雅各比矩阵表达式</strong>），各关节转角（可求出J具体值）和笛卡尔速度时，便可以求出各关节速度：</p>
+<script type="math/tex; mode=display">
+\dot{q}=J^{-1}(q)\text{v}</script><p>但此时要求J是可逆的，当机器人出现奇异位姿时，会导致J的行列式为0，此时，J为奇异的</p>
+<h3 id="参考系的变换"><a href="#参考系的变换" class="headerlink" title="参考系的变换"></a>参考系的变换</h3><p>对于在{A}中表达的某雅各比矩阵，若要变换到{B}中表达，则有：</p>
+<script type="math/tex; mode=display">
+^BJ(q)=\begin{bmatrix}{^B_AR} &0 \\ 0 &{^B_AR} \end{bmatrix} {^AJ(q)}</script><h2 id="力域中的雅可比"><a href="#力域中的雅可比" class="headerlink" title="力域中的雅可比"></a>力域中的雅可比</h2><p>当一个F作用与机器人时，我们想要求出各关节需输出多少力矩以保持机器人的静力平衡。</p>
+<p>当一个笛卡尔广义力F（形式类似于笛卡尔速度）作用于机器人末端时，根据功率守恒，有：</p>
+<script type="math/tex; mode=display">
+F^T\text{v}=\tau\dot{q}</script><p>将上一节中计算的速度雅可比方程带入v中则最终有：</p>
+<script type="math/tex; mode=display">
+\tau={^0J^T}{^0F}</script><p>于速度雅可比方程一样，F与J需在同一坐标系下表达</p>
+<h3 id="力-力矩变换"><a href="#力-力矩变换" class="headerlink" title="力-力矩变换"></a>力-力矩变换</h3><p>对于笛卡尔广义力的在不同坐标系下的表示，有：</p>
+<script type="math/tex; mode=display">
+\begin{bmatrix}
+{}^A F_A \\
+{}^A N_A
+\end{bmatrix}
+=
+\begin{bmatrix}
+{}^A_B R & 0 \\
+{}^A P_{BORG} \times {}^A_B R & {}^A_B R
+\end{bmatrix}
+\begin{bmatrix}
+{}^B F_B \\
+{}^B N_B
+\end{bmatrix}</script><h1 id="机器人动力学"><a href="#机器人动力学" class="headerlink" title="机器人动力学"></a>机器人动力学</h1><p>假设已知关节的转角、速度和加速度，<strong>求驱动关节所需要的力矩</strong>（逆动力学）</p>
+<h2 id="刚体的加速度"><a href="#刚体的加速度" class="headerlink" title="刚体的加速度"></a>刚体的加速度</h2><p>对上一章“刚体的速度表达”中两边同时对时间进行求导最终可得到在{A}中表达一个{B}中的<strong>常量矢量Q</strong>的加速度公式：（常量Q代表着其在{B}中的速度、加速度表达均为0）</p>
+<script type="math/tex; mode=display">
+{^A\dot{V}_Q}={^A\dot{V}_{Borg}}+{^A\Omega_B}\times({^A\Omega_B}\times{}^A_B RQ)+{^A\dot{\Omega}_B}\times{}^A_B RQ</script><h2 id="刚体的质量分布"><a href="#刚体的质量分布" class="headerlink" title="刚体的质量分布"></a>刚体的质量分布</h2><p>在一个刚体绕某个轴做旋转运动时，需要一种能够表征其质量分布的方法，因此我们引入惯性张量：</p>
+<script type="math/tex; mode=display">
+I = 
+\begin{bmatrix}
+I_{xx} & I_{xy} & I_{xz} \\
+I_{yx} & I_{yy} & I_{yz} \\
+I_{zx} & I_{zy} & I_{zz}
+\end{bmatrix}</script><p>其中，xx，yy，zz为<strong>惯量矩</strong>，其余交叉项为<strong>惯量积</strong>；这六个参量取决于其<strong>所在</strong>坐标系（即刚体中的{B}）的位姿；</p>
+<h3 id="平移移轴定理"><a href="#平移移轴定理" class="headerlink" title="平移移轴定理"></a>平移移轴定理</h3><p>该定理描述了一个以刚体质心为原点的坐标系<strong><u>平移</u></strong>到另一个坐标系时的惯性张量变换关系：</p>
+<script type="math/tex; mode=display">
+{^AI}={^CI}+m(P^T_cP_cI_3-P_cP^T_c)</script><p>其中I代表要变换的惯量矩/惯量积，Pc为质心坐标系{A}原点位置（3x1），I3为3x3单位矩阵</p>
+<h2 id="牛顿-欧拉法"><a href="#牛顿-欧拉法" class="headerlink" title="牛顿-欧拉法"></a>牛顿-欧拉法</h2><h3 id="牛顿方程与欧拉方程"><a href="#牛顿方程与欧拉方程" class="headerlink" title="牛顿方程与欧拉方程"></a>牛顿方程与欧拉方程</h3><p>牛顿方程描述了作用与质心的力F与质心加速度之间的关系：</p>
+<script type="math/tex; mode=display">
+F=m\dot{v}</script><p>对于加速度的计算已在“刚体的加速度”小节中给出（没错，就是包含了角加速度的那个加速度）</p>
+<p>欧拉方程描述了惯量、力矩与角加速度的关系：</p>
+<script type="math/tex; mode=display">
+N=I\dot{\omega}+\omega \times I\omega</script><h3 id="外向迭代法（计算速度、加速度以得到连杆上的力、力矩）"><a href="#外向迭代法（计算速度、加速度以得到连杆上的力、力矩）" class="headerlink" title="外向迭代法（计算速度、加速度以得到连杆上的力、力矩）"></a>外向迭代法（计算速度、加速度以得到连杆上的力、力矩）</h3><p>由连杆间速度传递，对<strong>角速度</strong>求导可得：</p>
+<script type="math/tex; mode=display">
+{^{i+1}\dot{\omega}_{i+1}}=\frac{d(^{i+1}_iR^i\omega_i)}{dt}+{ \ddot{\theta}_{i+1}{^{i+1}\hat{Z}_{i+1}}}={}^{i+1}_iR ^i\dot{\omega}_i+{}^{i+1}_iR^i\omega_i\times{ \dot{\theta}_{i+1}{^{i+1}\hat{Z}_{i+1}}}+{ \ddot{\theta}_{i+1}{^{i+1}\hat{Z}_{i+1}}}</script><p>因为R本身也与时间相关，因此其导数也有特殊形式，上式记住就行</p>
+<p>由“刚体加速度”中的公式可得每个连杆<strong>坐标系原点</strong>和其<strong>质心</strong>的加速度：</p>
+<script type="math/tex; mode=display">
+{^{i+1}\dot v_{i+1}}=^{i+1}_iR({^i\dot v_i} + ^i\omega_i\times {}^iP_{i+1}+ ^i\omega_i \times(^i\omega_i \times {}^iP_{i+1}))</script><script type="math/tex; mode=display">
+{^i\dot v_{C_i}}= {^i\dot v_{i}} + ^i\dot{\omega}_i \times {^iP_{C_i}}+^i\omega_i \times (^i\omega_i+{^iP_{C_i}})</script><p>假设质心坐标系坐标轴方位与连杆坐标系{i}方向相同</p>
+<p>得出角加速度和加速度后，即可根据<strong>牛顿、欧拉方程</strong>计算出每个<strong>作用在每个连杆上的惯性力和力矩</strong></p>
+<h3 id="内向迭代法"><a href="#内向迭代法" class="headerlink" title="内向迭代法"></a>内向迭代法</h3><p><u>在得到作用在连杆上的力和力矩后</u>，即可根据力、力矩平衡计算出<strong>连杆i-1对连杆i</strong>施加的力f和力矩n，最后得到<strong>关节i</strong>的驱动力矩：</p>
+<script type="math/tex; mode=display">
+{^if_i}={^i_{i+1}R}f_{i+1}+{}^iF_i</script><script type="math/tex; mode=display">
+{}^in_i={}^iN_i+{^i_{i+1}R} \ n_{i+1}+{^iP_{C_i}}\times {}^iF_i+{}^iP_{i+1}\times{^i_{i+1}R}{^{i+1}f_{i+1}}</script><p>最终，对于旋转关节：</p>
+<script type="math/tex; mode=display">
+\tau_i={}^in_i^T\hat{Z}_i</script><p>对于移动关节：（此时tau代表线性驱动力）</p>
+<script type="math/tex; mode=display">
+\tau_i={}^if_i^T\hat{Z}_i</script><p><strong>对于末端未与环境接触的机器人，其f_i+1与n_i+1为0</strong></p>
+<h3 id="总流程"><a href="#总流程" class="headerlink" title="总流程"></a>总流程</h3><p>结合外向和内向迭代，便可在已知关节转角、及其一阶、二阶导的情况下，计算出每个关节的驱动力矩：</p>
+<ul>
+<li><p><strong>外向迭代</strong>，依次求连杆上惯性力和力矩。从<strong>0连杆推到n连杆</strong>（0连杆（基座）的角速度、角加速度为0）</p>
+<ul>
+<li><p>角速度计算(<strong>不需计算线速度</strong>)</p>
+</li>
+<li><p>角加速度计算</p>
+</li>
+<li><p>连杆坐标系原点加速度计算</p>
+</li>
+<li><p>连杆质心加速度计算</p>
+</li>
+<li><p>惯性力、力矩计算</p>
+</li>
+</ul>
+</li>
+<li><p><strong>内向迭代</strong>，依次求各关节驱动力矩。从<strong>n连杆推到0连杆</strong></p>
+<ul>
+<li>i-1连杆对i连杆的<strong>作用力</strong>计算</li>
+<li>i-1连杆对i连杆的<strong>作用力矩</strong>计算</li>
+<li>根据关节属性计算驱动力矩/力</li>
+</ul>
+</li>
+</ul>
+<img src="/images/loading.png" data-original="/2025/10/22/robo-dynamic/1.png" class title="This is an image"> 
+<h3 id="考虑重力存在的情况"><a href="#考虑重力存在的情况" class="headerlink" title="考虑重力存在的情况"></a>考虑重力存在的情况</h3><p>为基座加速度假想一个与重力矢量G大小相等，方向相反的加速度，即：</p>
+<script type="math/tex; mode=display">
+{^0\dot{v}_0}=G</script><h2 id="动力学方程"><a href="#动力学方程" class="headerlink" title="动力学方程"></a>动力学方程</h2><h3 id="状态空间方程"><a href="#状态空间方程" class="headerlink" title="状态空间方程"></a>状态空间方程</h3><p>对于用牛顿-欧拉法分析得到的关节驱动力矩矩阵，其动力学方程可以表示为：</p>
+<script type="math/tex; mode=display">
+\tau=M(\theta)\ddot{\theta}+V(\theta,\dot{\theta})+G(\theta)</script><p>其中M为nxn质量矩阵，V为nx1的离心力与哥氏力矢量，G为nx1的重力矢量</p>
+<p>假设有如下关节力矩表示：</p>
+<img src="/images/loading.png" data-original="/2025/10/22/robo-dynamic/2.png" class title="This is an image"> 
+<p>则可得到：</p>
+<img src="/images/loading.png" data-original="/2025/10/22/robo-dynamic/3.png" class title="This is an image"> 
+<h3 id="笛卡尔状态空间方程"><a href="#笛卡尔状态空间方程" class="headerlink" title="笛卡尔状态空间方程"></a>笛卡尔状态空间方程</h3><p>当我们项将笛卡尔变量的一般形式应用于动力学方程中时，有：</p>
+<img src="/images/loading.png" data-original="/2025/10/22/robo-dynamic/4.png" class title="This is an image"> 
+<h2 id="拉格朗日法"><a href="#拉格朗日法" class="headerlink" title="拉格朗日法"></a>拉格朗日法</h2><p>牛顿-欧拉法是通过分析作用于连杆的之间的约束力和力矩而进行动力学求解，可以被认为是一种<strong>力平衡方法</strong>。而拉格朗日公式则是一种基于能量的动力学方法。</p>
+<p>拉格朗日函数描述了一个系统的动能和势能的差值：</p>
+<script type="math/tex; mode=display">
+L(\theta,\dot{\theta})=k(\theta,\dot{\theta})-u(\theta)</script><p>对于连杆i的动能，可表示为：</p>
+<script type="math/tex; mode=display">
+k_i=\frac1 2 m_iv^2_{Ci}+\frac1 2 I_i\omega^2_i</script><p>对于连杆i的势能，可表示为：</p>
+<script type="math/tex; mode=display">
+u_i=m_igh+C</script><p>其中C为势能参考0点所带来的常数，可取任意值，通常参考点为基座，则C为0（由于动力学方程中仅出现势能对θ的偏导，因此C无关紧要）</p>
+<p><strong>由能量守恒，我们可以得知外力做功=系统机械能变化量，对等式两边同时对位移（θ）求导，即有拉格朗日动力学方程：</strong></p>
+<script type="math/tex; mode=display">
+\tau=\frac d {dt} \frac{\partial L}{\partial \dot{\theta}}-\frac{\partial L}{\partial \theta}=\frac d {dt} \frac{\partial k}{\partial \dot{\theta}}-(\frac{\partial k}{\partial \theta}-\frac{\partial u}{\partial \theta})</script>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2025/10/17/math-base/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -468,146 +680,6 @@ s_{\phi} & c_{\phi} & 0.0 & y \\
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2025/10/14/robo-chapter2/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/zoe.gif">
-      <meta itemprop="name" content="dhk">
-      <meta itemprop="description" content="记录一些学习日常">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="小董的BLOG">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2025/10/14/robo-chapter2/" class="post-title-link" itemprop="url">空间描述和变换</a>
-        </h2>
-
-        <div class="post-meta">
-		  
-		  
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2025-10-14 09:29:01" itemprop="dateCreated datePublished" datetime="2025-10-14T09:29:01+08:00">2025-10-14</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-10-21 14:21:16" itemprop="dateModified" datetime="2025-10-21T14:21:16+08:00">2025-10-21</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="位姿描述与变换"><a href="#位姿描述与变换" class="headerlink" title="位姿描述与变换"></a>位姿描述与变换</h1><h2 id="姿态描述"><a href="#姿态描述" class="headerlink" title="姿态描述"></a>姿态描述</h2><p>对于空间中一个坐标系{B}相对于世界坐标系{W}的姿态，可以通过旋转矩阵R进行表示：</p>
-<script type="math/tex; mode=display">
-^W_B\mathbf{R} = \begin{bmatrix}
-r_{11} & r_{12} & r_{13} \\
-r_{21} & r_{22} & r_{23} \\
-r_{31} & r_{32} & r_{33}
-\end{bmatrix}</script><p>旋转矩阵仅描述当前坐标系相对于世界坐标系的<strong>旋转姿态</strong>，<u>不包含平移信息</u>，因此可以将旋转矩阵的<strong>每一列</strong>想象成将原点重合后，当前坐标系X、Y、Z<strong>单位矢量</strong>在{W}各轴的投影（<strong>也就是各轴矢量在{W}下的坐标</strong>）。因此也有：</p>
-<script type="math/tex; mode=display">
-^W_B\mathbf{R} = \begin{bmatrix}
-\hat{X}_B \cdot \hat{X}_W & \hat{Y}_B \cdot \hat{X}_W & \hat{Z}_B \cdot \hat{X}_W \\
-\hat{X}_B \cdot \hat{Y}_W & \hat{Y}_B \cdot \hat{Y}_W & \hat{Z}_B \cdot \hat{Y}_W \\
-\hat{X}_B \cdot \hat{Z}_W & \hat{Y}_B \cdot \hat{Z}_W & \hat{Z}_B \cdot \hat{Z}_W
-\end{bmatrix}=\begin{bmatrix}^B\hat{X}_W &^B\hat{Y}_W &^B \hat{Z}_W\end{bmatrix}</script><p>由于这些矢量均为单位向量，因此它们的点积则直接代表了两个矢量夹角的余弦值（矢量点积的性质），但需要注意的是，<strong>对于两个坐标系而已，它们之间的互相形成的两个旋转矩阵不是相同的（互为转置）</strong></p>
-<p>由于旋转是相对的、可逆的，因此旋转矩阵为一个正交阵（逆等于转置）</p>
-<h2 id="坐标系描述"><a href="#坐标系描述" class="headerlink" title="坐标系描述"></a>坐标系描述</h2><p>当已知旋转矩阵后，只需知道坐标系{B}原点相对于参考坐标系（还是假设为世界坐标系{W}）的坐标，即可描述坐标系{B}的所有信息：</p>
-<script type="math/tex; mode=display">
-\{B\}=\{^W_B\mathbf{R},^W\mathbf{P_{B_{org}}}\}</script><p>其中P是坐标系{B}原点<strong>在{W}中的坐标向量</strong></p>
-<p>因此，一个坐标系可以通过任意另一坐标系表示出来</p>
-<h2 id="变换映射"><a href="#变换映射" class="headerlink" title="变换映射"></a>变换映射</h2><p>对于{B}中的一个矢量P，若想用参考坐标系{A}将其表示，对于单纯平移，有：</p>
-<script type="math/tex; mode=display">
-^AP=^BP+^W\mathbf{P_{B_{org}}}</script><p>对于单纯旋转，则有：</p>
-<script type="math/tex; mode=display">
-^AP=^A_B\mathbf{R}^BP</script><p>因此对于一般情况，则有：</p>
-<script type="math/tex; mode=display">
-\begin{bmatrix}^AP \\ 1\end{bmatrix}=\begin{bmatrix}^A_B\mathbf{R} & ^AP_{B_{org}}\\
-000 & 1\end{bmatrix}\begin{bmatrix}^BP \\ 1\end{bmatrix}</script><p>其中4x4的T矩阵就是<strong>齐次变换矩阵</strong>，当只进行旋转或平移时，只需令旋转矩阵为E或平移矩阵为0，0，0即可</p>
-<h2 id="注意点"><a href="#注意点" class="headerlink" title="注意点"></a>注意点</h2><p>当存在多个坐标系转换时：（注意T的合成是右乘）</p>
-<script type="math/tex; mode=display">
-^AP=^A_B\mathbf{T}^B_C\mathbf{T}^CP=^A_CT^CP</script><p>其中：</p>
-<script type="math/tex; mode=display">
-^A_CT=\begin{bmatrix}^A_B\mathbf{R}^B_C\mathbf{R} & ^AP_{B_{org}}+^A_B\mathbf{R}^BP_{C_{org} }
-\\
-000 & 1\end{bmatrix}</script><p>对于旋转映射，有：（注意顺序）</p>
-<script type="math/tex; mode=display">
-^A_C\mathbf{R}=^A_B\mathbf{R}^B_C\mathbf{R}</script><p><strong>其中需要注意的是，在A齐次变换矩阵中代表平移的映射：</strong></p>
-<script type="math/tex; mode=display">
-^AP_{C_{org}}=^AP_{B_{org}}+^A_B\mathbf{R}^BP_{C_{org}} \neq ^AP_{B_{org}}+^BP_{C_{org}}</script><p>虽然在空间上来看{C}原点在{A}中的坐标矢量感觉就是三个坐标系原点间矢量的首尾相加，<strong><u>但其实对C原点在{A}中的矢量坐标都应该统一到{A}坐标系下进行计算</u></strong>，而</p>
-<script type="math/tex; mode=display">
-^BP_{C_{org}}</script><p>是C原点在{B}下的坐标矢量，其在{A}中的表达还需要乘一个{B}相对于{A}的<strong>旋转映射</strong></p>
-<p>综上，可以推导出，在多个坐标系变换时，平移映射中只有{A}的下一个坐标系平移映射不需要乘旋转映射，其余所有平移映射都需要乘该坐标系相对于{A}的旋转映射，即：</p>
-<script type="math/tex; mode=display">
-^AP_{N_{org}}=^AP_{B_{org}}+^A_B\mathbf{R}^BP_{C_{org}}+^A_C\mathbf{R}^CP_{D_{org}}+...+^A_{N-1}\mathbf{R}^{N-1}P_{N_{org}}</script><p>但一般而言，想要直接得到各坐标系相对参考坐标系{A}的旋转矩阵是比较困难的，所以更常见的写法是：</p>
-<script type="math/tex; mode=display">
-{}^A P_{N_{org}} 
-= {}^A P_{B_{org}}
-+ {}^A_{B}\mathbf{R}
-\Big(
-{}^B P_{C_{org}}
-+ {}^B_{C}\mathbf{R}
-\big(
-{}^C P_{D_{org}}
-+ {}^C_{D}\mathbf{R}
-\big(
-{}^D P_{E_{org}}
-+ \cdots
-+ {}^{N-1}_{N}\mathbf{R}\,{}^{N}P_{N_{org}}
-\big)
-\big)
-\Big)</script><p>也就是齐次变换矩阵相乘后<strong>平移项</strong>的表达</p>
-<h2 id="逆变换"><a href="#逆变换" class="headerlink" title="逆变换"></a>逆变换</h2><p>对于求其次矩阵的逆变换，对于<strong>旋转矩阵，由于其为正交阵，因此直接取转置</strong>即可；对于平移算映射，有：</p>
-<script type="math/tex; mode=display">
-^BP_{A_{org}}=-^A_BR^T{^AP_{B_{org}}}</script><p>即最终逆变换齐次变换矩阵为：</p>
-<script type="math/tex; mode=display">
-^B_AT=\begin{bmatrix}^A_B\mathbf{R}^T & -^A_BR^T{^AP_{B_{org}}}\\
-000 & 1\end{bmatrix}</script><p>推广到N个坐标系中时，注意此时旋转算子乘积顺序是<strong>反序的</strong></p>
-<h1 id="其次变换矩阵的其他定义"><a href="#其次变换矩阵的其他定义" class="headerlink" title="其次变换矩阵的其他定义"></a>其次变换矩阵的其他定义</h1><p>对于齐次变换矩阵：</p>
-<script type="math/tex; mode=display">
-^A_BT</script><p>其本身描述了相对于坐标系{A}的{B}，同时其也可以描述不同坐标系中同一个矢量的映射关系</p>
-<p>齐次变换矩阵同时<strong>也可用于描述矢量单纯的旋转、平移变换</strong>，这时其被称为变换算子：</p>
-<script type="math/tex; mode=display">
-\begin{bmatrix}^AP_1 \\ 1\end{bmatrix}=\begin{bmatrix}\mathbf{R} & Q\\
-000 & 1\end{bmatrix}\begin{bmatrix}^AP_2 \\ 1\end{bmatrix}</script><p>其中R为旋转算子，Q为平移算子；</p>
-<p>在多次变换中，对于平移只需要进行加减即可；对于旋转变换，其顺序会影响R的值（虽然最终结果是一样的）：</p>
-<script type="math/tex; mode=display">
-R_z(30)R_x(30) \neq R_x(30)R_z(30)</script>
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   
   <nav class="pagination">
     <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/22/">22</a><a class="extend next" rel="next" href="/page/4/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
@@ -677,7 +749,7 @@ R_z(30)R_x(30) \neq R_x(30)R_z(30)</script>
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">65</span>
+          <span class="site-state-item-count">66</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -847,11 +919,11 @@ R_z(30)R_x(30) \neq R_x(30)R_z(30)</script>
         pbOptions.networks = "Wechat,QQZone,Weibo,Douban,Twitter,Facebook";
       new needShareButton('#needsharebutton-postbottom', pbOptions);
   </script>
-<script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script><script>
             window.imageLazyLoadSetting = {
                 isSPA: false,
                 preloadRatio: 1,
                 processImages: null,
             };
-        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(e.href.match(t)||e.href.match(r))&&(e.href=a.dataset.original)})});</script><script>!function(n){n.imageLazyLoadSetting.processImages=o;var e=n.imageLazyLoadSetting.isSPA,i=n.imageLazyLoadSetting.preloadRatio||1,r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]"));function o(){e&&(r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")));for(var t,a=0;a<r.length;a++)0<=(t=(t=r[a]).getBoundingClientRect()).bottom&&0<=t.left&&t.top<=(n.innerHeight*i||document.documentElement.clientHeight*i)&&function(){var t,e,n,i,o=r[a];t=o,e=function(){r=r.filter(function(t){return o!==t})},n=new Image,i=t.getAttribute("data-original"),n.onload=function(){t.src=i,e&&e()},t.src!==i&&(n.src=i)}()}o(),n.addEventListener("scroll",function(){var t,e;t=o,e=n,clearTimeout(t.tId),t.tId=setTimeout(function(){t.call(e)},500)})}(this);</script><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script></body>
+        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(e.href.match(t)||e.href.match(r))&&(e.href=a.dataset.original)})});</script><script>!function(n){n.imageLazyLoadSetting.processImages=o;var e=n.imageLazyLoadSetting.isSPA,i=n.imageLazyLoadSetting.preloadRatio||1,r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]"));function o(){e&&(r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")));for(var t,a=0;a<r.length;a++)0<=(t=(t=r[a]).getBoundingClientRect()).bottom&&0<=t.left&&t.top<=(n.innerHeight*i||document.documentElement.clientHeight*i)&&function(){var t,e,n,i,o=r[a];t=o,e=function(){r=r.filter(function(t){return o!==t})},n=new Image,i=t.getAttribute("data-original"),n.onload=function(){t.src=i,e&&e()},t.src!==i&&(n.src=i)}()}o(),n.addEventListener("scroll",function(){var t,e;t=o,e=n,clearTimeout(t.tId),t.tId=setTimeout(function(){t.call(e)},500)})}(this);</script></body>
 </html>
