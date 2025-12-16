@@ -230,7 +230,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-12-15 19:14:34" itemprop="dateModified" datetime="2025-12-15T19:14:34+08:00">2025-12-15</time>
+                <time title="修改时间：2025-12-16 15:19:41" itemprop="dateModified" datetime="2025-12-16T15:19:41+08:00">2025-12-16</time>
               </span>
 
           
@@ -310,7 +310,9 @@ Y_i=\sum_{j=1}^nA_{ij}V_j</script><p>因此对于Y_i，也就是每个输出的t
 <h3 id="causal-mask"><a href="#causal-mask" class="headerlink" title="causal mask"></a>causal mask</h3><p>causal mask<strong><u>仅出现</u></strong>在decoder的self-attention阶段，其目的是为了防止第n个q向量看到n之后的内容。我们已知attention score每一行代表了第n个q向量对所有k向量的关注程度，因此我们需要一个<strong>上三角</strong>mask：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[[0,1,1,1,1],</span><br><span class="line">[0,0,1,1,1],</span><br><span class="line">[0,0,0,1,1],</span><br><span class="line">[0,0,0,0,1],</span><br><span class="line">[0,0,0,0,0]]</span><br></pre></td></tr></table></figure>
 <p>这样第n个q就只能看到n之前的k向量了，相同地，1代表了需要mask的位置，通过调用<code>torch.triu</code>生成上三角矩阵，其大小仅与decoder的输入长度（padding后）有关</p>
-<h4 id="关于decoder中的两个mask"><a href="#关于decoder中的两个mask" class="headerlink" title="关于decoder中的两个mask"></a>关于decoder中的两个mask</h4><p>也许你会产生这样一个疑问，在self-attention中，causal mask是不是天然的也起到了padding mask 的效果？因为对于有效的Q来说，其永远也看不到</p>
+<h4 id="关于decoder中的两个mask"><a href="#关于decoder中的两个mask" class="headerlink" title="关于decoder中的两个mask"></a>关于decoder中的两个mask</h4><p>也许你会产生这样一个疑问，在self-attention中，causal mask是不是天然的也起到了padding mask 的效果？因为对于有效的Q来说，其永远也看不到K中的pad。还是假设现在Q和K为<code>[a,b,c,&lt;pad&gt;,&lt;pad&gt;]</code>（自注意力中Q和K的pad是一样的），对于Q的最后一个有效token c，在经过causal mask后也只看得到a，b和自己；而对于a，b来说，它们连c都看不到，更别说pad了，那为什么在decoder的self-attention中还需要padding mask呢</p>
+<p>答案其实很简单，也在之前就提到过，那就是<strong><u>pad不一定只出现在尾部</u></strong>。如果a被替换为pad，那causal mask就无法防止 b，c看到pad了</p>
+<p>综上，我的代码中并没有解决该pad的问题，因此只用于理解transformer结构</p>
 
       
     </div>
