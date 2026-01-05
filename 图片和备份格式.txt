@@ -1,0 +1,6 @@
+{% asset_img 1.jpg This is an image %} 
+
+
+git add .
+git commit -m "备份备注"
+git push 

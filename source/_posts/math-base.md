@@ -18,7 +18,9 @@ mathjax: true
 对于一个复指数，有
 $$
 e^{\mathrm{j}\omega_{0}t} = \cos \omega_{0}t + \mathrm{j} \sin \omega_{0}t
-\\
+$$
+
+$$
 |e^{j\omega_0t}|=1
 $$
 
@@ -109,8 +111,11 @@ $$
 将其整理即可得到拉普拉斯变换的数学定义式：
 $$
 s=σ+j\omega
-\\X(s)= \int_{0}^{\infty} x(t)e^{-st} \, dt
 $$
+$$
+X(s)= \int_{0}^{\infty} x(t)e^{-st} \, dt
+$$
+
 但是拉普拉斯变换的作用远不止对信号进行分析，其对绝对可积性限制的突破使其可以用于更多的函数（但其仍要求积分收敛），**因此可以利用拉氏变换及其性质求解时域上的复杂的微分方程**
 
 ## 性质
@@ -126,7 +131,7 @@ $$
 
 * **积分性：**
   $$
-  \int_0^tx(t)dt \Leftrightarrow sX(s)-x(0^-)
+  \int_0^tx(t)dt \Leftrightarrow \frac{X(s)}{s}
   $$
 
 * 时移性：

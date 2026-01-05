@@ -19,13 +19,13 @@ r_{31} & r_{32} & r_{33}
 $$
 
 
-旋转矩阵仅描述当前坐标系相对于世界坐标系的**旋转姿态**，<u>不包含平移信息</u>，因此可以将旋转矩阵的**每一列**想象成将原点重合后，当前坐标系X、Y、Z**单位矢量**的坐标投影。因此也有：
+旋转矩阵仅描述当前坐标系相对于世界坐标系的**旋转姿态**，<u>不包含平移信息</u>，因此可以将旋转矩阵的**每一列**想象成将原点重合后，当前坐标系X、Y、Z**单位矢量**在{W}各轴的投影（**也就是各轴矢量在{W}下的坐标**）。因此也有：
 $$
 ^W_B\mathbf{R} = \begin{bmatrix}
 \hat{X}_B \cdot \hat{X}_W & \hat{Y}_B \cdot \hat{X}_W & \hat{Z}_B \cdot \hat{X}_W \\
 \hat{X}_B \cdot \hat{Y}_W & \hat{Y}_B \cdot \hat{Y}_W & \hat{Z}_B \cdot \hat{Y}_W \\
 \hat{X}_B \cdot \hat{Z}_W & \hat{Y}_B \cdot \hat{Z}_W & \hat{Z}_B \cdot \hat{Z}_W
-\end{bmatrix}
+\end{bmatrix}=\begin{bmatrix}^B\hat{X}_W &^B\hat{Y}_W &^B \hat{Z}_W\end{bmatrix}
 $$
 由于这些矢量均为单位向量，因此它们的点积则直接代表了两个矢量夹角的余弦值（矢量点积的性质），但需要注意的是，**对于两个坐标系而已，它们之间的互相形成的两个旋转矩阵不是相同的（互为转置）**
 

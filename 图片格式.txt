@@ -1,1 +1,0 @@
-{% asset_img 1.jpg This is an image %} 
