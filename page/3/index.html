@@ -197,6 +197,136 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2025/11/05/RL-1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/zoe.gif">
+      <meta itemprop="name" content="dhk">
+      <meta itemprop="description" content="记录一些学习日常">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小董的BLOG">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/11/05/RL-1/" class="post-title-link" itemprop="url">强化学习</a>
+        </h2>
+
+        <div class="post-meta">
+		  
+		  
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2025-11-05 16:28:49" itemprop="dateCreated datePublished" datetime="2025-11-05T16:28:49+08:00">2025-11-05</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-11-06 19:14:12" itemprop="dateModified" datetime="2025-11-06T19:14:12+08:00">2025-11-06</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="强化学习概念"><a href="#强化学习概念" class="headerlink" title="强化学习概念"></a>强化学习概念</h1><p>强化学习是一种解决控制任务（也称为决策问题）的框架，通过构建智能体，这些智能体通过与环境互动、试错并接收奖励（正面或负面）作为独特的反馈来从环境中学习。</p>
+<h2 id="强化学习框架"><a href="#强化学习框架" class="headerlink" title="强化学习框架"></a>强化学习框架</h2><p>在下图中，以机器人为例，agent则为机器人的控制中心，environment则可以为机器人的各个关节电机</p>
+<img src="/images/loading.png" data-original="/2025/11/05/RL-1/1.png" class title="This is an image"> 
+<p>当控制中心（agent）得到关节电机（environment）0时刻的角度（state）时，会控制其进行转动（action），在转动过后，t1时刻会产生一个新的角度，如果该转角达到了预期，则会产生一个奖励（reward）</p>
+<p>因此，强化学习的目标应该是<strong>最大化累积奖励</strong>，称为<strong><u>预期回报</u></strong>的最大化</p>
+<h3 id="状态和观测空间"><a href="#状态和观测空间" class="headerlink" title="状态和观测空间"></a>状态和观测空间</h3><ul>
+<li>状态（state）是对世界状态的完整描述，没有隐藏信息</li>
+<li>观测（observation）是对状态的<strong>部分描述</strong></li>
+</ul>
+<h3 id="行动空间"><a href="#行动空间" class="headerlink" title="行动空间"></a>行动空间</h3><p>行动空间是环境中所有可能行动（action）的合集，分为离散和连续行动。</p>
+<ul>
+<li>离散空间：可能的行动数量有限（例如游戏的移动只有上左下右）</li>
+<li>连续空间：可能的行动数量无限（例如汽车的移动方向）</li>
+</ul>
+<h3 id="奖励与折扣"><a href="#奖励与折扣" class="headerlink" title="奖励与折扣"></a>奖励与折扣</h3><p>强化学习中的唯一反馈是累积奖励，而在较早时间步上奖励更有可能发生，为了表达对不同时间步奖励的关心程度，在积累奖励中引入折扣率gamma：</p>
+<script type="math/tex; mode=display">
+R(\tau)=r_{t}+\gamma r_{t+1}+ \gamma^2 r_{t+2}+ \gamma^3r_{t+3}+...</script><p>gamma大多数情况介于0.95与0.99之间，越大代表折扣越小，即<strong>更关心长期奖励</strong>，反之成立。</p>
+<h3 id="任务类型"><a href="#任务类型" class="headerlink" title="任务类型"></a>任务类型</h3><ul>
+<li>情景式任务：存在起始与终结点的任务</li>
+<li>持续式任务：没有终止状态的任务</li>
+</ul>
+<h3 id="探索与利用"><a href="#探索与利用" class="headerlink" title="探索与利用"></a>探索与利用</h3><ul>
+<li>利用：利用已知信息来最大化奖励</li>
+<li>探索：通过随机行动探索环境，获取更多的信息</li>
+</ul>
+<p>简单来说，探索就是风险更大的获取奖励的方式，相比利用，可能获得更大奖励，但也可能<strong>获得更大惩罚（负奖励值）</strong>，因此，必须定义一个有助于<strong>权衡二者的规则</strong>。</p>
+<h2 id="强化学习的目标"><a href="#强化学习的目标" class="headerlink" title="强化学习的目标"></a>强化学习的目标</h2><p>我们需要得到一个函数，该函数在得到当前环境状态（state）时，会给出最优的行动（action）</p>
+<ul>
+<li>基于策略的方法：直接学习一个策略函数，该函数将定义<strong>每个状态到最佳动作的直接映射（或概率分布）</strong></li>
+<li>基于价值的方法：学习一个价值函数，该函数将每个状态映射到对应的一个预期价值，因此行动策略即“走向价值最高的状态”</li>
+</ul>
+<h1 id="Gymnasium"><a href="#Gymnasium" class="headerlink" title="Gymnasium"></a>Gymnasium</h1><p>Gymnasium是一个用于强化学习创建环境的库</p>
+<p>Gymnasium 的核心是 <code>Env</code>，一个表示强化学习理论中马尔可夫决策过程（MDP）的高级 Python 类（注意：这不是一个完美的重构，缺少 MDP 的几个组件）。该类为用户提供了开始新情节、采取行动和可视化智能体当前状态的能力。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> gymnasium <span class="keyword">as</span> gym</span><br><span class="line"></span><br><span class="line">env = gym.make(<span class="string">&#x27;CartPole-v1&#x27;</span>) <span class="comment">#通过调用make函数返回一个env类，此处为倒立摆环境</span></span><br><span class="line">observation, info = env.reset() <span class="comment">#初始化环境</span></span><br></pre></td></tr></table></figure>
+<p>上述代码创建了一个倒立摆模型，现在我们可以通过<code>env.step()</code>对环境执行动作（action）：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span> <span class="keyword">not</span> episode_over:</span><br><span class="line">    <span class="comment">#随机动作，对于倒立摆来说，其动作空间只有左0或右1，也就是说其动作空间为离散空间 </span></span><br><span class="line">    action = env.action_space.sample()</span><br><span class="line">    observation, reward, terminated, truncated, info = env.step(action)</span><br><span class="line">    total_reward += reward</span><br><span class="line">    episode_over = terminated <span class="keyword">or</span> truncated</span><br></pre></td></tr></table></figure>
+<p>对于step的返回如下，对于每个环境，其返回的各元素具体内容都不同：</p>
+<ul>
+<li><code>observation</code>：新状态 (st+1)，取决于环境，对于倒立摆，其为(4,)，分别为小车位置、速度、杆角度、角速度</li>
+<li><code>reward</code>：执行动作后获得的奖励</li>
+<li><code>terminated</code>：指奖励是否到达阈值</li>
+<li><code>truncated</code>：指环境是否因超出边界而结束，对于倒立摆，杆角度过大、小车位置超出屏幕或时间到达上限都会结束</li>
+<li><code>info</code>：一个提供额外信息的字典（取决于环境）。</li>
+</ul>
+<h2 id="月球车实践"><a href="#月球车实践" class="headerlink" title="月球车实践"></a>月球车实践</h2><p>首先创建对应环境，对于月球车，其奖励方案较为复杂，具体可查阅<a target="_blank" rel="noopener" href="https://gymnasium.org.cn/environments/box2d/lunar_lander/">月球着陆器 - Gymnasium 文档 - Gymnasium 文档</a></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> gymnasium <span class="keyword">as</span> gym</span><br><span class="line"></span><br><span class="line">lunar = gym.make(<span class="string">&quot;LunarLander-v3&quot;</span>)</span><br><span class="line">lunar.reset()</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;Observation Space Shape&quot;</span>, lunar.observation_space.shape) <span class="comment">#环境形状</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;Sample observation&quot;</span>, lunar.observation_space.sample())<span class="comment">#随机取一个环境观测值</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;Action Space Shape&quot;</span>, lunar.action_space) <span class="comment">#动作空间形状</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;Action Space Sample&quot;</span>, lunar.action_space.sample()) <span class="comment">#随机取动作空间</span></span><br></pre></td></tr></table></figure>
+<p>现在我们已经有了环境、可执行的动作以及奖励，就差引入agent进行强化学习，这里我们引入stable_baselines3库中的PPO深度强化学习方法：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">model = sb3.PPO(<span class="string">&#x27;MlpPolicy&#x27;</span>, lunar, verbose=<span class="number">1</span>,device=<span class="string">&#x27;cpu&#x27;</span>)</span><br><span class="line"><span class="comment">#PPO算法在cpu的表现上更好</span></span><br><span class="line">model.learn(total_timesteps=<span class="number">1000000</span>)</span><br><span class="line">model.save(<span class="string">&quot;ppo&quot;</span>)</span><br></pre></td></tr></table></figure>
+<p>对于强化学习，其总学习时长不再由epoch决定，有以下几个关键的训练参数：</p>
+<ul>
+<li><p>total_timesteps：指<strong>整个训练过程中</strong>模型一共会与环境交互多少个时间步</p>
+</li>
+<li><p>n_step：每个rollout的长度，可以将其<strong>理解为训练数据集的大小</strong>，只不过在强化学习中数据集在不断更新，数据集更新次数为<code>total_timesteps\n_step</code></p>
+<p>（注：当在rollout的过程中如果环境终止而时间步未达到<code>n_step</code>，则会立即reset环境继续采样）</p>
+</li>
+<li><p>batchsize：每次<strong>梯度更新</strong>的数据长度，即将<code>n_step</code>切分为<code>n_step/batchsize</code>份，与常规深度学习同理</p>
+</li>
+<li><p>n_epoch：对于每个数据集，其都会重复利用<code>n_epoch</code>次，但每次数据集都会被打乱</p>
+</li>
+</ul>
+<p>综上所述，深度强化学习的训练相比于一般深度学习，多了一个类似“更新数据集的操作”（即rollout），除此之外其他的操作是类似的</p>
+<p><strong><u>由于笔者暂时未接触其他强化学习算法，因此以上结论均只针对PPO</u></strong></p>
+<h3 id="可视化"><a href="#可视化" class="headerlink" title="可视化"></a>可视化</h3><p>在训练完成后，我们可以通过动画观察模型训练效果：<strong>（设置<code>render_mode=&quot;human&quot;</code>）</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> gymnasium <span class="keyword">as</span> gym</span><br><span class="line"><span class="keyword">from</span> stable_baselines3 <span class="keyword">import</span> PPO</span><br><span class="line"></span><br><span class="line">env = gym.make(<span class="string">&quot;LunarLander-v3&quot;</span>, render_mode=<span class="string">&quot;human&quot;</span>)</span><br><span class="line">model = PPO.load(<span class="string">&quot;ppo&quot;</span>, env=env,device=<span class="string">&quot;cpu&quot;</span>)</span><br><span class="line"></span><br><span class="line">obs, info = env.reset()</span><br><span class="line">total_reward = <span class="number">0</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1000</span>):	<span class="comment">#随便取的值，可能会执行多次episode</span></span><br><span class="line">    action, _ = model.predict(obs, deterministic=<span class="literal">True</span>)</span><br><span class="line">    obs, reward, terminated, truncated, info = env.step(action)</span><br><span class="line">    total_reward += reward</span><br><span class="line">    <span class="keyword">if</span> terminated <span class="keyword">or</span> truncated:</span><br><span class="line">        obs, info = env.reset()</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;episode reward:<span class="subst">&#123;total_reward&#125;</span>&quot;</span>)</span><br><span class="line">        total_reward = <span class="number">0</span></span><br><span class="line">env.close()</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2025/10/22/robo-dynamic/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -538,151 +668,9 @@ e^{a t}x(t) \Leftrightarrow X(s-a)</script></li>
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2025/10/17/robo-chapter3/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/zoe.gif">
-      <meta itemprop="name" content="dhk">
-      <meta itemprop="description" content="记录一些学习日常">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="小董的BLOG">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2025/10/17/robo-chapter3/" class="post-title-link" itemprop="url">正逆运动学</a>
-        </h2>
-
-        <div class="post-meta">
-		  
-		  
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2025-10-17 10:38:10" itemprop="dateCreated datePublished" datetime="2025-10-17T10:38:10+08:00">2025-10-17</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-10-22 10:42:05" itemprop="dateModified" datetime="2025-10-22T10:42:05+08:00">2025-10-22</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="四个连杆参数"><a href="#四个连杆参数" class="headerlink" title="四个连杆参数"></a>四个连杆参数</h1><ul>
-<li><p>连杆本身</p>
-<ul>
-<li><p>连杆长度a：首尾两关节轴线距离（当两轴不平行时，公垂线只有一条）</p>
-</li>
-<li><p>扭转角α：首尾两关节轴线夹角（投影到同一平面）</p>
-</li>
-</ul>
-</li>
-<li><p>连杆连接（关节）</p>
-<ul>
-<li>连杆偏距d_i：关节i处，连杆i偏离i-1的距离</li>
-<li>关节角θ_i：关节i处，连杆i与i-1的夹角</li>
-</ul>
-</li>
-</ul>
-<p>对于转动关节，除<strong>关节角</strong>外，其他参数不变；对于移动关节，除<strong>偏距</strong>外其他参数不变</p>
-<p><u><strong>理解：将一个转动关节想象为圆柱，垂直于圆柱侧面的为连杆长度a，它的转角为关节角θ；沿着圆柱轴线的为偏距d；控制圆柱初始位姿的为扭转角α</strong></u></p>
-<h1 id="正运动学"><a href="#正运动学" class="headerlink" title="正运动学"></a>正运动学</h1><p>已知机器人各连杆参数，求末端位姿。</p>
-<p>对于机器人的两个连杆之间的变换，由四个连杆参数决定；而连杆长度a和连杆转角α由机械系统决定，不是变量，根据关节类型的不同，对于任意机器人，<strong>这个坐标系变换都是只有一个变量的函数</strong></p>
-<p>因此对于机器人末端执行器坐标系{N}相对于坐标系{0}的变换矩阵为：</p>
-<script type="math/tex; mode=display">
-^0_NT=^0_1T^1_2T^2_3T...^{N-1}_NT</script><h2 id="DH参数法（改进）"><a href="#DH参数法（改进）" class="headerlink" title="DH参数法（改进）"></a>DH参数法（改进）</h2><p>对于每个连杆的坐标系，通常选择轴线方向为Z轴，X轴沿着连杆方向（当连杆长度为0时，X轴垂直于Z_{i-1}和Zi的平面），根据右手定律确定Y轴。在改进DH参数法中，坐标系{i}与关节i固连</p>
-<p>因此，当我们要求解连杆i-1到连杆i的变换时（也就是{i-1}到{i}的变换），需要：</p>
-<ul>
-<li>a_{<strong>i-1</strong>}</li>
-<li>α_{<strong>i-1</strong>}</li>
-<li>d_i</li>
-<li>θ_i</li>
-</ul>
-<p>其中a和α表示连杆信息，d和θ表示关节信息</p>
-<p>在改进DH参数下，<strong>每个坐标系（连杆）之间的变换矩阵又包括了一个变量矩阵和三个常量矩阵的乘积</strong>，其通用形式可表示为：</p>
-<script type="math/tex; mode=display">
-^{i-1}_iT = 
-\begin{bmatrix}
-\cos\theta_i & -\sin\theta_i & 0 & a_{i-1} \\
-\sin\theta_i \cos\alpha_{i-1} & \cos\theta_i \cos\alpha_{i-1} & -\sin\alpha_{i-1} & -d_i \sin\alpha_{i-1} \\
-\sin\theta_i \sin\alpha_{i-1} & \cos\theta_i \sin\alpha_{i-1} & \cos\alpha_{i-1} & d_i \cos\alpha_{i-1} \\
-0 & 0 & 0 & 1
-\end{bmatrix}</script><p>注：标准DH和改进DH的变换矩阵不同</p>
-<h2 id="易混淆点"><a href="#易混淆点" class="headerlink" title="易混淆点"></a>易混淆点</h2><p>对于改进DH，坐标系{i}是<strong>固定在连杆i</strong>上，而不是关节i，因为坐标系用于连杆之间的坐标变换，包含了连杆本身带来的变换（a与α）与关节带来的变换（d与θ），说到底，可以直接忘记关节的概念，毕竟变换都是指连杆间的变换</p>
-<h2 id="坐标系标准命名"><a href="#坐标系标准命名" class="headerlink" title="坐标系标准命名"></a>坐标系标准命名</h2><ul>
-<li>基坐标系：机器人的基座{B}</li>
-<li>工作台坐标系：机器人工作台的坐标系{S}，可以是桌子、地面上某个通用坐标系，常根据基坐标系确定</li>
-<li>腕部坐标系：末端连杆轴的坐标系{W}</li>
-<li>工具坐标系：机器人末端坐标系{T}</li>
-<li>目标坐标系：对机器人夹持的物件等的坐标系描述{G}</li>
-</ul>
-<h1 id="逆运动学"><a href="#逆运动学" class="headerlink" title="逆运动学"></a>逆运动学</h1><p>已知机器人末端<strong>位姿</strong>，求各连杆偏距or关节角。该问题可分为两步：（1）求出腕部坐标系{W}相对于基坐标{B}的变换矩阵；（2）应用逆运动学求解关节角</p>
-<h2 id="工作空间描述"><a href="#工作空间描述" class="headerlink" title="工作空间描述"></a>工作空间描述</h2><p>在进行逆运动学求解之前，我们首先需要讨论解的存在性，即机器人是否能够达到期望位姿，而这取决于机器人的工作空间，而确定工作空间的方法就是给出{W}的坐标系表达式，一个含有n个变量的函数</p>
-<p>当已知目标点</p>
-<script type="math/tex; mode=display">
-^BP_{P_{org}}=\begin{bmatrix}x_p \\y_p\\z_p \end{bmatrix}</script><p>则可通过求解{P}各轴在{B}下的坐标以得到{P}的坐标系表示：（旋转矩阵的定义）</p>
-<script type="math/tex; mode=display">
-^B_PT=\begin{bmatrix}^B\hat{X}_P &^B\hat{Y}_P &^B \hat{Z}_P & ^BP_{p_{org}}\\
-0 & 0 & 0 & 1\end{bmatrix}</script><p>而对于轴矢量的求解，通常要结合实际情况与叉乘</p>
-<p>因此，任何不满足该工作空间的{W}均在机器人工作空间之外</p>
-<p>（看的不是很懂，目前感觉影响不大）</p>
-<h2 id="代数法求解逆运动学"><a href="#代数法求解逆运动学" class="headerlink" title="代数法求解逆运动学"></a>代数法求解逆运动学</h2><p>利用正运动学方程，通过代数变换（如移项、三角恒等式等）直接求解关节变量。适用于平面、少自由度机器人逆运动学求解</p>
-<p>对于一个三连杆平面机器人，当已知除θ外其他连杆参数时，可以根据坐标轴矢量得到{W}的正运动学函数，（假设{W}就在连杆3的关节处，目标点在{W}上），因此当给定目标点位姿时，可以得到以下方程：</p>
-<script type="math/tex; mode=display">
-\begin{bmatrix}
-c_{123} & -s_{123} & 0.0 & l_1c_1 + l_2c_{12} \\
-s_{123} & c_{123} & 0.0 & l_1s_1 + l_2s_{12} \\
-0.0 & 0.0 & 1.0 & 0.0 \\
-0 & 0 & 0 & 1
-\end{bmatrix}=
-\begin{bmatrix}
-c_{\phi} & -s_{\phi} & 0.0 & x \\
-s_{\phi} & c_{\phi} & 0.0 & y \\
-0.0 & 0.0 & 1.0 & 0.0 \\
-0 & 0 & 0 & 1
-\end{bmatrix}</script><p>其中Φ，x，y，l_1，l_2为已知值。即根据四个非线性方程求解三个未知数，因此可以得到所有可能解</p>
-<p>（将方程两边平方相加，消去θ₁，利用余弦定理直接求解θ₂，再反求θ₁，最后用arctan求Φ，减去θ₁，θ₂得到θ3）</p>
-<h2 id="几何法求解逆运动学"><a href="#几何法求解逆运动学" class="headerlink" title="几何法求解逆运动学"></a>几何法求解逆运动学</h2><p>即通过三角函数进行几何分析求各角度，与代数法本质相同，不再详细展开</p>
-<h2 id="数值法求解逆运动学"><a href="#数值法求解逆运动学" class="headerlink" title="数值法求解逆运动学"></a>数值法求解逆运动学</h2><p>使用迭代数值求解，这里暂时不深究，需要时再扩充</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/22/">22</a><a class="extend next" rel="next" href="/page/4/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/23/">23</a><a class="extend next" rel="next" href="/page/4/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -749,7 +737,7 @@ s_{\phi} & c_{\phi} & 0.0 & y \\
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">66</span>
+          <span class="site-state-item-count">67</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -791,7 +779,7 @@ s_{\phi} & c_{\phi} & 0.0 & y \\
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2025</span>
+  <span itemprop="copyrightYear">2026</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -919,11 +907,11 @@ s_{\phi} & c_{\phi} & 0.0 & y \\
         pbOptions.networks = "Wechat,QQZone,Weibo,Douban,Twitter,Facebook";
       new needShareButton('#needsharebutton-postbottom', pbOptions);
   </script>
-<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script><script>
+<script>
             window.imageLazyLoadSetting = {
                 isSPA: false,
                 preloadRatio: 1,
                 processImages: null,
             };
-        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(e.href.match(t)||e.href.match(r))&&(e.href=a.dataset.original)})});</script><script>!function(n){n.imageLazyLoadSetting.processImages=o;var e=n.imageLazyLoadSetting.isSPA,i=n.imageLazyLoadSetting.preloadRatio||1,r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]"));function o(){e&&(r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")));for(var t,a=0;a<r.length;a++)0<=(t=(t=r[a]).getBoundingClientRect()).bottom&&0<=t.left&&t.top<=(n.innerHeight*i||document.documentElement.clientHeight*i)&&function(){var t,e,n,i,o=r[a];t=o,e=function(){r=r.filter(function(t){return o!==t})},n=new Image,i=t.getAttribute("data-original"),n.onload=function(){t.src=i,e&&e()},t.src!==i&&(n.src=i)}()}o(),n.addEventListener("scroll",function(){var t,e;t=o,e=n,clearTimeout(t.tId),t.tId=setTimeout(function(){t.call(e)},500)})}(this);</script></body>
+        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(e.href.match(t)||e.href.match(r))&&(e.href=a.dataset.original)})});</script><script>!function(n){n.imageLazyLoadSetting.processImages=o;var e=n.imageLazyLoadSetting.isSPA,i=n.imageLazyLoadSetting.preloadRatio||1,r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]"));function o(){e&&(r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")));for(var t,a=0;a<r.length;a++)0<=(t=(t=r[a]).getBoundingClientRect()).bottom&&0<=t.left&&t.top<=(n.innerHeight*i||document.documentElement.clientHeight*i)&&function(){var t,e,n,i,o=r[a];t=o,e=function(){r=r.filter(function(t){return o!==t})},n=new Image,i=t.getAttribute("data-original"),n.onload=function(){t.src=i,e&&e()},t.src!==i&&(n.src=i)}()}o(),n.addEventListener("scroll",function(){var t,e;t=o,e=n,clearTimeout(t.tId),t.tId=setTimeout(function(){t.call(e)},500)})}(this);</script><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script></body>
 </html>

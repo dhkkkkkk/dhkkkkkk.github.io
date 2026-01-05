@@ -197,6 +197,165 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2025/11/17/control-algorithm/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/zoe.gif">
+      <meta itemprop="name" content="dhk">
+      <meta itemprop="description" content="记录一些学习日常">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小董的BLOG">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/11/17/control-algorithm/" class="post-title-link" itemprop="url">一些经典算法集合（杂）</a>
+        </h2>
+
+        <div class="post-meta">
+		  
+		  
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2025-11-17 10:16:11" itemprop="dateCreated datePublished" datetime="2025-11-17T10:16:11+08:00">2025-11-17</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-11-20 15:19:53" itemprop="dateModified" datetime="2025-11-20T15:19:53+08:00">2025-11-20</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="PID"><a href="#PID" class="headerlink" title="PID"></a>PID</h1><h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h2><p>PID控制算法是一种线性控制器，它根据给定值（目标值）和实际输出值之间的偏差，利用比例（Proportional）、积分（Integral）、微分（Derivative）三种控制方式的组合来调整控制量，从而实现对被控对象的精确控制。</p>
+<h3 id="比例控制"><a href="#比例控制" class="headerlink" title="比例控制"></a>比例控制</h3><p>根据偏差的大小，<strong>线性</strong>调整控制量。偏差越大，控制作用越强。</p>
+<ul>
+<li>优点：<strong>响应速度快</strong>，能快速对偏差做出反应。</li>
+<li>缺点：比例项较大时，会出现<strong>震荡</strong>，较小时会出现<strong>静态误差</strong></li>
+</ul>
+<h3 id="积分控制"><a href="#积分控制" class="headerlink" title="积分控制"></a>积分控制</h3><p>根据偏差的积分来调整控制量。它会<strong>累积过去的偏差</strong>，随着时间的推移，即使偏差很小，积分项也会不断积累，从而推动系统消除偏差</p>
+<ul>
+<li>优点：能够<strong>消除稳态误差（静差）</strong>，保证系统的精度。</li>
+<li>缺点：积分作用较强时，<strong>容易导致系统超调</strong>，甚至使系统不稳定。</li>
+</ul>
+<img src="/images/loading.png" data-original="/2025/11/17/control-algorithm/1.png" class title="This is an image"> 
+<h3 id="微分控制"><a href="#微分控制" class="headerlink" title="微分控制"></a>微分控制</h3><p>是根据偏差的<strong>变化率</strong>来调整控制量。它能够<u>预测偏差的变化趋势</u>，提前做出调整。</p>
+<ul>
+<li><strong>优点</strong>：可以抑制偏差的变化，<strong>减少系统的超调</strong>，提高系统的稳定性。</li>
+<li><strong>缺点</strong>：对噪声比较敏感。如果测量的偏差信号中存在噪声，微分项<strong>会放大噪声</strong>的影响，导致控制量出现不必要的波动。微分项较大时也会出现震荡</li>
+</ul>
+<h2 id="常见组合"><a href="#常见组合" class="headerlink" title="常见组合"></a>常见组合</h2><h3 id="PI控制"><a href="#PI控制" class="headerlink" title="PI控制"></a>PI控制</h3><ul>
+<li><p>优点：将比列调节的快速反应与积分调节消除静差的特点结合；</p>
+</li>
+<li><p>缺点：不对未来控制误差进行预测，限制了控制性能。</p>
+</li>
+</ul>
+<p>适用于控制通道滞后较小、<strong>负荷变化不大</strong>、 工艺参数<strong>不允许有静差</strong>的系统。</p>
+<h3 id="PD控制"><a href="#PD控制" class="headerlink" title="PD控制"></a>PD控制</h3><ul>
+<li>优点：对惯性较大对象，可改善控制质量，减小偏差，缩短控制时间。有利于<strong>提高系统响应速度，抑制动态偏差</strong></li>
+<li>缺点：<strong>抗干扰能力差</strong>，一般只能应用于被调参数 变化平稳的生产过程；微分作用太强时，容易造成系统<strong>振荡</strong>。</li>
+</ul>
+<h2 id="位置式与增量式"><a href="#位置式与增量式" class="headerlink" title="位置式与增量式"></a>位置式与增量式</h2><p>位置式输出：</p>
+<script type="math/tex; mode=display">
+u(t) = K_p e(t) + K_i \int_{0}^{t} e(\tau) \,d\tau + K_d \frac{de(t)}{dt}</script><p>增量式输出：</p>
+<script type="math/tex; mode=display">
+\Delta u(k) = K_p [e(k) - e(k-1)] + K_i  e(k) + K_d ({e(k) - 2e(k-1) + e(k-2)})</script><script type="math/tex; mode=display">
+u(k) = u(k-1) + \Delta u(k)</script><p>位置式PID控制的输出与整个过去的状态有关，用到了误差的累加值;而增量式PID的输出只与当前拍和前两拍的误差有关，因此<strong>位置式PID控制的累积误差相对更大</strong>;</p>
+<p>由于输出为增量形式，可以减小控制器对控制量的冲击，使得系统更加平稳。</p>
+<h2 id="抗积分饱和"><a href="#抗积分饱和" class="headerlink" title="抗积分饱和"></a>抗积分饱和</h2><p>PID控制器的输出由于积分作用的不断累加而扩大，从而导致控制器输出不断增大超出正常范围进入饱和区。为了防止这种情况，需要在某些情况下限制积分的增长：</p>
+<ul>
+<li>积分分离：设置一个误差阈值，只有当误差较小（系统输出接近期望）时，才加入积分控制，平时则使用PD控制</li>
+<li>积分限幅：设置一个输出阈值范围，计算U(k)的时候，先判断上一时刻的控制量U(k-1)是否已经超出了限制范围。若U(k-1)&gt;Umax，则只累加负偏差；若U(k-1)&lt;Umin，则只累加正偏差。</li>
+</ul>
+<h2 id="串级PID"><a href="#串级PID" class="headerlink" title="串级PID"></a>串级PID</h2><p>以电机控制为例，在很多时候，我们的期望是位置（电机转角），但我们最终对电机的控制量都是电流（力矩，或者说是加速度），因此在使用单位置PID时，该控制是间接的，也就是说在该情况下，<strong>速度和加速度的变化都是未知的，也就是不平滑的</strong>；最终会表现为电机经过了目标位置，然后出现持续震荡，因为仅仅使用位置pid是难以让速度和加速度都达到期望的）</p>
+<p>因此，我们引入串级PID：（由外到内）</p>
+<ul>
+<li>位置环：根据上层规划算法给出的期望位置进行PID，输出期望速度</li>
+<li>速度环：根据位置环得到的期望速度进行PID，输出期望转矩/加速度/电流</li>
+<li>电流环：根据速度环输出进行PID，最终控制电机转矩</li>
+</ul>
+<p>需要注意的是，位置-速度-电流这个控制顺序<strong>是我们主动给定</strong>的，给定的理由是这三者两两间存在着较为简单的映射关系，即微积分关系，对于加速度啊转矩啊电流啊，根据牛二、欧拉和电机参数都可以得到明确的对应关系，因此在最内环的控制中，我们可以将他们看作同一控制量，一般用电流的原因可能只是实际电流值要更好测量一点？</p>
+<h3 id="在机器人中"><a href="#在机器人中" class="headerlink" title="在机器人中"></a>在机器人中</h3><p>由于我们已经可以通过一些轨迹规划算法（模型）平滑地得到关节电机的期望角度、角速度、角加速度，再结合动力学模型便可得到期望力矩，因此在机器人控制中，上述的<strong>前馈控制</strong>已经完成了绝大部分的控制工作，在理想条件下，前馈足矣</p>
+<p>但如果机器人在运行过程中受到了干扰呢，前馈控制给定了力矩是在最开始确定的，无法应对额外干扰，因此需要反馈控制来减弱干扰，提高系统稳定性：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">joint_states = p.getJointStates(robotId,controllable_joints)</span><br><span class="line">q_actual = np.array([state[<span class="number">0</span>] <span class="keyword">for</span> state <span class="keyword">in</span> joint_states])</span><br><span class="line">qd_actual = np.array([state[<span class="number">1</span>] <span class="keyword">for</span> state <span class="keyword">in</span> joint_states])</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">q_e = q[n] - q_actual</span><br><span class="line">qd_e = qd[n] - qd_actual</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">aq = qdd[n] + <span class="number">400</span> * q_e + <span class="number">40</span> * qd_e</span><br><span class="line"></span><br><span class="line">tau = p.calculateInverseDynamics(robotId,<span class="built_in">list</span>(q_actual),<span class="built_in">list</span>(qd_actual),<span class="built_in">list</span>(aq))</span><br><span class="line">p.setJointMotorControlArray(robotId,controllable_joints,p.TORQUE_CONTROL,</span><br><span class="line">                            forces = tau,</span><br><span class="line">                            )</span><br></pre></td></tr></table></figure>
+<p>这里仅对位置环和速度环进行了比例控制，因为在实际中在外环部分添加积分(I)后，导致响应变慢，添加微分(D)容易引入噪声；而由于我们已经有期望位置、速度，因此也不需要像传统串级pid一样进行串联位置环与速度环，而是将两环同时作用于力矩控制</p>
+<h2 id="PID参数调节经验"><a href="#PID参数调节经验" class="headerlink" title="PID参数调节经验"></a>PID参数调节经验</h2><ul>
+<li>KP：先设Ki=Kd=0，调Kp至系统出现轻微振荡；取此时Kp值的50%作为初始值</li>
+<li>KI：逐步增加Ki至静差在3~5个控制周期内消除</li>
+<li>KD：从Kp值的10%~20%开始调整</li>
+</ul>
+<h1 id="LQR"><a href="#LQR" class="headerlink" title="LQR"></a>LQR</h1><p><strong>线性二次型调节器（Linear Quadratic Regulator）</strong>，其中，线性指线性系统，二次型指目标函数</p>
+<h2 id="系统模型构建"><a href="#系统模型构建" class="headerlink" title="系统模型构建"></a>系统模型构建</h2><img src="/images/loading.png" data-original="/2025/11/17/control-algorithm/2.png" class title="This is an image"> 
+<p>首先，LQR作用于线性系统（对于非线性系统，需要先线性化），对于上图系统，其系统模型为</p>
+<script type="math/tex; mode=display">
+\dot x = Ax + Bu</script><p>其中，x为当前状态的集合，对于倒立摆，其可以为{位置，速度，角度，角速度}；u为我们的控制输入，A和B为系统决定的参数，系统模型<strong>建立了x（当前状态） 和 x_dot（状态随时间的变化趋势） 之间的关系</strong>。</p>
+<p>现在我们要设计一个状态反馈u=-Kx，带入系统方程中则有：</p>
+<script type="math/tex; mode=display">
+\dot x = (A-BK)x</script><p>由于A和B在LQR设计阶段是已知矩阵，因此我们只需得到一个合适的增益矩阵K，即可实现期望控制</p>
+<h2 id="LQR控制目标"><a href="#LQR控制目标" class="headerlink" title="LQR控制目标"></a>LQR控制目标</h2><p>相比于PID的尽可能减小误差，LQR定义了一种代价函数，通过让该能量函数最小以实现最优控制：</p>
+<img src="/images/loading.png" data-original="/2025/11/17/control-algorithm/3.png" class title="This is an image"> 
+<p>其中，Q（状态权重矩阵）和R（控制输入权重矩阵）即是我们的期望闭环性能（也就是要调的参数），即当控制目标确定时，我们想要用最小的控制代价u得到最优的控制。通常，Q越大，系统相应越快；R越大，控制力惩罚越大（即力作用越平稳温柔）</p>
+<p>现在，我们已经确定了A，B，Q，R，如何根据“代价函数最小”这个目标得到K呢？</p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_36133747/article/details/123413115">线性二次型调节器(LQR)原理详解-CSDN博客</a></p>
+<p>在假设系统稳定的情况下，我们可以通过一个riccati里卡提方程由“J最小”这个条件得到一个满足条件的辅助矩阵P，再由P得到K，对于求解里卡提方程，matlab，scipy都提供了对应函数</p>
+<h3 id="Q和R的选择"><a href="#Q和R的选择" class="headerlink" title="Q和R的选择"></a>Q和R的选择</h3><p>Q：半正定矩阵，通常选用对角矩阵，对角线元素表示各状态的权重（因此形状应为nxn，n为状态数量），因此需根据各状态的重要性分配权重；重点关注的状态应分配较大权重；<strong>如果系统响应较慢也可增加Q</strong></p>
+<p>R：正定矩阵，通常选用对角矩阵，对角线元素表示各控制输入的权重（因此形状应为mxm，m为控制量）；初始应选择较小值；如果<strong>控制输入幅度较大则增加R</strong>，如果<strong>系统响应较慢则减小R</strong></p>
+<h2 id="倒立摆中的LQR"><a href="#倒立摆中的LQR" class="headerlink" title="倒立摆中的LQR"></a>倒立摆中的LQR</h2><h3 id="建立动力学方程"><a href="#建立动力学方程" class="headerlink" title="建立动力学方程"></a>建立动力学方程</h3><p>对于每个广义坐标q_i，拉格朗日方程为：</p>
+<script type="math/tex; mode=display">
+\frac d {dt}(\frac{\part L}{\part \dot{q_i}})-\frac {\part L}{\part q_i} = Q_i</script><p>其中，Q_i是广义坐标q_i对应广义力。在倒立摆中，q={x,θ}，则Q={F,0}（因为没有非保守力直接对摆杆做功）</p>
+<p>则分别将q_i替换为x和θ后则可得到倒立摆的动力学模型（方程组）：</p>
+<script type="math/tex; mode=display">
+(M + m)\ddot{x} + m l \ddot{\theta} \cos\theta - m l \dot{\theta}^2 \sin\theta = F</script><script type="math/tex; mode=display">
+(m l^2 + I) \ddot{\theta}+m l \ddot{x} \cos\theta - m g l \sin\theta = 0</script><h3 id="线性化"><a href="#线性化" class="headerlink" title="线性化"></a>线性化</h3><p>由于现在的动力学方程是非线性的，因此我们需要先将其线性化。而在倒立摆中，平衡点即为θ=0(cosθ=0,sinθ=θ)，则线性化后有：</p>
+<script type="math/tex; mode=display">
+(M + m)\ddot{x} + m l \ddot{\theta}  = F</script><script type="math/tex; mode=display">
+(m l^2 + I) \ddot{\theta}+m l \ddot{x} - m g l \theta = 0</script><p>将其转换为线性系统标准模型：</p>
+<script type="math/tex; mode=display">
+\dot x = Ax + Bu</script><p>则有：</p>
+<script type="math/tex; mode=display">
+\begin{bmatrix}\dot x \\ \ddot x \\\dot{\theta} \\ \ddot{\theta}\end{bmatrix}
+=A
+\begin{bmatrix} x \\ \dot x \\\theta \\ \dot{\theta}\end{bmatrix}+BF</script><p>其中：</p>
+<img src="/images/loading.png" data-original="/2025/11/17/control-algorithm/4.png" class title="This is an image"> 
+<p>得到A，B后，我们令Q=diag(1,1,1,1)，R=1（随便给的），即可通过riccati方程得到一个1x4矩阵K，最终得到我们的控制输入：</p>
+<script type="math/tex; mode=display">
+u = -Kx</script><p>u即为当前状态下<strong><u>保持平衡</u></strong>应施加的力F（使系统<strong>稳定</strong>在期望状态）</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2025/11/12/pybullet-practice/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -469,139 +628,9 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2025/11/05/RL-1/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/zoe.gif">
-      <meta itemprop="name" content="dhk">
-      <meta itemprop="description" content="记录一些学习日常">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="小董的BLOG">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2025/11/05/RL-1/" class="post-title-link" itemprop="url">强化学习</a>
-        </h2>
-
-        <div class="post-meta">
-		  
-		  
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2025-11-05 16:28:49" itemprop="dateCreated datePublished" datetime="2025-11-05T16:28:49+08:00">2025-11-05</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-11-06 19:14:12" itemprop="dateModified" datetime="2025-11-06T19:14:12+08:00">2025-11-06</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="强化学习概念"><a href="#强化学习概念" class="headerlink" title="强化学习概念"></a>强化学习概念</h1><p>强化学习是一种解决控制任务（也称为决策问题）的框架，通过构建智能体，这些智能体通过与环境互动、试错并接收奖励（正面或负面）作为独特的反馈来从环境中学习。</p>
-<h2 id="强化学习框架"><a href="#强化学习框架" class="headerlink" title="强化学习框架"></a>强化学习框架</h2><p>在下图中，以机器人为例，agent则为机器人的控制中心，environment则可以为机器人的各个关节电机</p>
-<img src="/images/loading.png" data-original="/2025/11/05/RL-1/1.png" class title="This is an image"> 
-<p>当控制中心（agent）得到关节电机（environment）0时刻的角度（state）时，会控制其进行转动（action），在转动过后，t1时刻会产生一个新的角度，如果该转角达到了预期，则会产生一个奖励（reward）</p>
-<p>因此，强化学习的目标应该是<strong>最大化累积奖励</strong>，称为<strong><u>预期回报</u></strong>的最大化</p>
-<h3 id="状态和观测空间"><a href="#状态和观测空间" class="headerlink" title="状态和观测空间"></a>状态和观测空间</h3><ul>
-<li>状态（state）是对世界状态的完整描述，没有隐藏信息</li>
-<li>观测（observation）是对状态的<strong>部分描述</strong></li>
-</ul>
-<h3 id="行动空间"><a href="#行动空间" class="headerlink" title="行动空间"></a>行动空间</h3><p>行动空间是环境中所有可能行动（action）的合集，分为离散和连续行动。</p>
-<ul>
-<li>离散空间：可能的行动数量有限（例如游戏的移动只有上左下右）</li>
-<li>连续空间：可能的行动数量无限（例如汽车的移动方向）</li>
-</ul>
-<h3 id="奖励与折扣"><a href="#奖励与折扣" class="headerlink" title="奖励与折扣"></a>奖励与折扣</h3><p>强化学习中的唯一反馈是累积奖励，而在较早时间步上奖励更有可能发生，为了表达对不同时间步奖励的关心程度，在积累奖励中引入折扣率gamma：</p>
-<script type="math/tex; mode=display">
-R(\tau)=r_{t}+\gamma r_{t+1}+ \gamma^2 r_{t+2}+ \gamma^3r_{t+3}+...</script><p>gamma大多数情况介于0.95与0.99之间，越大代表折扣越小，即<strong>更关心长期奖励</strong>，反之成立。</p>
-<h3 id="任务类型"><a href="#任务类型" class="headerlink" title="任务类型"></a>任务类型</h3><ul>
-<li>情景式任务：存在起始与终结点的任务</li>
-<li>持续式任务：没有终止状态的任务</li>
-</ul>
-<h3 id="探索与利用"><a href="#探索与利用" class="headerlink" title="探索与利用"></a>探索与利用</h3><ul>
-<li>利用：利用已知信息来最大化奖励</li>
-<li>探索：通过随机行动探索环境，获取更多的信息</li>
-</ul>
-<p>简单来说，探索就是风险更大的获取奖励的方式，相比利用，可能获得更大奖励，但也可能<strong>获得更大惩罚（负奖励值）</strong>，因此，必须定义一个有助于<strong>权衡二者的规则</strong>。</p>
-<h2 id="强化学习的目标"><a href="#强化学习的目标" class="headerlink" title="强化学习的目标"></a>强化学习的目标</h2><p>我们需要得到一个函数，该函数在得到当前环境状态（state）时，会给出最优的行动（action）</p>
-<ul>
-<li>基于策略的方法：直接学习一个策略函数，该函数将定义<strong>每个状态到最佳动作的直接映射（或概率分布）</strong></li>
-<li>基于价值的方法：学习一个价值函数，该函数将每个状态映射到对应的一个预期价值，因此行动策略即“走向价值最高的状态”</li>
-</ul>
-<h1 id="Gymnasium"><a href="#Gymnasium" class="headerlink" title="Gymnasium"></a>Gymnasium</h1><p>Gymnasium是一个用于强化学习创建环境的库</p>
-<p>Gymnasium 的核心是 <code>Env</code>，一个表示强化学习理论中马尔可夫决策过程（MDP）的高级 Python 类（注意：这不是一个完美的重构，缺少 MDP 的几个组件）。该类为用户提供了开始新情节、采取行动和可视化智能体当前状态的能力。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> gymnasium <span class="keyword">as</span> gym</span><br><span class="line"></span><br><span class="line">env = gym.make(<span class="string">&#x27;CartPole-v1&#x27;</span>) <span class="comment">#通过调用make函数返回一个env类，此处为倒立摆环境</span></span><br><span class="line">observation, info = env.reset() <span class="comment">#初始化环境</span></span><br></pre></td></tr></table></figure>
-<p>上述代码创建了一个倒立摆模型，现在我们可以通过<code>env.step()</code>对环境执行动作（action）：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span> <span class="keyword">not</span> episode_over:</span><br><span class="line">    <span class="comment">#随机动作，对于倒立摆来说，其动作空间只有左0或右1，也就是说其动作空间为离散空间 </span></span><br><span class="line">    action = env.action_space.sample()</span><br><span class="line">    observation, reward, terminated, truncated, info = env.step(action)</span><br><span class="line">    total_reward += reward</span><br><span class="line">    episode_over = terminated <span class="keyword">or</span> truncated</span><br></pre></td></tr></table></figure>
-<p>对于step的返回如下，对于每个环境，其返回的各元素具体内容都不同：</p>
-<ul>
-<li><code>observation</code>：新状态 (st+1)，取决于环境，对于倒立摆，其为(4,)，分别为小车位置、速度、杆角度、角速度</li>
-<li><code>reward</code>：执行动作后获得的奖励</li>
-<li><code>terminated</code>：指奖励是否到达阈值</li>
-<li><code>truncated</code>：指环境是否因超出边界而结束，对于倒立摆，杆角度过大、小车位置超出屏幕或时间到达上限都会结束</li>
-<li><code>info</code>：一个提供额外信息的字典（取决于环境）。</li>
-</ul>
-<h2 id="月球车实践"><a href="#月球车实践" class="headerlink" title="月球车实践"></a>月球车实践</h2><p>首先创建对应环境，对于月球车，其奖励方案较为复杂，具体可查阅<a target="_blank" rel="noopener" href="https://gymnasium.org.cn/environments/box2d/lunar_lander/">月球着陆器 - Gymnasium 文档 - Gymnasium 文档</a></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> gymnasium <span class="keyword">as</span> gym</span><br><span class="line"></span><br><span class="line">lunar = gym.make(<span class="string">&quot;LunarLander-v3&quot;</span>)</span><br><span class="line">lunar.reset()</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;Observation Space Shape&quot;</span>, lunar.observation_space.shape) <span class="comment">#环境形状</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;Sample observation&quot;</span>, lunar.observation_space.sample())<span class="comment">#随机取一个环境观测值</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;Action Space Shape&quot;</span>, lunar.action_space) <span class="comment">#动作空间形状</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;Action Space Sample&quot;</span>, lunar.action_space.sample()) <span class="comment">#随机取动作空间</span></span><br></pre></td></tr></table></figure>
-<p>现在我们已经有了环境、可执行的动作以及奖励，就差引入agent进行强化学习，这里我们引入stable_baselines3库中的PPO深度强化学习方法：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">model = sb3.PPO(<span class="string">&#x27;MlpPolicy&#x27;</span>, lunar, verbose=<span class="number">1</span>,device=<span class="string">&#x27;cpu&#x27;</span>)</span><br><span class="line"><span class="comment">#PPO算法在cpu的表现上更好</span></span><br><span class="line">model.learn(total_timesteps=<span class="number">1000000</span>)</span><br><span class="line">model.save(<span class="string">&quot;ppo&quot;</span>)</span><br></pre></td></tr></table></figure>
-<p>对于强化学习，其总学习时长不再由epoch决定，有以下几个关键的训练参数：</p>
-<ul>
-<li><p>total_timesteps：指<strong>整个训练过程中</strong>模型一共会与环境交互多少个时间步</p>
-</li>
-<li><p>n_step：每个rollout的长度，可以将其<strong>理解为训练数据集的大小</strong>，只不过在强化学习中数据集在不断更新，数据集更新次数为<code>total_timesteps\n_step</code></p>
-<p>（注：当在rollout的过程中如果环境终止而时间步未达到<code>n_step</code>，则会立即reset环境继续采样）</p>
-</li>
-<li><p>batchsize：每次<strong>梯度更新</strong>的数据长度，即将<code>n_step</code>切分为<code>n_step/batchsize</code>份，与常规深度学习同理</p>
-</li>
-<li><p>n_epoch：对于每个数据集，其都会重复利用<code>n_epoch</code>次，但每次数据集都会被打乱</p>
-</li>
-</ul>
-<p>综上所述，深度强化学习的训练相比于一般深度学习，多了一个类似“更新数据集的操作”（即rollout），除此之外其他的操作是类似的</p>
-<p><strong><u>由于笔者暂时未接触其他强化学习算法，因此以上结论均只针对PPO</u></strong></p>
-<h3 id="可视化"><a href="#可视化" class="headerlink" title="可视化"></a>可视化</h3><p>在训练完成后，我们可以通过动画观察模型训练效果：<strong>（设置<code>render_mode=&quot;human&quot;</code>）</strong></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> gymnasium <span class="keyword">as</span> gym</span><br><span class="line"><span class="keyword">from</span> stable_baselines3 <span class="keyword">import</span> PPO</span><br><span class="line"></span><br><span class="line">env = gym.make(<span class="string">&quot;LunarLander-v3&quot;</span>, render_mode=<span class="string">&quot;human&quot;</span>)</span><br><span class="line">model = PPO.load(<span class="string">&quot;ppo&quot;</span>, env=env,device=<span class="string">&quot;cpu&quot;</span>)</span><br><span class="line"></span><br><span class="line">obs, info = env.reset()</span><br><span class="line">total_reward = <span class="number">0</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1000</span>):	<span class="comment">#随便取的值，可能会执行多次episode</span></span><br><span class="line">    action, _ = model.predict(obs, deterministic=<span class="literal">True</span>)</span><br><span class="line">    obs, reward, terminated, truncated, info = env.step(action)</span><br><span class="line">    total_reward += reward</span><br><span class="line">    <span class="keyword">if</span> terminated <span class="keyword">or</span> truncated:</span><br><span class="line">        obs, info = env.reset()</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;episode reward:<span class="subst">&#123;total_reward&#125;</span>&quot;</span>)</span><br><span class="line">        total_reward = <span class="number">0</span></span><br><span class="line">env.close()</span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/22/">22</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/23/">23</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -668,7 +697,7 @@ R(\tau)=r_{t}+\gamma r_{t+1}+ \gamma^2 r_{t+2}+ \gamma^3r_{t+3}+...</script><p>g
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">66</span>
+          <span class="site-state-item-count">67</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -710,7 +739,7 @@ R(\tau)=r_{t}+\gamma r_{t+1}+ \gamma^2 r_{t+2}+ \gamma^3r_{t+3}+...</script><p>g
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2025</span>
+  <span itemprop="copyrightYear">2026</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -838,11 +867,11 @@ R(\tau)=r_{t}+\gamma r_{t+1}+ \gamma^2 r_{t+2}+ \gamma^3r_{t+3}+...</script><p>g
         pbOptions.networks = "Wechat,QQZone,Weibo,Douban,Twitter,Facebook";
       new needShareButton('#needsharebutton-postbottom', pbOptions);
   </script>
-<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script><script>
+<script>
             window.imageLazyLoadSetting = {
                 isSPA: false,
                 preloadRatio: 1,
                 processImages: null,
             };
-        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(e.href.match(t)||e.href.match(r))&&(e.href=a.dataset.original)})});</script><script>!function(n){n.imageLazyLoadSetting.processImages=o;var e=n.imageLazyLoadSetting.isSPA,i=n.imageLazyLoadSetting.preloadRatio||1,r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]"));function o(){e&&(r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")));for(var t,a=0;a<r.length;a++)0<=(t=(t=r[a]).getBoundingClientRect()).bottom&&0<=t.left&&t.top<=(n.innerHeight*i||document.documentElement.clientHeight*i)&&function(){var t,e,n,i,o=r[a];t=o,e=function(){r=r.filter(function(t){return o!==t})},n=new Image,i=t.getAttribute("data-original"),n.onload=function(){t.src=i,e&&e()},t.src!==i&&(n.src=i)}()}o(),n.addEventListener("scroll",function(){var t,e;t=o,e=n,clearTimeout(t.tId),t.tId=setTimeout(function(){t.call(e)},500)})}(this);</script></body>
+        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(e.href.match(t)||e.href.match(r))&&(e.href=a.dataset.original)})});</script><script>!function(n){n.imageLazyLoadSetting.processImages=o;var e=n.imageLazyLoadSetting.isSPA,i=n.imageLazyLoadSetting.preloadRatio||1,r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]"));function o(){e&&(r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")));for(var t,a=0;a<r.length;a++)0<=(t=(t=r[a]).getBoundingClientRect()).bottom&&0<=t.left&&t.top<=(n.innerHeight*i||document.documentElement.clientHeight*i)&&function(){var t,e,n,i,o=r[a];t=o,e=function(){r=r.filter(function(t){return o!==t})},n=new Image,i=t.getAttribute("data-original"),n.onload=function(){t.src=i,e&&e()},t.src!==i&&(n.src=i)}()}o(),n.addEventListener("scroll",function(){var t,e;t=o,e=n,clearTimeout(t.tId),t.tId=setTimeout(function(){t.call(e)},500)})}(this);</script><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script></body>
 </html>

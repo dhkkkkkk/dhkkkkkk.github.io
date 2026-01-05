@@ -278,6 +278,128 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2026/01/05/whisper/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/zoe.gif">
+      <meta itemprop="name" content="dhk">
+      <meta itemprop="description" content="记录一些学习日常">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小董的BLOG">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2026/01/05/whisper/" class="post-title-link" itemprop="url">微调Whisper</a>
+        </h2>
+
+        <div class="post-meta">
+		  
+		  
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2026-01-05 14:36:22 / 修改时间：17:49:25" itemprop="dateCreated datePublished" datetime="2026-01-05T14:36:22+08:00">2026-01-05</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>本文的模型微调基于hugging face生态，但未使用Trainer API，以transcribe任务为例</p>
+<h1 id="数据集准备"><a href="#数据集准备" class="headerlink" title="数据集准备"></a>数据集准备</h1><p>本文使用hugging face上的一个阿尔巴尼亚语数据集<a target="_blank" rel="noopener" href="https://huggingface.co/datasets/Kushtrim/common_voice_18_sq">Kushtrim/common_voice_18_sq · Datasets at Hugging Face</a>，我是直接在网站上预先下载的parquet格式数据集，也可以直接在代码中下载</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> datasets <span class="keyword">import</span> load_dataset, Audio</span><br><span class="line"><span class="keyword">from</span> transformers <span class="keyword">import</span> WhisperProcessor,WhisperForConditionalGeneration</span><br><span class="line"><span class="keyword">from</span> transformers.models.whisper.tokenization_whisper <span class="keyword">import</span> TO_LANGUAGE_CODE  <span class="comment">#可查看whisper支持语言</span></span><br><span class="line"><span class="keyword">import</span> soundfile <span class="keyword">as</span> sf</span><br><span class="line"><span class="keyword">import</span> io</span><br><span class="line"><span class="keyword">from</span> typing <span class="keyword">import</span> <span class="type">Any</span>, <span class="type">Dict</span>, <span class="type">List</span>, <span class="type">Union</span></span><br><span class="line"><span class="keyword">from</span> dataclasses <span class="keyword">import</span> dataclass</span><br><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">from</span> torch.utils.data <span class="keyword">import</span> DataLoader</span><br><span class="line"><span class="keyword">from</span> torch.optim <span class="keyword">import</span> AdamW</span><br><span class="line"><span class="keyword">from</span> transformers <span class="keyword">import</span> get_scheduler</span><br><span class="line"><span class="keyword">from</span> tqdm <span class="keyword">import</span> tqdm</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">processor = WhisperProcessor.from_pretrained(</span><br><span class="line">    <span class="string">&quot;openai/whisper-small&quot;</span>, language=<span class="string">&quot;albanian&quot;</span>, task=<span class="string">&quot;transcribe&quot;</span>)</span><br><span class="line"></span><br><span class="line">alb_dataset = load_dataset(<span class="string">&quot;parquet&quot;</span>, data_files=&#123;<span class="string">&#x27;train&#x27;</span>: <span class="string">&#x27;train.parquet&#x27;</span>, <span class="string">&#x27;test&#x27;</span>: <span class="string">&#x27;test.parquet&#x27;</span>&#125;)</span><br><span class="line">alb_dataset = alb_dataset.cast_column(<span class="string">&quot;audio&quot;</span>, Audio(decode=<span class="literal">False</span>))</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">prepare_dataset</span>(<span class="params">example</span>):</span><br><span class="line">    audio_bytes = example[<span class="string">&quot;audio&quot;</span>][<span class="string">&#x27;bytes&#x27;</span>]</span><br><span class="line">    audio, samplerate = sf.read(io.BytesIO(audio_bytes))</span><br><span class="line"></span><br><span class="line">    example = processor(audio=audio,</span><br><span class="line">                        sampling_rate=<span class="number">16000</span>,</span><br><span class="line">                        text=example[<span class="string">&quot;sentence&quot;</span>])</span><br><span class="line">    example[<span class="string">&quot;input_length&quot;</span>] = <span class="built_in">len</span>(audio) / samplerate</span><br><span class="line">    <span class="keyword">return</span> example</span><br><span class="line"><span class="comment">#此处alb_dataset.column_names[&quot;train&quot;]是返回的所有column的名字，指删去原datasetdict所有同名列，不是指删去原训练集</span></span><br><span class="line">dataset = alb_dataset.<span class="built_in">map</span>(prepare_dataset,remove_columns=alb_dataset.column_names[<span class="string">&quot;train&quot;</span>],</span><br><span class="line">                            num_proc=<span class="number">1</span>,</span><br><span class="line">                            batch_size=<span class="number">100</span>)</span><br><span class="line"><span class="comment"># sample = dataset[&quot;train&quot;][1] #feature形状:(1,80,3000)的list</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h2 id="processor调用"><a href="#processor调用" class="headerlink" title="processor调用"></a>processor调用</h2><p>此处调用了与模型配套的processor，这是一个与Whisper配套的类似tokenizer的工具箱对象，负责：</p>
+<ul>
+<li>将音频重采样，转为mel频谱，归一化，统一pad至30s</li>
+<li>将文本转为ID，也就是tokenizer的任务</li>
+</ul>
+<h2 id="禁用torchcodec，使用bytes读取"><a href="#禁用torchcodec，使用bytes读取" class="headerlink" title="禁用torchcodec，使用bytes读取"></a>禁用torchcodec，使用bytes读取</h2><p>由于我直接读取单个数据时会出现torchcodec库的解码报错，由于我的torch版本较低，因此无法修复该报错。以下是我的解决方法：</p>
+<ul>
+<li><p><code>alb_dataset.cast_column(&quot;audio&quot;, Audio(decode=False))</code>禁用torchcodec解码</p>
+</li>
+<li><p>对于可以正常解码的情况，声音波形的解码数据可以直接传入processor，而此处，通过读取声音的原始bytes复原声音的解码数据（对于抱抱脸的dataset统一数据格式可查看<a href="https://dhkkkkkk.github.io/2025/11/21/LLM/">LLM学习 | 小董的BLOG</a></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">audio_bytes = example[<span class="string">&quot;audio&quot;</span>][<span class="string">&#x27;bytes&#x27;</span>]</span><br><span class="line">audio, samplerate = sf.read(io.BytesIO(audio_bytes))</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>如果这里对sample进行debug，则可以观察到其数据格式：</p>
+<img src="/images/loading.png" data-original="/2026/01/05/whisper/1.png" class title="This is an image"> 
+<p>为一个3key字典，其中feature为list1的原因是其被封装为了(1,80,3000)形状，80是mel滤波器数量，3000是长度</p>
+<h2 id="数据处理与dataloader加载"><a href="#数据处理与dataloader加载" class="headerlink" title="数据处理与dataloader加载"></a>数据处理与dataloader加载</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&#x27;&#x27;&#x27; </span></span><br><span class="line"><span class="string">@dataclass等同于</span></span><br><span class="line"><span class="string">def __init__(self, processor):</span></span><br><span class="line"><span class="string">self.processor = processor</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="meta">@dataclass</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">DataCollatorSpeechSeq2SeqWithPadding</span>:</span><br><span class="line">    processor: <span class="type">Any</span>  <span class="comment">#不强制约束类型</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">#令对象可像函数一样直接调用</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__call__</span>(<span class="params"></span></span><br><span class="line"><span class="params">            self, features: <span class="type">List</span>[<span class="type">Dict</span>[<span class="built_in">str</span>, <span class="type">Union</span>[<span class="type">List</span>[<span class="built_in">int</span>], torch.Tensor]]] <span class="comment">#输入为一个list，内容为一个字典，键为str，值为list或tensor之一</span></span></span><br><span class="line"><span class="params">    </span>) -&gt; <span class="type">Dict</span>[<span class="built_in">str</span>, torch.Tensor]: <span class="comment">#返回值为一个字典，类似C语言的函数定义</span></span><br><span class="line"></span><br><span class="line">        input_features = [</span><br><span class="line">            &#123;<span class="string">&quot;input_features&quot;</span>: feature[<span class="string">&quot;input_features&quot;</span>][<span class="number">0</span>]&#125; <span class="keyword">for</span> feature <span class="keyword">in</span> features <span class="comment">#feature[&quot;input_features&quot;]形状为(1,80,3000),因此要取[0]</span></span><br><span class="line">        ]</span><br><span class="line">        batch = self.processor.feature_extractor.pad(input_features, return_tensors=<span class="string">&quot;pt&quot;</span>) <span class="comment">#processor已经填充过，此处仅为转tensor</span></span><br><span class="line">        <span class="comment">#feature_extractor.pad接口协议是List[&#123;&quot;input_features&quot;: (feature_dim, time)&#125;]</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">#label同理，但是label是没有提前填充的</span></span><br><span class="line">        label_features = [&#123;<span class="string">&quot;input_ids&quot;</span>: feature[<span class="string">&quot;labels&quot;</span>]&#125; <span class="keyword">for</span> feature <span class="keyword">in</span> features]</span><br><span class="line">        labels_batch = self.processor.tokenizer.pad(label_features, return_tensors=<span class="string">&quot;pt&quot;</span>)</span><br><span class="line">        <span class="comment">#返回&#123;&quot;input_ids&quot;: Tensor(batch, max_len),&quot;attention_mask&quot;: Tensor(batch, max_len)&#125;</span></span><br><span class="line">        labels = labels_batch[<span class="string">&quot;input_ids&quot;</span>].masked_fill(</span><br><span class="line">            labels_batch.attention_mask.ne(<span class="number">1</span>), -<span class="number">100</span>     <span class="comment">#pytorch 交叉熵默认-100不参与loss计算</span></span><br><span class="line">        )<span class="comment">#用-100代替填充词元，labels_batch.attention_mask.ne(1)可以根据attention_mask生成一个bool mask，pad token为True</span></span><br><span class="line"></span><br><span class="line">        <span class="comment"># 如果在之前分词时添加了 bos 词元，那就剪切掉，因为之后还会加上的</span></span><br><span class="line">        <span class="keyword">if</span> (labels[:, <span class="number">0</span>] == self.processor.tokenizer.bos_token_id).<span class="built_in">all</span>().cpu().item():</span><br><span class="line">            labels = labels[:, <span class="number">1</span>:]</span><br><span class="line"></span><br><span class="line">        batch[<span class="string">&quot;labels&quot;</span>] = labels</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> batch</span><br><span class="line"></span><br><span class="line">data_collator = DataCollatorSpeechSeq2SeqWithPadding(processor=processor)</span><br><span class="line"><span class="comment"># 定义 DataLoader</span></span><br><span class="line">train_dataloader = DataLoader(</span><br><span class="line">    dataset[<span class="string">&quot;train&quot;</span>],</span><br><span class="line">    batch_size=<span class="number">2</span>,</span><br><span class="line">    shuffle=<span class="literal">True</span>,</span><br><span class="line">    collate_fn=data_collator</span><br><span class="line">)</span><br><span class="line">eval_dataloader = DataLoader(</span><br><span class="line">    dataset[<span class="string">&quot;test&quot;</span>],</span><br><span class="line">    batch_size=<span class="number">2</span>,</span><br><span class="line">    collate_fn=data_collator</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<p><code>DataCollatorSpeechSeq2SeqWithPadding</code>在这里的主要作用是</p>
+<ul>
+<li>将特征转为tensor</li>
+<li>填充label（token ID），并转为tensor</li>
+<li>将padding token转化为-100</li>
+</ul>
+<p>其他需要注意的就是<code>@dataclass</code>、<code>__call__</code>和列表推导式的语法技巧，都已用注释标出。最后，由于后续训练调用Seq2SeqTrainer API时总是会出现梯度计算图的重复计算报错，而hugging face封装的密不透风的对象我实在是做不到debug，干脆就索性直接调用DataLoader，自己写训练过程了。</p>
+<p><strong><u>DataLoader天然支持hugging face风格的dataset和data_collator，可以非常方便的直接使用</u></strong></p>
+<h1 id="简陋微调一下"><a href="#简陋微调一下" class="headerlink" title="简陋微调一下"></a>简陋微调一下</h1><p>因为直接调API有bug，就自己简单实现了一下训练，以下代码只实现了基本训练功能，亲测可以跑通</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">device = torch.device(<span class="string">&quot;cuda&quot;</span>)</span><br><span class="line">model = WhisperForConditionalGeneration.from_pretrained(<span class="string">&quot;openai/whisper-small&quot;</span>)</span><br><span class="line">model.to(device)</span><br><span class="line"></span><br><span class="line">optimizer = AdamW(model.parameters(), lr=<span class="number">5e-5</span>)</span><br><span class="line">num_epochs = <span class="number">3</span></span><br><span class="line">num_training_steps = num_epochs * <span class="built_in">len</span>(train_dataloader)</span><br><span class="line">lr_scheduler = get_scheduler(</span><br><span class="line">    <span class="string">&quot;linear&quot;</span>,</span><br><span class="line">    optimizer=optimizer,</span><br><span class="line">    num_warmup_steps=<span class="number">0</span>,</span><br><span class="line">    num_training_steps=num_training_steps</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> epoch <span class="keyword">in</span> <span class="built_in">range</span>(num_epochs):</span><br><span class="line">    model.train()</span><br><span class="line">    train_loop = tqdm(<span class="built_in">enumerate</span>(train_dataloader), total=<span class="built_in">len</span>(train_dataloader),</span><br><span class="line">                 desc=<span class="string">f&#x27;Train_Epoch <span class="subst">&#123;epoch + <span class="number">1</span>&#125;</span>/<span class="subst">&#123;num_epochs&#125;</span>&#x27;</span>, unit=<span class="string">&#x27;batch&#x27;</span>)</span><br><span class="line">    <span class="keyword">for</span> idx, batch <span class="keyword">in</span> train_loop:</span><br><span class="line">        batch = &#123;k: v.to(device) <span class="keyword">for</span> k, v <span class="keyword">in</span> batch.items()&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        outputs = model(**batch)</span><br><span class="line">        loss = outputs.loss</span><br><span class="line"></span><br><span class="line">        loss.backward()</span><br><span class="line"></span><br><span class="line">        optimizer.step()</span><br><span class="line">        lr_scheduler.step()</span><br><span class="line">        optimizer.zero_grad()</span><br><span class="line">        train_loop.set_postfix(&#123;<span class="string">&#x27;loss&#x27;</span>: <span class="string">&#x27;&#123;0:1.5f&#125;&#x27;</span>.<span class="built_in">format</span>(loss.item())&#125;)</span><br><span class="line"></span><br><span class="line">    model.<span class="built_in">eval</span>()</span><br><span class="line">    total_loss = <span class="number">0</span></span><br><span class="line">    eval_loop = tqdm(<span class="built_in">enumerate</span>(eval_dataloader), total=<span class="built_in">len</span>(eval_dataloader),</span><br><span class="line">                 desc=<span class="string">f&#x27;Eval_Epoch <span class="subst">&#123;epoch + <span class="number">1</span>&#125;</span>/<span class="subst">&#123;num_epochs&#125;</span>&#x27;</span>, unit=<span class="string">&#x27;batch&#x27;</span>)</span><br><span class="line">    <span class="keyword">for</span> idx, batch <span class="keyword">in</span> eval_loop:</span><br><span class="line">        batch = &#123;k: v.to(device) <span class="keyword">for</span> k, v <span class="keyword">in</span> batch.items()&#125;</span><br><span class="line">        <span class="keyword">with</span> torch.no_grad():</span><br><span class="line">            outputs = model(**batch)</span><br><span class="line"></span><br><span class="line">        total_loss += outputs.loss.item()</span><br><span class="line"></span><br><span class="line">    avg_loss = total_loss / <span class="built_in">len</span>(eval_dataloader)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;Evaluation Loss: <span class="subst">&#123;avg_loss&#125;</span>&quot;</span>)</span><br></pre></td></tr></table></figure>
+<p>训练相关代码好像没啥好说的了，都是一些经典操作，其中dataloader返回的batch格式如下，其是一个类似字典的结构，需要注意数据的读取方式</p>
+<img src="/images/loading.png" data-original="/2026/01/05/whisper/2.png" class title="This is an image"> 
+<h1 id="文本任务的评估指标"><a href="#文本任务的评估指标" class="headerlink" title="文本任务的评估指标"></a>文本任务的评估指标</h1><p><strong>WER</strong> 的全称是 <strong>Word Error Rate</strong>（词错误率）。它是衡量语音识别（ASR）或机器翻译系统准确性最标准、最通用的指标。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> transformers.models.whisper.english_normalizer <span class="keyword">import</span> BasicTextNormalizer</span><br><span class="line"></span><br><span class="line">normalizer = BasicTextNormalizer()<span class="comment">#文本标准化，重要</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">compute_metrics</span>(<span class="params">pred</span>):</span><br><span class="line">    pred_ids = pred.predictions</span><br><span class="line">    label_ids = pred.label_ids</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 用 pad_token_id 替换 -100</span></span><br><span class="line">    label_ids[label_ids == -<span class="number">100</span>] = processor.tokenizer.pad_token_id</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 我们希望在计算指标时不要组合起词元（解码结果为词元(subword)，而不是完整单词）</span></span><br><span class="line">    pred_str = processor.batch_decode(pred_ids, skip_special_tokens=<span class="literal">True</span>)</span><br><span class="line">    label_str = processor.batch_decode(label_ids, skip_special_tokens=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 计算普通的 WER</span></span><br><span class="line">    wer_ortho = <span class="number">100</span> * metric.compute(predictions=pred_str, references=label_str)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 计算标准化的 WER</span></span><br><span class="line">    pred_str_norm = [normalizer(pred) <span class="keyword">for</span> pred <span class="keyword">in</span> pred_str]</span><br><span class="line">    label_str_norm = [normalizer(label) <span class="keyword">for</span> label <span class="keyword">in</span> label_str]</span><br><span class="line">    <span class="comment"># 过滤，从而在评估时只计算 reference 非空的样本</span></span><br><span class="line">    pred_str_norm = [</span><br><span class="line">        pred_str_norm[i] <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(pred_str_norm)) <span class="keyword">if</span> <span class="built_in">len</span>(label_str_norm[i]) &gt; <span class="number">0</span></span><br><span class="line">    ]</span><br><span class="line">    label_str_norm = [</span><br><span class="line">        label_str_norm[i]</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(label_str_norm))</span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">len</span>(label_str_norm[i]) &gt; <span class="number">0</span></span><br><span class="line">    ]</span><br><span class="line"></span><br><span class="line">    wer = <span class="number">100</span> * metric.compute(predictions=pred_str_norm, references=label_str_norm)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> &#123;<span class="string">&quot;wer_ortho&quot;</span>: wer_ortho, <span class="string">&quot;wer&quot;</span>: wer&#125;</span><br></pre></td></tr></table></figure>
+<p><code>BasicTextNormalizer</code> 是 Whisper 官方提供的一个文本“清洗”工具。</p>
+<ul>
+<li><strong>为什么要标准化？</strong> 在阿尔巴尼亚语或英语中，同一个意思可能有不同写法（比如大小写、多余空格、标点符号）。</li>
+<li><strong>它做了什么？</strong><ul>
+<li>将文本全部转为<strong>小写</strong>。</li>
+<li>移除所有的<strong>标点符号</strong>。</li>
+<li>移除<strong>多余的空格</strong>（连续空格合并为一个）。</li>
+<li>移除 Unicode 标记。</li>
+</ul>
+</li>
+<li><strong>结果</strong>：它让模型只关注“词是否选对了”，而不关注“标点符号是否点对了”，这能提供一个更客观的语言理解指标。</li>
+</ul>
+<h2 id="WER原理"><a href="#WER原理" class="headerlink" title="WER原理"></a>WER原理</h2><p>WER 的计算基于<strong>编辑距离</strong>的概念。想象你有一行<u>模型输出</u>的文字（Hypothesis），通过以下三种操作将其<u>修改为参考文本</u>（Reference）：</p>
+<ol>
+<li><strong>替换 (Substitution, S)</strong>：把错误的词换成正确的词。</li>
+<li><strong>插入 (Insertion, I)</strong>：在漏掉的地方补上缺失的词。</li>
+<li><strong>删除 (Deletion, D)</strong>：删掉模型多出的冗余词。</li>
+</ol>
+<h3 id="2-计算公式"><a href="#2-计算公式" class="headerlink" title="2. 计算公式"></a>2. 计算公式</h3><p>WER 的计算公式如下：</p>
+<script type="math/tex; mode=display">
+WER = \frac{S + D + I}{N}</script><p>其中：</p>
+<ul>
+<li><strong>S</strong>：替换的次数</li>
+<li><strong>D</strong>：删除的次数</li>
+<li><strong>I</strong>：插入的次数</li>
+<li><strong>N</strong>：参考文本（标准答案）的总词数</li>
+</ul>
+<p><strong>注意：</strong> WER 的<strong>值越低越好（0 表示完美匹配）。</strong>由于存在“插入”操作，WER 的值<strong>有可能超过 100%</strong>。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2025/11/21/LLM/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -442,168 +564,9 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2025/11/17/control-algorithm/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/zoe.gif">
-      <meta itemprop="name" content="dhk">
-      <meta itemprop="description" content="记录一些学习日常">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="小董的BLOG">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2025/11/17/control-algorithm/" class="post-title-link" itemprop="url">一些经典算法集合（杂）</a>
-        </h2>
-
-        <div class="post-meta">
-		  
-		  
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2025-11-17 10:16:11" itemprop="dateCreated datePublished" datetime="2025-11-17T10:16:11+08:00">2025-11-17</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-11-20 15:19:53" itemprop="dateModified" datetime="2025-11-20T15:19:53+08:00">2025-11-20</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="PID"><a href="#PID" class="headerlink" title="PID"></a>PID</h1><h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h2><p>PID控制算法是一种线性控制器，它根据给定值（目标值）和实际输出值之间的偏差，利用比例（Proportional）、积分（Integral）、微分（Derivative）三种控制方式的组合来调整控制量，从而实现对被控对象的精确控制。</p>
-<h3 id="比例控制"><a href="#比例控制" class="headerlink" title="比例控制"></a>比例控制</h3><p>根据偏差的大小，<strong>线性</strong>调整控制量。偏差越大，控制作用越强。</p>
-<ul>
-<li>优点：<strong>响应速度快</strong>，能快速对偏差做出反应。</li>
-<li>缺点：比例项较大时，会出现<strong>震荡</strong>，较小时会出现<strong>静态误差</strong></li>
-</ul>
-<h3 id="积分控制"><a href="#积分控制" class="headerlink" title="积分控制"></a>积分控制</h3><p>根据偏差的积分来调整控制量。它会<strong>累积过去的偏差</strong>，随着时间的推移，即使偏差很小，积分项也会不断积累，从而推动系统消除偏差</p>
-<ul>
-<li>优点：能够<strong>消除稳态误差（静差）</strong>，保证系统的精度。</li>
-<li>缺点：积分作用较强时，<strong>容易导致系统超调</strong>，甚至使系统不稳定。</li>
-</ul>
-<img src="/images/loading.png" data-original="/2025/11/17/control-algorithm/1.png" class title="This is an image"> 
-<h3 id="微分控制"><a href="#微分控制" class="headerlink" title="微分控制"></a>微分控制</h3><p>是根据偏差的<strong>变化率</strong>来调整控制量。它能够<u>预测偏差的变化趋势</u>，提前做出调整。</p>
-<ul>
-<li><strong>优点</strong>：可以抑制偏差的变化，<strong>减少系统的超调</strong>，提高系统的稳定性。</li>
-<li><strong>缺点</strong>：对噪声比较敏感。如果测量的偏差信号中存在噪声，微分项<strong>会放大噪声</strong>的影响，导致控制量出现不必要的波动。微分项较大时也会出现震荡</li>
-</ul>
-<h2 id="常见组合"><a href="#常见组合" class="headerlink" title="常见组合"></a>常见组合</h2><h3 id="PI控制"><a href="#PI控制" class="headerlink" title="PI控制"></a>PI控制</h3><ul>
-<li><p>优点：将比列调节的快速反应与积分调节消除静差的特点结合；</p>
-</li>
-<li><p>缺点：不对未来控制误差进行预测，限制了控制性能。</p>
-</li>
-</ul>
-<p>适用于控制通道滞后较小、<strong>负荷变化不大</strong>、 工艺参数<strong>不允许有静差</strong>的系统。</p>
-<h3 id="PD控制"><a href="#PD控制" class="headerlink" title="PD控制"></a>PD控制</h3><ul>
-<li>优点：对惯性较大对象，可改善控制质量，减小偏差，缩短控制时间。有利于<strong>提高系统响应速度，抑制动态偏差</strong></li>
-<li>缺点：<strong>抗干扰能力差</strong>，一般只能应用于被调参数 变化平稳的生产过程；微分作用太强时，容易造成系统<strong>振荡</strong>。</li>
-</ul>
-<h2 id="位置式与增量式"><a href="#位置式与增量式" class="headerlink" title="位置式与增量式"></a>位置式与增量式</h2><p>位置式输出：</p>
-<script type="math/tex; mode=display">
-u(t) = K_p e(t) + K_i \int_{0}^{t} e(\tau) \,d\tau + K_d \frac{de(t)}{dt}</script><p>增量式输出：</p>
-<script type="math/tex; mode=display">
-\Delta u(k) = K_p [e(k) - e(k-1)] + K_i  e(k) + K_d ({e(k) - 2e(k-1) + e(k-2)})</script><script type="math/tex; mode=display">
-u(k) = u(k-1) + \Delta u(k)</script><p>位置式PID控制的输出与整个过去的状态有关，用到了误差的累加值;而增量式PID的输出只与当前拍和前两拍的误差有关，因此<strong>位置式PID控制的累积误差相对更大</strong>;</p>
-<p>由于输出为增量形式，可以减小控制器对控制量的冲击，使得系统更加平稳。</p>
-<h2 id="抗积分饱和"><a href="#抗积分饱和" class="headerlink" title="抗积分饱和"></a>抗积分饱和</h2><p>PID控制器的输出由于积分作用的不断累加而扩大，从而导致控制器输出不断增大超出正常范围进入饱和区。为了防止这种情况，需要在某些情况下限制积分的增长：</p>
-<ul>
-<li>积分分离：设置一个误差阈值，只有当误差较小（系统输出接近期望）时，才加入积分控制，平时则使用PD控制</li>
-<li>积分限幅：设置一个输出阈值范围，计算U(k)的时候，先判断上一时刻的控制量U(k-1)是否已经超出了限制范围。若U(k-1)&gt;Umax，则只累加负偏差；若U(k-1)&lt;Umin，则只累加正偏差。</li>
-</ul>
-<h2 id="串级PID"><a href="#串级PID" class="headerlink" title="串级PID"></a>串级PID</h2><p>以电机控制为例，在很多时候，我们的期望是位置（电机转角），但我们最终对电机的控制量都是电流（力矩，或者说是加速度），因此在使用单位置PID时，该控制是间接的，也就是说在该情况下，<strong>速度和加速度的变化都是未知的，也就是不平滑的</strong>；最终会表现为电机经过了目标位置，然后出现持续震荡，因为仅仅使用位置pid是难以让速度和加速度都达到期望的）</p>
-<p>因此，我们引入串级PID：（由外到内）</p>
-<ul>
-<li>位置环：根据上层规划算法给出的期望位置进行PID，输出期望速度</li>
-<li>速度环：根据位置环得到的期望速度进行PID，输出期望转矩/加速度/电流</li>
-<li>电流环：根据速度环输出进行PID，最终控制电机转矩</li>
-</ul>
-<p>需要注意的是，位置-速度-电流这个控制顺序<strong>是我们主动给定</strong>的，给定的理由是这三者两两间存在着较为简单的映射关系，即微积分关系，对于加速度啊转矩啊电流啊，根据牛二、欧拉和电机参数都可以得到明确的对应关系，因此在最内环的控制中，我们可以将他们看作同一控制量，一般用电流的原因可能只是实际电流值要更好测量一点？</p>
-<h3 id="在机器人中"><a href="#在机器人中" class="headerlink" title="在机器人中"></a>在机器人中</h3><p>由于我们已经可以通过一些轨迹规划算法（模型）平滑地得到关节电机的期望角度、角速度、角加速度，再结合动力学模型便可得到期望力矩，因此在机器人控制中，上述的<strong>前馈控制</strong>已经完成了绝大部分的控制工作，在理想条件下，前馈足矣</p>
-<p>但如果机器人在运行过程中受到了干扰呢，前馈控制给定了力矩是在最开始确定的，无法应对额外干扰，因此需要反馈控制来减弱干扰，提高系统稳定性：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">joint_states = p.getJointStates(robotId,controllable_joints)</span><br><span class="line">q_actual = np.array([state[<span class="number">0</span>] <span class="keyword">for</span> state <span class="keyword">in</span> joint_states])</span><br><span class="line">qd_actual = np.array([state[<span class="number">1</span>] <span class="keyword">for</span> state <span class="keyword">in</span> joint_states])</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">q_e = q[n] - q_actual</span><br><span class="line">qd_e = qd[n] - qd_actual</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">aq = qdd[n] + <span class="number">400</span> * q_e + <span class="number">40</span> * qd_e</span><br><span class="line"></span><br><span class="line">tau = p.calculateInverseDynamics(robotId,<span class="built_in">list</span>(q_actual),<span class="built_in">list</span>(qd_actual),<span class="built_in">list</span>(aq))</span><br><span class="line">p.setJointMotorControlArray(robotId,controllable_joints,p.TORQUE_CONTROL,</span><br><span class="line">                            forces = tau,</span><br><span class="line">                            )</span><br></pre></td></tr></table></figure>
-<p>这里仅对位置环和速度环进行了比例控制，因为在实际中在外环部分添加积分(I)后，导致响应变慢，添加微分(D)容易引入噪声；而由于我们已经有期望位置、速度，因此也不需要像传统串级pid一样进行串联位置环与速度环，而是将两环同时作用于力矩控制</p>
-<h2 id="PID参数调节经验"><a href="#PID参数调节经验" class="headerlink" title="PID参数调节经验"></a>PID参数调节经验</h2><ul>
-<li>KP：先设Ki=Kd=0，调Kp至系统出现轻微振荡；取此时Kp值的50%作为初始值</li>
-<li>KI：逐步增加Ki至静差在3~5个控制周期内消除</li>
-<li>KD：从Kp值的10%~20%开始调整</li>
-</ul>
-<h1 id="LQR"><a href="#LQR" class="headerlink" title="LQR"></a>LQR</h1><p><strong>线性二次型调节器（Linear Quadratic Regulator）</strong>，其中，线性指线性系统，二次型指目标函数</p>
-<h2 id="系统模型构建"><a href="#系统模型构建" class="headerlink" title="系统模型构建"></a>系统模型构建</h2><img src="/images/loading.png" data-original="/2025/11/17/control-algorithm/2.png" class title="This is an image"> 
-<p>首先，LQR作用于线性系统（对于非线性系统，需要先线性化），对于上图系统，其系统模型为</p>
-<script type="math/tex; mode=display">
-\dot x = Ax + Bu</script><p>其中，x为当前状态的集合，对于倒立摆，其可以为{位置，速度，角度，角速度}；u为我们的控制输入，A和B为系统决定的参数，系统模型<strong>建立了x（当前状态） 和 x_dot（状态随时间的变化趋势） 之间的关系</strong>。</p>
-<p>现在我们要设计一个状态反馈u=-Kx，带入系统方程中则有：</p>
-<script type="math/tex; mode=display">
-\dot x = (A-BK)x</script><p>由于A和B在LQR设计阶段是已知矩阵，因此我们只需得到一个合适的增益矩阵K，即可实现期望控制</p>
-<h2 id="LQR控制目标"><a href="#LQR控制目标" class="headerlink" title="LQR控制目标"></a>LQR控制目标</h2><p>相比于PID的尽可能减小误差，LQR定义了一种代价函数，通过让该能量函数最小以实现最优控制：</p>
-<img src="/images/loading.png" data-original="/2025/11/17/control-algorithm/3.png" class title="This is an image"> 
-<p>其中，Q（状态权重矩阵）和R（控制输入权重矩阵）即是我们的期望闭环性能（也就是要调的参数），即当控制目标确定时，我们想要用最小的控制代价u得到最优的控制。通常，Q越大，系统相应越快；R越大，控制力惩罚越大（即力作用越平稳温柔）</p>
-<p>现在，我们已经确定了A，B，Q，R，如何根据“代价函数最小”这个目标得到K呢？</p>
-<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_36133747/article/details/123413115">线性二次型调节器(LQR)原理详解-CSDN博客</a></p>
-<p>在假设系统稳定的情况下，我们可以通过一个riccati里卡提方程由“J最小”这个条件得到一个满足条件的辅助矩阵P，再由P得到K，对于求解里卡提方程，matlab，scipy都提供了对应函数</p>
-<h3 id="Q和R的选择"><a href="#Q和R的选择" class="headerlink" title="Q和R的选择"></a>Q和R的选择</h3><p>Q：半正定矩阵，通常选用对角矩阵，对角线元素表示各状态的权重（因此形状应为nxn，n为状态数量），因此需根据各状态的重要性分配权重；重点关注的状态应分配较大权重；<strong>如果系统响应较慢也可增加Q</strong></p>
-<p>R：正定矩阵，通常选用对角矩阵，对角线元素表示各控制输入的权重（因此形状应为mxm，m为控制量）；初始应选择较小值；如果<strong>控制输入幅度较大则增加R</strong>，如果<strong>系统响应较慢则减小R</strong></p>
-<h2 id="倒立摆中的LQR"><a href="#倒立摆中的LQR" class="headerlink" title="倒立摆中的LQR"></a>倒立摆中的LQR</h2><h3 id="建立动力学方程"><a href="#建立动力学方程" class="headerlink" title="建立动力学方程"></a>建立动力学方程</h3><p>对于每个广义坐标q_i，拉格朗日方程为：</p>
-<script type="math/tex; mode=display">
-\frac d {dt}(\frac{\part L}{\part \dot{q_i}})-\frac {\part L}{\part q_i} = Q_i</script><p>其中，Q_i是广义坐标q_i对应广义力。在倒立摆中，q={x,θ}，则Q={F,0}（因为没有非保守力直接对摆杆做功）</p>
-<p>则分别将q_i替换为x和θ后则可得到倒立摆的动力学模型（方程组）：</p>
-<script type="math/tex; mode=display">
-(M + m)\ddot{x} + m l \ddot{\theta} \cos\theta - m l \dot{\theta}^2 \sin\theta = F</script><script type="math/tex; mode=display">
-(m l^2 + I) \ddot{\theta}+m l \ddot{x} \cos\theta - m g l \sin\theta = 0</script><h3 id="线性化"><a href="#线性化" class="headerlink" title="线性化"></a>线性化</h3><p>由于现在的动力学方程是非线性的，因此我们需要先将其线性化。而在倒立摆中，平衡点即为θ=0(cosθ=0,sinθ=θ)，则线性化后有：</p>
-<script type="math/tex; mode=display">
-(M + m)\ddot{x} + m l \ddot{\theta}  = F</script><script type="math/tex; mode=display">
-(m l^2 + I) \ddot{\theta}+m l \ddot{x} - m g l \theta = 0</script><p>将其转换为线性系统标准模型：</p>
-<script type="math/tex; mode=display">
-\dot x = Ax + Bu</script><p>则有：</p>
-<script type="math/tex; mode=display">
-\begin{bmatrix}\dot x \\ \ddot x \\\dot{\theta} \\ \ddot{\theta}\end{bmatrix}
-=A
-\begin{bmatrix} x \\ \dot x \\\theta \\ \dot{\theta}\end{bmatrix}+BF</script><p>其中：</p>
-<img src="/images/loading.png" data-original="/2025/11/17/control-algorithm/4.png" class title="This is an image"> 
-<p>得到A，B后，我们令Q=diag(1,1,1,1)，R=1（随便给的），即可通过riccati方程得到一个1x4矩阵K，最终得到我们的控制输入：</p>
-<script type="math/tex; mode=display">
-u = -Kx</script><p>u即为当前状态下<strong><u>保持平衡</u></strong>应施加的力F（使系统<strong>稳定</strong>在期望状态）</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/22/">22</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/23/">23</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -670,7 +633,7 @@ u = -Kx</script><p>u即为当前状态下<strong><u>保持平衡</u></strong>应
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">66</span>
+          <span class="site-state-item-count">67</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -712,7 +675,7 @@ u = -Kx</script><p>u即为当前状态下<strong><u>保持平衡</u></strong>应
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2025</span>
+  <span itemprop="copyrightYear">2026</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -840,11 +803,11 @@ u = -Kx</script><p>u即为当前状态下<strong><u>保持平衡</u></strong>应
         pbOptions.networks = "Wechat,QQZone,Weibo,Douban,Twitter,Facebook";
       new needShareButton('#needsharebutton-postbottom', pbOptions);
   </script>
-<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script><script>
+<script>
             window.imageLazyLoadSetting = {
                 isSPA: false,
                 preloadRatio: 1,
                 processImages: null,
             };
-        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(e.href.match(t)||e.href.match(r))&&(e.href=a.dataset.original)})});</script><script>!function(n){n.imageLazyLoadSetting.processImages=o;var e=n.imageLazyLoadSetting.isSPA,i=n.imageLazyLoadSetting.preloadRatio||1,r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]"));function o(){e&&(r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")));for(var t,a=0;a<r.length;a++)0<=(t=(t=r[a]).getBoundingClientRect()).bottom&&0<=t.left&&t.top<=(n.innerHeight*i||document.documentElement.clientHeight*i)&&function(){var t,e,n,i,o=r[a];t=o,e=function(){r=r.filter(function(t){return o!==t})},n=new Image,i=t.getAttribute("data-original"),n.onload=function(){t.src=i,e&&e()},t.src!==i&&(n.src=i)}()}o(),n.addEventListener("scroll",function(){var t,e;t=o,e=n,clearTimeout(t.tId),t.tId=setTimeout(function(){t.call(e)},500)})}(this);</script></body>
+        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(e.href.match(t)||e.href.match(r))&&(e.href=a.dataset.original)})});</script><script>!function(n){n.imageLazyLoadSetting.processImages=o;var e=n.imageLazyLoadSetting.isSPA,i=n.imageLazyLoadSetting.preloadRatio||1,r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]"));function o(){e&&(r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")));for(var t,a=0;a<r.length;a++)0<=(t=(t=r[a]).getBoundingClientRect()).bottom&&0<=t.left&&t.top<=(n.innerHeight*i||document.documentElement.clientHeight*i)&&function(){var t,e,n,i,o=r[a];t=o,e=function(){r=r.filter(function(t){return o!==t})},n=new Image,i=t.getAttribute("data-original"),n.onload=function(){t.src=i,e&&e()},t.src!==i&&(n.src=i)}()}o(),n.addEventListener("scroll",function(){var t,e;t=o,e=n,clearTimeout(t.tId),t.tId=setTimeout(function(){t.call(e)},500)})}(this);</script><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script></body>
 </html>

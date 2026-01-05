@@ -197,6 +197,139 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2022/10/26/C++-6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/zoe.gif">
+      <meta itemprop="name" content="dhk">
+      <meta itemprop="description" content="记录一些学习日常">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小董的BLOG">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/10/26/C++-6/" class="post-title-link" itemprop="url">C++_类</a>
+        </h2>
+
+        <div class="post-meta">
+		  
+		  
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-10-26 20:53:02" itemprop="dateCreated datePublished" datetime="2022-10-26T20:53:02+08:00">2022-10-26</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-10-28 18:52:36" itemprop="dateModified" datetime="2022-10-28T18:52:36+08:00">2022-10-28</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="定义抽象数据类型"><a href="#定义抽象数据类型" class="headerlink" title="定义抽象数据类型"></a>定义抽象数据类型</h1><h2 id="定义一个类"><a href="#定义一个类" class="headerlink" title="定义一个类"></a>定义一个类</h2><p>C++中可以使用struct和class构建一个类，struct为继承C语言留下，但用法与C不同。struct和class使用方法完全相同，只是对类成员默认的访问权限不同，这点后面会谈到。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span>/<span class="keyword">class</span> <span class="title class_">person</span></span><br><span class="line">&#123;</span><br><span class="line">	string name;</span><br><span class="line">	string addr;</span><br><span class="line">   <span class="function"><span class="type">int</span> <span class="title">test</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="在类的外部定义成员函数"><a href="#在类的外部定义成员函数" class="headerlink" title="在类的外部定义成员函数"></a>在类的外部定义成员函数</h2><p>C++的struct与C最不同的一点就是C++可以在类中定义函数，例如上述类中声明了一个返回值为int型的函数。</p>
+<p>该函数的内容可以在类中定义，也可以只在类中声明，再在外部定义。在外部定义时需注意以下几点：</p>
+<ul>
+<li>函数类型声明、函数名、参数列表必须和声明中一致</li>
+<li>由于函数是在类中声明，在定义时需声明其命名空间（声明函数名）</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">person::test</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="定义一个返回类的函数"><a href="#定义一个返回类的函数" class="headerlink" title="定义一个返回类的函数"></a>定义一个返回类的函数</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">person</span></span><br><span class="line">&#123;</span><br><span class="line">	string name;</span><br><span class="line">	string addr;</span><br><span class="line">   <span class="function">person&amp; <span class="title">copy</span><span class="params">(<span class="type">const</span> person &amp;x)</span></span></span><br><span class="line"><span class="function">   </span>&#123;</span><br><span class="line">      name=x.name;</span><br><span class="line">      <span class="keyword">return</span> *<span class="keyword">this</span>;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>该函数同样可以在类外定义，规则同上一节</p>
+</li>
+<li><p>函数返回的类型<strong>必须为引用</strong>，因为返回的值应该为一个左值</p>
+</li>
+<li><p>若函数参数也为一个类对象，也必须为引用格式</p>
+</li>
+<li><p>return *this意为返回该调用该函数的对象，例如：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">person test1,test2;</span><br><span class="line">test1.name=&quot;dhk&quot;; test2.name=&quot;aca&quot;;</span><br><span class="line">test1.copy(test2);</span><br><span class="line">cout&lt;&lt;test1.name; //输出&quot;aca&quot;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>函数体中的name和addr为调用该函数的对象的类成员</p>
+</li>
+</ul>
+<h2 id="定义类相关的非成员函数"><a href="#定义类相关的非成员函数" class="headerlink" title="定义类相关的非成员函数"></a>定义类相关的非成员函数</h2><h3 id="通过定义流的引用直接操作类成员的输入输出"><a href="#通过定义流的引用直接操作类成员的输入输出" class="headerlink" title="通过定义流的引用直接操作类成员的输入输出"></a>通过定义流的引用直接操作类成员的输入输出</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">istream &amp;<span class="title">read</span><span class="params">(istream &amp;in, person &amp;item)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    in&gt;&gt;item.name&gt;&gt;item.addr;</span><br><span class="line">    <span class="keyword">return</span> in;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function">ostream &amp;<span class="title">print</span><span class="params">(ostream &amp;out, person &amp;item)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    out&lt;&lt;<span class="string">&quot;NAME: &quot;</span>&lt;&lt;item.name&lt;&lt;endl;</span><br><span class="line">    out&lt;&lt;<span class="string">&quot;ADDR: &quot;</span>&lt;&lt;item.addr&lt;&lt;endl;</span><br><span class="line">    <span class="keyword">return</span> out;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>istream和ostream需提前声明其命名空间</li>
+<li>IO类不能被拷贝，因此当其作为参数时<strong>必须通过引用传递值</strong></li>
+<li>此处print函数的参数item可以不使用引用</li>
+</ul>
+<h1 id="类的构造函数"><a href="#类的构造函数" class="headerlink" title="类的构造函数"></a>类的构造函数</h1><p>当我们定义一个类对象时，并没有对每一个类成员进行初始化，这时，编译器便通过一个特殊的构造函数来控制当前初始化，此函数叫做默认构造函数，<strong>该函数会对所有成员进行默认初始化。</strong></p>
+<p>但是如果我们想在定义类对象时就对一些成员进行我们想要的初始化该怎么办呢？这时我们就可以自己定义构造函数对一些类成员进行想要的初始化：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">person</span></span><br><span class="line">&#123;	</span><br><span class="line">   <span class="built_in">person</span>()=<span class="keyword">default</span>;</span><br><span class="line">   <span class="built_in">person</span>(string s1, string s2) &#123;name=s1;addr=s2;&#125;</span><br><span class="line">   <span class="built_in">person</span>(person &amp;item) &#123;<span class="built_in">copy</span>(item);&#125;</span><br><span class="line">   <span class="built_in">person</span>(istream &amp;in) &#123;<span class="built_in">read</span>(in,*<span class="keyword">this</span>);&#125;</span><br><span class="line"><span class="comment">/**********************以上为构造函数*******************/</span>      </span><br><span class="line">	string name;</span><br><span class="line">	string addr;</span><br><span class="line">   <span class="function">person&amp; <span class="title">copy</span><span class="params">(<span class="type">const</span> person &amp;x)</span></span></span><br><span class="line"><span class="function">   </span>&#123;</span><br><span class="line">      name=x.name;</span><br><span class="line">      <span class="keyword">return</span> *<span class="keyword">this</span>;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function">istream &amp;<span class="title">read</span><span class="params">(istream &amp;in, person &amp;item)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    in&gt;&gt;item.name&gt;&gt;item.addr;</span><br><span class="line">    <span class="keyword">return</span> in;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">   person a;</span><br><span class="line">   <span class="function">string <span class="title">s1</span><span class="params">(<span class="string">&quot;dhk&quot;</span>)</span>,<span class="title">s2</span><span class="params">(<span class="string">&quot;aca&quot;</span>)</span></span>; <span class="function">person <span class="title">b</span><span class="params">(s1,s2)</span></span>;</span><br><span class="line">   <span class="function">person <span class="title">c</span><span class="params">(b)</span></span>;</span><br><span class="line">   <span class="function">person <span class="title">d</span><span class="params">(cin)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在person类中一共定义了四个构造函数，下面将分别讲解这四个构造函数的含义和相关知识：</p>
+<ul>
+<li><p><code>person()=default;</code>默认构造函数</p>
+<p>当一个类中定义了其他构造函数时，编译器便不会自动生成默认构造函数。因此，若没有此函数，主函数中24行便会报错，原因是没有与当前定义情况匹配的构造函数。</p>
+</li>
+<li><p><code>person(string s1, string s2)</code></p>
+<p>如主函数25行，当初始化参数为两个string对象时，会进入该构造函数，该构造函数的作用是将类成员赋值为两个string对象。需要注意：</p>
+<ul>
+<li><p>大括号内为构造函数的函数体，可以在此完成一系列的初始化</p>
+</li>
+<li><p>这里也有一种构造初始值列表的初始化方式：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">person</span>(string s1, string s2): <span class="built_in">name</span>(s1),<span class="built_in">addr</span>(s2) &#123;&#125;</span><br></pre></td></tr></table></figure>
+<p>两种方式作用完全相同，但是实现的原理有所差异，这点后面会讲到。</p>
+</li>
+</ul>
+</li>
+<li><p><code>person(person &amp;item)</code></p>
+<p>如主函数26行，类初始化的参数也可以为一个类对象，该构造函数会直接将输入参数用于执行copy函数，相当于通过copy函数间接给类成员赋值。</p>
+</li>
+<li><p><code>person(istream &amp;in)</code></p>
+<p>如27行，输入参数为一个IO类型的引用，需要注意此时read函数第二个参数为*this</p>
+</li>
+</ul>
+<h2 id="构造函数初始值列表和赋值的区别"><a href="#构造函数初始值列表和赋值的区别" class="headerlink" title="构造函数初始值列表和赋值的区别"></a>构造函数初始值列表和赋值的区别</h2><p>之前我们讲到了构造函数对类成员的操作有两种：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">person</span>(string s1, string s2) &#123;name=s1;addr=s2;&#125;</span><br><span class="line"><span class="built_in">person</span>(string s1, string s2): <span class="built_in">name</span>(s1),<span class="built_in">addr</span>(s2) &#123;&#125;</span><br></pre></td></tr></table></figure>
+<p>两个操作在效果上一样，但是第一种操作根源上为赋值，而第二种操作才是初始化，在大部分情况下二者区别不大但是如果当类成员为引用或者const类型时，此时将不能赋值，但是可以初始化：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">person</span></span><br><span class="line">&#123;</span><br><span class="line">   <span class="built_in">person</span>(<span class="type">int</span> i) &#123;a=i;r=i&#125; <span class="comment">//错误的，不能给引用和常量赋值</span></span><br><span class="line">   <span class="built_in">person</span>(<span class="type">int</span> i): <span class="built_in">a</span>(i),<span class="built_in">r</span>(i) &#123;&#125; <span class="comment">//正确</span></span><br><span class="line">	<span class="type">const</span> <span class="type">int</span> a;</span><br><span class="line">	<span class="type">int</span> &amp;r;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="访问控制和封装"><a href="#访问控制和封装" class="headerlink" title="访问控制和封装"></a>访问控制和封装</h1><p>前面讲到了使用class和struct唯一区别是对类成员默认的访问权限不同，C++中可以使用访问说明符来管理类成员的访问权限以达到更好的封装。如果使用struct，则在第一个访问说明符前的成员默认为public，class则相反。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">person</span></span><br><span class="line">&#123;	</span><br><span class="line">   <span class="keyword">public</span>: <span class="comment">//以下成员在整个程序中都可以被访问</span></span><br><span class="line">   <span class="built_in">person</span>()=<span class="keyword">default</span>;</span><br><span class="line">   <span class="built_in">person</span>(string s1, string s2) &#123;name=s1;addr=s2;&#125;</span><br><span class="line">   <span class="built_in">person</span>(person &amp;item) &#123;<span class="built_in">copy</span>(item);&#125;</span><br><span class="line">   <span class="built_in">person</span>(istream &amp;in) &#123;<span class="built_in">read</span>(in,*<span class="keyword">this</span>);&#125;  </span><br><span class="line">   <span class="keyword">private</span>: <span class="comment">//以下成员只可以被类的成员函数访问</span></span><br><span class="line">	string name;</span><br><span class="line">	string addr;</span><br><span class="line">   <span class="function">person&amp; <span class="title">copy</span><span class="params">(<span class="type">const</span> person &amp;x)</span></span></span><br><span class="line"><span class="function">   </span>&#123;</span><br><span class="line">      name=x.name;</span><br><span class="line">      <span class="keyword">return</span> *<span class="keyword">this</span>;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>需要注意，private说明符后的成员<strong>只可以被类的成员函数访问，</strong>像前面讲到的read和print函数不属于类的成员函数，因此无法访问private中的成员。</p>
+<h2 id="友元"><a href="#友元" class="headerlink" title="友元"></a>友元</h2><p>若想非类成员函数访问private内容,可以在类中<strong>使用friend关键字对其进行友元声明</strong></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">person</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="function"><span class="keyword">friend</span> istream &amp;<span class="title">read</span><span class="params">(istream &amp;in, person &amp;item)</span></span>;</span><br><span class="line">   <span class="function"><span class="keyword">friend</span> ostream &amp;<span class="title">print</span><span class="params">(ostream &amp;out, person &amp;item)</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">istream &amp;<span class="title">read</span><span class="params">(istream &amp;in, person &amp;item)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    in&gt;&gt;item.name&gt;&gt;item.addr;</span><br><span class="line">    <span class="keyword">return</span> in;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function">ostream &amp;<span class="title">print</span><span class="params">(ostream &amp;out, person &amp;item)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    out&lt;&lt;<span class="string">&quot;NAME: &quot;</span>&lt;&lt;item.name&lt;&lt;endl;</span><br><span class="line">    out&lt;&lt;<span class="string">&quot;ADDR: &quot;</span>&lt;&lt;item.addr&lt;&lt;endl;</span><br><span class="line">    <span class="keyword">return</span> out;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>友元声明也适用于声明其他类及其成员函数</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">person</span></span><br><span class="line">&#123;</span><br><span class="line">   <span class="keyword">friend</span> <span class="keyword">class</span> <span class="title class_">test</span>;</span><br><span class="line">   <span class="function"><span class="keyword">friend</span> <span class="type">void</span> <span class="title">test::test1</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">test</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="function"><span class="type">void</span> <span class="title">test1</span><span class="params">()</span></span>&#123;...&#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="关于类的静态成员"><a href="#关于类的静态成员" class="headerlink" title="关于类的静态成员"></a>关于类的静态成员</h1><p>在仔细阅读了书籍过后个人觉得用处不是特别大，如果以后用到了相关知识再在这里补充，目前就不写了。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2022/10/14/51%E5%8D%95%E7%89%87%E6%9C%BA%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -493,100 +626,9 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2022/10/03/C++-4/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/zoe.gif">
-      <meta itemprop="name" content="dhk">
-      <meta itemprop="description" content="记录一些学习日常">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="小董的BLOG">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/10/03/C++-4/" class="post-title-link" itemprop="url">C++_表达式</a>
-        </h2>
-
-        <div class="post-meta">
-		  
-		  
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2022-10-03 21:06:48" itemprop="dateCreated datePublished" datetime="2022-10-03T21:06:48+08:00">2022-10-03</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-10-25 20:43:07" itemprop="dateModified" datetime="2022-10-25T20:43:07+08:00">2022-10-25</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="1、基础内容"><a href="#1、基础内容" class="headerlink" title="1、基础内容"></a>1、基础内容</h1><p>表达式是<strong>由一个或多个运算对象组成</strong>，对表达式求值得到的是一个<strong>结果</strong>，字面值和变量时最简单的表达式。</p>
-<h2 id="左值和右值"><a href="#左值和右值" class="headerlink" title="左值和右值"></a>左值和右值</h2><p>当一个对象被用作右值时，使用的是该对象的值；而被用作左值时，使用的时对象的内存。</p>
-<ul>
-<li>赋值运算符需要一个非常量左值为其左侧运算对象</li>
-<li>取地址符作用于一个左值运算对象，返回一个指向该运算对象的指针，该指针为右值</li>
-<li>解引用求值结果为左值</li>
-</ul>
-<h2 id="求值顺序"><a href="#求值顺序" class="headerlink" title="求值顺序"></a>求值顺序</h2><p>部分运算符是没有明确指明执行顺序的，例如&lt;&lt;运算符：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cout&lt;&lt;i&lt;&lt;<span class="string">&quot;&quot;</span>&lt;&lt;++i;</span><br></pre></td></tr></table></figure>
-<p>++i和i没有明确的先后关系，因此编译器可能做出任何行为。</p>
-<p>当多个函数会影响同一对象时，当同时调用这些函数时，调用函数的顺序也没有明确的先后关系。</p>
-<h1 id="2、算术运算符"><a href="#2、算术运算符" class="headerlink" title="2、算术运算符"></a>2、算术运算符</h1><h2 id="bool类型"><a href="#bool类型" class="headerlink" title="bool类型"></a>bool类型</h2><p>bool类型原则不应参与运算，在运算时会自动转化为int型的1，只要计算结果不为0，都将返回ture</p>
-<h2 id="优先级"><a href="#优先级" class="headerlink" title="优先级"></a>优先级</h2><p>C++大部分同优先级运算都满足从左至右的规律，赋值则相反</p>
-<h2 id="递增运算"><a href="#递增运算" class="headerlink" title="递增运算"></a>递增运算</h2><p>C++中，<strong>非必要不使用</strong>后置递增/减符（i++/i—)，因为前置运算为将对象本身作为左值返回，而后置则要额外的空间存储原始值，并将这个额外存储的原始值副本作为右值返回，因此，使用后置操作会消耗更多内存，这在相对复杂的工作中是消耗巨大的。</p>
-<h2 id="位操作"><a href="#位操作" class="headerlink" title="位操作"></a>位操作</h2><p>关于符号位的处理没有明确规定，因此位运算最好用来处理无符号类型</p>
-<h1 id="3、类型转换"><a href="#3、类型转换" class="headerlink" title="3、类型转换"></a>3、类型转换</h1><p>C++的类型转换格式不同于C：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cast-name&lt;类型&gt;(表达式)</span><br></pre></td></tr></table></figure>
-<p>最常用的cast-name为<code>static_cast</code>和<code>const_cast</code></p>
-<h3 id="static-cast"><a href="#static-cast" class="headerlink" title="static_cast"></a>static_cast</h3><p>任何有明确定义的类型转换（除了底层const）都可以使用static_cast</p>
-<p>例：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> *p = &amp;d;<span class="comment">//d不能为常量（底层const）</span></span><br><span class="line"><span class="type">double</span> *dp = <span class="built_in">static_cast</span>&lt;<span class="type">double</span>*&gt;(p);</span><br></pre></td></tr></table></figure>
-<h3 id="const-cast"><a href="#const-cast" class="headerlink" title="const_cast"></a>const_cast</h3><p><strong>专用</strong>于改变底层const，其作用为改变const性质</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">const</span> <span class="type">char</span>* pc;</span><br><span class="line"><span class="type">char</span> *p=<span class="built_in">const_cast</span>&lt;<span class="type">char</span>*&gt;(pc);</span><br></pre></td></tr></table></figure>
-<p>需要注意，可以有以下用法：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">char</span>* pc;</span><br><span class="line"><span class="type">char</span> *p=<span class="built_in">const_cast</span>&lt;<span class="type">const</span> <span class="type">char</span>*&gt;(pc);</span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/15/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/15/">15</a><span class="page-number current">16</span><a class="page-number" href="/page/17/">17</a><span class="space">&hellip;</span><a class="page-number" href="/page/22/">22</a><a class="extend next" rel="next" href="/page/17/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/15/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/15/">15</a><span class="page-number current">16</span><a class="page-number" href="/page/17/">17</a><span class="space">&hellip;</span><a class="page-number" href="/page/23/">23</a><a class="extend next" rel="next" href="/page/17/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -653,7 +695,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">66</span>
+          <span class="site-state-item-count">67</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -695,7 +737,7 @@
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2025</span>
+  <span itemprop="copyrightYear">2026</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -770,11 +812,11 @@
         pbOptions.networks = "Wechat,QQZone,Weibo,Douban,Twitter,Facebook";
       new needShareButton('#needsharebutton-postbottom', pbOptions);
   </script>
-<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script><script>
+<script>
             window.imageLazyLoadSetting = {
                 isSPA: false,
                 preloadRatio: 1,
                 processImages: null,
             };
-        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(e.href.match(t)||e.href.match(r))&&(e.href=a.dataset.original)})});</script><script>!function(n){n.imageLazyLoadSetting.processImages=o;var e=n.imageLazyLoadSetting.isSPA,i=n.imageLazyLoadSetting.preloadRatio||1,r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]"));function o(){e&&(r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")));for(var t,a=0;a<r.length;a++)0<=(t=(t=r[a]).getBoundingClientRect()).bottom&&0<=t.left&&t.top<=(n.innerHeight*i||document.documentElement.clientHeight*i)&&function(){var t,e,n,i,o=r[a];t=o,e=function(){r=r.filter(function(t){return o!==t})},n=new Image,i=t.getAttribute("data-original"),n.onload=function(){t.src=i,e&&e()},t.src!==i&&(n.src=i)}()}o(),n.addEventListener("scroll",function(){var t,e;t=o,e=n,clearTimeout(t.tId),t.tId=setTimeout(function(){t.call(e)},500)})}(this);</script></body>
+        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(e.href.match(t)||e.href.match(r))&&(e.href=a.dataset.original)})});</script><script>!function(n){n.imageLazyLoadSetting.processImages=o;var e=n.imageLazyLoadSetting.isSPA,i=n.imageLazyLoadSetting.preloadRatio||1,r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]"));function o(){e&&(r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")));for(var t,a=0;a<r.length;a++)0<=(t=(t=r[a]).getBoundingClientRect()).bottom&&0<=t.left&&t.top<=(n.innerHeight*i||document.documentElement.clientHeight*i)&&function(){var t,e,n,i,o=r[a];t=o,e=function(){r=r.filter(function(t){return o!==t})},n=new Image,i=t.getAttribute("data-original"),n.onload=function(){t.src=i,e&&e()},t.src!==i&&(n.src=i)}()}o(),n.addEventListener("scroll",function(){var t,e;t=o,e=n,clearTimeout(t.tId),t.tId=setTimeout(function(){t.call(e)},500)})}(this);</script><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script></body>
 </html>
