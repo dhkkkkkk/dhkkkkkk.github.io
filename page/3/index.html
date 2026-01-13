@@ -572,7 +572,7 @@ u_i=m_igh+C</script><p>其中C为势能参考0点所带来的常数，可取任�
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-10-21 14:36:29" itemprop="dateModified" datetime="2025-10-21T14:36:29+08:00">2025-10-21</time>
+                <time title="修改时间：2026-01-13 16:57:19" itemprop="dateModified" datetime="2026-01-13T16:57:19+08:00">2026-01-13</time>
               </span>
 
           
@@ -653,6 +653,22 @@ x(t−t_0) \Leftrightarrow e^{-st_0}X(s)</script></li>
 <script type="math/tex; mode=display">
 e^{a t}x(t) \Leftrightarrow X(s-a)</script></li>
 </ul>
+<h1 id="从FT到常用的FFT"><a href="#从FT到常用的FFT" class="headerlink" title="从FT到常用的FFT"></a>从FT到常用的FFT</h1><p>已知连续傅里叶变换：</p>
+<script type="math/tex; mode=display">
+X(\omega)= \int_{-\infty}^{\infty} x(t) e^{-j\omega t} \, dt</script><h2 id="时间离散化-采样"><a href="#时间离散化-采样" class="headerlink" title="时间离散化(采样)"></a>时间离散化(采样)</h2><p>虽然一般我们处理的数据都是默认离散数据，但既然都到这里了，就顺便提一下这一块知识。</p>
+<p>对于连续信号的采样，可以使用冲激函数表达：</p>
+<script type="math/tex; mode=display">
+x[n]=x(t)∑^{∞}_{n=-∞}δ(t−nT_s)</script><p>因为时域相乘等价于频域卷积，而冲激串在频域上表现仍为等距(f_s)冲激串，因此<u>原信号在频域上会表现为以f_s的距离复制出现</u>，当信号的最大频率成分大于采样率f_s时就会出现<strong>混叠现象</strong>，因此也有了奈奎斯特定理：</p>
+<script type="math/tex; mode=display">
+ω_s−ω_{max}>ω_{max}⇒ω_s>2ω_{max}</script><h2 id="离散傅里叶变换DFT"><a href="#离散傅里叶变换DFT" class="headerlink" title="离散傅里叶变换DFT"></a>离散傅里叶变换DFT</h2><p>对频率同样进行离散化后，将其和x[n]带入FT公式中则有：</p>
+<script type="math/tex; mode=display">
+X[k]=∑^{N-1}_{n=0}x[n]e^{−j\frac{2\pi}{N}kn}</script><p>其中k,n=0,1,2…，k代表频率索引，n代表时间索引，N为时域总采样点数。</p>
+<p>这里有一点需要提一下，对于<strong>离散</strong>复指数：（由欧拉公式得）</p>
+<script type="math/tex; mode=display">
+e^{−ja}=e^{−j(a+2\pi)}</script><p>因此对于连续的X(w)，其是2pi周期的，因此对频率离散采样中是2pi/N</p>
+<p>也许你会有一个疑问：频域的采样规则要遵循时域采样数N吗？是的，且<strong>必须完全一致</strong>，这于正交频率基相关，不详细展开（其实我也看不懂），<strong>这也解释了为什么我们在使用一些FFT库函数的时候，输入参数n后，时域数据会首先被剪切为n长度，最终输出的频域bin数量也为n</strong></p>
+<p>（这也是我之前的一个误区，我一直以为输入的参数n只决定最终输出的频率bin数量，我还一直读取一个爆长的时域数据，结果最后函数只会使用前n个数据）</p>
+<p>对于常用的FFT，其不是一种新的变换，而是DFT的高效计算算法，<strong>在结果完全等价的前提下，大幅降低了计算量</strong></p>
 
       
     </div>
@@ -907,11 +923,11 @@ e^{a t}x(t) \Leftrightarrow X(s-a)</script></li>
         pbOptions.networks = "Wechat,QQZone,Weibo,Douban,Twitter,Facebook";
       new needShareButton('#needsharebutton-postbottom', pbOptions);
   </script>
-<script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script><script>
             window.imageLazyLoadSetting = {
                 isSPA: false,
                 preloadRatio: 1,
                 processImages: null,
             };
-        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(e.href.match(t)||e.href.match(r))&&(e.href=a.dataset.original)})});</script><script>!function(n){n.imageLazyLoadSetting.processImages=o;var e=n.imageLazyLoadSetting.isSPA,i=n.imageLazyLoadSetting.preloadRatio||1,r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]"));function o(){e&&(r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")));for(var t,a=0;a<r.length;a++)0<=(t=(t=r[a]).getBoundingClientRect()).bottom&&0<=t.left&&t.top<=(n.innerHeight*i||document.documentElement.clientHeight*i)&&function(){var t,e,n,i,o=r[a];t=o,e=function(){r=r.filter(function(t){return o!==t})},n=new Image,i=t.getAttribute("data-original"),n.onload=function(){t.src=i,e&&e()},t.src!==i&&(n.src=i)}()}o(),n.addEventListener("scroll",function(){var t,e;t=o,e=n,clearTimeout(t.tId),t.tId=setTimeout(function(){t.call(e)},500)})}(this);</script><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script></body>
+        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(e.href.match(t)||e.href.match(r))&&(e.href=a.dataset.original)})});</script><script>!function(n){n.imageLazyLoadSetting.processImages=o;var e=n.imageLazyLoadSetting.isSPA,i=n.imageLazyLoadSetting.preloadRatio||1,r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]"));function o(){e&&(r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")));for(var t,a=0;a<r.length;a++)0<=(t=(t=r[a]).getBoundingClientRect()).bottom&&0<=t.left&&t.top<=(n.innerHeight*i||document.documentElement.clientHeight*i)&&function(){var t,e,n,i,o=r[a];t=o,e=function(){r=r.filter(function(t){return o!==t})},n=new Image,i=t.getAttribute("data-original"),n.onload=function(){t.src=i,e&&e()},t.src!==i&&(n.src=i)}()}o(),n.addEventListener("scroll",function(){var t,e;t=o,e=n,clearTimeout(t.tId),t.tId=setTimeout(function(){t.call(e)},500)})}(this);</script></body>
 </html>
