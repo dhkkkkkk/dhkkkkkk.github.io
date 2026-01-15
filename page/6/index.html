@@ -335,7 +335,7 @@ z=\frac{1}{y}=\frac{1}{e^{(-(2x+1)+1)}+1}</script><p>其计算图为：</p>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2025/10/05/beamform/" class="post-title-link" itemprop="url">麦克风阵列与延迟求和波束形成</a>
+            <a href="/2025/10/05/beamform/" class="post-title-link" itemprop="url">麦克风阵列与成像算法</a>
         </h2>
 
         <div class="post-meta">
@@ -354,7 +354,7 @@ z=\frac{1}{y}=\frac{1}{e^{(-(2x+1)+1)}+1}</script><p>其计算图为：</p>
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2026-01-13 16:57:38" itemprop="dateModified" datetime="2026-01-13T16:57:38+08:00">2026-01-13</time>
+                <time title="修改时间：2026-01-15 17:02:08" itemprop="dateModified" datetime="2026-01-15T17:02:08+08:00">2026-01-15</time>
               </span>
 
           
@@ -385,14 +385,22 @@ y(n) = \left[ x(n),\ x(n)e^{-j2\pi f_0\frac{\delta\cos(\theta_d)}{c}},\ x(n)e^{-
 <h2 id="利用导向矢量估计声源入射方向"><a href="#利用导向矢量估计声源入射方向" class="headerlink" title="利用导向矢量估计声源入射方向"></a>利用导向矢量估计声源入射方向</h2><p>当入射角未知时，当阵元布置和参考阵元确定时，导向矢量的形式是确定的，且只受到入射角影响，因此可以构造一个方向为α的导向矢量形式的向量（共轭转置）与输入信号做<strong>内积</strong>计算：</p>
 <script type="math/tex; mode=display">
 a^H(\alpha) \cdot a(\theta_d) \cdot x(n) \\= \left[ 1 + e^{-j2\pi f_0\delta \frac{[\cos(\alpha) - \cos(\theta_d)]}{c}} + e^{-j2\pi f_0\delta \frac{2[\cos(\alpha) - \cos(\theta_d)]}{c}} + \cdots + e^{-j2\pi f_0\delta \frac{(M-1)[\cos(\alpha) - \cos(\theta_d)]}{c}} \right] \\\leq M \cdot x(n)</script><p>当角度重合时，内积最大</p>
-<h1 id="延迟求和"><a href="#延迟求和" class="headerlink" title="延迟求和"></a>延迟求和</h1><p>由上一章得知麦克风信号为对参考信号相位分别进行了减法的信号，因此只要对麦克风信号的相位分别进行相反的加法（加权）即可得到原始的信号波形：</p>
+<h1 id="波束形成延迟求和成像"><a href="#波束形成延迟求和成像" class="headerlink" title="波束形成延迟求和成像"></a>波束形成延迟求和成像</h1><p>由上一章得知麦克风信号为对参考信号相位分别进行了减法的信号，因此只要对麦克风信号的相位分别进行相反的加法（加权）即可得到原始的信号波形：</p>
 <script type="math/tex; mode=display">
 z(n)=\frac{1}{M}(1,e^{j2\pi f \tau_1},e^{j2\pi f \tau_2}...) \cdot y(n)^T
 \\= \frac{1}{M}\omega(\theta) \cdot y(n)^T</script><p>因此，在进行某个方向的波束求和时，频率f为变量（f依次变化计算出每个频率上的响应）</p>
 <p>（其实原理和上一小节的估计声源方向一样）</p>
 <p>综上，对于θ方向上，f频率下的功率为：（Y为f下各通道的复信号向量）</p>
 <script type="math/tex; mode=display">
-P(f)  = |\mathbf{w}(f) \mathbf{Y}(f)|^2=|a^H(\theta,f)\mathbf{Y}(f)|^2</script><h1 id="使用交叉谱矩阵"><a href="#使用交叉谱矩阵" class="headerlink" title="使用交叉谱矩阵"></a>使用交叉谱矩阵</h1><p>在实际工业场景中，往往不使用上述的单快拍FFT的方法，因为该方法中的Y(f)只</p>
+P(f)  = |\mathbf{w}(f) \mathbf{Y}(f)|^2=|a^H(\theta,f)\mathbf{Y}(f)|^2</script><h1 id="使用交叉谱矩阵"><a href="#使用交叉谱矩阵" class="headerlink" title="使用交叉谱矩阵"></a>使用交叉谱矩阵</h1><p>在实际工业场景中，往往不使用上述的单快拍FFT的方法，因为该方法中的Y(f)通常只来源于一段极短的时域信号（DFT的原理，详见<a href="https://dhkkkkkk.github.io/2025/10/17/math-base/">数学基础 | 小董的BLOG</a>），也就是单快拍数据。这种约等于瞬时成像的方法容易受到随机噪声的干扰，从而产生一些虚假的声源信息。</p>
+<p>因此，我们引入了多快拍计算方法，也就是在一次成像中使用多段时域信号进行计算，我们用一个矩阵表示运算结果：</p>
+<script type="math/tex; mode=display">
+\mathbf{C}_{f_0} = E[\mathbf{X}\mathbf{X}^H] = \begin{bmatrix} E[X_1 X_1^*] & E[X_1 X_2^*] & \dots \\ E[X_2 X_1^*] & E[X_2 X_2^*] & \dots \\ \vdots & \vdots & \ddots \end{bmatrix}</script><p>这个矩阵就是交叉谱矩阵CSM，每个值代表了两个麦克风的相关程度，对角线则为当前麦克风的能量信息（无相位信息，因此在计算中可考虑不使用对角线元素）。其中X_n代表第n个麦克风在某个频率f0下的FFT 复数值。</p>
+<p>在原来的单快拍计算中：</p>
+<script type="math/tex; mode=display">
+P_{single} = |y|^2 = |\mathbf{w}^H \mathbf{X}|^2 = (\mathbf{w}^H \mathbf{X})(\mathbf{w}^H \mathbf{X})^H= \mathbf{w}^H \mathbf{X} \mathbf{X}^H \mathbf{w}</script><p>当引入CSM后并加入对能量取平均，则有：</p>
+<script type="math/tex; mode=display">
+P_{multi} = \mathbf{w}^H E[\mathbf{X} \mathbf{X}^H] \mathbf{w} = \mathbf{w}^H \mathbf{C} \mathbf{w}</script><p>因此对于导向矢量（矩阵）W，其与单快拍计算中的完全一致，连形状都不用变。</p>
 
       
     </div>
