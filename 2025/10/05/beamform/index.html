@@ -31,7 +31,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://dhkkkkkk.github.io/images/loading.png">
 <meta property="article:published_time" content="2025-10-05T07:10:49.000Z">
-<meta property="article:modified_time" content="2026-01-15T09:02:08.860Z">
+<meta property="article:modified_time" content="2026-01-16T08:54:26.029Z">
 <meta property="article:author" content="dhk">
 <meta property="article:tag" content="杂项">
 <meta name="twitter:card" content="summary">
@@ -235,7 +235,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2026-01-15 17:02:08" itemprop="dateModified" datetime="2026-01-15T17:02:08+08:00">2026-01-15</time>
+                <time title="修改时间：2026-01-16 16:54:26" itemprop="dateModified" datetime="2026-01-16T16:54:26+08:00">2026-01-16</time>
               </span>
 
           
@@ -253,7 +253,7 @@
 <p>选定参考阵元后，后面阵元接收到的信号比参考阵元晚：</p>
 <script type="math/tex; mode=display">
 \Delta t = \left[0,\ \frac{\delta \cos(\theta_d)}{c},\ \frac{2\delta \cos(\theta_d)}{c},\ \cdots,\ \frac{(M-1)\delta \cos(\theta_d)}{c}\right]</script><p>其中c为声速，δ为后续阵元相对参考阵元的间距（针对复杂阵元δ不为定值），θ为信号入射角度，将其反应到信号的相位变化上（假设输入为单频信号）：</p>
-<p><em>对于使用减法的理解：由于后续信号接收都晚于参考信号，对于参考信号的波形，在绝对时间轴上需要<u>右移（x轴减法）</u>才会露出更早部分的信号，而在同一时刻，后续麦克风受到的波形就是包含更早部分的参考波形（不包含更新、更晚的波形）</em></p>
+<p><em>早到的信号相位为<strong>正</strong>，表示相位超前，晚到的则为<strong>负</strong>（即下述场景）</em></p>
 <script type="math/tex; mode=display">
 y(n) = \left[ x(n),\ x(n)e^{-j2\pi f_0\frac{\delta\cos(\theta_d)}{c}},\ x(n)e^{-j2\pi f_0\frac{2\delta\cos(\theta_d)}{c}},\ \cdots,\ x(n)e^{-j2\pi f_0\frac{(M-1)\delta\cos(\theta_d)}{c}} \right]  \\ = \left[ 1,\ e^{-j2\pi f_0\frac{\delta\cos(\theta_d)}{c}},\ e^{-j2\pi f_0\frac{2\delta\cos(\theta_d)}{c}},\ \cdots,\ e^{-j2\pi f_0\frac{(M-1)\delta\cos(\theta_d)}{c}} \right]x(n) \\
 =a(\theta_d) \cdot x(n)</script><p>其中a反应了不同a阵元的空间相位差，即导向矢量，受到以下变量影响：</p>
@@ -271,17 +271,29 @@ a^H(\alpha) \cdot a(\theta_d) \cdot x(n) \\= \left[ 1 + e^{-j2\pi f_0\delta \fra
 z(n)=\frac{1}{M}(1,e^{j2\pi f \tau_1},e^{j2\pi f \tau_2}...) \cdot y(n)^T
 \\= \frac{1}{M}\omega(\theta) \cdot y(n)^T</script><p>因此，在进行某个方向的波束求和时，频率f为变量（f依次变化计算出每个频率上的响应）</p>
 <p>（其实原理和上一小节的估计声源方向一样）</p>
-<p>综上，对于θ方向上，f频率下的功率为：（Y为f下各通道的复信号向量）</p>
+<p>综上，对于(θ，φ)方向上，f频率下的功率为：（Y为f下各通道的复信号向量）</p>
 <script type="math/tex; mode=display">
-P(f)  = |\mathbf{w}(f) \mathbf{Y}(f)|^2=|a^H(\theta,f)\mathbf{Y}(f)|^2</script><h1 id="使用交叉谱矩阵"><a href="#使用交叉谱矩阵" class="headerlink" title="使用交叉谱矩阵"></a>使用交叉谱矩阵</h1><p>在实际工业场景中，往往不使用上述的单快拍FFT的方法，因为该方法中的Y(f)通常只来源于一段极短的时域信号（DFT的原理，详见<a href="https://dhkkkkkk.github.io/2025/10/17/math-base/">数学基础 | 小董的BLOG</a>），也就是单快拍数据。这种约等于瞬时成像的方法容易受到随机噪声的干扰，从而产生一些虚假的声源信息。</p>
+P(f)  = |\mathbf{w}(f) \mathbf{Y}(f)|^2=|a^H(\theta,f)\mathbf{Y}(f)|^2</script><p><em>为了在今后计算中加以区分，以w代表延时权重，a代表导向矢量，这与clean-sc论文中不同，论文中的w为导向矢量（矩阵），因此本文中w的相位与论文是相反的。</em></p>
+<h1 id="使用交叉谱矩阵"><a href="#使用交叉谱矩阵" class="headerlink" title="使用交叉谱矩阵"></a>使用交叉谱矩阵</h1><p>在实际工业场景中，往往不使用上述的单快拍FFT的方法，因为该方法中的Y(f)通常只来源于一段极短的时域信号（DFT的原理，详见<a href="https://dhkkkkkk.github.io/2025/10/17/math-base/">数学基础 | 小董的BLOG</a>），也就是单快拍数据。这种约等于瞬时成像的方法容易受到随机噪声的干扰，从而产生一些虚假的声源信息。</p>
 <p>因此，我们引入了多快拍计算方法，也就是在一次成像中使用多段时域信号进行计算，我们用一个矩阵表示运算结果：</p>
 <script type="math/tex; mode=display">
-\mathbf{C}_{f_0} = E[\mathbf{X}\mathbf{X}^H] = \begin{bmatrix} E[X_1 X_1^*] & E[X_1 X_2^*] & \dots \\ E[X_2 X_1^*] & E[X_2 X_2^*] & \dots \\ \vdots & \vdots & \ddots \end{bmatrix}</script><p>这个矩阵就是交叉谱矩阵CSM，每个值代表了两个麦克风的相关程度，对角线则为当前麦克风的能量信息（无相位信息，因此在计算中可考虑不使用对角线元素）。其中X_n代表第n个麦克风在某个频率f0下的FFT 复数值。</p>
+\mathbf{C}_{f_0} = E[\mathbf{Y}\mathbf{Y}^H] = \begin{bmatrix} E[Y_1 Y_1^*] & E[Y_1 X_2^*] & \dots \\ E[Y_2 Y_1^*] & E[Y_2 Y_2^*] & \dots \\ \vdots & \vdots & \ddots \end{bmatrix}</script><p>这个矩阵就是交叉谱矩阵CSM，每个值代表了两个麦克风的相关程度，对角线则为当前麦克风的能量信息（无相位信息，因此在计算中可考虑不使用对角线元素）。其中X_n代表第n个麦克风在某个频率f0下的FFT 复数值。</p>
 <p>在原来的单快拍计算中：</p>
 <script type="math/tex; mode=display">
-P_{single} = |y|^2 = |\mathbf{w}^H \mathbf{X}|^2 = (\mathbf{w}^H \mathbf{X})(\mathbf{w}^H \mathbf{X})^H= \mathbf{w}^H \mathbf{X} \mathbf{X}^H \mathbf{w}</script><p>当引入CSM后并加入对能量取平均，则有：</p>
+P_{single} = |\mathbf{w} \mathbf{Y}|^2 = (\mathbf{w} \mathbf{Y})(\mathbf{w} \mathbf{Y})^H= \mathbf{w} \mathbf{Y} \mathbf{Y}^H \mathbf{w}^H</script><p>当引入CSM后并加入对能量取平均，则有：</p>
 <script type="math/tex; mode=display">
-P_{multi} = \mathbf{w}^H E[\mathbf{X} \mathbf{X}^H] \mathbf{w} = \mathbf{w}^H \mathbf{C} \mathbf{w}</script><p>因此对于导向矢量（矩阵）W，其与单快拍计算中的完全一致，连形状都不用变。</p>
+P_{multi} = \mathbf{w} E[\mathbf{Y} \mathbf{Y}^H] \mathbf{w}^H = \mathbf{w} \mathbf{C} \mathbf{w}^H</script><p>因此对于延迟权重向量（矩阵）W，其与单快拍计算中的完全一致，连形状都不用变。</p>
+<h1 id="声学橡皮擦（HDR）"><a href="#声学橡皮擦（HDR）" class="headerlink" title="声学橡皮擦（HDR）"></a>声学橡皮擦（HDR）</h1><p>当环境中存在多个声源时，较弱的声源容易直接被强声源覆盖，若想显示该弱声源，则可以通过波束形成单独复原强声源波形，再将该波形从麦克风信号中减去。对于该波形的波束形成，有：</p>
+<script type="math/tex; mode=display">
+\hat f(s_1) = \frac 1 M \sum^M_{i=1} w_i(\theta,\phi)y_i</script><p><em>需要注意的是，这里与波束形成<strong>成像</strong>略有不同。此处在对每个通道的麦克风信号分别进行相位对其后，直接将所有通道信号相加再取平均，是最标准的波束形成。相加之后，在(θ，φ)方向上的信号会汇聚（因为对它们的相位进行了对齐），其他方向上的信号则因为相位不一致，最终被弱化。</em></p>
+<p>由于延迟权重w是根据参考阵元计算得到的，<strong>因此最终复原的s1波形相位也与参考阵元相同</strong>。所有我们如果想在每个通道中都减去s1，就要也把每个通道数据的相位先对齐至参考阵元（其实也还是完全一样的延时操作）：</p>
+<script type="math/tex; mode=display">
+\mathbf{Y}'_{\text{w/o s1}} = \mathbf{w}(\theta,\phi) \mathbf{Y} -\hat f(s_1)</script><p>减去s1后再把每个通道的麦克风数据按照<strong>反方向</strong>进行相位调整即可得到去除s1的各通道数据：</p>
+<script type="math/tex; mode=display">
+\mathbf{Y}_{\text{w/o s1}} = \mathbf{w}^H(\theta,\phi)\mathbf{Y}'_{\text{w/o s1}}</script><p>后续再进行前文中的成像即可，或者也可以直接使用以对齐的Y’进行成像（理论上可以，我没有试过，我是先用Y计算CSM后再计算的功率）</p>
+<p>同时，我们也可以单独的对s1进行更清晰的成像，排除弱声源的干扰：</p>
+<script type="math/tex; mode=display">
+P_{s_1} = |\mathbf{w}(\theta,\phi)(\mathbf{Y}-\mathbf{Y}_{\text{w/o s1}})|^2</script><p>虽然感觉减来减去的有点多此一举，但是论文中确实也是这样写的。理论上对\hat f(s_1)根据延迟情况复制M个直接成像也可以？我懒得试了。总之最重要的是在进行波束形成时务必要<strong>通过求和</strong>，才可以获得估计的s1，也就是本小节第一个公式，其他的大家可以自由发挥。</p>
 
     </div>
 
@@ -371,7 +383,7 @@ P_{multi} = \mathbf{w}^H E[\mathbf{X} \mathbf{X}^H] \mathbf{w} = \mathbf{w}^H \m
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AF%BC%E5%90%91%E7%9F%A2%E9%87%8F"><span class="nav-number">1.</span> <span class="nav-text">导向矢量</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%A9%E7%94%A8%E5%AF%BC%E5%90%91%E7%9F%A2%E9%87%8F%E4%BC%B0%E8%AE%A1%E5%A3%B0%E6%BA%90%E5%85%A5%E5%B0%84%E6%96%B9%E5%90%91"><span class="nav-number">1.1.</span> <span class="nav-text">利用导向矢量估计声源入射方向</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%B3%A2%E6%9D%9F%E5%BD%A2%E6%88%90%E5%BB%B6%E8%BF%9F%E6%B1%82%E5%92%8C%E6%88%90%E5%83%8F"><span class="nav-number">2.</span> <span class="nav-text">波束形成延迟求和成像</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E4%BA%A4%E5%8F%89%E8%B0%B1%E7%9F%A9%E9%98%B5"><span class="nav-number">3.</span> <span class="nav-text">使用交叉谱矩阵</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AF%BC%E5%90%91%E7%9F%A2%E9%87%8F"><span class="nav-number">1.</span> <span class="nav-text">导向矢量</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%A9%E7%94%A8%E5%AF%BC%E5%90%91%E7%9F%A2%E9%87%8F%E4%BC%B0%E8%AE%A1%E5%A3%B0%E6%BA%90%E5%85%A5%E5%B0%84%E6%96%B9%E5%90%91"><span class="nav-number">1.1.</span> <span class="nav-text">利用导向矢量估计声源入射方向</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%B3%A2%E6%9D%9F%E5%BD%A2%E6%88%90%E5%BB%B6%E8%BF%9F%E6%B1%82%E5%92%8C%E6%88%90%E5%83%8F"><span class="nav-number">2.</span> <span class="nav-text">波束形成延迟求和成像</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E4%BA%A4%E5%8F%89%E8%B0%B1%E7%9F%A9%E9%98%B5"><span class="nav-number">3.</span> <span class="nav-text">使用交叉谱矩阵</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%A3%B0%E5%AD%A6%E6%A9%A1%E7%9A%AE%E6%93%A6%EF%BC%88HDR%EF%BC%89"><span class="nav-number">4.</span> <span class="nav-text">声学橡皮擦（HDR）</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
