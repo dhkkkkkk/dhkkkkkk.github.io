@@ -230,7 +230,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2026-03-09 19:11:09" itemprop="dateModified" datetime="2026-03-09T19:11:09+08:00">2026-03-09</time>
+                <time title="修改时间：2026-03-10 16:15:36" itemprop="dateModified" datetime="2026-03-10T16:15:36+08:00">2026-03-10</time>
               </span>
 
           
@@ -308,7 +308,22 @@
 <p>QAT效果普遍会比PTQ好一些</p>
 <h1 id="参数初始化与数据预处理"><a href="#参数初始化与数据预处理" class="headerlink" title="参数初始化与数据预处理"></a>参数初始化与数据预处理</h1><p>这一块感觉没啥好说的，就只在这里列出，不展开说了，初始化感觉是比较玄学的东西</p>
 <p>而对于预处理，当数据量不足或不平衡时，可以通过重采样、数据增强等方式增加数据量</p>
-<h1 id="修改网络结构"><a href="#修改网络结构" class="headerlink" title="修改网络结构"></a>修改网络结构</h1><h2 id="归一化与标准化"><a href="#归一化与标准化" class="headerlink" title="归一化与标准化"></a>归一化与标准化</h2>
+<h1 id="修改网络结构"><a href="#修改网络结构" class="headerlink" title="修改网络结构"></a>修改网络结构</h1><h2 id="归一化与标准化"><a href="#归一化与标准化" class="headerlink" title="归一化与标准化"></a>归一化与标准化</h2><h2 id="模型剪枝"><a href="#模型剪枝" class="headerlink" title="模型剪枝"></a>模型剪枝</h2><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/u013172930/article/details/147386534">什么是 模型剪枝（Model Pruning）-CSDN博客</a></p>
+<p>模型剪枝的基本思想是识别并移除对模型性能影响较小的部分，同时通过微调恢复精度。剪枝的目标是生成一个更小、更高效的模型，适用于低功耗或低延迟场景。</p>
+<h3 id="剪枝对象："><a href="#剪枝对象：" class="headerlink" title="剪枝对象："></a>剪枝对象：</h3><ul>
+<li>权重剪枝（Weight Pruning）：移除单个权重（连接），通常基于权重的大小（如绝对值较小的权重被剪除）。这会导致稀疏矩阵，适合稀疏计算加速。</li>
+<li>结构化剪枝（Structured Pruning）：<ul>
+<li><strong>通道剪枝（Channel Pruning）</strong>：常用，移除整个卷积通道（filters），保持模型结构规则，适合通用硬件加速。</li>
+<li>神经元剪枝：移除整个神经元或节点。<br>层剪枝：移除整个网络层（较少见）。</li>
+<li>混合剪枝：结合权重和结构化剪枝。</li>
+</ul>
+</li>
+</ul>
+<h3 id="剪枝粒度："><a href="#剪枝粒度：" class="headerlink" title="剪枝粒度："></a>剪枝粒度：</h3><p>细粒度剪枝：操作单个权重，灵活但需要稀疏矩阵支持。<br>粗粒度剪枝：操作通道、层等结构化单元，硬件友好但可能损失更多精度。</p>
+<h3 id="剪枝依据："><a href="#剪枝依据：" class="headerlink" title="剪枝依据："></a>剪枝依据：</h3><p><strong>基于幅度（Magnitude-based）：移除绝对值较小的权重或通道（L1范数常用，也可以使用L2），假设其贡献较小。</strong><br>基于重要性（Importance-based）：通过<strong>某些指标</strong>（如Hessian矩阵、梯度、特征图激活）评估权重或通道的重要性。<br>基于正则化：在训练时引入L1/L2正则化，鼓励权重趋向于零，便于后续剪枝。</p>
+<h3 id="剪枝策略："><a href="#剪枝策略：" class="headerlink" title="剪枝策略："></a>剪枝策略：</h3><p>一次性剪枝（One-shot Pruning）：在训练后直接剪枝，然后微调。<br>迭代剪枝（Iterative Pruning）：分多次逐步剪枝，每轮剪枝后微调，精度损失较小。<br>训练时剪枝（Pruning during Training）：在训练过程中动态剪枝（如通过掩码或正则化）。</p>
+<h3 id="微调（Fine-tuning）："><a href="#微调（Fine-tuning）：" class="headerlink" title="微调（Fine-tuning）："></a>微调（Fine-tuning）：</h3><p><strong>剪枝后，模型精度通常会下降，因此需要通过微调（继续训练）恢复性能。</strong><br>微调可以针对剪枝后的模型进行，也可以结合知识蒸馏等技术进一步提升性能。</p>
+
       
     </div>
 
@@ -798,11 +813,11 @@ Y_i=\sum_{j=1}^nA_{ij}V_j</script><p>因此对于Y_i，也就是每个输出的t
         pbOptions.networks = "Wechat,QQZone,Weibo,Douban,Twitter,Facebook";
       new needShareButton('#needsharebutton-postbottom', pbOptions);
   </script>
-<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script><script>
+<script>
             window.imageLazyLoadSetting = {
                 isSPA: false,
                 preloadRatio: 1,
                 processImages: null,
             };
-        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(e.href.match(t)||e.href.match(r))&&(e.href=a.dataset.original)})});</script><script>!function(n){n.imageLazyLoadSetting.processImages=o;var e=n.imageLazyLoadSetting.isSPA,i=n.imageLazyLoadSetting.preloadRatio||1,r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]"));function o(){e&&(r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")));for(var t,a=0;a<r.length;a++)0<=(t=(t=r[a]).getBoundingClientRect()).bottom&&0<=t.left&&t.top<=(n.innerHeight*i||document.documentElement.clientHeight*i)&&function(){var t,e,n,i,o=r[a];t=o,e=function(){r=r.filter(function(t){return o!==t})},n=new Image,i=t.getAttribute("data-original"),n.onload=function(){t.src=i,e&&e()},t.src!==i&&(n.src=i)}()}o(),n.addEventListener("scroll",function(){var t,e;t=o,e=n,clearTimeout(t.tId),t.tId=setTimeout(function(){t.call(e)},500)})}(this);</script></body>
+        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(e.href.match(t)||e.href.match(r))&&(e.href=a.dataset.original)})});</script><script>!function(n){n.imageLazyLoadSetting.processImages=o;var e=n.imageLazyLoadSetting.isSPA,i=n.imageLazyLoadSetting.preloadRatio||1,r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]"));function o(){e&&(r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")));for(var t,a=0;a<r.length;a++)0<=(t=(t=r[a]).getBoundingClientRect()).bottom&&0<=t.left&&t.top<=(n.innerHeight*i||document.documentElement.clientHeight*i)&&function(){var t,e,n,i,o=r[a];t=o,e=function(){r=r.filter(function(t){return o!==t})},n=new Image,i=t.getAttribute("data-original"),n.onload=function(){t.src=i,e&&e()},t.src!==i&&(n.src=i)}()}o(),n.addEventListener("scroll",function(){var t,e;t=o,e=n,clearTimeout(t.tId),t.tId=setTimeout(function(){t.call(e)},500)})}(this);</script><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script></body>
 </html>
