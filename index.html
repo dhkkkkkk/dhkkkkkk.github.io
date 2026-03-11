@@ -278,6 +278,99 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2026/03/11/GIS/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/zoe.gif">
+      <meta itemprop="name" content="dhk">
+      <meta itemprop="description" content="记录一些学习日常">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小董的BLOG">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2026/03/11/GIS/" class="post-title-link" itemprop="url">GIS及其相关组件</a>
+        </h2>
+
+        <div class="post-meta">
+		  
+		  
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2026-03-11 09:49:21 / 修改时间：16:52:12" itemprop="dateCreated datePublished" datetime="2026-03-11T09:49:21+08:00">2026-03-11</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="GIL：气体绝缘金属封闭输电线路"><a href="#GIL：气体绝缘金属封闭输电线路" class="headerlink" title="GIL：气体绝缘金属封闭输电线路"></a>GIL：气体绝缘金属封闭输电线路</h1><h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><p>在介绍GIS之前，我们先从GIL开始引入，因为GIL相当于更长的GIS母线，但它的结构比GIS简单的多。</p>
+<p>在电力传输场景中，当电缆（容易发热、电容效应大）或架空线（占地广、景观影响大）不适用时，则常使用GIL进行<strong>大容量、<u>特高压</u>的电能传输（比如跨江隧道、地下电站或变电站内部引出线）。</strong></p>
+<img src="/images/loading.png" data-original="/2026/03/11/GIS/1.jpg" class title="GIL equipment"> 
+<p>性能方面，GIL <strong>安全性能更好、输电效率更高、智能化程度更高、电磁辐射更少、线路损耗更低、使用寿命更长</strong>，在多方面均有明显优势。</p>
+<p>成本方面，GIL 的 建造成本为每千米 1300 万左右，略高于架空线和地下电缆。</p>
+<p>架空线应用在地面，而 GIL 主要应用下地下，需要建设管廊，需要额外的土建成本，更多适用于地下输电。</p>
+<h2 id="结构"><a href="#结构" class="headerlink" title="结构"></a>结构</h2><p>GIL的结构本质上是一个“管中管”的设计，其主要组成为：外壳，中心导体，绝缘介质，绝缘支撑件、即其他辅助与补偿元件</p>
+<h3 id="外壳"><a href="#外壳" class="headerlink" title="外壳"></a>外壳</h3><p>即图中直接看到的圆柱长筒，其内部空心，安装了输电导体。外壳的作用是<strong>密封绝缘气体</strong>，同时作为接地的<strong>防护罩</strong>，屏蔽电场并防止外界环境（潮湿、污秽）干扰。</p>
+<h3 id="中心导体"><a href="#中心导体" class="headerlink" title="中心导体"></a>中心导体</h3><p>位于外壳正中央的金属管，<strong>电流传输的实际载体</strong>。</p>
+<p>采用空心管状设计。这不仅是为了减轻重量，更重要的是利用<strong>趋边效应</strong>（Skin Effect），因为高压交流电主要在导体表面流动。</p>
+<h3 id="绝缘介质"><a href="#绝缘介质" class="headerlink" title="绝缘介质"></a>绝缘介质</h3><p>由于外壳和导体均通常为铝合金，因此其中间需要填充高性能的绝缘材料<strong>进行分隔</strong>。在GIL和GIS中，通常都使用<strong>高压</strong> SF6（六氟化硫） 气体，由于其是温室气体，现在也有混入氮气的操作。</p>
+<h3 id="绝缘支撑件"><a href="#绝缘支撑件" class="headerlink" title="绝缘支撑件"></a>绝缘支撑件</h3><p>这是<strong>将导体固定在外壳中心</strong>的“支架”，通常由环氧树脂浇注而成。最常见的是盆式绝缘子，即外观像个盆，不仅起到了支撑作用，还可以将每段管线<strong>密封为单独隔室</strong>，防止一处漏气影响全线。</p>
+<h3 id="辅助与补偿元件"><a href="#辅助与补偿元件" class="headerlink" title="辅助与补偿元件"></a>辅助与补偿元件</h3><ul>
+<li><strong>伸缩节（波纹管）：</strong> <strong><u>最重要</u></strong>，内部的柔性元件允许它像手风琴一样拉伸或压缩，吸收金属管线因热胀冷缩产生的形变，<strong><u>热胀冷缩是导致GIL出现机械故障的主要原因，因此伸缩节周围常出现故障</u></strong></li>
+</ul>
+<img src="/images/loading.png" data-original="/2026/03/11/GIS/2.png" class title="Bellows"> 
+<p>吸附剂（干燥剂）： 放置在内部，用于吸收气体中的水分和分解产物。</p>
+<p>微粒捕集器： 捕捉内部残留的细小金属颗粒，防止在强电场下引发放电事故。</p>
+<p>总的来说，GIL承担了特高压输电中的“导线”角色，没有过多其他的作用。</p>
+<h1 id="GIS：气体绝缘金属封闭开关设备"><a href="#GIS：气体绝缘金属封闭开关设备" class="headerlink" title="GIS：气体绝缘金属封闭开关设备"></a>GIS：气体绝缘金属封闭开关设备</h1><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/1906311494272021973"> GIS 究竟是什么？一文讲透 GIS 设备基础概念与知识要点 - 知乎</a></p>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/1887432258748663073">GIS气体绝缘开关设备详解：结构、特点、组成与维护指南 - 知乎</a></p>
+<p>GIS (Gas Insulated Switchgear) 相当于电力系统的“多功能核心枢纽”，它集成了断路器、隔离开关、接地开关、互感器和避雷器等高压电气元件，并封装在接地的金属外壳内，外壳中充入了SF6气体作为绝缘介质。如果把GIL比作“铁轨”，则GIS就是“火车站”一样的存在，负责<strong>控制和保护</strong>输电系统。</p>
+<p>GIS的主要优点是占地面积小，可靠性高；缺点是检修困难，使用的绝缘气体SF6成本较高。其结构如图所示：</p>
+<img src="/images/loading.png" data-original="/2026/03/11/GIS/3.jpg" class title="GIS1"> 
+<img src="/images/loading.png" data-original="/2026/03/11/GIS/3.jpg" class title="GIS2"> 
+<p>GIS的核心组件主要有<strong>5个</strong>，分别是断路器、隔离开关与接地开关、互感器、避雷器、母线</p>
+<h2 id="结构-1"><a href="#结构-1" class="headerlink" title="结构"></a>结构</h2><h3 id="断路器"><a href="#断路器" class="headerlink" title="断路器"></a>断路器</h3><p>图1的①，就是那个方方的柜子。<strong>负责在正常或故障（短路）情况下<u>切断</u>电流</strong>。其内部充有比母线中更高气压的SF6，用于迅速灭弧。</p>
+<h3 id="隔离开关"><a href="#隔离开关" class="headerlink" title="隔离开关"></a>隔离开关</h3><p>图1中②，制造一个<strong>可见的、可靠的绝缘断口</strong>。它的存在是为了让检修人员百分之百确认：这部分线路已经和带电母线彻底分开了。（拿家中电力系统举例的话，断路器就是电闸，隔离开关就是电器的电线插口）</p>
+<p>由于其不具备很强的灭弧能力，因此必须在断路器先切断电流后，才能操作隔离开关。</p>
+<h3 id="接地开关"><a href="#接地开关" class="headerlink" title="接地开关"></a>接地开关</h3><p>图1中③，在停电后，<strong>将指定位置部分进行可靠接地</strong>，起到泄放残余电荷，感应电防护和防止意外送电的作用。</p>
+<h3 id="电压、电流互感器"><a href="#电压、电流互感器" class="headerlink" title="电压、电流互感器"></a>电压、电流互感器</h3><p>在图1中应该是④和⑤？，负责将高压信号转变为低压小电流，供仪表测量和继电保护使用。</p>
+<h3 id="避雷器"><a href="#避雷器" class="headerlink" title="避雷器"></a>避雷器</h3><p>图中未标出，限制过电压，防止雷电或操作浪涌损坏内部绝缘。</p>
+<h3 id="母线"><a href="#母线" class="headerlink" title="母线"></a>母线</h3><p>图1中⑨，内部导体主要分为单筒单线式和三相共筒式，三相共筒式更节约空间，但只能用于中低压传输。其他内容则与GIL相同。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2026/01/05/whisper/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -396,174 +489,6 @@ WER = \frac{S + D + I}{N}</script><p>其中：</p>
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2025/11/21/LLM/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/zoe.gif">
-      <meta itemprop="name" content="dhk">
-      <meta itemprop="description" content="记录一些学习日常">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="小董的BLOG">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2025/11/21/LLM/" class="post-title-link" itemprop="url">LLM学习</a>
-        </h2>
-
-        <div class="post-meta">
-		  
-		  
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2025-11-21 09:27:07" itemprop="dateCreated datePublished" datetime="2025-11-21T09:27:07+08:00">2025-11-21</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-12-11 20:37:32" itemprop="dateModified" datetime="2025-12-11T20:37:32+08:00">2025-12-11</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>本章是在有一定深度学习基础，熟悉attention和transformer结构的基础上写的</p>
-<h1 id="Transformer"><a href="#Transformer" class="headerlink" title="Transformer"></a>Transformer</h1><h2 id="通用架构"><a href="#通用架构" class="headerlink" title="通用架构"></a>通用架构</h2><ul>
-<li><p>encoder用于接收源输入并提取特征（例如翻译任务中的待翻译原文）</p>
-</li>
-<li><p>decoder通过encoder输出的特征和之前的输出内容，生成下一个输出</p>
-<p>例如，当要将”I love you”翻译为中文时，encoder接收的便是”I love you”全文，decoder则是按顺序依次生成“我”，“爱”，“你”，而当生成“爱”时，decoder会将”我”与对”I love you“的特征进行attention计算，在训练优异的情况下，”love“这个谓语会被重点关注（被认为是下一个被翻译的对象），decoder会生成一个基于”I“和”you“的”love“深层语义表达，在decoder的最后，该语义表达会与中文”爱“的匹配度最高</p>
-</li>
-</ul>
-<h2 id="attention的抽象理解"><a href="#attention的抽象理解" class="headerlink" title="attention的抽象理解"></a>attention的抽象理解</h2><p>还是以”I love you“到”我爱你“的翻译任务举例：</p>
-<ul>
-<li>encoder的自注意力：在模型逐字翻译中文的过程中，encoder只计算一次。encoder主要是为了得到英文中“I love you”的语义关系，例如主谓宾结构，或者“这是一个表达情感的语句“等</li>
-<li>decoder的自注意力：当已完成”我“的翻译时，现在decoder的输入则是”我“，在自注意力计算中，decoder则会生成中文”我“的语义</li>
-<li>decoder的交叉注意力：由于”我“这个中文语义中缺失谓语，因此<u>在Q与K的计算中</u>，”love“这个表示谓语的词语会得到更高的关注度（只是举例，实际上不只有这一个原因，但具体训练过程其实我们人类是难以理解的）；将关注度进行softmax后<u>与V相乘</u>，最终会输出一个<strong>与”love”强相关的”I love you”的深层语义表达</strong>（可以理解为：decoder当前需要翻译“love”，并且考虑了“I”和“you”在全文中的含义）。</li>
-<li>decoder尾部：线性层和softmax最后会基于之前的语义表达，输出一个与中文“爱”相似度最高的embedding</li>
-</ul>
-<h2 id="语言模型类型"><a href="#语言模型类型" class="headerlink" title="语言模型类型"></a>语言模型类型</h2><p>语言模型通常分为三种架构类别：</p>
-<ul>
-<li><strong>仅编码器模型</strong>（如 BERT）：这些模型使用双向方法来理解来自两个方向的上下文。它们最适合需要深入理解文本的任务，如<strong>分类、命名实体识别和问答</strong>。</li>
-<li><strong>仅解码器模型</strong>（如 GPT、Llama）：这些模型从左到右处理文本，特别擅长<strong>文本生成</strong>任务。它们可以根据提示完成句子、写文章，甚至生成代码。</li>
-<li><strong>编码器-解码器模型</strong>（如 T5、BART）：这些模型结合了两种方法，使用编码器理解输入，使用解码器生成输出。它们在序列到序列任务中表现出色，如<strong>翻译、摘要和问答</strong>。</li>
-</ul>
-<p>而这些模型通常有两种训练方法：</p>
-<ol>
-<li><strong>掩码语言建模（MLM）</strong>：由像 BERT 这样的编码器模型使用，这种方法随机掩盖输入中的一些词元，并训练模型根据周围的上下文预测原始词元。这使得模型能够学习双向上下文（同时关注被掩盖词语之前和之后的词语）。</li>
-<li><strong>因果语言建模（CLM）</strong>：由像 GPT 这样的解码器模型使用，这种方法根据序列中所有之前的词元来预测下一个词元。模型只能使用左侧（之前的词元）的上下文来预测下一个词元。</li>
-</ol>
-<h2 id="音频Transformer"><a href="#音频Transformer" class="headerlink" title="音频Transformer"></a>音频Transformer</h2><h3 id="模型输入格式"><a href="#模型输入格式" class="headerlink" title="模型输入格式"></a>模型输入格式</h3><ul>
-<li>文本输入：通常出现在文本到语音的任务中（TTS），与原始Transformer或任何其他NLP模型的工作方式相同：<strong>首先对文本进行标记化</strong>（tokenization），得到一系列文本标记。然后将此序列<strong>通过输入嵌入层</strong>，将标记转换为512维向量。然后将这些嵌入向量传递到Transformer编码器中。</li>
-<li>波形输入：<strong>Wav2Vec2</strong>和<strong>HuBERT</strong>一类的模型直接使用音频波形作为模型的输入。我们首先将原始波形<strong>标准化为零均值和单位方差的序列</strong>，这有助于标准化不同音量（振幅）的音频样本。对于这类模型，encoder前一般会用一个小型CNN进行下采样和提取局部特征，减少序列长度</li>
-<li>时频谱输入：老朋友了，通过时频域转化可以大幅缩减样本尺寸。该类模型通常也会使用一个小型CNN提取局部特征和修改尺寸</li>
-</ul>
-<h3 id="模型输出格式"><a href="#模型输出格式" class="headerlink" title="模型输出格式"></a>模型输出格式</h3><ul>
-<li>文本输出：和语言模型相同，将decoder输出的输出嵌入向量通过一个线性头和sofrmax转换为词汇表中文本id的概率（也就是<strong>最终输出维度=词汇表大小</strong>）</li>
-<li>直接波形输出：有些模型可以直接输出波形，但较少</li>
-<li>时频谱输出：对于该类模型，由于我们最终还是需要输出一个波形，因此通常有两种做法：<ul>
-<li>基于istft：如果我们输入模型的时频谱是stft得到的，也可以通过istft还原。但此时我们需要知道<strong>幅值和相位</strong>两部分的信息，而一般音频模型输入仅使用基于幅值信息的功率谱，因此需要一个额外的网络估计其相位信息（也有其他方法，跟模型输入有关）</li>
-<li>基于神经网络：直接再使用一个神经网络将decoder输出嵌入转换为波形（Vocoder声码器）</li>
-</ul>
-</li>
-</ul>
-<h2 id="两种结构"><a href="#两种结构" class="headerlink" title="两种结构"></a>两种结构</h2><h3 id="CTC结构"><a href="#CTC结构" class="headerlink" title="CTC结构"></a>CTC结构</h3><p>CTC结构（Connectionist Temporal Classification）是一种<strong>仅</strong>使用Transformer编码器（encoder）结构的<strong>语音识别</strong>（ASR）模型。使用该架构的模型包括Wav2Vec2、HuBERT、M-CTC-T等等。</p>
-<p>在CTC结构模型中，所使用的词汇表通常是小词汇表（字符、音素等）。该类模型通常将若干ms的样本切片输出为一个token，由于一个字母发音可能包含多个切片，<strong>模型便会输出多个重复字母</strong>，因为每个token必须对应一个结果。而CTC算法就是通过一个特殊标记（blank token），压缩模型输出的重复或空白内容</p>
-<p>对于空白标记，其是通过<strong>特殊的损失函数</strong>让模型学习何时该输出空白标记的，因此CTC模型使用的loss不是标准的交叉熵。<strong>除了词汇表中添加空白标记、仅使用encoder和使用特殊的训练策略之外</strong>，该类模型就没有什么特殊的点了。</p>
-<p>对于只考虑单字符的CTC模型，可能会输出听起来正确但拼写不正确的单词，因此可以使用<strong>额外的语言模型</strong>来提高音频的转录质量。这个语言模型实际上是作为了CTC输出的<strong>拼写检查器</strong>。</p>
-<h3 id="Seq2seq结构"><a href="#Seq2seq结构" class="headerlink" title="Seq2seq结构"></a>Seq2seq结构</h3><p>比CTC结构的模型能力更强，使用标准的transformer结构，与语言模型基本一致。因此其最终的输出和语言模型一样，都是subword，对于whisper，其使用的就是GPT2的分词器。在ASR任务中，其使用交叉熵作为损失函数。</p>
-<h1 id="🤗Transformers库基础🤗"><a href="#🤗Transformers库基础🤗" class="headerlink" title="🤗Transformers库基础🤗"></a>🤗Transformers库基础🤗</h1><h2 id="pipeline"><a href="#pipeline" class="headerlink" title="pipeline"></a>pipeline</h2><p>transformer库直接调用已确定具体功能的模型的函数</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> transformers <span class="keyword">import</span> pipeline</span><br><span class="line"></span><br><span class="line">classifier = pipeline(<span class="string">&quot;sentiment-analysis&quot;</span>)</span><br><span class="line">classifier(</span><br><span class="line">    [</span><br><span class="line">        <span class="string">&quot;I&#x27;ve been waiting for a HuggingFace course my whole life.&quot;</span>,</span><br><span class="line">        <span class="string">&quot;I hate this so much!&quot;</span>,</span><br><span class="line">    ]</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt;[&#123;<span class="string">&#x27;label&#x27;</span>: <span class="string">&#x27;POSITIVE&#x27;</span>, <span class="string">&#x27;score&#x27;</span>: <span class="number">0.9598047137260437</span>&#125;,</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>&#123;<span class="string">&#x27;label&#x27;</span>: <span class="string">&#x27;NEGATIVE&#x27;</span>, <span class="string">&#x27;score&#x27;</span>: <span class="number">0.9994558095932007</span>&#125;]</span><br></pre></td></tr></table></figure>
-<p>对于一个语言模型，其大致可以分为两个部分，即tokenizer和model</p>
-<h2 id="tokenizer"><a href="#tokenizer" class="headerlink" title="tokenizer"></a>tokenizer</h2><h3 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h3><p>tokenizer的作用就是将输入的文本转化为模型可处理的tensor（<strong>即编码encode</strong>），同时生成每句话所对应的一些额外信息，如token_type_ids和attention_mask等</p>
-<p>基本的tokenizer可以分为三类：</p>
-<ul>
-<li>word-based：直接以空格分隔单词，将每个单词（word）对应一个唯一ID。缺点即是需要大量的token库，以存储所有单词</li>
-<li>Character-based：直接拆为单个字符，将每个字符对应唯一ID。缺点是对于一个句子，模型需要处理大量token，并且每个字符本身没有太大意义（对于英文来说）</li>
-<li>subword：<strong>几乎所有大模型都在使用的分词策略</strong>，原则：常用词不应被分解为更小的子词，但罕见词应被分解为有意义的子词。例如，对于”tokenization”，则可以被分为”token”和”ization”，因为这两个subword出现更为频繁，并且这样分词也可以保留其意义</li>
-</ul>
-<p>每个模型都有自己的具体tokenizer以实现subword策略</p>
-<p>transformers例程：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> transformers <span class="keyword">import</span> AutoTokenizer, AutoModelForSequenceClassification</span><br><span class="line"></span><br><span class="line">checkpoint = <span class="string">&quot;distilbert-base-uncased-finetuned-sst-2-english&quot;</span></span><br><span class="line">tokenizer = AutoTokenizer.from_pretrained(checkpoint)</span><br><span class="line">model = AutoModelForSequenceClassification.from_pretrained(checkpoint)</span><br><span class="line">sequences = [<span class="string">&quot;I&#x27;ve been waiting for a HuggingFace course my whole life.&quot;</span>, <span class="string">&quot;So have I!&quot;</span>]</span><br><span class="line"></span><br><span class="line">tokens = tokenizer(sequences, padding=<span class="literal">True</span>, truncation=<span class="literal">True</span>, return_tensors=<span class="string">&quot;pt&quot;</span>)</span><br></pre></td></tr></table></figure>
-<p>token此时为一个字典，包括了编码和注意力掩码（指padding mask）</p>
-<h3 id="具体实现"><a href="#具体实现" class="headerlink" title="具体实现"></a>具体实现</h3><p>编码分为两步，即分词+转化为ID</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#仅分词</span></span><br><span class="line">tokenizer = AutoTokenizer.from_pretrained(<span class="string">&quot;bert-base-cased&quot;</span>)</span><br><span class="line">sequence = <span class="string">&quot;Using a Transformer network is simple&quot;</span></span><br><span class="line">tokens = tokenizer.tokenize(sequence)</span><br><span class="line">&gt;&gt;&gt;[<span class="string">&#x27;Using&#x27;</span>, <span class="string">&#x27;a&#x27;</span>, <span class="string">&#x27;transform&#x27;</span>, <span class="string">&#x27;##er&#x27;</span>, <span class="string">&#x27;network&#x27;</span>, <span class="string">&#x27;is&#x27;</span>, <span class="string">&#x27;simple&#x27;</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment">#将分词转为ID</span></span><br><span class="line">ids = tokenizer.convert_tokens_to_ids(tokens)</span><br><span class="line"><span class="built_in">print</span>(ids)</span><br><span class="line">&gt;&gt;&gt;[<span class="number">7993</span>, <span class="number">170</span>, <span class="number">11303</span>, <span class="number">1200</span>, <span class="number">2443</span>, <span class="number">1110</span>, <span class="number">3014</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment">#解码</span></span><br><span class="line">decoded_string = tokenizer.decode([<span class="number">7993</span>, <span class="number">170</span>, <span class="number">11303</span>, <span class="number">1200</span>, <span class="number">2443</span>, <span class="number">1110</span>, <span class="number">3014</span>])</span><br><span class="line"><span class="built_in">print</span>(decoded_string)</span><br><span class="line">&gt;&gt;&gt;<span class="string">&#x27;Using a Transformer network is simple&#x27;</span></span><br></pre></td></tr></table></figure>
-<p>对于不同的模型，其还要求了其他的额外输入，因此其tokenizer也具有除编码外的其他功能：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 将句子序列填充到最长句子的长度</span></span><br><span class="line">model_inputs = tokenizer(sequences, padding=<span class="string">&quot;longest&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 将句子序列填充到模型的最大长度</span></span><br><span class="line"><span class="comment"># (512 for BERT or DistilBERT)</span></span><br><span class="line">model_inputs = tokenizer(sequences, padding=<span class="string">&quot;max_length&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 将句子序列填充到指定的最大长度</span></span><br><span class="line">model_inputs = tokenizer(sequences, padding=<span class="string">&quot;max_length&quot;</span>, max_length=<span class="number">8</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 将截断比模型最大长度长的句子序列</span></span><br><span class="line"><span class="comment"># (512 for BERT or DistilBERT)</span></span><br><span class="line">model_inputs = tokenizer(sequences, truncation=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 将截断长于指定最大长度的句子序列</span></span><br><span class="line">model_inputs = tokenizer(sequences, max_length=<span class="number">8</span>, truncation=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 返回 PyTorch tensors</span></span><br><span class="line">model_inputs = tokenizer(sequences, padding=<span class="literal">True</span>, return_tensors=<span class="string">&quot;pt&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 返回 TensorFlow tensors</span></span><br><span class="line">model_inputs = tokenizer(sequences, padding=<span class="literal">True</span>, return_tensors=<span class="string">&quot;tf&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 返回 NumPy arrays</span></span><br><span class="line">model_inputs = tokenizer(sequences, padding=<span class="literal">True</span>, return_tensors=<span class="string">&quot;np&quot;</span>)</span><br></pre></td></tr></table></figure>
-<h2 id="model"><a href="#model" class="headerlink" title="model"></a>model</h2><h3 id="创建模型"><a href="#创建模型" class="headerlink" title="创建模型"></a>创建模型</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> transformers <span class="keyword">import</span> BertConfig, BertModel</span><br><span class="line"></span><br><span class="line">config = BertConfig()</span><br><span class="line">model = BertModel(config)</span><br></pre></td></tr></table></figure>
-<h3 id="加载预训练权重"><a href="#加载预训练权重" class="headerlink" title="加载预训练权重"></a>加载预训练权重</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">model = BertModel.from_pretrained(<span class="string">&quot;bert-base-cased&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">#或是直接通过AutoModel类</span></span><br><span class="line">checkpoint = <span class="string">&quot;bert-base-cased&quot;</span></span><br><span class="line">model = AutoModel.from_pretrained(checkpoint)</span><br></pre></td></tr></table></figure>
-<p>需要注意的是，此处的模型输入需参考各模型具体要求，一般为一个字典，例如：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#x27;input_ids&#x27;: tensor([[  101,  1045,  1005,  2310,  2042,  3403,  2005,  1037, 17662, 			12172,     2607,  2026,  2878,  2166,  1012,   102],</span><br><span class="line">        [  101,  2061,  2031,  1045,   999,   102,     0,     0,     0,     0,</span><br><span class="line">             0,     0,     0,     0,     0,     0]]), </span><br><span class="line"> &#x27;attention_mask&#x27;: tensor([[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],</span><br><span class="line">        [1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]])&#125;</span><br></pre></td></tr></table></figure>
-<p>这些可以被模型对应的tokenizer直接生成，仅需：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">model(**tokens) </span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">python的字典解包机制，等同于model(</span></span><br><span class="line"><span class="string">    input_ids=tensor(...),</span></span><br><span class="line"><span class="string">    attention_mask=tensor(...)</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br></pre></td></tr></table></figure>
-<h2 id="dataset"><a href="#dataset" class="headerlink" title="dataset"></a>dataset</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> datasets <span class="keyword">import</span> load_dataset</span><br><span class="line"></span><br><span class="line">raw_datasets = load_dataset(<span class="string">&quot;glue&quot;</span>, <span class="string">&quot;mrpc&quot;</span>)</span><br><span class="line">raw_train_dataset = raw_datasets[<span class="string">&quot;train&quot;</span>]</span><br><span class="line">sentence1 = raw_train_dataset[<span class="string">&#x27;sentence1&#x27;</span>]</span><br><span class="line">sample = raw_train_dataset[<span class="number">0</span>]</span><br></pre></td></tr></table></figure>
-<h3 id="Datadict"><a href="#Datadict" class="headerlink" title="Datadict"></a>Datadict</h3><p>该函数会返回一个<u>DatasetDict</u>数据结构，这是一个类似字典的结构</p>
-<img src="/images/loading.png" data-original="/2025/11/21/LLM/1.png" class title="This is an image"> 
-<p>对其进行索引可以得到单个数据集结构<u>Dataset</u></p>
-<h3 id="Dataset"><a href="#Dataset" class="headerlink" title="Dataset"></a>Dataset</h3><p>对于Dataset结构，也就是<code>raw_train_dataset</code>，其存储方式是列式存储，对于本代码，其每一列为：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x27;sentence1&#x27;, &#x27;sentence2&#x27;, &#x27;label&#x27;, &#x27;idx&#x27;</span><br></pre></td></tr></table></figure>
-<p>对这些键名进行索引即可返回单个<u>Column</u>结构</p>
-<p>也可以对其进行<strong>行索引</strong>，则会返回单个样本的每列信息（<strong>一个标准字典</strong>）：</p>
-<img src="/images/loading.png" data-original="/2025/11/21/LLM/2.png" class title="This is an image"> 
-<p>其中，对于本代码来说，label则是代表sentence1和sentence2<strong>是否</strong>同义</p>
-<h3 id="返回token的dataset"><a href="#返回token的dataset" class="headerlink" title="返回token的dataset"></a>返回token的dataset</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">tokenize_function</span>(<span class="params">examples</span>):</span><br><span class="line">    <span class="keyword">return</span> tokenizer(</span><br><span class="line">        examples[<span class="string">&quot;sentence1&quot;</span>],</span><br><span class="line">        examples[<span class="string">&quot;sentence2&quot;</span>],</span><br><span class="line">        truncation=<span class="literal">True</span></span><br><span class="line">    )</span><br><span class="line">tokenized_datasets = raw_datasets.<span class="built_in">map</span>(tokenize_function, batched=<span class="literal">True</span>)</span><br></pre></td></tr></table></figure>
-<p>.map方法可以将每个文本经过tokenization后的结果添加到原本的Datadict中：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">DatasetDict(&#123;</span><br><span class="line">    train: Dataset(&#123;</span><br><span class="line">        features: [&#x27;attention_mask&#x27;, &#x27;idx&#x27;, &#x27;input_ids&#x27;, &#x27;label&#x27;, &#x27;sentence1&#x27;, &#x27;sentence2&#x27;, &#x27;token_type_ids&#x27;],</span><br><span class="line">        num_rows: 3668</span><br><span class="line">    &#125;)</span><br><span class="line">    validation: Dataset(&#123;</span><br><span class="line">        features: [&#x27;attention_mask&#x27;, &#x27;idx&#x27;, &#x27;input_ids&#x27;, &#x27;label&#x27;, &#x27;sentence1&#x27;, &#x27;sentence2&#x27;, &#x27;token_type_ids&#x27;],</span><br><span class="line">        num_rows: 408</span><br><span class="line">    &#125;)</span><br><span class="line">    test: Dataset(&#123;</span><br><span class="line">        features: [&#x27;attention_mask&#x27;, &#x27;idx&#x27;, &#x27;input_ids&#x27;, &#x27;label&#x27;, &#x27;sentence1&#x27;, &#x27;sentence2&#x27;, &#x27;token_type_ids&#x27;],</span><br><span class="line">        num_rows: 1725</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
-<p>当不需要其中的某些features时，可以：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">samples = tokenized_datasets[<span class="string">&quot;train&quot;</span>][:]</span><br><span class="line">samples = &#123;k: v <span class="keyword">for</span> k, v <span class="keyword">in</span> samples.items() <span class="keyword">if</span> k <span class="keyword">not</span> <span class="keyword">in</span> [<span class="string">&quot;idx&quot;</span>, <span class="string">&quot;sentence1&quot;</span>, <span class="string">&quot;sentence2&quot;</span>]&#125;</span><br></pre></td></tr></table></figure>
-<p>或者也可以调用Datasetdict的方法：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tokenized_datasets = tokenized_datasets.remove_columns([<span class="string">&quot;sentence1&quot;</span>, <span class="string">&quot;sentence2&quot;</span>, <span class="string">&quot;idx&quot;</span>])</span><br></pre></td></tr></table></figure>
-<h3 id="动态填充"><a href="#动态填充" class="headerlink" title="动态填充"></a>动态填充</h3><p>在训练 LLM时，只需要对每个 batch 进行<strong>动态 padding</strong>（因为模型的输入必须是规则的），而不是对整个数据集进行统一 padding，因为这样会大量浪费计算资源。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> transformers <span class="keyword">import</span> DataCollatorWithPadding</span><br><span class="line"></span><br><span class="line">data_collator = DataCollatorWithPadding(tokenizer=tokenizer)</span><br><span class="line">samples = tokenized_datasets[<span class="string">&quot;train&quot;</span>][:<span class="number">8</span>]</span><br><span class="line">samples = &#123;k: v <span class="keyword">for</span> k, v <span class="keyword">in</span> samples.items() <span class="keyword">if</span> k <span class="keyword">not</span> <span class="keyword">in</span> [<span class="string">&quot;idx&quot;</span>, <span class="string">&quot;sentence1&quot;</span>, <span class="string">&quot;sentence2&quot;</span>]&#125;</span><br><span class="line">batch = data_collator(samples)</span><br></pre></td></tr></table></figure>
-<p>其中batch则是n个样本（代码中为8）所对应的经过tokenizaiton后的samples，并且其中的id全部都被padding至8个样本中最长文本id的长度（batch.item()和samples的数据结构是相同的，都是一个标准字典，仅有id发生了padding）</p>
-<h1 id="模型微调"><a href="#模型微调" class="headerlink" title="模型微调"></a>模型微调</h1><h2 id="调用Trainer-API"><a href="#调用Trainer-API" class="headerlink" title="调用Trainer API"></a>调用Trainer API</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> datasets <span class="keyword">import</span> load_dataset</span><br><span class="line"><span class="keyword">from</span> transformers <span class="keyword">import</span> AutoTokenizer, DataCollatorWithPadding, AutoModelForSequenceClassification</span><br><span class="line"><span class="keyword">from</span> transformers <span class="keyword">import</span> TrainingArguments, Trainer</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">raw_datasets = load_dataset(<span class="string">&quot;glue&quot;</span>, <span class="string">&quot;mrpc&quot;</span>)</span><br><span class="line">checkpoint = <span class="string">&quot;bert-base-uncased&quot;</span></span><br><span class="line">tokenizer = AutoTokenizer.from_pretrained(checkpoint)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">tokenize_function</span>(<span class="params">example</span>):</span><br><span class="line">    <span class="keyword">return</span> tokenizer(example[<span class="string">&quot;sentence1&quot;</span>], example[<span class="string">&quot;sentence2&quot;</span>], truncation=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">tokenized_datasets = raw_datasets.<span class="built_in">map</span>(tokenize_function, batched=<span class="literal">True</span>)</span><br><span class="line">data_collator = DataCollatorWithPadding(tokenizer=tokenizer)</span><br><span class="line">training_args = TrainingArguments(<span class="string">&quot;test-trainer&quot;</span>)</span><br><span class="line">model = AutoModelForSequenceClassification.from_pretrained(checkpoint, num_labels=<span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">trainer = Trainer(</span><br><span class="line">    model,</span><br><span class="line">    training_args,</span><br><span class="line">    train_dataset=tokenized_datasets[<span class="string">&quot;train&quot;</span>],</span><br><span class="line">    eval_dataset=tokenized_datasets[<span class="string">&quot;validation&quot;</span>],</span><br><span class="line">    data_collator=data_collator,</span><br><span class="line">    tokenizer=tokenizer,</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">trainer.train()</span><br></pre></td></tr></table></figure>
-<p>在使用<code>AutoModelForSequenceClassification</code>实例化模型时，会收到一个警告，这是因为 BERT 没有在句子对分类方面进行过预训练，所以<strong>预训练模型的 head 已经被丢弃</strong>，而是<strong>添加了一个适合句子序列分类的新头部</strong>。这些警告表明一些权重没有使用（对应于被放弃的预训练头的权重），而有些权重被随机初始化（对应于新 head 的权重）。</p>
-<h3 id="评估"><a href="#评估" class="headerlink" title="评估"></a>评估</h3><p>对于模型的输出：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">predictions = trainer.predict(tokenized_datasets[<span class="string">&quot;validation&quot;</span>])</span><br></pre></td></tr></table></figure>
-<p>其会返回一个元组：<code>(predictions,label_ids,metrics)</code>；其中predictions为一个形状为(batchsize,cls_num)的二维张量，第二维度为每个样本的logits，其中的最大值则为预测结果；label_ids为样本真实标签，metrics为自定义评估指标，默认只返回loss</p>
-<p>因此我们可以定义一个评估函数：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">compute_metrics</span>(<span class="params">eval_preds</span>):</span><br><span class="line">    metric = evaluate.load(<span class="string">&quot;glue&quot;</span>, <span class="string">&quot;mrpc&quot;</span>)</span><br><span class="line">    logits, labels = eval_preds</span><br><span class="line">    predictions = np.argmax(logits, axis=-<span class="number">1</span>)</span><br><span class="line">    <span class="keyword">return</span> metric.compute(predictions=predictions, references=labels)</span><br><span class="line"></span><br><span class="line">trainer = Trainer(</span><br><span class="line">    model,</span><br><span class="line">    training_args,</span><br><span class="line">    train_dataset=tokenized_datasets[<span class="string">&quot;train&quot;</span>],</span><br><span class="line">    eval_dataset=tokenized_datasets[<span class="string">&quot;validation&quot;</span>],</span><br><span class="line">    data_collator=data_collator,</span><br><span class="line">    tokenizer=tokenizer,</span><br><span class="line">    compute_metrics=compute_metrics,</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
-<p>其中.compute方法会返回准确率与f1分数</p>
-<h2 id="不使用Trainer"><a href="#不使用Trainer" class="headerlink" title="不使用Trainer"></a>不使用Trainer</h2><h3 id="使用torch的Dataloader加载数据集"><a href="#使用torch的Dataloader加载数据集" class="headerlink" title="使用torch的Dataloader加载数据集"></a>使用torch的Dataloader加载数据集</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">tokenized_datasets = raw_datasets.<span class="built_in">map</span>(tokenize_function, batched=<span class="literal">True</span>)</span><br><span class="line">data_collator = DataCollatorWithPadding(tokenizer=tokenizer)</span><br><span class="line"></span><br><span class="line"><span class="comment">#删去不需要列，将label改名为labels（模型默认输入格式）</span></span><br><span class="line">tokenized_datasets = tokenized_datasets.remove_columns([<span class="string">&quot;sentence1&quot;</span>, <span class="string">&quot;sentence2&quot;</span>, <span class="string">&quot;idx&quot;</span>])</span><br><span class="line">tokenized_datasets = tokenized_datasets.rename_column(<span class="string">&quot;label&quot;</span>, <span class="string">&quot;labels&quot;</span>)</span><br><span class="line">tokenized_datasets.set_format(<span class="string">&quot;torch&quot;</span>)</span><br><span class="line"><span class="comment">#&gt;&gt;&gt;[&quot;attention_mask&quot;, &quot;input_ids&quot;, &quot;labels&quot;, &quot;token_type_ids&quot;]</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> torch.utils.data <span class="keyword">import</span> DataLoader</span><br><span class="line"><span class="comment">#Dataloader兼容transformers的DataCollatorWithPadding</span></span><br><span class="line">train_dataloader = DataLoader(</span><br><span class="line">    tokenized_datasets[<span class="string">&quot;train&quot;</span>], shuffle=<span class="literal">True</span>, batch_size=<span class="number">8</span>, collate_fn=data_collator</span><br><span class="line">)</span><br><span class="line">eval_dataloader = DataLoader(</span><br><span class="line">    tokenized_datasets[<span class="string">&quot;validation&quot;</span>], batch_size=<span class="number">8</span>, collate_fn=data_collator</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
-<p>此时dataloader返回的每个batch为：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#x27;attention_mask&#x27;: torch.Size([8, 65]),</span><br><span class="line"> &#x27;input_ids&#x27;: torch.Size([8, 65]),</span><br><span class="line"> &#x27;labels&#x27;: torch.Size([8]),</span><br><span class="line"> &#x27;token_type_ids&#x27;: torch.Size([8, 65])&#125;</span><br></pre></td></tr></table></figure>
-<p>该batch可以直接输入到AutoModelForSequenceClassification实例化的模型中：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> transformers <span class="keyword">import</span> get_scheduler</span><br><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"></span><br><span class="line">optimizer = AdamW(model.parameters(), lr=<span class="number">5e-5</span>)</span><br><span class="line">num_epochs = <span class="number">3</span></span><br><span class="line">num_training_steps = num_epochs * <span class="built_in">len</span>(train_dataloader)</span><br><span class="line">lr_scheduler = get_scheduler(	<span class="comment">#学习率线性衰减</span></span><br><span class="line">    <span class="string">&quot;linear&quot;</span>,</span><br><span class="line">    optimizer=optimizer,</span><br><span class="line">    num_warmup_steps=<span class="number">0</span>,</span><br><span class="line">    num_training_steps=num_training_steps,</span><br><span class="line">)</span><br><span class="line">model.to(device)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> epoch <span class="keyword">in</span> <span class="built_in">range</span>(num_epoch):</span><br><span class="line">    model.train()</span><br><span class="line">    <span class="keyword">for</span> batch <span class="keyword">in</span> train_dataloader:</span><br><span class="line">        batch = &#123;k: v.to(device) <span class="keyword">for</span> k, v <span class="keyword">in</span> batch.items()&#125;</span><br><span class="line">        outputs = model(**batch)</span><br><span class="line">        loss = outputs.loss</span><br><span class="line">        loss.backward()</span><br><span class="line"></span><br><span class="line">        optimizer.step()</span><br><span class="line">        lr_scheduler.step()</span><br><span class="line">        optimizer.zero_grad()</span><br><span class="line">    </span><br><span class="line">    model.<span class="built_in">eval</span>()</span><br><span class="line">	<span class="keyword">for</span> batch <span class="keyword">in</span> eval_loader:</span><br><span class="line">        batch = &#123;k: v.to(device) <span class="keyword">for</span> k, v <span class="keyword">in</span> batch.items()&#125;</span><br><span class="line">    	<span class="keyword">with</span> torch.no_grad():</span><br><span class="line">        	outputs = model(**batch)</span><br><span class="line">        logits = outputs.logits</span><br><span class="line">        ...</span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   
   <nav class="pagination">
     <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/23/">23</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
@@ -633,7 +558,7 @@ WER = \frac{S + D + I}{N}</script><p>其中：</p>
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">67</span>
+          <span class="site-state-item-count">68</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
