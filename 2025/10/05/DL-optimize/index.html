@@ -30,7 +30,7 @@
 <meta property="og:description" content="网络优化网络优化可以从以下四个方向展开：  使用更有效的优化算法 使用更好的参数初始化、数据预处理方法 修改网络结构（激活函数、残差连接、归一化） 使用更好的超参数优化方法  优化算法minibatch与梯度积累一般而言，batchsize较大时会获得较稳定的训练结果（因此可以设置较大学习率）。但batchsize会被GPU显存所限制，因此可以通过梯度累积的方式，使用较小的batchsize模拟大">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-10-05T07:19:37.000Z">
-<meta property="article:modified_time" content="2026-03-10T08:15:36.287Z">
+<meta property="article:modified_time" content="2026-03-31T08:40:10.259Z">
 <meta property="article:author" content="dhk">
 <meta property="article:tag" content="深度学习">
 <meta name="twitter:card" content="summary">
@@ -233,7 +233,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2026-03-10 16:15:36" itemprop="dateModified" datetime="2026-03-10T16:15:36+08:00">2026-03-10</time>
+                <time title="修改时间：2026-03-31 16:40:10" itemprop="dateModified" datetime="2026-03-31T16:40:10+08:00">2026-03-31</time>
               </span>
 
           
@@ -311,8 +311,56 @@
 <p>QAT效果普遍会比PTQ好一些</p>
 <h1 id="参数初始化与数据预处理"><a href="#参数初始化与数据预处理" class="headerlink" title="参数初始化与数据预处理"></a>参数初始化与数据预处理</h1><p>这一块感觉没啥好说的，就只在这里列出，不展开说了，初始化感觉是比较玄学的东西</p>
 <p>而对于预处理，当数据量不足或不平衡时，可以通过重采样、数据增强等方式增加数据量</p>
-<h1 id="修改网络结构"><a href="#修改网络结构" class="headerlink" title="修改网络结构"></a>修改网络结构</h1><h2 id="归一化与标准化"><a href="#归一化与标准化" class="headerlink" title="归一化与标准化"></a>归一化与标准化</h2><h2 id="模型剪枝"><a href="#模型剪枝" class="headerlink" title="模型剪枝"></a>模型剪枝</h2><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/u013172930/article/details/147386534">什么是 模型剪枝（Model Pruning）-CSDN博客</a></p>
-<p>模型剪枝的基本思想是识别并移除对模型性能影响较小的部分，同时通过微调恢复精度。剪枝的目标是生成一个更小、更高效的模型，适用于低功耗或低延迟场景。</p>
+<h1 id="修改网络结构"><a href="#修改网络结构" class="headerlink" title="修改网络结构"></a>修改网络结构</h1><h2 id="Normalization（标准化）"><a href="#Normalization（标准化）" class="headerlink" title="Normalization（标准化）"></a>Normalization（标准化）</h2><p>这里需要强调的是，<strong>在深度学习当中，我们提到的Normalization其实是在做标准化操作</strong>——将数据转化为正态分布形式（均值为0，方差为1）。<u>而对于标准的归一化，则通常在数据集处理时使用：将数据线性缩放到固定的区间（通常为0~1或-1~1）</u></p>
+<p>Normalization的本质是<strong>通过线性变换，将原本分布参差不齐的数据映射到一个标准的、可控的数值空间</strong>，从而防止神经元激活函数输出过大/小导致梯度爆炸/消失，同时也可以让loss更加平滑，避免反复振荡。</p>
+<p>所有的归一化都遵循一个标准公式：</p>
+<script type="math/tex; mode=display">
+y = \frac{x - \mu}{\sqrt{\sigma^2 + \epsilon}} \cdot \gamma + \beta</script><p>其中μ、σ为均值和方差，ε为防止分母为0的极小值，它们负责将x中心化、缩放——<strong>映射到标准正态分布上</strong></p>
+<p><strong>γ和β是一个可学习的参数</strong>，负责把将经过标准正态分布缩放、平移到更适合激活函数的分布区间，它们也通过反向传播更新，是深度学习中的重要部分</p>
+<p><strong><u>而对于不同的归一化方法，其不同就体现在μ和σ计算的数据范围上</u></strong></p>
+<h3 id="Batch-Normalization"><a href="#Batch-Normalization" class="headerlink" title="Batch Normalization"></a>Batch Normalization</h3><p>BN 是在<strong>整个 Batch</strong> 范围内，对每一个<strong>通道</strong>独立进行计算，即：</p>
+<p>计算均值和方差时<strong>固定通道C_i</strong>，计算<strong>batch size x H x W</strong>个值的均值和方差，因此batch size的大小直接决定了其均值和方差的估计可信度</p>
+<p>由于BN是在Channels维度做归一化，因此它可以在<strong>不破坏数据空间结构</strong>的情况下归一化，<strong><u>适合于CNN结构</u></strong></p>
+<h3 id="Layer-Normalization"><a href="#Layer-Normalization" class="headerlink" title="Layer Normalization"></a>Layer Normalization</h3><p>LN 是在<strong>单个样本</strong>内部，对该样本的<strong>所有通道</strong>进行计算，即为计算C x H x W个值的均值与方差。</p>
+<p>而由于LN将一个样本内部的不同特征（即通道）映射在了同一分布上，<strong><u>使其在NLP任务（RNN，Transformer）中非常有效</u></strong>，<strong>因为句子中每个词（Token）的特征表示应该在一个量级上。</strong></p>
+<p>而在CNN中则一般不使用，因为其破坏了空间结构</p>
+<h3 id="Instance-Normalization"><a href="#Instance-Normalization" class="headerlink" title="Instance Normalization"></a>Instance Normalization</h3><p>在<strong>单个样本</strong>的<strong>单个通道</strong>内独立计算均值、方差（即在HxW个值上计算），常用于风格迁移，<strong>会损失样本统计信息（对比度、语义等），仅保留内容信息（形状）</strong></p>
+<h3 id="Group-Normalization"><a href="#Group-Normalization" class="headerlink" title="Group Normalization"></a>Group Normalization</h3><p>在LN基础上，仅选择特定个数的通道进行归一化（<strong>将单个样本的C个通道平均分为若干组，对每个组做LN</strong>）</p>
+<p>由于IN<strong>可以保留样本的局部结构</strong>，并且不依赖batch size，因此某些情况下可以用于CNN。另外，其分组参数为一个经验参数，不好确定</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>统计范围</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>BN</td>
+<td>batch 维</td>
+</tr>
+<tr>
+<td>LN</td>
+<td>单样本所有特征</td>
+</tr>
+<tr>
+<td>IN</td>
+<td>单样本单通道</td>
+</tr>
+<tr>
+<td>GN</td>
+<td>单样本通道分组</td>
+</tr>
+<tr>
+<td>RMSNorm</td>
+<td>单样本特征（但不减均值）</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 id="模型剪枝"><a href="#模型剪枝" class="headerlink" title="模型剪枝"></a>模型剪枝</h2><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/u013172930/article/details/147386534">什么是 模型剪枝（Model Pruning）-CSDN博客</a></p>
+<p>模型剪枝的基本思想是识别并移除对模型性能影响较小的部分，同时<strong>通过微调恢复精度</strong>。剪枝的目标是生成一个更小、更高效的模型，适用于低功耗或低延迟场景。</p>
 <h3 id="剪枝对象："><a href="#剪枝对象：" class="headerlink" title="剪枝对象："></a>剪枝对象：</h3><ul>
 <li>权重剪枝（Weight Pruning）：移除单个权重（连接），通常基于权重的大小（如绝对值较小的权重被剪除）。这会导致稀疏矩阵，适合稀疏计算加速。</li>
 <li>结构化剪枝（Structured Pruning）：<ul>
@@ -415,7 +463,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BD%91%E7%BB%9C%E4%BC%98%E5%8C%96"><span class="nav-number">1.</span> <span class="nav-text">网络优化</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BC%98%E5%8C%96%E7%AE%97%E6%B3%95"><span class="nav-number">2.</span> <span class="nav-text">优化算法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#minibatch%E4%B8%8E%E6%A2%AF%E5%BA%A6%E7%A7%AF%E7%B4%AF"><span class="nav-number">2.1.</span> <span class="nav-text">minibatch与梯度积累</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#batchsize%E5%BD%B1%E5%93%8D"><span class="nav-number">2.2.</span> <span class="nav-text">batchsize影响</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AD%A6%E4%B9%A0%E7%8E%87%E8%B0%83%E6%95%B4"><span class="nav-number">2.3.</span> <span class="nav-text">学习率调整</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AD%A6%E4%B9%A0%E7%8E%87%E8%A1%B0%E5%87%8F"><span class="nav-number">2.3.1.</span> <span class="nav-text">学习率衰减</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AD%A6%E4%B9%A0%E7%8E%87%E9%A2%84%E7%83%AD"><span class="nav-number">2.3.2.</span> <span class="nav-text">学习率预热</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A2%AF%E5%BA%A6%E4%BC%B0%E8%AE%A1%E4%BF%AE%E6%AD%A3%EF%BC%88%E4%BC%98%E5%8C%96%E5%99%A8%E9%80%89%E6%8B%A9%EF%BC%89"><span class="nav-number">2.4.</span> <span class="nav-text">梯度估计修正（优化器选择）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A2%AF%E5%BA%A6%E7%88%86%E7%82%B8%E9%97%AE%E9%A2%98"><span class="nav-number">2.5.</span> <span class="nav-text">梯度爆炸问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A8%A1%E5%9E%8B%E9%87%8F%E5%8C%96"><span class="nav-number">2.6.</span> <span class="nav-text">模型量化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%87%8F%E5%8C%96%E5%AF%B9%E8%B1%A1"><span class="nav-number">2.6.1.</span> <span class="nav-text">量化对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%84%E7%B2%BE%E5%BA%A6"><span class="nav-number">2.6.2.</span> <span class="nav-text">各精度</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#PTQ%E4%B8%8EQAT"><span class="nav-number">2.6.3.</span> <span class="nav-text">PTQ与QAT</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%82%E6%95%B0%E5%88%9D%E5%A7%8B%E5%8C%96%E4%B8%8E%E6%95%B0%E6%8D%AE%E9%A2%84%E5%A4%84%E7%90%86"><span class="nav-number">3.</span> <span class="nav-text">参数初始化与数据预处理</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BF%AE%E6%94%B9%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84"><span class="nav-number">4.</span> <span class="nav-text">修改网络结构</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BD%92%E4%B8%80%E5%8C%96%E4%B8%8E%E6%A0%87%E5%87%86%E5%8C%96"><span class="nav-number">4.1.</span> <span class="nav-text">归一化与标准化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A8%A1%E5%9E%8B%E5%89%AA%E6%9E%9D"><span class="nav-number">4.2.</span> <span class="nav-text">模型剪枝</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%89%AA%E6%9E%9D%E5%AF%B9%E8%B1%A1%EF%BC%9A"><span class="nav-number">4.2.1.</span> <span class="nav-text">剪枝对象：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%89%AA%E6%9E%9D%E7%B2%92%E5%BA%A6%EF%BC%9A"><span class="nav-number">4.2.2.</span> <span class="nav-text">剪枝粒度：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%89%AA%E6%9E%9D%E4%BE%9D%E6%8D%AE%EF%BC%9A"><span class="nav-number">4.2.3.</span> <span class="nav-text">剪枝依据：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%89%AA%E6%9E%9D%E7%AD%96%E7%95%A5%EF%BC%9A"><span class="nav-number">4.2.4.</span> <span class="nav-text">剪枝策略：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BE%AE%E8%B0%83%EF%BC%88Fine-tuning%EF%BC%89%EF%BC%9A"><span class="nav-number">4.2.5.</span> <span class="nav-text">微调（Fine-tuning）：</span></a></li></ol></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BD%91%E7%BB%9C%E4%BC%98%E5%8C%96"><span class="nav-number">1.</span> <span class="nav-text">网络优化</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BC%98%E5%8C%96%E7%AE%97%E6%B3%95"><span class="nav-number">2.</span> <span class="nav-text">优化算法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#minibatch%E4%B8%8E%E6%A2%AF%E5%BA%A6%E7%A7%AF%E7%B4%AF"><span class="nav-number">2.1.</span> <span class="nav-text">minibatch与梯度积累</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#batchsize%E5%BD%B1%E5%93%8D"><span class="nav-number">2.2.</span> <span class="nav-text">batchsize影响</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AD%A6%E4%B9%A0%E7%8E%87%E8%B0%83%E6%95%B4"><span class="nav-number">2.3.</span> <span class="nav-text">学习率调整</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AD%A6%E4%B9%A0%E7%8E%87%E8%A1%B0%E5%87%8F"><span class="nav-number">2.3.1.</span> <span class="nav-text">学习率衰减</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AD%A6%E4%B9%A0%E7%8E%87%E9%A2%84%E7%83%AD"><span class="nav-number">2.3.2.</span> <span class="nav-text">学习率预热</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A2%AF%E5%BA%A6%E4%BC%B0%E8%AE%A1%E4%BF%AE%E6%AD%A3%EF%BC%88%E4%BC%98%E5%8C%96%E5%99%A8%E9%80%89%E6%8B%A9%EF%BC%89"><span class="nav-number">2.4.</span> <span class="nav-text">梯度估计修正（优化器选择）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A2%AF%E5%BA%A6%E7%88%86%E7%82%B8%E9%97%AE%E9%A2%98"><span class="nav-number">2.5.</span> <span class="nav-text">梯度爆炸问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A8%A1%E5%9E%8B%E9%87%8F%E5%8C%96"><span class="nav-number">2.6.</span> <span class="nav-text">模型量化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%87%8F%E5%8C%96%E5%AF%B9%E8%B1%A1"><span class="nav-number">2.6.1.</span> <span class="nav-text">量化对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%84%E7%B2%BE%E5%BA%A6"><span class="nav-number">2.6.2.</span> <span class="nav-text">各精度</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#PTQ%E4%B8%8EQAT"><span class="nav-number">2.6.3.</span> <span class="nav-text">PTQ与QAT</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%82%E6%95%B0%E5%88%9D%E5%A7%8B%E5%8C%96%E4%B8%8E%E6%95%B0%E6%8D%AE%E9%A2%84%E5%A4%84%E7%90%86"><span class="nav-number">3.</span> <span class="nav-text">参数初始化与数据预处理</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BF%AE%E6%94%B9%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84"><span class="nav-number">4.</span> <span class="nav-text">修改网络结构</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Normalization%EF%BC%88%E6%A0%87%E5%87%86%E5%8C%96%EF%BC%89"><span class="nav-number">4.1.</span> <span class="nav-text">Normalization（标准化）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Batch-Normalization"><span class="nav-number">4.1.1.</span> <span class="nav-text">Batch Normalization</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Layer-Normalization"><span class="nav-number">4.1.2.</span> <span class="nav-text">Layer Normalization</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Instance-Normalization"><span class="nav-number">4.1.3.</span> <span class="nav-text">Instance Normalization</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Group-Normalization"><span class="nav-number">4.1.4.</span> <span class="nav-text">Group Normalization</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A8%A1%E5%9E%8B%E5%89%AA%E6%9E%9D"><span class="nav-number">4.2.</span> <span class="nav-text">模型剪枝</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%89%AA%E6%9E%9D%E5%AF%B9%E8%B1%A1%EF%BC%9A"><span class="nav-number">4.2.1.</span> <span class="nav-text">剪枝对象：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%89%AA%E6%9E%9D%E7%B2%92%E5%BA%A6%EF%BC%9A"><span class="nav-number">4.2.2.</span> <span class="nav-text">剪枝粒度：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%89%AA%E6%9E%9D%E4%BE%9D%E6%8D%AE%EF%BC%9A"><span class="nav-number">4.2.3.</span> <span class="nav-text">剪枝依据：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%89%AA%E6%9E%9D%E7%AD%96%E7%95%A5%EF%BC%9A"><span class="nav-number">4.2.4.</span> <span class="nav-text">剪枝策略：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BE%AE%E8%B0%83%EF%BC%88Fine-tuning%EF%BC%89%EF%BC%9A"><span class="nav-number">4.2.5.</span> <span class="nav-text">微调（Fine-tuning）：</span></a></li></ol></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
