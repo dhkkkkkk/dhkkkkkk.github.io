@@ -7,6 +7,52 @@ mathjax: true
 
 本文的模型微调基于hugging face生态，但未使用Trainer API，以transcribe任务为例
 
+# 论文精读
+
+[OpenAI Whisper 精读【论文精读·45】_哔哩哔哩_bilibili](https://www.bilibili.com/video/BV1VG4y1t74x/?spm_id_from=333.788&vd_source=f274b4fe1db1741680aed4c118a32b27)
+
+## 现存ASR问题
+
+像wav2vec等主流ASR模型都是使用无监督学习pre训练encoder，再使用监督学习微调一个decoder，也就是说**无法避免使用监督学习与微调**，而微调容易对特定label过拟合
+
+因此作者提出可以通过加大数据量+质量略微下降（也就是weak supervise）的方法**力大砖飞**（680k小时数据集）
+
+## 方法
+
+### 清洗数据
+
+核心思路：音频质量多样性有助于提高robust，**但是文本质量没有类似好处，需要筛选**
+
+* （主）删去机器翻译内容，避免“转录腔”。通过检测**文本是否经过标准化（**标点符号，大小写等）
+* （主）删去音频、文本语言不同的情况：使用CLD2（自家软件）检测**音频所使用语言是否与文本对应**
+* 通过一个initial model检测错误率一直特别高的数据，再检查是否有问题
+
+### 模型
+
+直接使用标准encoder+decoder的Transformer，encoder中使用2个一维卷积(大小为3)缩短mel谱时间维度，其他没有太大变化
+
+### 多任务模式（核心）
+
+实现一个结构的模型可以实现多种任务，whisper主要实现了：
+
+* en to en 的**转录**
+* any to any的**转录**（需对应）
+* any to en 的**翻译**（注意whisper的翻译可以翻译任何内容，包括混合，而不限制源语言）
+* 无语音检测
+
+实现方法：
+
+bert的方法是使用不同的输出层训练不同任务，而whisper是使用了类似prompt的操作，即在decoder的输入tokens前额外加入带有任务标志的token，这样做的好处就是**从头到尾都可以完完全全地使用同一个模型**
+
+### 其他训练细节
+
+* 使用FP16
+* dynamic  loss scaling
+* **epoch为2-3**
+* zero shot评估，即使用完全unseen的数据集eval 
+
+综上，whisper的主要核心就是**超大规模<u>监督训练</u>**+**prompt型多任务训练**，也就是证明了ASR领域也可以通过提高数据集数量实现力大砖飞，而不仅是调整模型（因为whisper基本没有改模型，直接用的Transformer）
+
 # 数据集准备
 
 本文使用hugging face上的一个阿尔巴尼亚语数据集[Kushtrim/common_voice_18_sq · Datasets at Hugging Face](https://huggingface.co/datasets/Kushtrim/common_voice_18_sq)，我是直接在网站上预先下载的parquet格式数据集，也可以直接在代码中下载
@@ -190,7 +236,7 @@ for epoch in range(num_epochs):
     print(f"Evaluation Loss: {avg_loss}")
 ```
 
-训练相关代码好像没啥好说的了，都是一些经典操作，其中dataloader返回的batch格式如下，其是一个类似字典的结构，需要注意数据的读取方式
+训练相关代码好像没啥好说的了，都是一些经典操作，其中`self.processor.feature_extractor.pad`返回的batch格式如下，其是一个类似字典的结构，需要注意数据的读取方式
 
 {% asset_img 2.png This is an image %} 
 
@@ -268,3 +314,153 @@ $$
 - **N**：参考文本（标准答案）的总词数
 
 **注意：** WER 的**值越低越好（0 表示完美匹配）。**由于存在“插入”操作，WER 的值**有可能超过 100%**。
+
+# 进阶微调
+
+## 调整精度
+
+需注意，调整精度和量化是不同的概念，调整精度的目的是**加速模型运算的速度**，而量化则是通过**改变预训练的模型权重存储格式以<u>降低其显存占用</u>**
+
+### 直接在模型加载中指定精度
+
+大部分模型的默认精度都是FP32，我们可以将其在加载时调整至FP16，这样可以直接使显存占用几乎减半：
+
+```python
+#对于transformers库加载模型：
+model = WhisperForConditionalGeneration.from_pretrained("openai/whisper-small",
+                                                       ,torch_dype=torch.bfloat16)
+#对于nn.Moudle对象：
+model = MyModel() # 默认 FP32
+model.to(torch.float16) # 整体转为 FP16
+```
+
+BFP16数值范围更广，不容易梯度爆炸
+
+注：输入模型的数据也要同步调整至FP16：`input_features.to(torch.float16)`
+
+### 自动混合精度AMP（工程常用）
+
+在forward中使用FP16，但在反向传播更新梯度时使用FP32保证精度
+
+需要使用 `torch.cuda.amp` 来实现：
+
+```python
+model = WhisperForConditionalGeneration.from_pretrained("openai/whisper-small").to("cuda")
+optimizer = torch.optim.AdamW(model.parameters(), lr=1e-5)
+
+# 初始化梯度缩放器，防止 FP16 梯度下溢
+scaler = GradScaler()
+
+for batch in dataloader:
+    optimizer.zero_grad()
+    
+    # 1. 在 autocast 上下文中运行前向传播
+    with autocast(dtype=torch.float16):
+        outputs = model(input_features=batch["input_features"], labels=batch["labels"])
+        loss = outputs.loss
+
+    # 2. 使用 scaler 缩放 loss 并反向传播
+    scaler.scale(loss).backward()
+    
+    # 3. 更新参数
+    scaler.step(optimizer)
+    scaler.update()
+```
+
+需要注意的是，使用autocast时会自动在forward过程中将数据精度调整至fp16，由于backward时还是fp32，所以**不要手动调整输入数据精度！**
+
+## LoRA
+
+使用PEFT库
+
+低秩适应是一种 PEFT 方法，它将一个大矩阵分解为两个较小的低秩矩阵，**用于注意力层**。这极大地减少了需要微调的参数数量。**<u>主要用于优化训练时间</u>**
+
+### LoraConfig
+
+每个 PEFT 方法都由一个 PeftConfig 类定义，该类存储了构建 PeftModel 的所有重要参数。对于LoRA微调，有：
+
+```python
+from peft import LoraConfig
+config = LoraConfig(r=32, 
+                    lora_alpha=64, 
+                    target_modules=["q_proj", "v_proj"],
+                    lora_dropout=0.05)
+
+```
+
+对于该类的详细使用可查阅官方文档：[LoRA - Hugging Face 文档](https://hugging-face.cn/docs/peft/package_reference/lora)
+
+其中必填的参数有：
+
+* r (int) — Lora 注意力维度（“秩”）
+* lora_alpha (int) — Lora 的 alpha 参数，用于缩放。
+* target_modules(Optional[Union[List[str], str]]) — 要应用适配器的模块名称。如果将其指定为“all-linear”，则选择所有线性/Conv1D 模块。虽然官网写的是Optional，但是对于大部分模型还是需要指定，对于具体名称则可以通过`for name, parameter in model.named_parameters():  print(name)`查看
+* lora_dropout (float) — Lora 层的 dropout 概率。
+
+接下来我们可以查看可训练的参数占比：
+
+```python
+from peft import LoraConfig, get_peft_model
+
+model = WhisperForConditionalGeneration.from_pretrained("openai/whisper-small")
+config = LoraConfig(r=32, 
+                    lora_alpha=64, 
+                    target_modules=["q_proj", "v_proj"],
+                    lora_dropout=0.05)
+
+model = get_peft_model(model, config)
+# 打印训练参数
+model.print_trainable_parameters()
+
+'''
+结果
+trainable params: 3,538,944 || all params: 245,273,856 || trainable%: 1.4429
+即在微调中只有1.44%的参数参与训练
+'''
+```
+
+接下来直接对新的peft模型进行训练即可
+
+## QLoRA(4-bit 量化微调)
+
+使用BitsAndBytesConfig方法实现量化config，这里展示4-bit，但其实8-bit也很常用
+
+```python
+from transformers import BitsAndBytesConfig
+from peft import  get_peft_model, prepare_model_for_kbit_training
+
+# 配置 4-bit 量化
+bnb_config = BitsAndBytesConfig(
+    load_in_4bit=True,
+    bnb_4bit_compute_dtype=torch.bfloat16, 
+    bnb_4bit_quant_type="nf4",            # 使用正态浮点 4 位，精度更好
+    bnb_4bit_use_double_quant=True        # 嵌套量化，进一步省显存
+)
+
+model = WhisperForConditionalGeneration.from_pretrained(
+    "openai/whisper-small", 
+    quantization_config=bnb_config
+)
+
+#量化后的权重是不可训练的。如果你要微调，必须配合 LoRA 使用！！
+model = prepare_model_for_kbit_training(model)
+...
+lora_model = get_peft_model(model, lora_config)
+```
+
+注意，bnb_4bit_compute_dtype指定精度最好和前文中的精度调整（如AMP）中指定的精度相同，不然训练时会频繁调整格式。
+
+同时，常使用的4-bit是NF4正态浮点4位，而不是INT4，因为NF4的数值分布是非线性的
+
+## 总结
+
+本节使用的微调技术包括了LoRA，量化（组合起来就算QLoRA）和精度调整
+
+* LoRA将一个大矩阵分解为两个较小的低秩矩阵，**用于注意力层**，提高训练**<u>速度</u>**
+* 量化是调整预训练权重存储格式，降低**<u>显存占用</u>**
+* 精度调整是调整训练过程中的数据精度，提高训练**<u>速度</u>**
+
+## 遇到的问题及解决方案
+
+当使用QLoRA时，适当**提高学习率**，设置**学习率预热**有助于稳定高效地学习
+

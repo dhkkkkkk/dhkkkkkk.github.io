@@ -109,7 +109,9 @@ $$
 
 $$
 out^{l+1}=f_{l+1}(\omega^{(l+1)} out^{(l)})
-\\
+$$
+
+$$
 \frac{\partial L}{\partial out^{(l)}}= \frac{\partial L}{\partial out^{(l+1)}}
 \cdot \frac{\partial out^{l+1}}{\partial f_{l+1}}
 \cdot \frac{\partial f_{l+1}}{\partial out^{(l)}}= \delta^{(l+1)} \cdot f_{(l+1)}' \cdot \omega^{(l+1)}
@@ -126,7 +128,7 @@ $$
 ```
 损失函数对l层权重的偏导 = 损失函数对模型输出的偏导 *
 					  最后一层到l层的所有激活函数的梯度 *
-					  最后一层到l+1层的权重和 *
+					  最后一层到l+1层的权重乘积 *
 					  l-1层的神经元输出
 ```
 
