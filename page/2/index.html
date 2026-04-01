@@ -230,7 +230,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-12-11 20:37:32" itemprop="dateModified" datetime="2025-12-11T20:37:32+08:00">2025-12-11</time>
+                <time title="修改时间：2026-04-01 17:04:06" itemprop="dateModified" datetime="2026-04-01T17:04:06+08:00">2026-04-01</time>
               </span>
 
           
@@ -245,14 +245,7 @@
 
       
           <p>本章是在有一定深度学习基础，熟悉attention和transformer结构的基础上写的</p>
-<h1 id="Transformer"><a href="#Transformer" class="headerlink" title="Transformer"></a>Transformer</h1><h2 id="通用架构"><a href="#通用架构" class="headerlink" title="通用架构"></a>通用架构</h2><ul>
-<li><p>encoder用于接收源输入并提取特征（例如翻译任务中的待翻译原文）</p>
-</li>
-<li><p>decoder通过encoder输出的特征和之前的输出内容，生成下一个输出</p>
-<p>例如，当要将”I love you”翻译为中文时，encoder接收的便是”I love you”全文，decoder则是按顺序依次生成“我”，“爱”，“你”，而当生成“爱”时，decoder会将”我”与对”I love you“的特征进行attention计算，在训练优异的情况下，”love“这个谓语会被重点关注（被认为是下一个被翻译的对象），decoder会生成一个基于”I“和”you“的”love“深层语义表达，在decoder的最后，该语义表达会与中文”爱“的匹配度最高</p>
-</li>
-</ul>
-<h2 id="attention的抽象理解"><a href="#attention的抽象理解" class="headerlink" title="attention的抽象理解"></a>attention的抽象理解</h2><p>还是以”I love you“到”我爱你“的翻译任务举例：</p>
+<h1 id="Transformer"><a href="#Transformer" class="headerlink" title="Transformer"></a>Transformer</h1><h2 id="attention的抽象理解"><a href="#attention的抽象理解" class="headerlink" title="attention的抽象理解"></a>attention的抽象理解</h2><p>还是以”I love you“到”我爱你“的翻译任务举例：</p>
 <ul>
 <li>encoder的自注意力：在模型逐字翻译中文的过程中，encoder只计算一次。encoder主要是为了得到英文中“I love you”的语义关系，例如主谓宾结构，或者“这是一个表达情感的语句“等</li>
 <li>decoder的自注意力：当已完成”我“的翻译时，现在decoder的输入则是”我“，在自注意力计算中，decoder则会生成中文”我“的语义</li>
@@ -267,11 +260,35 @@
 </ul>
 <p>而这些模型通常有两种训练方法：</p>
 <ol>
-<li><strong>掩码语言建模（MLM）</strong>：由像 BERT 这样的编码器模型使用，这种方法随机掩盖输入中的一些词元，并训练模型根据周围的上下文预测原始词元。这使得模型能够学习双向上下文（同时关注被掩盖词语之前和之后的词语）。</li>
-<li><strong>因果语言建模（CLM）</strong>：由像 GPT 这样的解码器模型使用，这种方法根据序列中所有之前的词元来预测下一个词元。模型只能使用左侧（之前的词元）的上下文来预测下一个词元。</li>
+<li><strong>掩码语言建模（MLM）</strong>：由像 <strong>BERT 这样的编码器模型</strong>使用，这种方法随机掩盖输入中的一些词元，并训练模型根据周围的上下文预测原始词元。这使得模型能够学习双向上下文（同时关注被掩盖词语之前和之后的词语）。</li>
+<li><strong>因果语言建模（CLM）</strong>：由像 <strong>GPT 这样的解码器模型</strong>使用，这种方法根据序列中所有之前的词元来预测下一个词元。模型只能使用左侧（之前的词元）的上下文来预测下一个词元。</li>
 </ol>
+<h2 id="常规架构（encoder-decoder）"><a href="#常规架构（encoder-decoder）" class="headerlink" title="常规架构（encoder-decoder）"></a>常规架构（encoder-decoder）</h2><p>该结构常见于翻译、语音转录等需要<strong>理解+较为严格的生成要求</strong>的任务</p>
+<ul>
+<li><p>encoder用于接收源输入并提取特征（例如翻译任务中的待翻译原文）</p>
+</li>
+<li><p>decoder通过encoder输出的特征和之前的输出内容，生成下一个输出</p>
+<p>例如，当要将”I love you”翻译为中文时，encoder接收的便是”I love you”全文，decoder则是按顺序依次生成“我”，“爱”，“你”，而当生成“爱”时，decoder会将”我”与对”I love you“的特征进行attention计算，在训练优异的情况下，”love“这个谓语会被重点关注（被认为是下一个被翻译的对象），decoder会生成一个基于”I“和”you“的”love“深层语义表达，在decoder的最后，该语义表达会与中文”爱“的匹配度最高</p>
+</li>
+</ul>
+<p><a href="https://dhkkkkkk.github.io/2026/01/05/whisper/">Whisper</a>就是典型的该结构（whisper实现了从头到尾的全任务适用，而不需要额外训练下游网络）</p>
+<h2 id="Encoder-only"><a href="#Encoder-only" class="headerlink" title="Encoder-only"></a>Encoder-only</h2><p>该结构强调对<strong>输入的理解</strong>，常用于语义理解、分类任务，本小节以BERT为例</p>
+<p>因为强调“理解”，需要模型对文本有充分的上下文结构理解，因此该类模型通常使用<strong>MLM训练</strong>（见上节），该训练方法即实现了文本双向理解（不同于使用两个相反的RNN）</p>
+<p>另外，BERT还添加了<strong>NSP预测任务</strong>（Next Sentence Prediction），即预测输入的两个句子是否存在上下句关系。在标注时，额外通过对所有token添加一个0or1的embedding来<u>告诉模型当前输入的是一个句子还是两个句子（不是表示它们是不是来自于同一句子！，这是模型自己要学的东西）</u></p>
+<p>另外，BERT添加这些不同训练任务（MLM和NSP）是为了增强模型的学习能力，因为<strong>BERT一般作为上游模型</strong>使用，即使用pre-train的BERT再添加下游网络进行微调从而用于特定任务</p>
+<h2 id="Decoder-only"><a href="#Decoder-only" class="headerlink" title="Decoder-only"></a>Decoder-only</h2><p>该结构常用于像GPT等的<strong>生成任务模型</strong>，适用于开发式生成任务。本小节以GPT为例</p>
+<p>仅使用decoder的结构不代表GPT就不需要对输入进行“理解”，与使用encoder进行“理解”的工作不同，GPT类模型<strong>直接使用同一个decoder进行输入的“理解”与内容的生成</strong></p>
+<h3 id="prefill阶段"><a href="#prefill阶段" class="headerlink" title="prefill阶段"></a>prefill阶段</h3><p>当用户输入一段话prompt时，decoder会将其中的每个token都计算其k,v向量，并存储到 <strong>KV Cache</strong> 中。 KV Cache 就是模型对用户输入“理解结果”的物理存储。在后续生成（Decoding）时，模型不需要重新计算 Prompt，直接通过查询这些 Cache （即将q与prompt的KV cache进行注意力计算）就能“回想起”用户到底问了什么。</p>
+<p>另外，该阶段为<u>并行计算</u>，<strong>其计算得到的 KV cache会直接与decoding阶段的KV cache直接拼接</strong>（append）</p>
+<p>为了加速 Prefill 阶段，工业界采用了多种优化手段：</p>
+<ul>
+<li><strong>FlashAttention:</strong> 通过优化 GPU 上 SRAM 和 HBM 之间的数据传输，极大提升了计算 $O(N^2)$ 注意力矩阵的速度。</li>
+<li><strong>Chunked Prefill:</strong> 将超长的 Prompt 切分成小块（Chunks）处理，防止长文本预填充时瞬间撑爆显存。</li>
+<li><strong>Parallel Prefill &amp; Decode:</strong> 允许模型在处理一个请求的 Prefill 时，同时处理另一个请求的 Decoding，提高吞吐量。</li>
+</ul>
+<h3 id="decoding阶段"><a href="#decoding阶段" class="headerlink" title="decoding阶段"></a>decoding阶段</h3><p>就是正常的decoder生成流程了，现在普遍的做法都是使用KV cache，这样就可以在每次生成新token时<strong>仅使用上一个token</strong>作为decoder输入（q向量），<strong>因为之前的所有已生成token和用户输入都已经作为 KV cache被存储了</strong></p>
 <h2 id="音频Transformer"><a href="#音频Transformer" class="headerlink" title="音频Transformer"></a>音频Transformer</h2><h3 id="模型输入格式"><a href="#模型输入格式" class="headerlink" title="模型输入格式"></a>模型输入格式</h3><ul>
-<li>文本输入：通常出现在文本到语音的任务中（TTS），与原始Transformer或任何其他NLP模型的工作方式相同：<strong>首先对文本进行标记化</strong>（tokenization），得到一系列文本标记。然后将此序列<strong>通过输入嵌入层</strong>，将标记转换为512维向量。然后将这些嵌入向量传递到Transformer编码器中。</li>
+<li>文本输入：通常出现在文本到语音的任务中（TTS），与原始Transformer或任何其他NLP模型的工作方式相同：<strong>首先对文本进行标记化</strong>（tokenization），得到一系列文本标记。然后将此序列<strong>通过输入嵌入层</strong>，将标记转换为512维向量。然后将这些嵌入向量传递到Transformer编码器（一般为decoder）中。</li>
 <li>波形输入：<strong>Wav2Vec2</strong>和<strong>HuBERT</strong>一类的模型直接使用音频波形作为模型的输入。我们首先将原始波形<strong>标准化为零均值和单位方差的序列</strong>，这有助于标准化不同音量（振幅）的音频样本。对于这类模型，encoder前一般会用一个小型CNN进行下采样和提取局部特征，减少序列长度</li>
 <li>时频谱输入：老朋友了，通过时频域转化可以大幅缩减样本尺寸。该类模型通常也会使用一个小型CNN提取局部特征和修改尺寸</li>
 </ul>
