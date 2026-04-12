@@ -30,7 +30,7 @@
 <meta property="og:description" content="注意力机制原理在传统的序列处理模型中，如循环神经网络（RNN）和长短时记忆网络（LSTM），捕捉长距离依赖关系是一个难题。因为随着序列长度的增加，模型很容易丢失早期输入的信息。 注意力机制允许模型在序列的不同位置之间建立直接联系，无论这些位置相距多远，都能够有效地捕捉到它们之间的依赖关系。 最原始的注意力对于输入X&#x3D;(N,D)，其中D为每个token的embedding dimension，N为序">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-10-05T07:18:37.000Z">
-<meta property="article:modified_time" content="2026-04-01T07:29:19.189Z">
+<meta property="article:modified_time" content="2026-04-08T06:45:53.869Z">
 <meta property="article:author" content="dhk">
 <meta property="article:tag" content="深度学习">
 <meta name="twitter:card" content="summary">
@@ -233,7 +233,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2026-04-01 15:29:19" itemprop="dateModified" datetime="2026-04-01T15:29:19+08:00">2026-04-01</time>
+                <time title="修改时间：2026-04-08 14:45:53" itemprop="dateModified" datetime="2026-04-08T14:45:53+08:00">2026-04-08</time>
               </span>
 
           
@@ -270,7 +270,8 @@ Y=softmax(s(K,Q)) V=AV</script><p>输出Y的embedding 维度取决于V，而V也
 <p>对于关注度与V相乘的理解，我是这样理解的：</p>
 <p>将Y的矩阵乘法展开，有：</p>
 <script type="math/tex; mode=display">
-Y_i=\sum_{j=1}^nA_{ij}V_j</script><p>因此对于Y_i，也就是每个输出的token，其是由注意力权重（关注程度）A对<strong>所有输入token的加权<u>求和</u></strong>得来，<strong>其包含了与所有输入token的相关程度</strong>；对于A的理解，其第n行代表了<strong>第n个</strong>q<u>向量</u>与<strong>所有</strong>key<u>向量</u>的相关程度</p>
+Y_i=\sum_{j=1}^nA_{ij}V_j</script><p>因此对于Y_i，也就是每个输出的token，其是由注意力权重（关注程度）A对<strong>所有输入token（也就是K）在<u>每个特征维度</u>上的加权<u>求和</u></strong>得来，<strong>其包含了与所有输入token的相关程度</strong>；对于A的理解，其第n行代表了<strong>第n个</strong>q<u>向量</u>与<strong>所有</strong>key<u>向量</u>的相关程度</p>
+<p>​    <em>以decoder-only的GPT举个例子，当前的q维度为(b,1,dim)，KV维度为（b,500,dim)。当q和K进行缩放点积（注意力分数）后，score的维度为(b,1,500)，意为当前的1个q对所有500个k的关注程度；score在经过softmax之后与V相乘，最终得到输出为(b,1,dim)，每一个q中的元素都代表了q在<strong><u>当前dim维度</u></strong>上，根据score关注程度对所有当前dim上的v（500个）的加权求和。因为是在每个dim维上进行，因此加权求和一共进行了dim次</em></p>
 <p>这里对A的理解很重要，涉及到attention中padding mask 和 causal mask的设计理解</p>
 <p>(举个例子：A_12则为q_1对k_2的关注度)</p>
 <h2 id="多头注意力"><a href="#多头注意力" class="headerlink" title="多头注意力"></a>多头注意力</h2><p>多头注意力其实就是在计算注意力的过程中（线性变换之后），<strong>将embedding dim拆为n份</strong>，每份单独计算注意力，最后再进行拼接回完整输出。这样做的好处就是每个token之间存在的一些<strong>局部相关性</strong>会被更好地表示，论文原话是：</p>
@@ -598,11 +599,11 @@ Y_i=\sum_{j=1}^nA_{ij}V_j</script><p>因此对于Y_i，也就是每个输出的t
         pbOptions.networks = "Wechat,QQZone,Weibo,Douban,Twitter,Facebook";
       new needShareButton('#needsharebutton-postbottom', pbOptions);
   </script>
-<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script><script>
+<script>
             window.imageLazyLoadSetting = {
                 isSPA: false,
                 preloadRatio: 1,
                 processImages: null,
             };
-        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(e.href.match(t)||e.href.match(r))&&(e.href=a.dataset.original)})});</script><script>!function(n){n.imageLazyLoadSetting.processImages=o;var e=n.imageLazyLoadSetting.isSPA,i=n.imageLazyLoadSetting.preloadRatio||1,r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]"));function o(){e&&(r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")));for(var t,a=0;a<r.length;a++)0<=(t=(t=r[a]).getBoundingClientRect()).bottom&&0<=t.left&&t.top<=(n.innerHeight*i||document.documentElement.clientHeight*i)&&function(){var t,e,n,i,o=r[a];t=o,e=function(){r=r.filter(function(t){return o!==t})},n=new Image,i=t.getAttribute("data-original"),n.onload=function(){t.src=i,e&&e()},t.src!==i&&(n.src=i)}()}o(),n.addEventListener("scroll",function(){var t,e;t=o,e=n,clearTimeout(t.tId),t.tId=setTimeout(function(){t.call(e)},500)})}(this);</script></body>
+        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(e.href.match(t)||e.href.match(r))&&(e.href=a.dataset.original)})});</script><script>!function(n){n.imageLazyLoadSetting.processImages=o;var e=n.imageLazyLoadSetting.isSPA,i=n.imageLazyLoadSetting.preloadRatio||1,r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]"));function o(){e&&(r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")));for(var t,a=0;a<r.length;a++)0<=(t=(t=r[a]).getBoundingClientRect()).bottom&&0<=t.left&&t.top<=(n.innerHeight*i||document.documentElement.clientHeight*i)&&function(){var t,e,n,i,o=r[a];t=o,e=function(){r=r.filter(function(t){return o!==t})},n=new Image,i=t.getAttribute("data-original"),n.onload=function(){t.src=i,e&&e()},t.src!==i&&(n.src=i)}()}o(),n.addEventListener("scroll",function(){var t,e;t=o,e=n,clearTimeout(t.tId),t.tId=setTimeout(function(){t.call(e)},500)})}(this);</script><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script></body>
 </html>
