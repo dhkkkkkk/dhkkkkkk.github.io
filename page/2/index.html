@@ -197,6 +197,99 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2026/03/11/GIS/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/zoe.gif">
+      <meta itemprop="name" content="dhk">
+      <meta itemprop="description" content="记录一些学习日常">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小董的BLOG">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2026/03/11/GIS/" class="post-title-link" itemprop="url">GIS及其相关组件</a>
+        </h2>
+
+        <div class="post-meta">
+		  
+		  
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2026-03-11 09:49:21 / 修改时间：16:55:17" itemprop="dateCreated datePublished" datetime="2026-03-11T09:49:21+08:00">2026-03-11</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="GIL：气体绝缘金属封闭输电线路"><a href="#GIL：气体绝缘金属封闭输电线路" class="headerlink" title="GIL：气体绝缘金属封闭输电线路"></a>GIL：气体绝缘金属封闭输电线路</h1><h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><p>在介绍GIS之前，我们先从GIL开始引入，因为GIL相当于更长的GIS母线，但它的结构比GIS简单的多。</p>
+<p>在电力传输场景中，当电缆（容易发热、电容效应大）或架空线（占地广、景观影响大）不适用时，则常使用GIL进行<strong>大容量、<u>特高压</u>的电能传输（比如跨江隧道、地下电站或变电站内部引出线）。</strong></p>
+<img src="/images/loading.png" data-original="/2026/03/11/GIS/1.jpg" class title="GIL equipment"> 
+<p>性能方面，GIL <strong>安全性能更好、输电效率更高、智能化程度更高、电磁辐射更少、线路损耗更低、使用寿命更长</strong>，在多方面均有明显优势。</p>
+<p>成本方面，GIL 的 建造成本为每千米 1300 万左右，略高于架空线和地下电缆。</p>
+<p>架空线应用在地面，而 GIL 主要应用下地下，需要建设管廊，需要额外的土建成本，更多适用于地下输电。</p>
+<h2 id="结构"><a href="#结构" class="headerlink" title="结构"></a>结构</h2><p>GIL的结构本质上是一个“管中管”的设计，其主要组成为：外壳，中心导体，绝缘介质，绝缘支撑件、即其他辅助与补偿元件</p>
+<h3 id="外壳"><a href="#外壳" class="headerlink" title="外壳"></a>外壳</h3><p>即图中直接看到的圆柱长筒，其内部空心，安装了输电导体。外壳的作用是<strong>密封绝缘气体</strong>，同时作为接地的<strong>防护罩</strong>，屏蔽电场并防止外界环境（潮湿、污秽）干扰。</p>
+<h3 id="中心导体"><a href="#中心导体" class="headerlink" title="中心导体"></a>中心导体</h3><p>位于外壳正中央的金属管，<strong>电流传输的实际载体</strong>。</p>
+<p>采用空心管状设计。这不仅是为了减轻重量，更重要的是利用<strong>趋边效应</strong>（Skin Effect），因为高压交流电主要在导体表面流动。</p>
+<h3 id="绝缘介质"><a href="#绝缘介质" class="headerlink" title="绝缘介质"></a>绝缘介质</h3><p>由于外壳和导体均通常为铝合金，因此其中间需要填充高性能的绝缘材料<strong>进行分隔</strong>。在GIL和GIS中，通常都使用<strong>高压</strong> SF6（六氟化硫） 气体，由于其是温室气体，现在也有混入氮气的操作。</p>
+<h3 id="绝缘支撑件"><a href="#绝缘支撑件" class="headerlink" title="绝缘支撑件"></a>绝缘支撑件</h3><p>这是<strong>将导体固定在外壳中心</strong>的“支架”，通常由环氧树脂浇注而成。最常见的是盆式绝缘子，即外观像个盆，不仅起到了支撑作用，还可以将每段管线<strong>密封为单独隔室</strong>，防止一处漏气影响全线。</p>
+<h3 id="辅助与补偿元件"><a href="#辅助与补偿元件" class="headerlink" title="辅助与补偿元件"></a>辅助与补偿元件</h3><ul>
+<li><strong>伸缩节（波纹管）：</strong> <strong><u>最重要</u></strong>，内部的柔性元件允许它像手风琴一样拉伸或压缩，吸收金属管线因热胀冷缩产生的形变，<strong><u>热胀冷缩是导致GIL出现机械故障的主要原因，因此伸缩节周围常出现故障</u></strong></li>
+</ul>
+<img src="/images/loading.png" data-original="/2026/03/11/GIS/2.png" class title="Bellows"> 
+<p>吸附剂（干燥剂）： 放置在内部，用于吸收气体中的水分和分解产物。</p>
+<p>微粒捕集器： 捕捉内部残留的细小金属颗粒，防止在强电场下引发放电事故。</p>
+<p>总的来说，GIL承担了特高压输电中的“导线”角色，没有过多其他的作用。</p>
+<h1 id="GIS：气体绝缘金属封闭开关设备"><a href="#GIS：气体绝缘金属封闭开关设备" class="headerlink" title="GIS：气体绝缘金属封闭开关设备"></a>GIS：气体绝缘金属封闭开关设备</h1><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/1906311494272021973"> GIS 究竟是什么？一文讲透 GIS 设备基础概念与知识要点 - 知乎</a></p>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/1887432258748663073">GIS气体绝缘开关设备详解：结构、特点、组成与维护指南 - 知乎</a></p>
+<p>GIS (Gas Insulated Switchgear) 相当于电力系统的“多功能核心枢纽”，它集成了断路器、隔离开关、接地开关、互感器和避雷器等高压电气元件，并封装在接地的金属外壳内，外壳中充入了SF6气体作为绝缘介质。如果把GIL比作“铁轨”，则GIS就是“火车站”一样的存在，负责<strong>控制和保护</strong>输电系统。</p>
+<p>GIS的主要优点是占地面积小，可靠性高；缺点是检修困难，使用的绝缘气体SF6成本较高。其结构如图所示：</p>
+<img src="/images/loading.png" data-original="/2026/03/11/GIS/3.jpg" class title="GIS1"> 
+<img src="/images/loading.png" data-original="/2026/03/11/GIS/4.jpg" class title="GIS2"> 
+<p>GIS的核心组件主要有<strong>5个</strong>，分别是断路器、隔离开关与接地开关、互感器、避雷器、母线</p>
+<h2 id="结构-1"><a href="#结构-1" class="headerlink" title="结构"></a>结构</h2><h3 id="断路器"><a href="#断路器" class="headerlink" title="断路器"></a>断路器</h3><p>图1的①，就是那个方方的柜子。<strong>负责在正常或故障（短路）情况下<u>切断</u>电流</strong>。其内部充有比母线中更高气压的SF6，用于迅速灭弧。</p>
+<h3 id="隔离开关"><a href="#隔离开关" class="headerlink" title="隔离开关"></a>隔离开关</h3><p>图1中②，制造一个<strong>可见的、可靠的绝缘断口</strong>。它的存在是为了让检修人员百分之百确认：这部分线路已经和带电母线彻底分开了。（拿家中电力系统举例的话，断路器就是电闸，隔离开关就是电器的电线插口）</p>
+<p>由于其不具备很强的灭弧能力，因此必须在断路器先切断电流后，才能操作隔离开关。</p>
+<h3 id="接地开关"><a href="#接地开关" class="headerlink" title="接地开关"></a>接地开关</h3><p>图1中③，在停电后，<strong>将指定位置部分进行可靠接地</strong>，起到泄放残余电荷，感应电防护和防止意外送电的作用。</p>
+<h3 id="电压、电流互感器"><a href="#电压、电流互感器" class="headerlink" title="电压、电流互感器"></a>电压、电流互感器</h3><p>在图1中应该是④和⑤？，负责将高压信号转变为低压小电流，供仪表测量和继电保护使用。</p>
+<h3 id="避雷器"><a href="#避雷器" class="headerlink" title="避雷器"></a>避雷器</h3><p>图中未标出，限制过电压，防止雷电或操作浪涌损坏内部绝缘。</p>
+<h3 id="母线"><a href="#母线" class="headerlink" title="母线"></a>母线</h3><p>图1中⑨，内部导体主要分为单筒单线式和三相共筒式，三相共筒式更节约空间，但只能用于中低压传输。其他内容则与GIL相同。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2026/01/05/whisper/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -576,168 +669,9 @@ z = \mu + \sigma \odot \epsilon, \quad \epsilon \sim \mathcal{N}(0, I)</script><
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2025/11/17/control-algorithm/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/zoe.gif">
-      <meta itemprop="name" content="dhk">
-      <meta itemprop="description" content="记录一些学习日常">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="小董的BLOG">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2025/11/17/control-algorithm/" class="post-title-link" itemprop="url">经典控制算法</a>
-        </h2>
-
-        <div class="post-meta">
-		  
-		  
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2025-11-17 10:16:11" itemprop="dateCreated datePublished" datetime="2025-11-17T10:16:11+08:00">2025-11-17</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2026-04-12 13:44:57" itemprop="dateModified" datetime="2026-04-12T13:44:57+08:00">2026-04-12</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="PID"><a href="#PID" class="headerlink" title="PID"></a>PID</h1><h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h2><p>PID控制算法是一种线性控制器，它根据给定值（目标值）和实际输出值之间的偏差，利用比例（Proportional）、积分（Integral）、微分（Derivative）三种控制方式的组合来调整控制量，从而实现对被控对象的精确控制。</p>
-<h3 id="比例控制"><a href="#比例控制" class="headerlink" title="比例控制"></a>比例控制</h3><p>根据偏差的大小，<strong>线性</strong>调整控制量。偏差越大，控制作用越强。</p>
-<ul>
-<li>优点：<strong>响应速度快</strong>，能快速对偏差做出反应。</li>
-<li>缺点：比例项较大时，会出现<strong>震荡</strong>，较小时会出现<strong>静态误差</strong></li>
-</ul>
-<h3 id="积分控制"><a href="#积分控制" class="headerlink" title="积分控制"></a>积分控制</h3><p>根据偏差的积分来调整控制量。它会<strong>累积过去的偏差</strong>，随着时间的推移，即使偏差很小，积分项也会不断积累，从而推动系统消除偏差</p>
-<ul>
-<li>优点：能够<strong>消除稳态误差（静差）</strong>，保证系统的精度。</li>
-<li>缺点：积分作用较强时，<strong>容易导致系统超调</strong>，甚至使系统不稳定。</li>
-</ul>
-<img src="/images/loading.png" data-original="/2025/11/17/control-algorithm/1.png" class title="This is an image"> 
-<h3 id="微分控制"><a href="#微分控制" class="headerlink" title="微分控制"></a>微分控制</h3><p>是根据偏差的<strong>变化率</strong>来调整控制量。它能够<u>预测偏差的变化趋势</u>，提前做出调整。</p>
-<ul>
-<li><strong>优点</strong>：可以抑制偏差的变化，<strong>减少系统的超调</strong>，提高系统的稳定性。</li>
-<li><strong>缺点</strong>：对噪声比较敏感。如果测量的偏差信号中存在噪声，微分项<strong>会放大噪声</strong>的影响，导致控制量出现不必要的波动。微分项较大时也会出现震荡</li>
-</ul>
-<h2 id="常见组合"><a href="#常见组合" class="headerlink" title="常见组合"></a>常见组合</h2><h3 id="PI控制"><a href="#PI控制" class="headerlink" title="PI控制"></a>PI控制</h3><ul>
-<li><p>优点：将比列调节的快速反应与积分调节消除静差的特点结合；</p>
-</li>
-<li><p>缺点：不对未来控制误差进行预测，限制了控制性能。</p>
-</li>
-</ul>
-<p>适用于控制通道滞后较小、<strong>负荷变化不大</strong>、 工艺参数<strong>不允许有静差</strong>的系统。</p>
-<h3 id="PD控制"><a href="#PD控制" class="headerlink" title="PD控制"></a>PD控制</h3><ul>
-<li>优点：对惯性较大对象，可改善控制质量，减小偏差，缩短控制时间。有利于<strong>提高系统响应速度，抑制动态偏差</strong></li>
-<li>缺点：<strong>抗干扰能力差</strong>，一般只能应用于被调参数 变化平稳的生产过程；微分作用太强时，容易造成系统<strong>振荡</strong>。</li>
-</ul>
-<h2 id="位置式与增量式"><a href="#位置式与增量式" class="headerlink" title="位置式与增量式"></a>位置式与增量式</h2><p>位置式输出：</p>
-<script type="math/tex; mode=display">
-u(t) = K_p e(t) + K_i \int_{0}^{t} e(\tau) \,d\tau + K_d \frac{de(t)}{dt}</script><p>增量式输出：</p>
-<script type="math/tex; mode=display">
-\Delta u(k) = K_p [e(k) - e(k-1)] + K_i  e(k) + K_d ({e(k) - 2e(k-1) + e(k-2)})</script><script type="math/tex; mode=display">
-u(k) = u(k-1) + \Delta u(k)</script><p>位置式PID控制的输出与整个过去的状态有关，用到了误差的累加值;而增量式PID的输出只与当前拍和前两拍的误差有关，因此<strong>位置式PID控制的累积误差相对更大</strong>;</p>
-<p>由于输出为增量形式，可以减小控制器对控制量的冲击，使得系统更加平稳。</p>
-<h2 id="抗积分饱和"><a href="#抗积分饱和" class="headerlink" title="抗积分饱和"></a>抗积分饱和</h2><p>PID控制器的输出由于积分作用的不断累加而扩大，从而导致控制器输出不断增大超出正常范围进入饱和区。为了防止这种情况，需要在某些情况下限制积分的增长：</p>
-<ul>
-<li>积分分离：设置一个误差阈值，只有当误差较小（系统输出接近期望）时，才加入积分控制，平时则使用PD控制</li>
-<li>积分限幅：设置一个输出阈值范围，计算U(k)的时候，先判断上一时刻的控制量U(k-1)是否已经超出了限制范围。若U(k-1)&gt;Umax，则只累加负偏差；若U(k-1)&lt;Umin，则只累加正偏差。</li>
-</ul>
-<h2 id="串级PID"><a href="#串级PID" class="headerlink" title="串级PID"></a>串级PID</h2><p>以电机控制为例，在很多时候，我们的期望是位置（电机转角），但我们最终对电机的控制量都是电流（力矩，或者说是加速度），因此在使用单位置PID时，该控制是间接的，也就是说在该情况下，<strong>速度和加速度的变化都是未知的，也就是不平滑的</strong>；最终会表现为电机经过了目标位置，然后出现持续震荡，因为仅仅使用位置pid是难以让速度和加速度都达到期望的）</p>
-<p>因此，我们引入串级PID：（由外到内）</p>
-<ul>
-<li>位置环：根据上层规划算法给出的期望位置进行PID，输出期望速度</li>
-<li>速度环：根据位置环得到的期望速度进行PID，输出期望转矩/加速度/电流</li>
-<li>电流环：根据速度环输出进行PID，最终控制电机转矩</li>
-</ul>
-<p>需要注意的是，位置-速度-电流这个控制顺序<strong>是我们主动给定</strong>的，给定的理由是这三者两两间存在着较为简单的映射关系，即微积分关系，对于加速度啊转矩啊电流啊，根据牛二、欧拉和电机参数都可以得到明确的对应关系，因此在最内环的控制中，我们可以将他们看作同一控制量，一般用电流的原因可能只是实际电流值要更好测量一点？</p>
-<h3 id="在机器人中"><a href="#在机器人中" class="headerlink" title="在机器人中"></a>在机器人中</h3><p>由于我们已经可以通过一些轨迹规划算法（模型）平滑地得到关节电机的期望角度、角速度、角加速度，再结合动力学模型便可得到期望力矩，因此在机器人控制中，上述的<strong>前馈控制</strong>已经完成了绝大部分的控制工作，在理想条件下，前馈足矣</p>
-<p>但如果机器人在运行过程中受到了干扰呢，前馈控制给定了力矩是在最开始确定的，无法应对额外干扰，因此需要反馈控制来减弱干扰，提高系统稳定性：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">joint_states = p.getJointStates(robotId,controllable_joints)</span><br><span class="line">q_actual = np.array([state[<span class="number">0</span>] <span class="keyword">for</span> state <span class="keyword">in</span> joint_states])</span><br><span class="line">qd_actual = np.array([state[<span class="number">1</span>] <span class="keyword">for</span> state <span class="keyword">in</span> joint_states])</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">q_e = q[n] - q_actual</span><br><span class="line">qd_e = qd[n] - qd_actual</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">aq = qdd[n] + <span class="number">400</span> * q_e + <span class="number">40</span> * qd_e</span><br><span class="line"></span><br><span class="line">tau = p.calculateInverseDynamics(robotId,<span class="built_in">list</span>(q_actual),<span class="built_in">list</span>(qd_actual),<span class="built_in">list</span>(aq))</span><br><span class="line">p.setJointMotorControlArray(robotId,controllable_joints,p.TORQUE_CONTROL,</span><br><span class="line">                            forces = tau,</span><br><span class="line">                            )</span><br></pre></td></tr></table></figure>
-<p>这里仅对位置环和速度环进行了比例控制，因为在实际中在外环部分添加积分(I)后，导致响应变慢，添加微分(D)容易引入噪声；而由于我们已经有期望位置、速度，因此也不需要像传统串级pid一样进行串联位置环与速度环，而是将两环同时作用于力矩控制</p>
-<h2 id="PID参数调节经验"><a href="#PID参数调节经验" class="headerlink" title="PID参数调节经验"></a>PID参数调节经验</h2><ul>
-<li>KP：先设Ki=Kd=0，调Kp至系统出现轻微振荡；取此时Kp值的50%作为初始值</li>
-<li>KI：逐步增加Ki至静差在3~5个控制周期内消除</li>
-<li>KD：从Kp值的10%~20%开始调整</li>
-</ul>
-<h1 id="LQR"><a href="#LQR" class="headerlink" title="LQR"></a>LQR</h1><p><strong>线性二次型调节器（Linear Quadratic Regulator）</strong>，其中，线性指线性系统，二次型指目标函数</p>
-<h2 id="系统模型构建"><a href="#系统模型构建" class="headerlink" title="系统模型构建"></a>系统模型构建</h2><img src="/images/loading.png" data-original="/2025/11/17/control-algorithm/2.png" class title="This is an image"> 
-<p>首先，LQR作用于线性系统（对于非线性系统，需要先线性化），对于上图系统，其系统模型为</p>
-<script type="math/tex; mode=display">
-\dot x = Ax + Bu</script><p>其中，x为当前状态的集合，对于倒立摆，其可以为{位置，速度，角度，角速度}；u为我们的控制输入，A和B为系统决定的参数，系统模型<strong>建立了x（当前状态） 和 x_dot（状态随时间的变化趋势） 之间的关系</strong>。</p>
-<p>现在我们要设计一个状态反馈u=-Kx，带入系统方程中则有：</p>
-<script type="math/tex; mode=display">
-\dot x = (A-BK)x</script><p>由于A和B在LQR设计阶段是已知矩阵，因此我们只需得到一个合适的增益矩阵K，即可实现期望控制</p>
-<h2 id="LQR控制目标"><a href="#LQR控制目标" class="headerlink" title="LQR控制目标"></a>LQR控制目标</h2><p>相比于PID的尽可能减小误差，LQR定义了一种代价函数，通过让该能量函数最小以实现最优控制：</p>
-<img src="/images/loading.png" data-original="/2025/11/17/control-algorithm/3.png" class title="This is an image"> 
-<p>其中，Q（状态权重矩阵）和R（控制输入权重矩阵）即是我们的期望闭环性能（也就是要调的参数），即当控制目标确定时，我们想要用最小的控制代价u得到最优的控制。通常，Q越大，系统相应越快；R越大，控制力惩罚越大（即力作用越平稳温柔）</p>
-<p>现在，我们已经确定了A，B，Q，R，如何根据“代价函数最小”这个目标得到K呢？</p>
-<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_36133747/article/details/123413115">线性二次型调节器(LQR)原理详解-CSDN博客</a></p>
-<p>在假设系统稳定的情况下，我们可以通过一个riccati里卡提方程由“J最小”这个条件得到一个满足条件的辅助矩阵P，再由P得到K，对于求解里卡提方程，matlab，scipy都提供了对应函数</p>
-<h3 id="Q和R的选择"><a href="#Q和R的选择" class="headerlink" title="Q和R的选择"></a>Q和R的选择</h3><p>Q：半正定矩阵，通常选用对角矩阵，对角线元素表示各状态的权重（因此形状应为nxn，n为状态数量），因此需根据各状态的重要性分配权重；重点关注的状态应分配较大权重；<strong>如果系统响应较慢也可增加Q</strong></p>
-<p>R：正定矩阵，通常选用对角矩阵，对角线元素表示各控制输入的权重（因此形状应为mxm，m为控制量）；初始应选择较小值；如果<strong>控制输入幅度较大则增加R</strong>，如果<strong>系统响应较慢则减小R</strong></p>
-<h2 id="倒立摆中的LQR"><a href="#倒立摆中的LQR" class="headerlink" title="倒立摆中的LQR"></a>倒立摆中的LQR</h2><h3 id="建立动力学方程"><a href="#建立动力学方程" class="headerlink" title="建立动力学方程"></a>建立动力学方程</h3><p>对于每个广义坐标q_i，拉格朗日方程为：</p>
-<script type="math/tex; mode=display">
-\frac d {dt}(\frac{\part L}{\part \dot{q_i}})-\frac {\part L}{\part q_i} = Q_i</script><p>其中，Q_i是广义坐标q_i对应广义力。在倒立摆中，q={x,θ}，则Q={F,0}（因为没有非保守力直接对摆杆做功）</p>
-<p>则分别将q_i替换为x和θ后则可得到倒立摆的动力学模型（方程组）：</p>
-<script type="math/tex; mode=display">
-(M + m)\ddot{x} + m l \ddot{\theta} \cos\theta - m l \dot{\theta}^2 \sin\theta = F</script><script type="math/tex; mode=display">
-(m l^2 + I) \ddot{\theta}+m l \ddot{x} \cos\theta - m g l \sin\theta = 0</script><h3 id="线性化"><a href="#线性化" class="headerlink" title="线性化"></a>线性化</h3><p>由于现在的动力学方程是非线性的，因此我们需要先将其线性化。而在倒立摆中，平衡点即为θ=0(cosθ=0,sinθ=θ)，则线性化后有：</p>
-<script type="math/tex; mode=display">
-(M + m)\ddot{x} + m l \ddot{\theta}  = F</script><script type="math/tex; mode=display">
-(m l^2 + I) \ddot{\theta}+m l \ddot{x} - m g l \theta = 0</script><p>将其转换为线性系统标准模型：</p>
-<script type="math/tex; mode=display">
-\dot x = Ax + Bu</script><p>则有：</p>
-<script type="math/tex; mode=display">
-\begin{bmatrix}\dot x \\ \ddot x \\\dot{\theta} \\ \ddot{\theta}\end{bmatrix}
-=A
-\begin{bmatrix} x \\ \dot x \\\theta \\ \dot{\theta}\end{bmatrix}+BF</script><p>其中：</p>
-<img src="/images/loading.png" data-original="/2025/11/17/control-algorithm/4.png" class title="This is an image"> 
-<p>得到A，B后，我们令Q=diag(1,1,1,1)，R=1（随便给的），即可通过riccati方程得到一个1x4矩阵K，最终得到我们的控制输入：</p>
-<script type="math/tex; mode=display">
-u = -Kx</script><p>u即为当前状态下<strong><u>保持平衡</u></strong>应施加的力F（使系统<strong>稳定</strong>在期望状态）</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/23/">23</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/24/">24</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -804,7 +738,7 @@ u = -Kx</script><p>u即为当前状态下<strong><u>保持平衡</u></strong>应
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">69</span>
+          <span class="site-state-item-count">70</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -974,11 +908,11 @@ u = -Kx</script><p>u即为当前状态下<strong><u>保持平衡</u></strong>应
         pbOptions.networks = "Wechat,QQZone,Weibo,Douban,Twitter,Facebook";
       new needShareButton('#needsharebutton-postbottom', pbOptions);
   </script>
-<script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script><script>
             window.imageLazyLoadSetting = {
                 isSPA: false,
                 preloadRatio: 1,
                 processImages: null,
             };
-        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(e.href.match(t)||e.href.match(r))&&(e.href=a.dataset.original)})});</script><script>!function(n){n.imageLazyLoadSetting.processImages=o;var e=n.imageLazyLoadSetting.isSPA,i=n.imageLazyLoadSetting.preloadRatio||1,r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]"));function o(){e&&(r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")));for(var t,a=0;a<r.length;a++)0<=(t=(t=r[a]).getBoundingClientRect()).bottom&&0<=t.left&&t.top<=(n.innerHeight*i||document.documentElement.clientHeight*i)&&function(){var t,e,n,i,o=r[a];t=o,e=function(){r=r.filter(function(t){return o!==t})},n=new Image,i=t.getAttribute("data-original"),n.onload=function(){t.src=i,e&&e()},t.src!==i&&(n.src=i)}()}o(),n.addEventListener("scroll",function(){var t,e;t=o,e=n,clearTimeout(t.tId),t.tId=setTimeout(function(){t.call(e)},500)})}(this);</script><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script></body>
+        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(e.href.match(t)||e.href.match(r))&&(e.href=a.dataset.original)})});</script><script>!function(n){n.imageLazyLoadSetting.processImages=o;var e=n.imageLazyLoadSetting.isSPA,i=n.imageLazyLoadSetting.preloadRatio||1,r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]"));function o(){e&&(r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")));for(var t,a=0;a<r.length;a++)0<=(t=(t=r[a]).getBoundingClientRect()).bottom&&0<=t.left&&t.top<=(n.innerHeight*i||document.documentElement.clientHeight*i)&&function(){var t,e,n,i,o=r[a];t=o,e=function(){r=r.filter(function(t){return o!==t})},n=new Image,i=t.getAttribute("data-original"),n.onload=function(){t.src=i,e&&e()},t.src!==i&&(n.src=i)}()}o(),n.addEventListener("scroll",function(){var t,e;t=o,e=n,clearTimeout(t.tId),t.tId=setTimeout(function(){t.call(e)},500)})}(this);</script></body>
 </html>

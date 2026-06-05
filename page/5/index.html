@@ -197,6 +197,148 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2025/10/17/robo-chapter3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/zoe.gif">
+      <meta itemprop="name" content="dhk">
+      <meta itemprop="description" content="记录一些学习日常">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小董的BLOG">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/10/17/robo-chapter3/" class="post-title-link" itemprop="url">正逆运动学</a>
+        </h2>
+
+        <div class="post-meta">
+		  
+		  
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2025-10-17 10:38:10" itemprop="dateCreated datePublished" datetime="2025-10-17T10:38:10+08:00">2025-10-17</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-10-22 10:42:05" itemprop="dateModified" datetime="2025-10-22T10:42:05+08:00">2025-10-22</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="四个连杆参数"><a href="#四个连杆参数" class="headerlink" title="四个连杆参数"></a>四个连杆参数</h1><ul>
+<li><p>连杆本身</p>
+<ul>
+<li><p>连杆长度a：首尾两关节轴线距离（当两轴不平行时，公垂线只有一条）</p>
+</li>
+<li><p>扭转角α：首尾两关节轴线夹角（投影到同一平面）</p>
+</li>
+</ul>
+</li>
+<li><p>连杆连接（关节）</p>
+<ul>
+<li>连杆偏距d_i：关节i处，连杆i偏离i-1的距离</li>
+<li>关节角θ_i：关节i处，连杆i与i-1的夹角</li>
+</ul>
+</li>
+</ul>
+<p>对于转动关节，除<strong>关节角</strong>外，其他参数不变；对于移动关节，除<strong>偏距</strong>外其他参数不变</p>
+<p><u><strong>理解：将一个转动关节想象为圆柱，垂直于圆柱侧面的为连杆长度a，它的转角为关节角θ；沿着圆柱轴线的为偏距d；控制圆柱初始位姿的为扭转角α</strong></u></p>
+<h1 id="正运动学"><a href="#正运动学" class="headerlink" title="正运动学"></a>正运动学</h1><p>已知机器人各连杆参数，求末端位姿。</p>
+<p>对于机器人的两个连杆之间的变换，由四个连杆参数决定；而连杆长度a和连杆转角α由机械系统决定，不是变量，根据关节类型的不同，对于任意机器人，<strong>这个坐标系变换都是只有一个变量的函数</strong></p>
+<p>因此对于机器人末端执行器坐标系{N}相对于坐标系{0}的变换矩阵为：</p>
+<script type="math/tex; mode=display">
+^0_NT=^0_1T^1_2T^2_3T...^{N-1}_NT</script><h2 id="DH参数法（改进）"><a href="#DH参数法（改进）" class="headerlink" title="DH参数法（改进）"></a>DH参数法（改进）</h2><p>对于每个连杆的坐标系，通常选择轴线方向为Z轴，X轴沿着连杆方向（当连杆长度为0时，X轴垂直于Z_{i-1}和Zi的平面），根据右手定律确定Y轴。在改进DH参数法中，坐标系{i}与关节i固连</p>
+<p>因此，当我们要求解连杆i-1到连杆i的变换时（也就是{i-1}到{i}的变换），需要：</p>
+<ul>
+<li>a_{<strong>i-1</strong>}</li>
+<li>α_{<strong>i-1</strong>}</li>
+<li>d_i</li>
+<li>θ_i</li>
+</ul>
+<p>其中a和α表示连杆信息，d和θ表示关节信息</p>
+<p>在改进DH参数下，<strong>每个坐标系（连杆）之间的变换矩阵又包括了一个变量矩阵和三个常量矩阵的乘积</strong>，其通用形式可表示为：</p>
+<script type="math/tex; mode=display">
+^{i-1}_iT = 
+\begin{bmatrix}
+\cos\theta_i & -\sin\theta_i & 0 & a_{i-1} \\
+\sin\theta_i \cos\alpha_{i-1} & \cos\theta_i \cos\alpha_{i-1} & -\sin\alpha_{i-1} & -d_i \sin\alpha_{i-1} \\
+\sin\theta_i \sin\alpha_{i-1} & \cos\theta_i \sin\alpha_{i-1} & \cos\alpha_{i-1} & d_i \cos\alpha_{i-1} \\
+0 & 0 & 0 & 1
+\end{bmatrix}</script><p>注：标准DH和改进DH的变换矩阵不同</p>
+<h2 id="易混淆点"><a href="#易混淆点" class="headerlink" title="易混淆点"></a>易混淆点</h2><p>对于改进DH，坐标系{i}是<strong>固定在连杆i</strong>上，而不是关节i，因为坐标系用于连杆之间的坐标变换，包含了连杆本身带来的变换（a与α）与关节带来的变换（d与θ），说到底，可以直接忘记关节的概念，毕竟变换都是指连杆间的变换</p>
+<h2 id="坐标系标准命名"><a href="#坐标系标准命名" class="headerlink" title="坐标系标准命名"></a>坐标系标准命名</h2><ul>
+<li>基坐标系：机器人的基座{B}</li>
+<li>工作台坐标系：机器人工作台的坐标系{S}，可以是桌子、地面上某个通用坐标系，常根据基坐标系确定</li>
+<li>腕部坐标系：末端连杆轴的坐标系{W}</li>
+<li>工具坐标系：机器人末端坐标系{T}</li>
+<li>目标坐标系：对机器人夹持的物件等的坐标系描述{G}</li>
+</ul>
+<h1 id="逆运动学"><a href="#逆运动学" class="headerlink" title="逆运动学"></a>逆运动学</h1><p>已知机器人末端<strong>位姿</strong>，求各连杆偏距or关节角。该问题可分为两步：（1）求出腕部坐标系{W}相对于基坐标{B}的变换矩阵；（2）应用逆运动学求解关节角</p>
+<h2 id="工作空间描述"><a href="#工作空间描述" class="headerlink" title="工作空间描述"></a>工作空间描述</h2><p>在进行逆运动学求解之前，我们首先需要讨论解的存在性，即机器人是否能够达到期望位姿，而这取决于机器人的工作空间，而确定工作空间的方法就是给出{W}的坐标系表达式，一个含有n个变量的函数</p>
+<p>当已知目标点</p>
+<script type="math/tex; mode=display">
+^BP_{P_{org}}=\begin{bmatrix}x_p \\y_p\\z_p \end{bmatrix}</script><p>则可通过求解{P}各轴在{B}下的坐标以得到{P}的坐标系表示：（旋转矩阵的定义）</p>
+<script type="math/tex; mode=display">
+^B_PT=\begin{bmatrix}^B\hat{X}_P &^B\hat{Y}_P &^B \hat{Z}_P & ^BP_{p_{org}}\\
+0 & 0 & 0 & 1\end{bmatrix}</script><p>而对于轴矢量的求解，通常要结合实际情况与叉乘</p>
+<p>因此，任何不满足该工作空间的{W}均在机器人工作空间之外</p>
+<p>（看的不是很懂，目前感觉影响不大）</p>
+<h2 id="代数法求解逆运动学"><a href="#代数法求解逆运动学" class="headerlink" title="代数法求解逆运动学"></a>代数法求解逆运动学</h2><p>利用正运动学方程，通过代数变换（如移项、三角恒等式等）直接求解关节变量。适用于平面、少自由度机器人逆运动学求解</p>
+<p>对于一个三连杆平面机器人，当已知除θ外其他连杆参数时，可以根据坐标轴矢量得到{W}的正运动学函数，（假设{W}就在连杆3的关节处，目标点在{W}上），因此当给定目标点位姿时，可以得到以下方程：</p>
+<script type="math/tex; mode=display">
+\begin{bmatrix}
+c_{123} & -s_{123} & 0.0 & l_1c_1 + l_2c_{12} \\
+s_{123} & c_{123} & 0.0 & l_1s_1 + l_2s_{12} \\
+0.0 & 0.0 & 1.0 & 0.0 \\
+0 & 0 & 0 & 1
+\end{bmatrix}=
+\begin{bmatrix}
+c_{\phi} & -s_{\phi} & 0.0 & x \\
+s_{\phi} & c_{\phi} & 0.0 & y \\
+0.0 & 0.0 & 1.0 & 0.0 \\
+0 & 0 & 0 & 1
+\end{bmatrix}</script><p>其中Φ，x，y，l_1，l_2为已知值。即根据四个非线性方程求解三个未知数，因此可以得到所有可能解</p>
+<p>（将方程两边平方相加，消去θ₁，利用余弦定理直接求解θ₂，再反求θ₁，最后用arctan求Φ，减去θ₁，θ₂得到θ3）</p>
+<h2 id="几何法求解逆运动学"><a href="#几何法求解逆运动学" class="headerlink" title="几何法求解逆运动学"></a>几何法求解逆运动学</h2><p>即通过三角函数进行几何分析求各角度，与代数法本质相同，不再详细展开</p>
+<h2 id="数值法求解逆运动学"><a href="#数值法求解逆运动学" class="headerlink" title="数值法求解逆运动学"></a>数值法求解逆运动学</h2><p>使用迭代数值求解，这里暂时不深究，需要时再扩充</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2025/10/14/robo-chapter2/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -453,290 +595,9 @@ R_z(30)R_x(30) \neq R_x(30)R_z(30)</script>
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2025/10/05/DL-optimize/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/zoe.gif">
-      <meta itemprop="name" content="dhk">
-      <meta itemprop="description" content="记录一些学习日常">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="小董的BLOG">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2025/10/05/DL-optimize/" class="post-title-link" itemprop="url">神经网络的优化手段</a>
-        </h2>
-
-        <div class="post-meta">
-		  
-		  
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2025-10-05 15:19:37" itemprop="dateCreated datePublished" datetime="2025-10-05T15:19:37+08:00">2025-10-05</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2026-04-07 19:05:50" itemprop="dateModified" datetime="2026-04-07T19:05:50+08:00">2026-04-07</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="网络优化"><a href="#网络优化" class="headerlink" title="网络优化"></a>网络优化</h1><p>网络优化可以从以下四个方向展开：</p>
-<ul>
-<li>使用更有效的优化算法</li>
-<li>使用更好的参数初始化、数据预处理方法</li>
-<li>修改网络结构（激活函数、残差连接、归一化）</li>
-<li>使用更好的超参数优化方法</li>
-</ul>
-<h1 id="优化算法"><a href="#优化算法" class="headerlink" title="优化算法"></a>优化算法</h1><h2 id="正则化"><a href="#正则化" class="headerlink" title="正则化"></a>正则化</h2><p>正则化（Regularization） 是一种通过在模型<strong>损失函数中引入额外约束</strong>，来<strong>抑制过拟合</strong>（Overfitting）并提高模型泛化能力的技术</p>
-<h3 id="常见的正则化方法"><a href="#常见的正则化方法" class="headerlink" title="常见的正则化方法"></a>常见的正则化方法</h3><p>这些正则化的目的大多都是为了<strong>让部分权重变为0或非常小</strong>，保留关键特征</p>
-<h4 id="1-L1-正则化-Lasso"><a href="#1-L1-正则化-Lasso" class="headerlink" title="(1) L1 正则化 (Lasso)"></a>(1) L1 正则化 (Lasso)</h4><p>在原始损失函数中增加权重绝对值的和</p>
-<ul>
-<li><strong>特点：</strong> 倾向于产生<strong>稀疏权重矩阵</strong>（使许多权重变为 0）。</li>
-<li><strong>用途：</strong> 常用于<strong>特征选择</strong>，自动剔除不重要的特征。</li>
-</ul>
-<h4 id="2-L2-正则化-Ridge-权重衰减"><a href="#2-L2-正则化-Ridge-权重衰减" class="headerlink" title="(2) L2 正则化 (Ridge / 权重衰减)"></a>(2) L2 正则化 (Ridge / 权重衰减)</h4><p>在原始损失函数中增加权重平方的和</p>
-<ul>
-<li><strong>特点：</strong> 倾向于让权重值变得非常小，但不会变为 0。</li>
-<li><strong>用途：</strong> 防止模型对某些特征过度敏感，是最通用的正则化手段。</li>
-</ul>
-<h4 id="3-Dropout-丢弃法"><a href="#3-Dropout-丢弃法" class="headerlink" title="(3) Dropout (丢弃法)"></a>(3) Dropout (丢弃法)</h4><p>在训练过程中，随机让一部分神经元停止工作（输出置为 0）。</p>
-<ul>
-<li><strong>直观理解：</strong> 强迫模型不要过度依赖特定的神经元组合，从而学习到更具鲁棒性的特征。</li>
-</ul>
-<h4 id="4-提前止步-Early-Stopping"><a href="#4-提前止步-Early-Stopping" class="headerlink" title="(4) 提前止步 (Early Stopping)"></a>(4) 提前止步 (Early Stopping)</h4><p>在训练过程中，当验证集上的误差开始上升时（即便训练集误差仍在下降），立即停止训练。</p>
-<h2 id="minibatch与梯度积累"><a href="#minibatch与梯度积累" class="headerlink" title="minibatch与梯度积累"></a>minibatch与梯度积累</h2><p>一般而言，batchsize较大时会获得较稳定的训练结果（因此可以设置较大学习率）。但batchsize会被GPU显存所限制，因此可以通过梯度累积的方式，使用较小的batchsize模拟大batchsize的训练效果：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">batch_size = <span class="number">16</span></span><br><span class="line">accumulation_steps = <span class="number">4</span> </span><br><span class="line"><span class="keyword">for</span> i, (inputs, labels) <span class="keyword">in</span> <span class="built_in">enumerate</span>(dataloader):</span><br><span class="line">    <span class="comment"># 前向传播</span></span><br><span class="line">    outputs = model(inputs)</span><br><span class="line">    loss = criterion(outputs, labels)</span><br><span class="line">    loss = loss / accumulation_steps  <span class="comment"># 损失除以累积步数</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 反向传播</span></span><br><span class="line">    loss.backward()</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 每 accumulation_steps 次更新一次权重</span></span><br><span class="line">    <span class="keyword">if</span> (i + <span class="number">1</span>) % accumulation_steps == <span class="number">0</span>:</span><br><span class="line">        optimizer.step()</span><br><span class="line">        optimizer.zero_grad()</span><br></pre></td></tr></table></figure>
-<p>该代码通过16的batchsize模拟了64batchsize的训练效果，具体其实就是每4个batch才进行一层更新权重。</p>
-<p>对于pytorch，在计算了每个batch中各<strong>样本</strong>的loss后，会对其进行<strong>求均值处理</strong>，因此上述代码一次循环中的loss中包括了16个loss的均值，因此其反向传播计算的梯度也是一个<strong>平均梯度</strong>；而pytorch中，如果不手动对梯度进行清零（zero_grad()），其会自动在得到新梯度时<strong>求和</strong>，因此上述代码需要使用：</p>
-<p><code>loss = loss / accumulation_steps</code></p>
-<p>对每个batch的平均loss根据accumulation_steps再次进行平均处理，最后每4个batch后生成的loss才是batchsize=64时得到的平均loss，其梯度也为4个batch的平均梯度</p>
-<p><strong>如果不进行均值处理，则等同于学习率被放大同等倍数</strong>，会导致训练不稳定</p>
-<h4 id="为什么能降低显存？"><a href="#为什么能降低显存？" class="headerlink" title="为什么能降低显存？"></a>为什么能降低显存？</h4><p>由反向传播的公式我们可以得知，在计算每个参数梯度的过程中，我们需要中间<strong>所有神经元的激活值</strong>（activation），而这些激活值是十分消耗内存的。但我们在计算完梯度过后，就不需要这些激活值了（backward过后会立刻释放这些内存），<strong>因此minibatch就使得原本一次性占用很多的激活值内存被拆分成了多次计算</strong></p>
-<h2 id="batchsize影响"><a href="#batchsize影响" class="headerlink" title="batchsize影响"></a>batchsize影响</h2><p>对于引入了batch进行局部梯度优化的神经网络训练（大多数训练都采取该策略），batchsize越大会令每个batch的梯度方差越小，从而使训练更加稳定，举个例子：</p>
-<p>假设一个针对猫狗的二分类图像识别，当batchsize较小时，一个batch可能大部分由猫组成，而另一个batch可能又大部分由狗组成，这将导致这<strong>两个batch的梯度大概率完全不同，甚至是相反的方向</strong>（由之前对反向传播的推到中可得知某层参数的偏导与之前层的激活函数梯度与该层输入值有关），最终<strong>导致参数更新左右震荡</strong></p>
-<h2 id="学习率调整"><a href="#学习率调整" class="headerlink" title="学习率调整"></a>学习率调整</h2><h3 id="学习率衰减"><a href="#学习率衰减" class="headerlink" title="学习率衰减"></a>学习率衰减</h3><p>无需多言，训练后期为了避免在最优点附近来回震荡，要对学习率进行衰减处理，常见操作有：</p>
-<ul>
-<li>分段衰减</li>
-<li>逆时衰减</li>
-<li>指数衰减</li>
-<li>余弦衰减</li>
-</ul>
-<p>其中逆时、指数衰减呈类exp(-x)形状，余弦衰减呈余弦（0-pi）形状，因此在训练前期前者衰减会大于后者，当然，各衰减方法都有可调参数可具体控制衰减情况，不用过于纠结。</p>
-<h3 id="学习率预热"><a href="#学习率预热" class="headerlink" title="学习率预热"></a>学习率预热</h3><p>由于神经网络在训练最初参数是随机初始化的，因此在刚开始训练时梯度会较大，而学习率最开始也较大，容易出现训练不稳定的情况。因此可以在最初几轮采用较小学习率，让学习率在一定预热回合内逐渐上升为初始学习率。（在SNN中貌似很常用，在常规神经网络中貌似不是很必要）</p>
-<h2 id="梯度估计修正（优化器选择）"><a href="#梯度估计修正（优化器选择）" class="headerlink" title="梯度估计修正（优化器选择）"></a>梯度估计修正（优化器选择）</h2><p>之前我们说到现在大部分神经网络训练都使用batch进行<strong>梯度估计</strong>以代替整个训练集上的真正梯度，这样做会导致每个batch的平均梯度具有一定随机性（与全局最优梯度不一致），因此出现了<strong>许多通过使用一段时间（多个batch）内的平均梯度以代替单个batch梯度的方法</strong>缓解梯度估计的随机性。</p>
-<p><strong><u>这在pytorch中直接体现在使用不同的优化器</u></strong>，这也就是为什么对梯度的管理（除了计算）都是通过优化器类的方法实现(如step，zero_grad)</p>
-<p>而SGD优化器则是直接使用当前batch的估计梯度进行更新，最为简单，但这并不意为着SGD不好，相反，SGD在精细调优后和训练后期可以实现更稳定、精准的效果。</p>
-<p>另一个常见的Adam优化器则使用了<strong>动量法+自适应学习率</strong>的方式进行梯度估计修正，动量法可以考虑到多个batch的平均梯度，降低梯度估计随机性；同时Adam算法使用了自适应学习率，使其在固定学习率下也可以有较好训练效果（但最好还是手动添加一个学习率衰减）</p>
-<h2 id="梯度爆炸问题"><a href="#梯度爆炸问题" class="headerlink" title="梯度爆炸问题"></a>梯度爆炸问题</h2><p>当某次反向传播时梯度突然暴增会导致更新参数时反而远离最优点，因此可以采用一些方法避免：</p>
-<ul>
-<li>梯度裁剪：设置梯度阈值，当超过阈值时按比例缩小至阈值</li>
-<li>使用归一化稳定每一层神经网络的输出</li>
-</ul>
-<h2 id="模型量化"><a href="#模型量化" class="headerlink" title="模型量化"></a>模型量化</h2><p>取自<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/1946346577628206809">一文读懂模型量化的核心原理与挑战（入门篇） - 知乎</a></p>
-<p>模型量化的核心思想朴素而又强大：将模型内部那些用于计算和存储的<strong>数字</strong>，从“高精度”格式，转换为“低精度”格式，从而<strong>缩小模型尺寸</strong>，降低显存占用。</p>
-<p>例如：将数据类型从32位的FP32转换为8位的INT8，意味着表示<strong>每一个参数（权重）</strong>所用的比特数减少了4倍，也就代表着模型的整体尺寸<strong>降低了约4倍</strong></p>
-<h3 id="量化对象"><a href="#量化对象" class="headerlink" title="量化对象"></a>量化对象</h3><ul>
-<li>权重量化：对模型的权重参数进行量化，主要是为了<strong>压缩模型体积</strong>，降低其在硬盘上的存储占用和在推理时加载到内存（显存）中的空间。</li>
-<li>激活值量化：即对激活函数值进行量化，核心目标是为了<strong>实现极致的推理加速</strong>。<u>难度更高</u>，因为激活值会随着输入发生剧烈变化</li>
-<li>K V cache量化：关于KV cache原理可查看<a href="https://dhkkkkkk.github.io/2025/10/05/DL-attention/">注意力机制原理与实现 | 小董的BLOG</a>，K V cache的存在目的是提升推理速度，但是也导致了显存占用提升（特别是在长序列任务中），因此对其进行量化的主要目标是<strong>节省推理时的显存占用</strong></li>
-</ul>
-<h3 id="各精度"><a href="#各精度" class="headerlink" title="各精度"></a>各精度</h3><ul>
-<li><p><strong>FP32（32位单精度浮点数）</strong>：<strong>8位指数</strong>，<strong>23位尾数</strong></p>
-</li>
-<li><p><strong>FP16 (半精度浮点数)</strong>：<strong>5位指数</strong>，<strong>10位尾数</strong>，梯度值很容易超出其表示范围而变成无穷大（<strong>上溢</strong>），或因太小而变成0（<strong>下溢</strong>），导致训练过程非常不稳定。</p>
-</li>
-<li><p><strong>BF16 (Bfloat16)</strong>：<strong>8位指数</strong>，<strong>7位尾数</strong>，保留了和FP32<strong>完全相同的8位指数</strong>，这意味着它的动态范围和FP32一样巨大，从根本上解决了FP16的溢出问题。但作为代价，它的<strong>尾数位只有7位</strong>，精度是三者中最低的。</p>
-</li>
-<li><p><strong>FP8：</strong>有E5M2和E4M3等组合</p>
-</li>
-<li><p><strong><u>INT8</u></strong>：<strong>常用</strong>。对于深度学习模型，尤其是那些被证明存在大量冗余的过参数化大模型，用256个等级来近似描述权重或激活值的分布，在许多情况下已经足够。<strong>实践表明，从FP32量化到INT8，模型的精度损失通常可以控制在非常小的范围内。</strong></p>
-<p>​    另外，现代GPU（如NVIDIA的Tensor Core）和CPU（如支持AVX指令集的Intel处理器）内部都集成了专门为8位整数矩阵乘法设计的、高度优化的计算单元。这些硬件可以直接执行<code>INT8</code> x <code>INT8</code>的运算，<strong>速度远超浮点计算。</strong></p>
-</li>
-<li><p><strong>INT4</strong>：比特数从32位降到了4位，带来了惊人的<strong>8倍</strong>压缩率，但也就意味着仅有16个等级去描述原本复杂的浮点数分布，必须依赖更复杂、更精巧的量化算法</p>
-</li>
-</ul>
-<h3 id="PTQ与QAT"><a href="#PTQ与QAT" class="headerlink" title="PTQ与QAT"></a>PTQ与QAT</h3><ul>
-<li>PTQ：训练后量化，常用</li>
-<li>QAT：训练中量化，具体做法是使用一个fake quants，在拿到某个layer的高精度结果后（FP32），将其量化为低精度(INT4)， 然后再的dequantize回FP32，此时这个FP32其实是带有误差的，让这个带有误差的fp32作为下一个layer的输入，继续网络训练。</li>
-</ul>
-<p>QAT效果普遍会比PTQ好一些</p>
-<h1 id="参数初始化与数据预处理"><a href="#参数初始化与数据预处理" class="headerlink" title="参数初始化与数据预处理"></a>参数初始化与数据预处理</h1><p>这一块感觉没啥好说的，就只在这里列出，不展开说了，初始化感觉是比较玄学的东西</p>
-<p>而对于预处理，当数据量不足或不平衡时，可以通过重采样、数据增强等方式增加数据量</p>
-<h1 id="修改网络结构"><a href="#修改网络结构" class="headerlink" title="修改网络结构"></a>修改网络结构</h1><h2 id="Normalization（标准化）"><a href="#Normalization（标准化）" class="headerlink" title="Normalization（标准化）"></a>Normalization（标准化）</h2><p>这里需要强调的是，<strong>在深度学习当中，我们提到的Normalization其实是在做标准化操作</strong>——将数据转化为正态分布形式（均值为0，方差为1）。<u>而对于标准的归一化，则通常在数据集处理时使用：将数据线性缩放到固定的区间（通常为0~1或-1~1）</u></p>
-<p>Normalization的本质是<strong>通过线性变换，将原本分布参差不齐的数据映射到一个标准的、可控的数值空间</strong>，从而防止神经元激活函数输出过大/小导致梯度爆炸/消失，同时也可以让loss更加平滑，避免反复振荡。</p>
-<p>所有的归一化都遵循一个标准公式：</p>
-<script type="math/tex; mode=display">
-y = \frac{x - \mu}{\sqrt{\sigma^2 + \epsilon}} \cdot \gamma + \beta</script><p>其中μ、σ为均值和方差，ε为防止分母为0的极小值，它们负责将x中心化、缩放——<strong>映射到标准正态分布上</strong></p>
-<p><strong>γ和β是一个可学习的参数</strong>，负责把将经过标准正态分布缩放、平移到更适合激活函数的分布区间，它们也通过反向传播更新，是深度学习中的重要部分</p>
-<p><strong><u>而对于不同的归一化方法，其不同就体现在μ和σ计算的数据范围上</u></strong></p>
-<h3 id="Batch-Normalization"><a href="#Batch-Normalization" class="headerlink" title="Batch Normalization"></a>Batch Normalization</h3><p>BN 是在<strong>整个 Batch</strong> 范围内，对每一个<strong>通道</strong>独立进行计算，即：</p>
-<p>计算均值和方差时<strong>固定通道C_i</strong>，计算<strong>batch size x H x W</strong>个值的均值和方差，因此batch size的大小直接决定了其均值和方差的估计可信度</p>
-<p>由于BN是在Channels维度做归一化，因此它可以在<strong>不破坏数据空间结构</strong>的情况下归一化，<strong><u>适合于CNN结构</u></strong></p>
-<h3 id="Layer-Normalization"><a href="#Layer-Normalization" class="headerlink" title="Layer Normalization"></a>Layer Normalization</h3><p>LN 是在<strong>单个样本</strong>内部进行标准化，在序列数据中，常表现为对<strong>每个</strong>token<strong><u>单独</u></strong>进行标准化</p>
-<p>而由于LN将一个样本内部的不同特征（即通道）映射在了同一分布上，<strong><u>使其在NLP任务（RNN，Transformer）中非常有效</u></strong>，<strong>因为句子中每个词（Token）的特征表示应该在一个量级上。</strong></p>
-<p>而在CNN中则一般不使用，因为其破坏了空间结构</p>
-<p><em>对于nn.LayerNorm，可以指定normalized_shape = [C, H, W]进行指定范围内的计算，当输入为单个值时，默认对最后一维进行计算</em></p>
-<h4 id="RMS-normalization"><a href="#RMS-normalization" class="headerlink" title="RMS normalization"></a>RMS normalization</h4><p>公式中省略中心化（减去均值），计算量更小。</p>
-<h3 id="Instance-Normalization"><a href="#Instance-Normalization" class="headerlink" title="Instance Normalization"></a>Instance Normalization</h3><p>在<strong>单个样本</strong>的<strong>单个通道</strong>内独立计算均值、方差（即在HxW个值上计算），常用于风格迁移，<strong>会损失样本统计信息（对比度、语义等），仅保留内容信息（形状）</strong></p>
-<h3 id="Group-Normalization"><a href="#Group-Normalization" class="headerlink" title="Group Normalization"></a>Group Normalization</h3><p>在LN基础上，仅选择特定个数的通道进行归一化（<strong>将单个样本的C个通道平均分为若干组，对每个组做LN</strong>）</p>
-<p>由于IN<strong>可以保留样本的局部结构</strong>，并且不依赖batch size，因此某些情况下可以用于CNN。另外，其分组参数为一个经验参数，不好确定</p>
-<div class="table-container">
-<table>
-<thead>
-<tr>
-<th>方法</th>
-<th>统计范围</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>BN</td>
-<td>batch 维</td>
-</tr>
-<tr>
-<td>LN</td>
-<td>单样本所有特征</td>
-</tr>
-<tr>
-<td>IN</td>
-<td>单样本单通道</td>
-</tr>
-<tr>
-<td>GN</td>
-<td>单样本通道分组</td>
-</tr>
-<tr>
-<td>RMSNorm</td>
-<td>单样本特征（但不减均值）</td>
-</tr>
-</tbody>
-</table>
-</div>
-<h2 id="模型剪枝"><a href="#模型剪枝" class="headerlink" title="模型剪枝"></a>模型剪枝</h2><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/u013172930/article/details/147386534">什么是 模型剪枝（Model Pruning）-CSDN博客</a></p>
-<p>模型剪枝的基本思想是识别并移除对模型性能影响较小的部分，同时<strong>通过微调恢复精度</strong>。剪枝的目标是生成一个更小、更高效的模型，适用于低功耗或低延迟场景。</p>
-<h3 id="剪枝对象："><a href="#剪枝对象：" class="headerlink" title="剪枝对象："></a>剪枝对象：</h3><ul>
-<li>权重剪枝（Weight Pruning）：移除单个权重（连接），通常基于权重的大小（如绝对值较小的权重被剪除）。这会导致稀疏矩阵，适合稀疏计算加速。</li>
-<li>结构化剪枝（Structured Pruning）：<ul>
-<li><strong>通道剪枝（Channel Pruning）</strong>：常用，移除整个卷积通道（filters），保持模型结构规则，适合通用硬件加速。</li>
-<li>神经元剪枝：移除整个神经元或节点。<br>层剪枝：移除整个网络层（较少见）。</li>
-<li>混合剪枝：结合权重和结构化剪枝。</li>
-</ul>
-</li>
-</ul>
-<h3 id="剪枝粒度："><a href="#剪枝粒度：" class="headerlink" title="剪枝粒度："></a>剪枝粒度：</h3><p>细粒度剪枝：操作单个权重，灵活但需要稀疏矩阵支持。<br>粗粒度剪枝：操作通道、层等结构化单元，硬件友好但可能损失更多精度。</p>
-<h3 id="剪枝依据："><a href="#剪枝依据：" class="headerlink" title="剪枝依据："></a>剪枝依据：</h3><p><strong>基于幅度（Magnitude-based）：移除绝对值较小的权重或通道（L1范数常用，也可以使用L2），假设其贡献较小。</strong><br>基于重要性（Importance-based）：通过<strong>某些指标</strong>（如Hessian矩阵、梯度、特征图激活）评估权重或通道的重要性。<br>基于正则化：在训练时引入L1/L2正则化，鼓励权重趋向于零，便于后续剪枝。</p>
-<h3 id="剪枝策略："><a href="#剪枝策略：" class="headerlink" title="剪枝策略："></a>剪枝策略：</h3><p>一次性剪枝（One-shot Pruning）：在训练后直接剪枝，然后微调。<br>迭代剪枝（Iterative Pruning）：分多次逐步剪枝，每轮剪枝后微调，精度损失较小。<br>训练时剪枝（Pruning during Training）：在训练过程中动态剪枝（如通过掩码或正则化）。</p>
-<h3 id="微调（Fine-tuning）："><a href="#微调（Fine-tuning）：" class="headerlink" title="微调（Fine-tuning）："></a>微调（Fine-tuning）：</h3><p><strong>剪枝后，模型精度通常会下降，因此需要通过微调（继续训练）恢复性能。</strong><br>微调可以针对剪枝后的模型进行，也可以结合知识蒸馏等技术进一步提升性能。</p>
-<h1 id="分布式训练"><a href="#分布式训练" class="headerlink" title="分布式训练"></a>分布式训练</h1><p>并行策略可以分为数据并行和模型并行。顾名思义，数据并行将<u>计算过程中的数据</u>在多张GPU上分批次处理；而模型并行则是将模型权重切分到不同GPU上。在超大规模模型训练时，<strong>通常二者一起使用</strong></p>
-<h2 id="数据并行（Data-Parallel-DP）"><a href="#数据并行（Data-Parallel-DP）" class="headerlink" title="数据并行（Data Parallel, DP）"></a>数据并行（Data Parallel, DP）</h2><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/650002268">大模型分布式训练并行技术（二）-数据并行 - 知乎</a></p>
-<p>所谓数据并行，就是由于训练数据集太大；因此，<strong>将数据集分为N份（不是将每个batch分）</strong>，每一份分别装载到N个GPU节点中，同时，每个GPU<strong>持有一个完整的模型副本</strong>，分别基于每个GPU中的数据去进行梯度求导。最后，通过每个GPU得到的梯度计算得到当前batch平均梯度，再根据该平均梯度更新模型。具体的并行流程当前主要有两种（pytorch下）：</p>
-<h3 id="torch-nn-DataParallel（过时）"><a href="#torch-nn-DataParallel（过时）" class="headerlink" title="torch.nn.DataParallel（过时）"></a>torch.nn.DataParallel（过时）</h3><p>基于<strong>单进程多线程</strong>实现，简单来说就是有一个主GPU负责计算各GPU得到的loss，然后分发各GPU的loss，反向传播计算梯度，然后主<u>GPU汇总梯度，更新参数，最后将更新后的参数再加载到其他GPU上</u>。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">net = torch.nn.DataParallel(model, device_ids=[<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>])</span><br><span class="line">output = net(input_var)</span><br></pre></td></tr></table></figure>
-<p>它使用简单，但缺点明显：</p>
-<ul>
-<li>单进程速度慢，<strong>只能在单机多卡上实现</strong>且<strong>不能使用 Apex 进行混合精度训练</strong>。</li>
-<li>主卡瓶颈，由于每个batch中主GPU的和其他GPU都要进行一次同步，因此会存在通信瓶颈。且主卡和其他卡GPU利用率会严重不均衡（主卡负担更大，容易超显存）</li>
-<li><strong>无法与<u>模型并行</u>组合使用</strong></li>
-</ul>
-<h3 id="torch-nn-DistributedDataParallel（DDP）"><a href="#torch-nn-DistributedDataParallel（DDP）" class="headerlink" title="torch.nn.DistributedDataParallel（DDP）"></a>torch.nn.DistributedDataParallel（DDP）</h3><p>基于多进程实现，每个进程都有独立的优化器，执行自己的更新过程。也就是说不再存在“主卡”的概念。各进程梯度计算完成之后，各进程需要将梯度进行汇总平均，然后再由 rank=0 的进程，将其<strong>广播（broadcast，对于DP，则是All-Reduce，带宽要求更高）</strong>到所有进程后，<strong>各进程用该梯度来独立的更新参数</strong>，相比于DP，DDP只广播一个平均梯度，各GPU根据该平均梯度自己更新（由于初始参数相同，更新完后的权重也必定相同），传输的数据量大大减少</p>
-<p><em>每个 GPU 对应一个进程，适用于单机和多机情况，真正实现分布式训练，并且因为每个进程都是独立的 Python 解释器，DDP 避免了 GIL 带来的性能开销。</em></p>
-<h3 id="ZeRO-Zero-Redundancy-Optimizer"><a href="#ZeRO-Zero-Redundancy-Optimizer" class="headerlink" title="ZeRO (Zero Redundancy Optimizer)"></a>ZeRO (Zero Redundancy Optimizer)</h3><p>理论上来说ZeRO属于数据并行的一种算法，但其内部对显存的管理也达到了模型并行的性能</p>
-<p>在训练大模型时，显存主要被以下三个部分占据（统称为<strong>模型状态</strong>）：</p>
-<ol>
-<li><strong>Optimizer States (优化器状态)：</strong> 如 Adam 中的一阶和二阶动量。</li>
-<li><strong>Gradients (梯度)：</strong> 计算出的权重更新值。</li>
-<li><strong>Parameters (参数/权重)：</strong> 模型本身的权重。</li>
-</ol>
-<p>其中，优化器状态为<strong>显存占用最大头</strong></p>
-<div class="table-container">
-<table>
-<thead>
-<tr>
-<th><strong>阶段</strong></th>
-<th><strong>参数更新位置</strong></th>
-<th><strong>更新时的通信操作</strong></th>
-<th><strong>更新后的显存状态</strong></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><strong>ZeRO-1</strong></td>
-<td>仅优化器状态分片</td>
-<td>Reduce-Scatter (梯度) + All-Gather (状态推导出的更新量)</td>
-<td>每个 GPU 存有完整参数和梯度</td>
-</tr>
-<tr>
-<td><strong>ZeRO-2</strong></td>
-<td>梯度与状态均分片</td>
-<td><strong>Reduce-Scatter (梯度)</strong> + All-Gather (更新后的参数)</td>
-<td>每个 GPU 仅存有部分梯度和状态</td>
-</tr>
-<tr>
-<td><strong>ZeRO-3</strong></td>
-<td><strong>参数</strong>、梯度、状态均分片</td>
-<td>每次计算层时临时 All-Gather 参数，计算完丢弃</td>
-<td><strong>全程无冗余</strong>，显存随 GPU 数量线性扩展</td>
-</tr>
-</tbody>
-</table>
-</div>
-<p>其中，对于ZeRO-3来说，每个GPU上保存的就已经<strong>不是完整权重的模型</strong>了，但其会通过多GPU的通信实现完整模型的效果</p>
-<h2 id="模型并行"><a href="#模型并行" class="headerlink" title="模型并行"></a>模型并行</h2><p>模型并行，即模型被分割并分布在一个设备阵列上，每一个设备只保存模型的一部分参数。</p>
-<p>模型并行分为流水线并行和张量并行：</p>
-<ul>
-<li>流水线并行：为层间并行，对模型不同的 Transformer 层间进行分割。数据在设备间<strong>依次</strong>传递（点对点通信），类似工厂流水线。</li>
-<li>张量并行：为层内并行，对模型 Transformer 层内进行分割，计算某一层时，<strong>所有GPU协同计算该层的不同部分</strong>，需要高频的<strong>AllReduce</strong>通信同步结果。</li>
-</ul>
-<h3 id="流水线并行"><a href="#流水线并行" class="headerlink" title="流水线并行"></a>流水线并行</h3><p>对于最原始的流水线并行（朴素流水线），其实可以直接理解成一个串联结构（我也不知道为什么叫并行），因此其存在一个明显的缺陷：<strong>在任意给定时刻，除了一个 GPU 之外的其他所有 GPU 都是空闲的</strong></p>
-<p>因此为了减少中间空出来的bubble time，现在常用的是微批次流水线并行（microbatch）：</p>
-<img src="/images/loading.png" data-original="/2025/10/05/DL-optimize/1.jpg" class title="This is an image"> 
-<p>其核心思路就是把每个batch再次拆分，让每个设备计算完一个micro batch后就传到下一设备，然后当前设备计算下一个micro batch，而<strong>不是等一个设备完整计算完整个batch</strong></p>
-<h3 id="张量并行"><a href="#张量并行" class="headerlink" title="张量并行"></a>张量并行</h3><p>张量并行从数学原理上来看就是：</p>
-<p>对于linear层（attention中的q，k，v投影层）：把矩阵分块进行计算，然后把结果合并；对于非linear层，则不做额外设计。</p>
-<img src="/images/loading.png" data-original="/2025/10/05/DL-optimize/2.png" class title="This is an image"> 
-<p>这一块就先不展开了，目前本人用不到。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/4/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><span class="space">&hellip;</span><a class="page-number" href="/page/23/">23</a><a class="extend next" rel="next" href="/page/6/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/4/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><span class="space">&hellip;</span><a class="page-number" href="/page/24/">24</a><a class="extend next" rel="next" href="/page/6/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -803,7 +664,7 @@ y = \frac{x - \mu}{\sqrt{\sigma^2 + \epsilon}} \cdot \gamma + \beta</script><p>�
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">69</span>
+          <span class="site-state-item-count">70</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -973,11 +834,11 @@ y = \frac{x - \mu}{\sqrt{\sigma^2 + \epsilon}} \cdot \gamma + \beta</script><p>�
         pbOptions.networks = "Wechat,QQZone,Weibo,Douban,Twitter,Facebook";
       new needShareButton('#needsharebutton-postbottom', pbOptions);
   </script>
-<script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script><script>
             window.imageLazyLoadSetting = {
                 isSPA: false,
                 preloadRatio: 1,
                 processImages: null,
             };
-        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(e.href.match(t)||e.href.match(r))&&(e.href=a.dataset.original)})});</script><script>!function(n){n.imageLazyLoadSetting.processImages=o;var e=n.imageLazyLoadSetting.isSPA,i=n.imageLazyLoadSetting.preloadRatio||1,r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]"));function o(){e&&(r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")));for(var t,a=0;a<r.length;a++)0<=(t=(t=r[a]).getBoundingClientRect()).bottom&&0<=t.left&&t.top<=(n.innerHeight*i||document.documentElement.clientHeight*i)&&function(){var t,e,n,i,o=r[a];t=o,e=function(){r=r.filter(function(t){return o!==t})},n=new Image,i=t.getAttribute("data-original"),n.onload=function(){t.src=i,e&&e()},t.src!==i&&(n.src=i)}()}o(),n.addEventListener("scroll",function(){var t,e;t=o,e=n,clearTimeout(t.tId),t.tId=setTimeout(function(){t.call(e)},500)})}(this);</script><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script></body>
+        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(e.href.match(t)||e.href.match(r))&&(e.href=a.dataset.original)})});</script><script>!function(n){n.imageLazyLoadSetting.processImages=o;var e=n.imageLazyLoadSetting.isSPA,i=n.imageLazyLoadSetting.preloadRatio||1,r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]"));function o(){e&&(r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")));for(var t,a=0;a<r.length;a++)0<=(t=(t=r[a]).getBoundingClientRect()).bottom&&0<=t.left&&t.top<=(n.innerHeight*i||document.documentElement.clientHeight*i)&&function(){var t,e,n,i,o=r[a];t=o,e=function(){r=r.filter(function(t){return o!==t})},n=new Image,i=t.getAttribute("data-original"),n.onload=function(){t.src=i,e&&e()},t.src!==i&&(n.src=i)}()}o(),n.addEventListener("scroll",function(){var t,e;t=o,e=n,clearTimeout(t.tId),t.tId=setTimeout(function(){t.call(e)},500)})}(this);</script></body>
 </html>

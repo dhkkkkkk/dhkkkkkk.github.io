@@ -22,17 +22,20 @@
     var CONFIG = {"hostname":"dhkkkkkk.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="记录一些学习日常">
-<meta property="og:type" content="website">
-<meta property="og:title" content="小董的BLOG">
-<meta property="og:url" content="https://dhkkkkkk.github.io/archives/2022/09/index.html">
+  <meta name="description" content="协方差矩阵协方差矩阵描述了各个麦克风接收信号之间的相关性和空间结构：  \mathbf{R}_{xx} &#x3D; E[\mathbf{X}(t)\mathbf{X}^H(t)]&#x3D;\begin{bmatrix} E[x_1 x_1^*] &amp; E[x_1 x_2^*] &amp; \dots \\ E[x_2 x_1^*] &amp; E[x_2 x_2^*] &amp; \dots \\ \vdots &amp; \vdots &amp; \d">
+<meta property="og:type" content="article">
+<meta property="og:title" content="声源定位之MUSIC">
+<meta property="og:url" content="https://dhkkkkkk.github.io/2026/06/05/MUSIC/index.html">
 <meta property="og:site_name" content="小董的BLOG">
-<meta property="og:description" content="记录一些学习日常">
+<meta property="og:description" content="协方差矩阵协方差矩阵描述了各个麦克风接收信号之间的相关性和空间结构：  \mathbf{R}_{xx} &#x3D; E[\mathbf{X}(t)\mathbf{X}^H(t)]&#x3D;\begin{bmatrix} E[x_1 x_1^*] &amp; E[x_1 x_2^*] &amp; \dots \\ E[x_2 x_1^*] &amp; E[x_2 x_2^*] &amp; \dots \\ \vdots &amp; \vdots &amp; \d">
 <meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2026-06-05T07:32:23.000Z">
+<meta property="article:modified_time" content="2026-06-05T09:29:30.534Z">
 <meta property="article:author" content="dhk">
+<meta property="article:tag" content="麦克风阵列算法">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="https://dhkkkkkk.github.io/archives/2022/09/">
+<link rel="canonical" href="https://dhkkkkkk.github.io/2026/06/05/MUSIC/">
 
 
 <script id="page-configurations">
@@ -40,7 +43,7 @@
   CONFIG.page = {
     sidebar: "",
     isHome : false,
-    isPost : false,
+    isPost : true,
     lang   : 'zh-CN'
   };
 </script>
@@ -58,7 +61,7 @@
   padding: 1px 4px;
 }
 </style>
-  <title>归档 | 小董的BLOG</title>
+  <title>声源定位之MUSIC | 小董的BLOG</title>
   
 
 
@@ -191,151 +194,139 @@
         <div class="content-wrap">
           
 
-          <div class="content archive">
+          <div class="content post posts-expand">
             
 
+    
   
   
-  
-  <div class="post-block">
-    <div class="posts-collapse">
-      <div class="collection-title">
-        
-        <span class="collection-header">不错! 目前共计 70 篇日志。 继续努力。</span>
-      </div>
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2026/06/05/MUSIC/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/zoe.gif">
+      <meta itemprop="name" content="dhk">
+      <meta itemprop="description" content="记录一些学习日常">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小董的BLOG">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          声源定位之MUSIC
+        </h1>
+
+        <div class="post-meta">
+		  
+		  
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2026-06-05 15:32:23 / 修改时间：17:29:30" itemprop="dateCreated datePublished" datetime="2026-06-05T15:32:23+08:00">2026-06-05</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-    <div class="collection-year">
-      <span class="collection-header">2022</span>
-    </div>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2022-09-16T10:29:36+08:00"
-              content="2022-09-16">
-          09-16
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2022/09/16/python-2/" itemprop="url">
-            <span itemprop="name">python_2</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2022-09-15T19:34:35+08:00"
-              content="2022-09-15">
-          09-15
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2022/09/15/C++-3/" itemprop="url">
-            <span itemprop="name">C++字符串、向量和数组</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2022-09-14T18:30:37+08:00"
-              content="2022-09-14">
-          09-14
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2022/09/14/python-1/" itemprop="url">
-            <span itemprop="name">python_基础定义</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2022-09-09T17:16:42+08:00"
-              content="2022-09-09">
-          09-09
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2022/09/09/C++-2/" itemprop="url">
-            <span itemprop="name">C++变量和基本类型</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2022-09-08T18:51:12+08:00"
-              content="2022-09-08">
-          09-08
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2022/09/08/%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E/" itemprop="url">
-            <span itemprop="name">使用说明</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2022-09-07T10:38:09+08:00"
-              content="2022-09-07">
-          09-07
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2022/09/07/C++-1/" itemprop="url">
-            <span itemprop="name">初识c++</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
+        <h1 id="协方差矩阵"><a href="#协方差矩阵" class="headerlink" title="协方差矩阵"></a>协方差矩阵</h1><p>协方差矩阵描述了各个麦克风接收信号之间的相关性和空间结构：</p>
+<script type="math/tex; mode=display">
+\mathbf{R}_{xx} = E[\mathbf{X}(t)\mathbf{X}^H(t)]=\begin{bmatrix} E[x_1 x_1^*] & E[x_1 x_2^*] & \dots \\ E[x_2 x_1^*] & E[x_2 x_2^*] & \dots \\ \vdots & \vdots & \ddots \end{bmatrix}</script><ul>
+<li>E：两个麦克风的数学期望，通过<u>多快拍取均值替代</u></li>
+<li>R是Hermitian矩阵，不是对称矩阵</li>
+<li>对角线：表示了该麦克风接收到的平均能量</li>
+<li>其他元素：两个麦克风接收信号的相关程度，数值越大越相关（分正负，不相关则接近0）</li>
+</ul>
+<h1 id="MUSIC（Multiple-Signal-Classification，多信号分类）"><a href="#MUSIC（Multiple-Signal-Classification，多信号分类）" class="headerlink" title="MUSIC（Multiple Signal Classification，多信号分类）"></a>MUSIC（Multiple Signal Classification，多信号分类）</h1><p>MUSIC<strong>算法是空间谱估计领域的里程碑式技术。与 GCC-PHAT 或 SRP-PHAT 等基于时延估计（TDOA）的波束形成技术不同，MUSIC 是一种基于</strong>特征空间分解（Subspace Decomposition）的高分辨率 DOA 估计算法。</p>
+<p>对于协方差矩阵，可以描述为：</p>
+<script type="math/tex; mode=display">
+\mathbf{R}_{xx} = E[\mathbf{X}(t)\mathbf{X}^H(t)] = \mathbf{A}(\theta) \mathbf{R}_{ss} \mathbf{A}^H(\theta) + \sigma^2 \mathbf{I}_M</script><p>σ ^2是噪声方差，I 是单位矩阵</p>
+<h2 id="特征值分解"><a href="#特征值分解" class="headerlink" title="特征值分解"></a>特征值分解</h2><p>MUSIC的核心就是对协方差矩阵进行特征值分解：</p>
+<script type="math/tex; mode=display">
+R=UΛU^H</script><p>对于特征值分解的理解，当一个特征值和特征向量表示为：</p>
+<script type="math/tex; mode=display">
+Ru_i=\lambda u_i</script><p>则代表当R作用于方向u时，不会改变方向，只会放大λ倍，因此在阵列信号中：</p>
+<ul>
+<li>特征向量表示方向</li>
+<li>特征值则表示该方向上的能量大小</li>
+</ul>
+<p>所以大特征值对应方向则为声源方向</p>
+<p>由于协方差矩阵为Hermitian矩阵，因此对于MxM的R，必定有M个特征值，<strong><u>且所有特征向量彼此正交</u></strong></p>
+<p>当得到M个特征值后，<strong>根据大小排序</strong>，将对应的特征向量划分为信号子空间和噪声子空间。（这个划分规则需要人为指定声源个数K）</p>
+<script type="math/tex; mode=display">
+\mathbf{U}_s = [\mathbf{u}_1, \mathbf{u}_2, \dots, \mathbf{u}_K]</script><script type="math/tex; mode=display">
+\mathbf{U}_n = [\mathbf{u}_{K+1}, \mathbf{u}_{K+2}, \dots, \mathbf{u}_M]</script><p>理想情况下，噪声特征值等于方差σ ^2</p>
+<h2 id="空间谱函数"><a href="#空间谱函数" class="headerlink" title="空间谱函数"></a>空间谱函数</h2><p>刚刚我们提到了两个重点：</p>
+<ul>
+<li>特征向量表示方向信息</li>
+<li>所有特征向量彼此正交</li>
+</ul>
+<p>因此，对于提取到的噪声子空间中的特征向量，理想情况存在：</p>
+<script type="math/tex; mode=display">
+\mathbf{a}^H(\theta_k)\mathbf{u}_i = 0,  i = K+1, \dots, M</script><p>a为声源方向导向矢量。</p>
+<p>这意味着，真实声源方向的导向向量在噪声子空间上的投影模长为 0：</p>
+<script type="math/tex; mode=display">
+\mathbf{a}^H(\theta_k) \mathbf{U}_n \mathbf{U}_n^H \mathbf{a}(\theta_k) = 0</script><p>在真实环境中，我们则希望该值最小，因此我们定义一个MUSIC空间谱函数：</p>
+<script type="math/tex; mode=display">
+P_{\text{MUSIC}}(\theta) = \frac{1}{\mathbf{a}^H(\theta) \mathbf{U}_n \mathbf{U}_n^H \mathbf{a}(\theta)}</script><p>通过对θ进行扫描，当空间谱出现极大值时，则说明扫描到了真实声源</p>
+<h1 id="优缺点"><a href="#优缺点" class="headerlink" title="优缺点"></a>优缺点</h1><p>优点：</p>
+<ul>
+<li><strong>超高分辨率</strong>：这是 MUSIC 的核心优势。只要快拍数足够且信噪比适中，它可以突破瑞利极限，分辨出角度差极小的两个声源。</li>
+<li><strong>抗噪性能强</strong>：由于将噪声剥离到了独立的子空间中，其算法本身对各向同性的高斯白噪声具有很强的容忍度。</li>
+</ul>
+<p>缺点：</p>
+<ul>
+<li><strong>对相干声源极为敏感</strong>：当在强混响环境中，会导致信号子空间维度丢失，<strong>部分声源特征向量混入噪声子空间</strong>，导致漏检和偏移</li>
+<li><strong>必须已知声源个数：</strong>必须确认声源个数才能准确划分子空间，不然也会导致声源特征向量混入噪声子空间</li>
+<li>计算复杂度较高</li>
+</ul>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>MUSIC的核心就是对接收信号协方差矩阵<strong><u>进行特征值分解，得到噪声子空间</u></strong>，然后通过导向矢量扫描，寻找投影零点，也就是空间谱极值点。利用的<u>最核心原理是Hermitian矩阵的特征向量必定互相正交</u></p>
 
     </div>
-  </div>
-  
-  
-  
 
+    
+    
+    <div class="post-widgets">
+      <div id="needsharebutton-postbottom">
+        <span class="btn">
+          <i class="fa fa-share-alt" aria-hidden="true"></i>
+        </span>
+      </div>
+    </div>
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E9%BA%A6%E5%85%8B%E9%A3%8E%E9%98%B5%E5%88%97%E7%AE%97%E6%B3%95/" rel="tag"><i class="fa fa-tag"></i># 麦克风阵列算法</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2026/06/04/DOA/" rel="prev" title="声源定位之基于相对时延估计">
+      <i class="fa fa-chevron-left"></i> 声源定位之基于相对时延估计
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
   
 
 
@@ -388,6 +379,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8D%8F%E6%96%B9%E5%B7%AE%E7%9F%A9%E9%98%B5"><span class="nav-number">1.</span> <span class="nav-text">协方差矩阵</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#MUSIC%EF%BC%88Multiple-Signal-Classification%EF%BC%8C%E5%A4%9A%E4%BF%A1%E5%8F%B7%E5%88%86%E7%B1%BB%EF%BC%89"><span class="nav-number">2.</span> <span class="nav-text">MUSIC（Multiple Signal Classification，多信号分类）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%89%B9%E5%BE%81%E5%80%BC%E5%88%86%E8%A7%A3"><span class="nav-number">2.1.</span> <span class="nav-text">特征值分解</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A9%BA%E9%97%B4%E8%B0%B1%E5%87%BD%E6%95%B0"><span class="nav-number">2.2.</span> <span class="nav-text">空间谱函数</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BC%98%E7%BC%BA%E7%82%B9"><span class="nav-number">3.</span> <span class="nav-text">优缺点</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">4.</span> <span class="nav-text">总结</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -508,6 +500,59 @@
   
 
   
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
 
   
 

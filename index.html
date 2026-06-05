@@ -278,6 +278,118 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2026/06/05/MUSIC/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/zoe.gif">
+      <meta itemprop="name" content="dhk">
+      <meta itemprop="description" content="记录一些学习日常">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小董的BLOG">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2026/06/05/MUSIC/" class="post-title-link" itemprop="url">声源定位之MUSIC</a>
+        </h2>
+
+        <div class="post-meta">
+		  
+		  
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2026-06-05 15:32:23 / 修改时间：17:29:30" itemprop="dateCreated datePublished" datetime="2026-06-05T15:32:23+08:00">2026-06-05</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="协方差矩阵"><a href="#协方差矩阵" class="headerlink" title="协方差矩阵"></a>协方差矩阵</h1><p>协方差矩阵描述了各个麦克风接收信号之间的相关性和空间结构：</p>
+<script type="math/tex; mode=display">
+\mathbf{R}_{xx} = E[\mathbf{X}(t)\mathbf{X}^H(t)]=\begin{bmatrix} E[x_1 x_1^*] & E[x_1 x_2^*] & \dots \\ E[x_2 x_1^*] & E[x_2 x_2^*] & \dots \\ \vdots & \vdots & \ddots \end{bmatrix}</script><ul>
+<li>E：两个麦克风的数学期望，通过<u>多快拍取均值替代</u></li>
+<li>R是Hermitian矩阵，不是对称矩阵</li>
+<li>对角线：表示了该麦克风接收到的平均能量</li>
+<li>其他元素：两个麦克风接收信号的相关程度，数值越大越相关（分正负，不相关则接近0）</li>
+</ul>
+<h1 id="MUSIC（Multiple-Signal-Classification，多信号分类）"><a href="#MUSIC（Multiple-Signal-Classification，多信号分类）" class="headerlink" title="MUSIC（Multiple Signal Classification，多信号分类）"></a>MUSIC（Multiple Signal Classification，多信号分类）</h1><p>MUSIC<strong>算法是空间谱估计领域的里程碑式技术。与 GCC-PHAT 或 SRP-PHAT 等基于时延估计（TDOA）的波束形成技术不同，MUSIC 是一种基于</strong>特征空间分解（Subspace Decomposition）的高分辨率 DOA 估计算法。</p>
+<p>对于协方差矩阵，可以描述为：</p>
+<script type="math/tex; mode=display">
+\mathbf{R}_{xx} = E[\mathbf{X}(t)\mathbf{X}^H(t)] = \mathbf{A}(\theta) \mathbf{R}_{ss} \mathbf{A}^H(\theta) + \sigma^2 \mathbf{I}_M</script><p>σ ^2是噪声方差，I 是单位矩阵</p>
+<h2 id="特征值分解"><a href="#特征值分解" class="headerlink" title="特征值分解"></a>特征值分解</h2><p>MUSIC的核心就是对协方差矩阵进行特征值分解：</p>
+<script type="math/tex; mode=display">
+R=UΛU^H</script><p>对于特征值分解的理解，当一个特征值和特征向量表示为：</p>
+<script type="math/tex; mode=display">
+Ru_i=\lambda u_i</script><p>则代表当R作用于方向u时，不会改变方向，只会放大λ倍，因此在阵列信号中：</p>
+<ul>
+<li>特征向量表示方向</li>
+<li>特征值则表示该方向上的能量大小</li>
+</ul>
+<p>所以大特征值对应方向则为声源方向</p>
+<p>由于协方差矩阵为Hermitian矩阵，因此对于MxM的R，必定有M个特征值，<strong><u>且所有特征向量彼此正交</u></strong></p>
+<p>当得到M个特征值后，<strong>根据大小排序</strong>，将对应的特征向量划分为信号子空间和噪声子空间。（这个划分规则需要人为指定声源个数K）</p>
+<script type="math/tex; mode=display">
+\mathbf{U}_s = [\mathbf{u}_1, \mathbf{u}_2, \dots, \mathbf{u}_K]</script><script type="math/tex; mode=display">
+\mathbf{U}_n = [\mathbf{u}_{K+1}, \mathbf{u}_{K+2}, \dots, \mathbf{u}_M]</script><p>理想情况下，噪声特征值等于方差σ ^2</p>
+<h2 id="空间谱函数"><a href="#空间谱函数" class="headerlink" title="空间谱函数"></a>空间谱函数</h2><p>刚刚我们提到了两个重点：</p>
+<ul>
+<li>特征向量表示方向信息</li>
+<li>所有特征向量彼此正交</li>
+</ul>
+<p>因此，对于提取到的噪声子空间中的特征向量，理想情况存在：</p>
+<script type="math/tex; mode=display">
+\mathbf{a}^H(\theta_k)\mathbf{u}_i = 0,  i = K+1, \dots, M</script><p>a为声源方向导向矢量。</p>
+<p>这意味着，真实声源方向的导向向量在噪声子空间上的投影模长为 0：</p>
+<script type="math/tex; mode=display">
+\mathbf{a}^H(\theta_k) \mathbf{U}_n \mathbf{U}_n^H \mathbf{a}(\theta_k) = 0</script><p>在真实环境中，我们则希望该值最小，因此我们定义一个MUSIC空间谱函数：</p>
+<script type="math/tex; mode=display">
+P_{\text{MUSIC}}(\theta) = \frac{1}{\mathbf{a}^H(\theta) \mathbf{U}_n \mathbf{U}_n^H \mathbf{a}(\theta)}</script><p>通过对θ进行扫描，当空间谱出现极大值时，则说明扫描到了真实声源</p>
+<h1 id="优缺点"><a href="#优缺点" class="headerlink" title="优缺点"></a>优缺点</h1><p>优点：</p>
+<ul>
+<li><strong>超高分辨率</strong>：这是 MUSIC 的核心优势。只要快拍数足够且信噪比适中，它可以突破瑞利极限，分辨出角度差极小的两个声源。</li>
+<li><strong>抗噪性能强</strong>：由于将噪声剥离到了独立的子空间中，其算法本身对各向同性的高斯白噪声具有很强的容忍度。</li>
+</ul>
+<p>缺点：</p>
+<ul>
+<li><strong>对相干声源极为敏感</strong>：当在强混响环境中，会导致信号子空间维度丢失，<strong>部分声源特征向量混入噪声子空间</strong>，导致漏检和偏移</li>
+<li><strong>必须已知声源个数：</strong>必须确认声源个数才能准确划分子空间，不然也会导致声源特征向量混入噪声子空间</li>
+<li>计算复杂度较高</li>
+</ul>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>MUSIC的核心就是对接收信号协方差矩阵<strong><u>进行特征值分解，得到噪声子空间</u></strong>，然后通过导向矢量扫描，寻找投影零点，也就是空间谱极值点。利用的<u>最核心原理是Hermitian矩阵的特征向量必定互相正交</u></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2026/06/04/DOA/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -303,10 +415,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2026-06-04 16:03:39 / 修改时间：19:15:02" itemprop="dateCreated datePublished" datetime="2026-06-04T16:03:39+08:00">2026-06-04</time>
+              <time title="创建时间：2026-06-04 16:03:39" itemprop="dateCreated datePublished" datetime="2026-06-04T16:03:39+08:00">2026-06-04</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2026-06-05 15:31:13" itemprop="dateModified" datetime="2026-06-05T15:31:13+08:00">2026-06-05</time>
+              </span>
 
           
 
@@ -325,10 +443,11 @@
 <li>声源的到达<strong>方向</strong> (Direction of Arrival，DOA) ，主要计算其的方位角和俯仰角</li>
 <li>声源的<strong>距离</strong>估计</li>
 </ul>
-<p>目前我们的重点先放在DOA上，对于DOA估计，主要有两个方法：</p>
+<p>目前我们的重点先放在DOA上，对于DOA估计，主要有三个方法：</p>
 <ul>
-<li>基于<strong>相对时延估计</strong>：计算不同阵元之间接收到的信号的时延差，根据该时延差即可推断出声源位置</li>
+<li>基于<strong>到达时间差（TDOA）</strong>：计算不同阵元之间接收到的信号的时延差，根据该时延差即可推断出声源位置</li>
 <li>基于<strong>波束形成</strong>的方法：进行不同角度遍历扫描，分别进行波束形成（即假设时延差），功率最大处即为声源位置</li>
+<li>基于高分辨谱估计：然后采用特征分解操作，从协方差矩阵中提取出信号子空间。之后，利用空间谱 估计技术对该子空间进行分析，最终得出声源方向的估计结果。</li>
 </ul>
 <p>根据定义我们就可以看出，基于相对时延估计的技术点主要在于如何计算出时延差；而波束形成方法则更简单暴力，技术点在于使用什么波束形成方法更好</p>
 <p>本章我们将对基于相对时延估计的方法进行展开，其可以分为两部分：</p>
@@ -363,99 +482,30 @@ R_{x_1 x_2}^{GCC}(\tau)=\int_{-\infty}^{\infty}\psi(ω) P(ω)e^{jω\tau} dω</sc
 R_{x_1 x_2}^{PHAT}(\tau) = \int_{-\infty}^{\infty} e^{j \theta(f)} e^{j 2 \pi f \tau} df= \int_{-\infty}^{\infty} e^{j 2 \pi f (\tau - \tau_0)} df</script><p>也就是说，PHAT本身就是指通过相位差来计算时延值，当t取到t0时，互相关函数就是最大值</p>
 <h2 id="优缺点"><a href="#优缺点" class="headerlink" title="优缺点"></a>优缺点</h2><p>优点：由于仅通过相位差来得到时延值，因此该方法拥有极强的抗混响能力（混响对相位影响小）</p>
 <p>缺点：当信号中存在噪声时，当某些频段上噪声为主要成分时，也就意为着此时得到的相位也是噪声的相位，而PHAT舍弃了幅值，因此也将<strong>放大噪声</strong>，最终导致互相关函数上真<strong>峰降低</strong>，并出现<strong>大量伪峰</strong>（因为互相关函数代表的是不同t上信号的相关程度，伪峰即为噪声与信号产生的相关）</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2026/03/11/GIS/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/zoe.gif">
-      <meta itemprop="name" content="dhk">
-      <meta itemprop="description" content="记录一些学习日常">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="小董的BLOG">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2026/03/11/GIS/" class="post-title-link" itemprop="url">GIS及其相关组件</a>
-        </h2>
-
-        <div class="post-meta">
-		  
-		  
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2026-03-11 09:49:21 / 修改时间：16:55:17" itemprop="dateCreated datePublished" datetime="2026-03-11T09:49:21+08:00">2026-03-11</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="GIL：气体绝缘金属封闭输电线路"><a href="#GIL：气体绝缘金属封闭输电线路" class="headerlink" title="GIL：气体绝缘金属封闭输电线路"></a>GIL：气体绝缘金属封闭输电线路</h1><h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><p>在介绍GIS之前，我们先从GIL开始引入，因为GIL相当于更长的GIS母线，但它的结构比GIS简单的多。</p>
-<p>在电力传输场景中，当电缆（容易发热、电容效应大）或架空线（占地广、景观影响大）不适用时，则常使用GIL进行<strong>大容量、<u>特高压</u>的电能传输（比如跨江隧道、地下电站或变电站内部引出线）。</strong></p>
-<img src="/images/loading.png" data-original="/2026/03/11/GIS/1.jpg" class title="GIL equipment"> 
-<p>性能方面，GIL <strong>安全性能更好、输电效率更高、智能化程度更高、电磁辐射更少、线路损耗更低、使用寿命更长</strong>，在多方面均有明显优势。</p>
-<p>成本方面，GIL 的 建造成本为每千米 1300 万左右，略高于架空线和地下电缆。</p>
-<p>架空线应用在地面，而 GIL 主要应用下地下，需要建设管廊，需要额外的土建成本，更多适用于地下输电。</p>
-<h2 id="结构"><a href="#结构" class="headerlink" title="结构"></a>结构</h2><p>GIL的结构本质上是一个“管中管”的设计，其主要组成为：外壳，中心导体，绝缘介质，绝缘支撑件、即其他辅助与补偿元件</p>
-<h3 id="外壳"><a href="#外壳" class="headerlink" title="外壳"></a>外壳</h3><p>即图中直接看到的圆柱长筒，其内部空心，安装了输电导体。外壳的作用是<strong>密封绝缘气体</strong>，同时作为接地的<strong>防护罩</strong>，屏蔽电场并防止外界环境（潮湿、污秽）干扰。</p>
-<h3 id="中心导体"><a href="#中心导体" class="headerlink" title="中心导体"></a>中心导体</h3><p>位于外壳正中央的金属管，<strong>电流传输的实际载体</strong>。</p>
-<p>采用空心管状设计。这不仅是为了减轻重量，更重要的是利用<strong>趋边效应</strong>（Skin Effect），因为高压交流电主要在导体表面流动。</p>
-<h3 id="绝缘介质"><a href="#绝缘介质" class="headerlink" title="绝缘介质"></a>绝缘介质</h3><p>由于外壳和导体均通常为铝合金，因此其中间需要填充高性能的绝缘材料<strong>进行分隔</strong>。在GIL和GIS中，通常都使用<strong>高压</strong> SF6（六氟化硫） 气体，由于其是温室气体，现在也有混入氮气的操作。</p>
-<h3 id="绝缘支撑件"><a href="#绝缘支撑件" class="headerlink" title="绝缘支撑件"></a>绝缘支撑件</h3><p>这是<strong>将导体固定在外壳中心</strong>的“支架”，通常由环氧树脂浇注而成。最常见的是盆式绝缘子，即外观像个盆，不仅起到了支撑作用，还可以将每段管线<strong>密封为单独隔室</strong>，防止一处漏气影响全线。</p>
-<h3 id="辅助与补偿元件"><a href="#辅助与补偿元件" class="headerlink" title="辅助与补偿元件"></a>辅助与补偿元件</h3><ul>
-<li><strong>伸缩节（波纹管）：</strong> <strong><u>最重要</u></strong>，内部的柔性元件允许它像手风琴一样拉伸或压缩，吸收金属管线因热胀冷缩产生的形变，<strong><u>热胀冷缩是导致GIL出现机械故障的主要原因，因此伸缩节周围常出现故障</u></strong></li>
-</ul>
-<img src="/images/loading.png" data-original="/2026/03/11/GIS/2.png" class title="Bellows"> 
-<p>吸附剂（干燥剂）： 放置在内部，用于吸收气体中的水分和分解产物。</p>
-<p>微粒捕集器： 捕捉内部残留的细小金属颗粒，防止在强电场下引发放电事故。</p>
-<p>总的来说，GIL承担了特高压输电中的“导线”角色，没有过多其他的作用。</p>
-<h1 id="GIS：气体绝缘金属封闭开关设备"><a href="#GIS：气体绝缘金属封闭开关设备" class="headerlink" title="GIS：气体绝缘金属封闭开关设备"></a>GIS：气体绝缘金属封闭开关设备</h1><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/1906311494272021973"> GIS 究竟是什么？一文讲透 GIS 设备基础概念与知识要点 - 知乎</a></p>
-<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/1887432258748663073">GIS气体绝缘开关设备详解：结构、特点、组成与维护指南 - 知乎</a></p>
-<p>GIS (Gas Insulated Switchgear) 相当于电力系统的“多功能核心枢纽”，它集成了断路器、隔离开关、接地开关、互感器和避雷器等高压电气元件，并封装在接地的金属外壳内，外壳中充入了SF6气体作为绝缘介质。如果把GIL比作“铁轨”，则GIS就是“火车站”一样的存在，负责<strong>控制和保护</strong>输电系统。</p>
-<p>GIS的主要优点是占地面积小，可靠性高；缺点是检修困难，使用的绝缘气体SF6成本较高。其结构如图所示：</p>
-<img src="/images/loading.png" data-original="/2026/03/11/GIS/3.jpg" class title="GIS1"> 
-<img src="/images/loading.png" data-original="/2026/03/11/GIS/4.jpg" class title="GIS2"> 
-<p>GIS的核心组件主要有<strong>5个</strong>，分别是断路器、隔离开关与接地开关、互感器、避雷器、母线</p>
-<h2 id="结构-1"><a href="#结构-1" class="headerlink" title="结构"></a>结构</h2><h3 id="断路器"><a href="#断路器" class="headerlink" title="断路器"></a>断路器</h3><p>图1的①，就是那个方方的柜子。<strong>负责在正常或故障（短路）情况下<u>切断</u>电流</strong>。其内部充有比母线中更高气压的SF6，用于迅速灭弧。</p>
-<h3 id="隔离开关"><a href="#隔离开关" class="headerlink" title="隔离开关"></a>隔离开关</h3><p>图1中②，制造一个<strong>可见的、可靠的绝缘断口</strong>。它的存在是为了让检修人员百分之百确认：这部分线路已经和带电母线彻底分开了。（拿家中电力系统举例的话，断路器就是电闸，隔离开关就是电器的电线插口）</p>
-<p>由于其不具备很强的灭弧能力，因此必须在断路器先切断电流后，才能操作隔离开关。</p>
-<h3 id="接地开关"><a href="#接地开关" class="headerlink" title="接地开关"></a>接地开关</h3><p>图1中③，在停电后，<strong>将指定位置部分进行可靠接地</strong>，起到泄放残余电荷，感应电防护和防止意外送电的作用。</p>
-<h3 id="电压、电流互感器"><a href="#电压、电流互感器" class="headerlink" title="电压、电流互感器"></a>电压、电流互感器</h3><p>在图1中应该是④和⑤？，负责将高压信号转变为低压小电流，供仪表测量和继电保护使用。</p>
-<h3 id="避雷器"><a href="#避雷器" class="headerlink" title="避雷器"></a>避雷器</h3><p>图中未标出，限制过电压，防止雷电或操作浪涌损坏内部绝缘。</p>
-<h3 id="母线"><a href="#母线" class="headerlink" title="母线"></a>母线</h3><p>图1中⑨，内部导体主要分为单筒单线式和三相共筒式，三相共筒式更节约空间，但只能用于中低压传输。其他内容则与GIL相同。</p>
+<h2 id="SRP-PHAT"><a href="#SRP-PHAT" class="headerlink" title="SRP-PHAT"></a>SRP-PHAT</h2><p>准确来说这个方法已经不算是直接计算DOA，但是跟GCC-PHAT强相关，所以也放这里了</p>
+<p>SRP-PHAT<strong>先在空间中划分网格（候选声源点）</strong>。对于空间中任意一个假设的声源点，计算它到达所有麦克风对的理论时延。然后将所有麦克风对在这些理论时延处的 GCC-PHAT 值进行<strong>空间累加</strong>。</p>
+<p>这和基于波束形成的方法非常像，只是波束形成的输出是声压，而SRP-PHAT的输出是互相关函数值：</p>
+<script type="math/tex; mode=display">
+P(\mathbf{s}) = \sum_{i=1}^{M} \sum_{j=1}^{M} R_{x_i x_j}^{PHAT}\left( \tau_{ij}(\mathbf{s}) \right)</script><p>显而易见，该方法要计算任意两个阵元的互相关值，计算量极大，即使预先计算出所有的时延，仍要计算大量次互相关，因此实际使用时一般配合一些简化计算量的优化：</p>
+<p><strong>由粗到精的搜索（Coarse-to-Fine Search）</strong>：先用极稀疏的网格扫描空间，锁定高能量的局部区域；再在这些候选区域内细化网格进行微观搜索。</p>
+<p><strong>随机区域收缩法（Stochastic Region Contraction, SRC）</strong>：基于动态优化思想，每次随机抽取空间样本点，根据响应功率不断收缩搜索空间收敛到最优解，能将计算量降低几个数量级。</p>
+<p><strong>GPU 并行加速</strong>：由于每个空间网格点的功率计算 $P(\mathbf{s})$ 彼此完全独立，属于典型的数据并行（SIMD）任务。在现代工程中，利用 CUDA 将网格映射分发给 GPU 执行，可以极其轻松地实现高分辨率的三维实时 SRP-PHAT 定位。</p>
+<h1 id="从TDOA得到DOA"><a href="#从TDOA得到DOA" class="headerlink" title="从TDOA得到DOA"></a>从TDOA得到DOA</h1><p>本节默认在远场模型下计算（远场模型只能得到DOA，无法得到距离，想象声源在参考阵元射出的一条射线方向，而波就是以该射线为法线的平面）</p>
+<p>先从二维说起，对于两个距离为d的阵元，对于平面波的入射角（与阵元连线的夹角），有：</p>
+<script type="math/tex; mode=display">
+\Delta x = c \cdot \tau = d \cdot \cos\theta</script><p>c为声速，t为TODA，即可通过反三角求解θ</p>
+<p>现在来到三维，方向就变为了方位角Φ和俯仰角θ(与xy平面夹角），与球坐标系定义相同，此时声源方向单位向量就可以表示为：</p>
+<script type="math/tex; mode=display">
+n=[\cos\theta \cos\phi, \cos\theta \sin\phi,\sin\theta]</script><p>于是就有：</p>
+<script type="math/tex; mode=display">
+Δx\cos\theta \cos\phi + Δy\cos\theta \sin\phi + Δz\sin\theta = -c\tau</script><p>理论上只需要3阵元（也就是3对TDOA）就可以求解这个方程，当阵元大于3时，一般使用最小二乘法求最优解，对于平面阵列，有：</p>
+<script type="math/tex; mode=display">
+\mathbf{A} = \begin{bmatrix} \Delta x_{12} & \Delta y_{12} \\ \Delta x_{13} & \Delta y_{13} \\ \vdots & \vdots \\ \Delta x_{i j} & \Delta y_{i j} \\ \vdots & \vdots \end{bmatrix}_{P \times 2}, \quad \mathbf{m} = \begin{bmatrix} n_x \\ n_y \end{bmatrix}_{2 \times 1}, \quad \mathbf{Y} = \begin{bmatrix} -c\tau_{12} \\ -c\tau_{13} \\ \vdots \\ -c\tau_{ij} \\ \vdots \end{bmatrix}_{P \times 1}</script><p>线性方程组可以紧凑地表示为：</p>
+<script type="math/tex; mode=display">
+\mathbf{A}\mathbf{m} = \mathbf{Y}</script><p>最小二乘法就是让损失函数（Am-b)^2最小，即让该函数对m的偏导为0，化简后则有：</p>
+<script type="math/tex; mode=display">
+\mathbf{m} = \begin{bmatrix} n_x \\ n_y \end{bmatrix} = (\mathbf{A}^T \mathbf{A})^{-1} \mathbf{A}^T \mathbf{Y}</script><p>（上式为最小二乘法通用解），得到方向向量后根据三角函数关系即可得到具体角度</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>基于TDOA的声源定位方法实现原理较为简单，速度也还算可以（SRP不算该方法），核心就是互相关函数和如何设计加权函数，普遍存在的缺点就是极容易被噪声干扰。</p>
 
       
     </div>
@@ -473,7 +523,7 @@ R_{x_1 x_2}^{PHAT}(\tau) = \int_{-\infty}^{\infty} e^{j \theta(f)} e^{j 2 \pi f 
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/23/">23</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/24/">24</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -540,7 +590,7 @@ R_{x_1 x_2}^{PHAT}(\tau) = \int_{-\infty}^{\infty} e^{j \theta(f)} e^{j 2 \pi f 
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">69</span>
+          <span class="site-state-item-count">70</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -710,11 +760,11 @@ R_{x_1 x_2}^{PHAT}(\tau) = \int_{-\infty}^{\infty} e^{j \theta(f)} e^{j 2 \pi f 
         pbOptions.networks = "Wechat,QQZone,Weibo,Douban,Twitter,Facebook";
       new needShareButton('#needsharebutton-postbottom', pbOptions);
   </script>
-<script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script><script>
             window.imageLazyLoadSetting = {
                 isSPA: false,
                 preloadRatio: 1,
                 processImages: null,
             };
-        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(e.href.match(t)||e.href.match(r))&&(e.href=a.dataset.original)})});</script><script>!function(n){n.imageLazyLoadSetting.processImages=o;var e=n.imageLazyLoadSetting.isSPA,i=n.imageLazyLoadSetting.preloadRatio||1,r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]"));function o(){e&&(r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")));for(var t,a=0;a<r.length;a++)0<=(t=(t=r[a]).getBoundingClientRect()).bottom&&0<=t.left&&t.top<=(n.innerHeight*i||document.documentElement.clientHeight*i)&&function(){var t,e,n,i,o=r[a];t=o,e=function(){r=r.filter(function(t){return o!==t})},n=new Image,i=t.getAttribute("data-original"),n.onload=function(){t.src=i,e&&e()},t.src!==i&&(n.src=i)}()}o(),n.addEventListener("scroll",function(){var t,e;t=o,e=n,clearTimeout(t.tId),t.tId=setTimeout(function(){t.call(e)},500)})}(this);</script><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script></body>
+        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(e.href.match(t)||e.href.match(r))&&(e.href=a.dataset.original)})});</script><script>!function(n){n.imageLazyLoadSetting.processImages=o;var e=n.imageLazyLoadSetting.isSPA,i=n.imageLazyLoadSetting.preloadRatio||1,r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]"));function o(){e&&(r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")));for(var t,a=0;a<r.length;a++)0<=(t=(t=r[a]).getBoundingClientRect()).bottom&&0<=t.left&&t.top<=(n.innerHeight*i||document.documentElement.clientHeight*i)&&function(){var t,e,n,i,o=r[a];t=o,e=function(){r=r.filter(function(t){return o!==t})},n=new Image,i=t.getAttribute("data-original"),n.onload=function(){t.src=i,e&&e()},t.src!==i&&(n.src=i)}()}o(),n.addEventListener("scroll",function(){var t,e;t=o,e=n,clearTimeout(t.tId),t.tId=setTimeout(function(){t.call(e)},500)})}(this);</script></body>
 </html>
