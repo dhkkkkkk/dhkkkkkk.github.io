@@ -1,5 +1,5 @@
 ---
-title: 一些经典算法集合（杂）
+title: 经典控制算法
 date: 2025-11-17 10:16:11
 tags: 杂项
 mathjax: true
