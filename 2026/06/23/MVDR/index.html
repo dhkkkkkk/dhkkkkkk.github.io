@@ -22,25 +22,28 @@
     var CONFIG = {"hostname":"dhkkkkkk.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="记录一些学习日常">
-<meta property="og:type" content="website">
-<meta property="og:title" content="小董的BLOG">
-<meta property="og:url" content="https://dhkkkkkk.github.io/index.html">
+  <meta name="description" content="自适应波束形成波束形成的原理是调整相位阵列的基本单元参数，使得某些角度的信号获得相长干涉，而另一些角度的信号获得相消干涉。对各个麦克风信号加权求和、滤波，最终得到期望方向的语音信号，相当于形成一个“波束”。 传统波束形成是使用固定的权值来形成某个方向的波束，而自适应波束形成则是根据环境的变化，动态调整阵列麦克风的权重和相位，从而最大限度地抑制干扰噪声并增强目标信号。 基本数学模型假设一个由 M 个">
+<meta property="og:type" content="article">
+<meta property="og:title" content="自适应波束形成">
+<meta property="og:url" content="https://dhkkkkkk.github.io/2026/06/23/MVDR/index.html">
 <meta property="og:site_name" content="小董的BLOG">
-<meta property="og:description" content="记录一些学习日常">
+<meta property="og:description" content="自适应波束形成波束形成的原理是调整相位阵列的基本单元参数，使得某些角度的信号获得相长干涉，而另一些角度的信号获得相消干涉。对各个麦克风信号加权求和、滤波，最终得到期望方向的语音信号，相当于形成一个“波束”。 传统波束形成是使用固定的权值来形成某个方向的波束，而自适应波束形成则是根据环境的变化，动态调整阵列麦克风的权重和相位，从而最大限度地抑制干扰噪声并增强目标信号。 基本数学模型假设一个由 M 个">
 <meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2026-06-23T01:35:51.000Z">
+<meta property="article:modified_time" content="2026-06-23T08:02:23.589Z">
 <meta property="article:author" content="dhk">
+<meta property="article:tag" content="麦克风阵列算法">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="https://dhkkkkkk.github.io/">
+<link rel="canonical" href="https://dhkkkkkk.github.io/2026/06/23/MVDR/">
 
 
 <script id="page-configurations">
   // https://hexo.io/docs/variables.html
   CONFIG.page = {
     sidebar: "",
-    isHome : true,
-    isPost : false,
+    isHome : false,
+    isPost : true,
     lang   : 'zh-CN'
   };
 </script>
@@ -58,7 +61,7 @@
   padding: 1px 4px;
 }
 </style>
-  <title>小董的BLOG</title>
+  <title>自适应波束形成 | 小董的BLOG</title>
   
 
 
@@ -191,90 +194,10 @@
         <div class="content-wrap">
           
 
-          <div class="content index posts-expand">
+          <div class="content post posts-expand">
             
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2022/09/08/%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/zoe.gif">
-      <meta itemprop="name" content="dhk">
-      <meta itemprop="description" content="记录一些学习日常">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="小董的BLOG">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/09/08/%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E/" class="post-title-link" itemprop="url">使用说明</a>
-        </h2>
-
-        <div class="post-meta">
-		  
-		  
-    <i class="fa fa-thumb-tack"></i>
-    <font color=green>TOP</font>
-    <span class="post-meta-divider">|</span>
-		  
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2022-09-08 18:51:12" itemprop="dateCreated datePublished" datetime="2022-09-08T18:51:12+08:00">2022-09-08</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-09-20 21:57:48" itemprop="dateModified" datetime="2022-09-20T21:57:48+08:00">2022-09-20</time>
-              </span>
-
-          
-
-        </div>
-      </header>
 
     
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="欢迎访问DHK的个人博客！以下是一些使用说明："><a href="#欢迎访问DHK的个人博客！以下是一些使用说明：" class="headerlink" title="欢迎访问DHK的个人博客！以下是一些使用说明："></a>欢迎访问DHK的个人博客！以下是一些使用说明：</h1><h2 id="1-写的目的"><a href="#1-写的目的" class="headerlink" title="1.写的目的"></a>1.写的目的</h2><p>主要是为了记录自己在一些学习中的笔记和感想，方便日后回忆与查阅，仅供内部学习，未经同意请勿转载！</p>
-<p>由于大部分是将自己的理解总结出来，所以有些地方不一定正确，也欢迎读者随时给予斧正，一些联系方式也已经放在侧边栏。</p>
-<h2 id="2-如何查找需要内容"><a href="#2-如何查找需要内容" class="headerlink" title="2.如何查找需要内容"></a>2.如何查找需要内容</h2><ul>
-<li>左侧目录有相关分类tag，以供查找</li>
-<li>也可以通过左侧搜索功能搜索想要的内容</li>
-<li>左侧我的GitHub仓库中也上传过之前使用过的一些例程模板</li>
-</ul>
-<h2 id="3-注意事项"><a href="#3-注意事项" class="headerlink" title="3.注意事项"></a>3.注意事项</h2><ul>
-<li><u>如果你曾经打开过此博客网站，<strong>请务必在阅读相关博客之前先Ctrl+F5</strong>强制清理之前的缓存，不然你可能会看不到最新更新的内容！！！</u><em>（感觉是gitee的问题，之前部署到GitHub时并未遇见此问题）</em></li>
-<li>如果想定位到想查找的内容的具体位置，建议先用博客的搜索功能定位到文章，再通过ctrl F搜索关键字即可。</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
@@ -290,10 +213,9 @@
       <meta itemprop="name" content="小董的BLOG">
     </span>
       <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2026/06/23/MVDR/" class="post-title-link" itemprop="url">自适应波束形成</a>
-        </h2>
+        <h1 class="post-title" itemprop="name headline">
+          自适应波束形成
+        </h1>
 
         <div class="post-meta">
 		  
@@ -319,7 +241,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="自适应波束形成"><a href="#自适应波束形成" class="headerlink" title="自适应波束形成"></a>自适应波束形成</h1><p>波束形成的原理是调整相位阵列的基本单元参数，使得某些角度的信号获得相长干涉，而另一些角度的信号获得相消干涉。对各个麦克风信号加权求和、滤波，最终得到期望方向的语音信号，相当于形成一个“波束”。</p>
+        <h1 id="自适应波束形成"><a href="#自适应波束形成" class="headerlink" title="自适应波束形成"></a>自适应波束形成</h1><p>波束形成的原理是调整相位阵列的基本单元参数，使得某些角度的信号获得相长干涉，而另一些角度的信号获得相消干涉。对各个麦克风信号加权求和、滤波，最终得到期望方向的语音信号，相当于形成一个“波束”。</p>
 <p>传统波束形成是使用<strong>固定的权值</strong>来形成某个方向的波束，而自适应波束形成则是根据环境的变化，动态调整阵列麦克风的权重和相位，从而<strong>最大限度地抑制干扰噪声</strong>并增强目标信号。</p>
 <h1 id="基本数学模型"><a href="#基本数学模型" class="headerlink" title="基本数学模型"></a>基本数学模型</h1><p>假设一个由 M 个阵元组成的任意构型的接收阵列，空间中存在一个来自方向 θ_0的期望信号，以及来自其他方向的干扰和环境噪声。则各麦克风接收到的信号（Mx1维）可表示为：</p>
 <script type="math/tex; mode=display">
@@ -403,105 +325,41 @@ C = \left[ A(\theta_0), \left. \frac{\partial A(\theta)}{\partial \theta} \right
 <p>缺点就是需要精准的导向矢量，否正阻塞矩阵B会产生泄露，自适应滤波器会将泄露的期望信号视作干扰，导致最后期望信号也受到抑制</p>
 <p>为了防止自适应计算过强，<strong>也可以使用对角加载限制过大变化</strong></p>
 
-      
     </div>
 
     
     
-    
+    <div class="post-widgets">
+      <div id="needsharebutton-postbottom">
+        <span class="btn">
+          <i class="fa fa-share-alt" aria-hidden="true"></i>
+        </span>
+      </div>
+    </div>
+
       <footer class="post-footer">
-        <div class="post-eof"></div>
+          <div class="post-tags">
+              <a href="/tags/%E9%BA%A6%E5%85%8B%E9%A3%8E%E9%98%B5%E5%88%97%E7%AE%97%E6%B3%95/" rel="tag"><i class="fa fa-tag"></i># 麦克风阵列算法</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2026/06/15/problem-about-mic-array/" rel="prev" title="麦克风阵列的一些理论补充">
+      <i class="fa fa-chevron-left"></i> 麦克风阵列的一些理论补充
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
       </footer>
+    
   </article>
   
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2026/06/15/problem-about-mic-array/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/zoe.gif">
-      <meta itemprop="name" content="dhk">
-      <meta itemprop="description" content="记录一些学习日常">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="小董的BLOG">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2026/06/15/problem-about-mic-array/" class="post-title-link" itemprop="url">麦克风阵列的一些理论补充</a>
-        </h2>
-
-        <div class="post-meta">
-		  
-		  
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2026-06-15 10:17:48 / 修改时间：17:08:43" itemprop="dateCreated datePublished" datetime="2026-06-15T10:17:48+08:00">2026-06-15</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="瑞利极限与远场判据"><a href="#瑞利极限与远场判据" class="headerlink" title="瑞利极限与远场判据"></a>瑞利极限与远场判据</h1><p>之前我们提到过判断声场模型的判据：</p>
-<script type="math/tex; mode=display">
-R_r = \frac{2D^2}{\lambda}</script><p>当声源与阵列的绝对距离大于这个值时即可认为是远场模型，此时不同麦克风接收信号的<strong>幅度差异较小</strong>，因此把不同麦克风采集的语音信号的幅值认为都是一样的，只需对各麦克风接收信号的<strong>相位差异</strong>进行处理即可。声波视为<strong>平面波</strong>。</p>
-<p>并且从公式中我们可以得知波长越小（频率越高），这个判据就会越远，即我们需要更远的距离才能将当前频率下的声场视作远场处理，因此若想使用更简单的远场模型，则要求我们的<strong>频段选择偏小</strong></p>
-<p>但是这又带来了一个问题，<strong>即瑞利极限带来的空间分辨率问题</strong>。</p>
-<script type="math/tex; mode=display">
-Δ\theta_R=1.22\frac {\lambda}{D}</script><p>瑞利极限最先在光学中提出，在声学成像中，我们可以理解为当<strong>两个点源小于这个距离</strong>时，系统则无法分辨他们的准确位置，在我个人的使用中，会出现两个声源在中点合成为一个源峰的现象（主要是DAS和SPR-phat）。</p>
-<p>也就是说，当阵列尺寸不变时，我们如果想获得较高的空间分辨率，则要求波长偏小，也就是<strong>频段选择偏高</strong>，这与我们在<strong><u>远场判据中的要求是冲突的</u></strong></p>
-<p>将上两式联立我们可以得到：</p>
-<script type="math/tex; mode=display">
-R_r=\frac{2.44D}{Δ\theta_R}</script><p><strong><u>也就是说阵列分辨率越高，则远场要求更远</u></strong></p>
-<p>因此，在实际成像中，我们<strong>应该优先满足高分辨率</strong>，则频段选择应该略高一些；即使采集距离较近，也<u><strong>不该使用较低频段强行拉低远场判据</strong>，因为这必然会导致分辨率急剧下降，此时就算可以用远场模型，也是没意义的</u></p>
-<p>综上，若想获得质量较高的成像，在工程中首选是提高孔径D与取到合适的频段</p>
-<h1 id="主瓣宽度问题"><a href="#主瓣宽度问题" class="headerlink" title="主瓣宽度问题"></a>主瓣宽度问题</h1><p>刚刚我们提到，当空间分辨率不足时，也就是波长较长，频率较低时，会出现声源相互合成的现象（或者其他无法准确显示声源位置的现象）。其中很大一部分原因就是<strong>声源的主瓣宽度与空间分辨率成强正比关系</strong>，也就是说合成的峰值其实就是两个声源的主瓣叠加后超过了各自的主瓣中心强度</p>
-<p>也就是说，在不改变孔径的条件下，<strong><u>频率越低，主瓣越宽</u></strong>。当然，主瓣宽度还与孔径大小、阵列数量和使用的定位算法有关，这一节我们主要就讲频率的问题</p>
-<p>其实很好理解，在各类利用相位<strong>差</strong>的算法中（SRP-PHAT，DAS），我们在频域对相位的表达是：</p>
-<script type="math/tex; mode=display">
-Δ\phi=2\pi f \tau</script><p>也就是说，f越小，相位差越不明显，最终导致功率图峰值附近都很平滑，变化很慢，就会呈现出宽主瓣的现象</p>
-<h1 id="MUSIC为什么可以突破瑞利极限"><a href="#MUSIC为什么可以突破瑞利极限" class="headerlink" title="MUSIC为什么可以突破瑞利极限"></a>MUSIC为什么可以突破瑞利极限</h1><p>其实基于上一节主瓣宽度的分析，再结合music的原理，就很好理解了。对于DAS，其定位图像是利用的波束功率，因此非常受限于波长和孔径；而对于SRP-PHAT，由于其舍弃了幅值，相比于DAS会稍微好一点，但是其本质还是基于<strong>相位差</strong>的互相关功率，也会被上述的主瓣问题影响。</p>
-<p>而对于MUSIC，其是直接利用的导向矢量和噪声子空间的正交关系，与相位差无关，因此其空间分辨率理论上可以自己决定其扫描步长，而不是受限于瑞利极限，从而实现超分辨率成像</p>
-<p>虽然但是，实际还是会与频率有影响，因为导向矢量中也包含了相位信息，但是没有去专门计算差值了；但实际中其分辨率还是会达到瑞利极限的数倍。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-  
-  <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/24/">24</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
-  </nav>
 
 
           </div>
@@ -552,6 +410,7 @@ R_r=\frac{2.44D}{Δ\theta_R}</script><p><strong><u>也就是说阵列分辨率�
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%87%AA%E9%80%82%E5%BA%94%E6%B3%A2%E6%9D%9F%E5%BD%A2%E6%88%90"><span class="nav-number">1.</span> <span class="nav-text">自适应波束形成</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E6%95%B0%E5%AD%A6%E6%A8%A1%E5%9E%8B"><span class="nav-number">2.</span> <span class="nav-text">基本数学模型</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#MVDR%E6%9C%80%E5%B0%8F%E6%96%B9%E5%B7%AE%E6%97%A0%E5%A4%B1%E7%9C%9F%E5%93%8D%E5%BA%94"><span class="nav-number">3.</span> <span class="nav-text">MVDR最小方差无失真响应</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8B%89%E6%A0%BC%E6%9C%97%E6%97%A5%E4%B9%98%E5%AD%90%E6%B3%95%E6%B1%82%E8%A7%A3%E6%9C%80%E4%BC%98%E9%97%AE%E9%A2%98"><span class="nav-number">3.1.</span> <span class="nav-text">拉格朗日乘子法求解最优问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#py%E4%BB%A3%E7%A0%81"><span class="nav-number">3.2.</span> <span class="nav-text">py代码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B3%E4%BA%8E%E5%AF%B9%E8%A7%92%E5%8A%A0%E8%BD%BD"><span class="nav-number">3.3.</span> <span class="nav-text">关于对角加载</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A0%B8%E5%BF%83%E7%97%9B%E7%82%B9"><span class="nav-number">3.3.1.</span> <span class="nav-text">核心痛点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E5%AD%A6%E5%8E%9F%E7%90%86"><span class="nav-number">3.3.2.</span> <span class="nav-text">数学原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8A%A0%E8%BD%BD%E9%87%8F%E7%9A%84%E9%80%89%E6%8B%A9"><span class="nav-number">3.3.3.</span> <span class="nav-text">加载量的选择</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9F%BA%E4%BA%8E%E5%99%AA%E5%A3%B0%E5%9F%BA%E5%BA%95"><span class="nav-number">3.3.3.1.</span> <span class="nav-text">基于噪声基底</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9F%BA%E4%BA%8E%E7%9F%A9%E9%98%B5%E8%BF%B9%EF%BC%88trace%EF%BC%89"><span class="nav-number">3.3.3.2.</span> <span class="nav-text">基于矩阵迹（trace）</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MVDR%E7%9A%84%E4%BC%98%E7%BC%BA%E7%82%B9"><span class="nav-number">3.4.</span> <span class="nav-text">MVDR的优缺点</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BC%98%E7%82%B9"><span class="nav-number">3.4.1.</span> <span class="nav-text">优点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BC%BA%E7%82%B9%E4%B8%8E%E5%B7%A5%E7%A8%8B%E6%8C%91%E6%88%98"><span class="nav-number">3.4.2.</span> <span class="nav-text">缺点与工程挑战</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#LCMV%E7%BA%BF%E6%80%A7%E7%BA%A6%E6%9D%9F%E6%9C%80%E5%B0%8F%E6%96%B9%E5%B7%AE"><span class="nav-number">4.</span> <span class="nav-text">LCMV线性约束最小方差</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%B8%E8%A7%81%E7%BA%A6%E6%9D%9F%E7%9F%A9%E9%98%B5%E8%AE%BE%E8%AE%A1"><span class="nav-number">4.1.</span> <span class="nav-text">常见约束矩阵设计</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#GSC%E5%B9%BF%E4%B9%89%E6%97%81%E7%93%A3%E7%9B%B8%E6%B6%88%E5%99%A8"><span class="nav-number">5.</span> <span class="nav-text">GSC广义旁瓣相消器</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%98%BB%E5%A1%9E%E7%9F%A9%E9%98%B5B"><span class="nav-number">5.1.</span> <span class="nav-text">阻塞矩阵B</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%87%AA%E9%80%82%E5%BA%94%E5%99%AA%E5%A3%B0%E7%9B%B8%E6%B6%88%E5%99%A8"><span class="nav-number">5.2.</span> <span class="nav-text">自适应噪声相消器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BC%98%E7%BC%BA%E7%82%B9"><span class="nav-number">5.3.</span> <span class="nav-text">优缺点</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
