@@ -31,7 +31,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://dhkkkkkk.github.io/images/loading.png">
 <meta property="article:published_time" content="2025-10-05T07:10:49.000Z">
-<meta property="article:modified_time" content="2026-06-04T08:05:57.336Z">
+<meta property="article:modified_time" content="2026-06-23T10:22:30.957Z">
 <meta property="article:author" content="dhk">
 <meta property="article:tag" content="麦克风阵列算法">
 <meta name="twitter:card" content="summary">
@@ -235,7 +235,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2026-06-04 16:05:57" itemprop="dateModified" datetime="2026-06-04T16:05:57+08:00">2026-06-04</time>
+                <time title="修改时间：2026-06-23 18:22:30" itemprop="dateModified" datetime="2026-06-23T18:22:30+08:00">2026-06-23</time>
               </span>
 
           
@@ -253,7 +253,7 @@
 <p>选定参考阵元后，后面阵元接收到的信号比参考阵元晚：</p>
 <script type="math/tex; mode=display">
 \Delta t = \left[0,\ \frac{\delta \cos(\theta_d)}{c},\ \frac{2\delta \cos(\theta_d)}{c},\ \cdots,\ \frac{(M-1)\delta \cos(\theta_d)}{c}\right]</script><p>其中c为声速，δ为后续阵元相对参考阵元的间距（针对复杂阵元δ不为定值），θ为信号入射角度，将其反应到信号的相位变化上（假设输入为单频信号）：</p>
-<p><em>早到的信号相位为<strong>正</strong>，表示相位超前，晚到的则为<strong>负</strong>（即下述场景）</em></p>
+<p>早到的信号t值为<strong>正</strong>，相位为负，代表相位超前</p>
 <script type="math/tex; mode=display">
 y(n) = \left[ x(n),\ x(n)e^{-j2\pi f_0\frac{\delta\cos(\theta_d)}{c}},\ x(n)e^{-j2\pi f_0\frac{2\delta\cos(\theta_d)}{c}},\ \cdots,\ x(n)e^{-j2\pi f_0\frac{(M-1)\delta\cos(\theta_d)}{c}} \right]  \\ = \left[ 1,\ e^{-j2\pi f_0\frac{\delta\cos(\theta_d)}{c}},\ e^{-j2\pi f_0\frac{2\delta\cos(\theta_d)}{c}},\ \cdots,\ e^{-j2\pi f_0\frac{(M-1)\delta\cos(\theta_d)}{c}} \right]x(n) \\
 =a(\theta_d) \cdot x(n)</script><p>其中a反应了不同a阵元的空间相位差，即导向矢量，受到以下变量影响：</p>
@@ -280,9 +280,9 @@ P(f)  = |\mathbf{w}(f) \mathbf{Y}(f)|^2=|a^H(\theta,f)\mathbf{Y}(f)|^2</script><
 \mathbf{C}_{f_0} = E[\mathbf{Y}\mathbf{Y}^H] = \begin{bmatrix} E[Y_1 Y_1^*] & E[Y_1 X_2^*] & \dots \\ E[Y_2 Y_1^*] & E[Y_2 Y_2^*] & \dots \\ \vdots & \vdots & \ddots \end{bmatrix}</script><p>这个矩阵就是交叉谱矩阵CSM，每个值代表了两个麦克风的相关程度，对角线则为当前麦克风的能量信息（无相位信息，因此在计算中可考虑不使用对角线元素）。其中X_n代表第n个麦克风在某个频率f0下的FFT 复数值。</p>
 <p>在原来的单快拍计算中：</p>
 <script type="math/tex; mode=display">
-P_{single} = |\mathbf{w} \mathbf{Y}|^2 = (\mathbf{w} \mathbf{Y})(\mathbf{w} \mathbf{Y})^H= \mathbf{w} \mathbf{Y} \mathbf{Y}^H \mathbf{w}^H</script><p>当引入CSM后并加入对能量取平均，则有：</p>
+P_{single} = |\mathbf{w^H} \mathbf{Y}|^2 = (\mathbf{w^H} \mathbf{Y})(\mathbf{w^H} \mathbf{Y})^H= \mathbf{w^H} \mathbf{Y} \mathbf{Y}^H \mathbf{w}</script><p>当引入CSM后并加入对能量取平均，则有：</p>
 <script type="math/tex; mode=display">
-P_{multi} = \mathbf{w} E[\mathbf{Y} \mathbf{Y}^H] \mathbf{w}^H = \mathbf{w} \mathbf{C} \mathbf{w}^H</script><p>因此对于延迟权重向量（矩阵）W，其与单快拍计算中的完全一致，连形状都不用变。</p>
+P_{multi} = \mathbf{w}^H E[\mathbf{Y} \mathbf{Y}^H] \mathbf{w}= \mathbf{w}^H \mathbf{C} \mathbf{w}</script><p>因此对于延迟权重向量（矩阵）W，其与单快拍计算中的完全一致，连形状都不用变。</p>
 <h1 id="声学橡皮擦（HDR）"><a href="#声学橡皮擦（HDR）" class="headerlink" title="声学橡皮擦（HDR）"></a>声学橡皮擦（HDR）</h1><p>当环境中存在多个声源时，较弱的声源容易直接被强声源覆盖，若想显示该弱声源，则可以通过波束形成单独复原强声源波形，再将该波形从麦克风信号中减去。对于该波形的波束形成，有：</p>
 <script type="math/tex; mode=display">
 \hat f(s_1) = \frac 1 M \sum^M_{i=1} w_i(\theta,\phi)y_i</script><p><em>需要注意的是，这里与波束形成<strong>成像</strong>略有不同。此处在对每个通道的麦克风信号分别进行相位对其后，直接将所有通道信号相加再取平均，是最标准的波束形成。相加之后，在(θ，φ)方向上的信号会汇聚（因为对它们的相位进行了对齐），其他方向上的信号则因为相位不一致，最终被弱化。</em></p>
