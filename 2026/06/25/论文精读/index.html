@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/xxw/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="/xxw/pace/pace-theme-minimal.min.css">
+  <script src="/xxw/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"dhkkkkkk.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="FullSubNet核心思路：将一个纯全频带模型和一个纯子频带模型依次连接起来，并利用实际的联合训练将这两种模型的优点结合起来。  全频带模型：输入全频带 带噪语音频谱，输出全频带 预测纯净语音 的模型。全频带模型可以捕获全局上下文谱和长距离交叉频带依赖，但缺乏信号平稳性建模和关注局部谱模式的能力 子频带模型：模型的输入由一个频率和多个上下文频率组成。输出是对应频率的纯净语音。所有频率都是独立处理">
+<meta property="og:type" content="article">
+<meta property="og:title" content="语音增强论文精读">
+<meta property="og:url" content="https://dhkkkkkk.github.io/2026/06/25/%E8%AE%BA%E6%96%87%E7%B2%BE%E8%AF%BB/index.html">
+<meta property="og:site_name" content="小董的BLOG">
+<meta property="og:description" content="FullSubNet核心思路：将一个纯全频带模型和一个纯子频带模型依次连接起来，并利用实际的联合训练将这两种模型的优点结合起来。  全频带模型：输入全频带 带噪语音频谱，输出全频带 预测纯净语音 的模型。全频带模型可以捕获全局上下文谱和长距离交叉频带依赖，但缺乏信号平稳性建模和关注局部谱模式的能力 子频带模型：模型的输入由一个频率和多个上下文频率组成。输出是对应频率的纯净语音。所有频率都是独立处理">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://dhkkkkkk.github.io/images/loading.png">
+<meta property="og:image" content="https://dhkkkkkk.github.io/images/loading.png">
+<meta property="article:published_time" content="2026-06-25T01:37:53.000Z">
+<meta property="article:modified_time" content="2026-06-30T09:01:20.566Z">
+<meta property="article:author" content="dhk">
+<meta property="article:tag" content="深度学习">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://dhkkkkkk.github.io/images/loading.png">
+
+<link rel="canonical" href="https://dhkkkkkk.github.io/2026/06/25/%E8%AE%BA%E6%96%87%E7%B2%BE%E8%AF%BB/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+<link rel="stylesheet" href="//cdn.jsdelivr.net/gh/theme-next/theme-next-needmoreshare2@1/needsharebutton.min.css"><style>
+#needsharebutton-postbottom {
+  cursor: pointer;
+  height: 26px;
+  margin-top: 10px;
+  position: relative;
+}
+#needsharebutton-postbottom .btn {
+  border: 1px solid $btn-default-border-color;
+  border-radius: 3px;
+  display: initial;
+  padding: 1px 4px;
+}
+</style>
+  <title>语音增强论文精读 | 小董的BLOG</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">小董的BLOG</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-目录">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tag fa-fw"></i>目录</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2026/06/25/%E8%AE%BA%E6%96%87%E7%B2%BE%E8%AF%BB/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/zoe.gif">
+      <meta itemprop="name" content="dhk">
+      <meta itemprop="description" content="记录一些学习日常">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小董的BLOG">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          语音增强论文精读
+        </h1>
+
+        <div class="post-meta">
+		  
+		  
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2026-06-25 09:37:53" itemprop="dateCreated datePublished" datetime="2026-06-25T09:37:53+08:00">2026-06-25</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2026-06-30 17:01:20" itemprop="dateModified" datetime="2026-06-30T17:01:20+08:00">2026-06-30</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="FullSubNet"><a href="#FullSubNet" class="headerlink" title="FullSubNet"></a>FullSubNet</h1><p>核心思路：将一个<strong>纯全频带模型</strong>和一个<strong>纯子频带模型</strong>依次连接起来，并利用实际的联合训练将这两种模型的优点结合起来。</p>
+<ul>
+<li>全频带模型：输入全频带 带噪语音频谱，输出全频带 预测纯净语音 的模型。全频带模型可以捕获全局上下文谱和长距离交叉频带依赖，但<strong>缺乏信号平稳性建模和关注局部谱模式的能力</strong></li>
+<li>子频带模型：模型的输入由一个频率和多个上下文频率组成。输出是对应频率的纯净语音。所有频率都是独立处理。由于噪声较于语音更加平稳，因此其可以通过对局部频带的平稳性建模区分噪声和语音；<strong>但对于信噪比极低的子带，效果不佳，因为其无法利用全频带信息。</strong></li>
+</ul>
+<p>通俗理解，子频带模型负责学习不同频段输入的分布，以<strong>得到不同频段的增强规则</strong>；全频带模型则负责学习<strong>全频带上频率的分布情况</strong>，以补充子频带模型没有利用全频带信息的缺陷</p>
+<h2 id="输入"><a href="#输入" class="headerlink" title="输入"></a>输入</h2><p>首先需要强调一点，在FullSubNet中，<strong><u>两个模型的建模方向均为时间轴（核心！！！）</u></strong>，也就是输出序列的长度为T</p>
+<ul>
+<li>全频带模型：输入直接是带噪语音的stft频谱</li>
+<li>子频带模型：全频带输出的格式为（B，1，F，T），原始FullSubNet会先将其reshape为（BxF，1，1，T），第一个1代表通道数，在此处没有意义；第二个1代表<strong>选择的当前频段</strong>，即全频带输出会将每个频段分离，<strong>每个频段信号都视作单个样本</strong>；此外，FullSubNet还会从原始带噪语音中选择相同频段和周围频段（（BxF，1，N，T），N为全频带当前样本频段的上下N个相邻频段），最后与全频带输出进行拼接，也就是子频带模型的输入为（BxF，1，1+N，T）</li>
+</ul>
+<h2 id="模型结构"><a href="#模型结构" class="headerlink" title="模型结构"></a>模型结构</h2><img src="/images/loading.png" data-original="/2026/06/25/%E8%AE%BA%E6%96%87%E7%B2%BE%E8%AF%BB/model.png" class title="FullSubNet"> 
+<p>全频带模型和子频带模型的结构完全一致，但由于子频带模型样本更小，因此其LSTM中<strong>隐藏层也相对小了一点</strong>；同时，由于子带模型输出的就是当前T时刻，对应频段的mask，因此也<strong>没有布置激活函数</strong></p>
+<p>原文使用的归一化是直接对每个样本的<strong>所有维度求均值</strong>再除以该均值</p>
+<h2 id="训练目标"><a href="#训练目标" class="headerlink" title="训练目标"></a>训练目标</h2><p>模型的输出，也就是子频带模型输出为（B，F，2，T），分别代表实部虚部的mask，这样就可以同时修正幅度和相位：</p>
+<script type="math/tex; mode=display">
+\hat M(t,f)=\hat M_r(t,f)+j\hat M_i(t,f)</script><p>而对于带噪语音，其可以表示为：</p>
+<script type="math/tex; mode=display">
+Y=S+N → S=MY</script><p>因此理想mask可以表示为：</p>
+<script type="math/tex; mode=display">
+M(t,f)= \frac {S}{Y}</script><p>然后直接拟合mask即可</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>其实FullSubNet的核心就是在全频带模型后接了一个子频带模型，该子频带模型用共享的参数处理所有的子频带特征，其他就没啥了</p>
+<h1 id="DCCRN"><a href="#DCCRN" class="headerlink" title="DCCRN"></a>DCCRN</h1><h2 id="CRN"><a href="#CRN" class="headerlink" title="CRN"></a>CRN</h2><p>在介绍DCCRN前，我们需要先知道它的核心框架，CRN：Convolutional Recurrent Network</p>
+<p>在语音领域，CRN同时结合了CNN局部能力强、RNN能学习长程依赖的优点，提出了一个经典的Encoder-Decoder结构：</p>
+<img src="/images/loading.png" data-original="/2026/06/25/%E8%AE%BA%E6%96%87%E7%B2%BE%E8%AF%BB/crn.png" class title="This is an image"> 
+<h3 id="Encoder"><a href="#Encoder" class="headerlink" title="Encoder"></a>Encoder</h3><p>由若干层Conv2D和BN、ELU组成</p>
+<p>每层Conv2D的参数通常为：<code>kernel=(5/3,2),stride=(2,1)</code>对应输入形状（B，C，F，T），即Encoder会通过卷积<strong><u>逐步降采样频率信息</u></strong>，而时间长度则保持不变（但时间轴上也会做卷积）</p>
+<p>对于离线增强任务，使用普通卷积，而对于在线增强推理任务，<strong>由于未来信息不可知，因此会使用掩码卷积（causal conv）</strong>，由于卷积核是有宽度的，因此其原理会比Transformer中的causal mask使用的三角矩阵更复杂一丢丢：</p>
+<p>假设现在数据为<code>x0 x1 x2</code>，卷积核大小为3，步长为1</p>
+<p>那对x0的传统卷积窗口则为：<code>pad x0 x1</code>，即pad默认在两边</p>
+<p>而在实时场景中t0时刻我们只有x0，没有x1，因此我们的causal conv的窗口即为：<code>pad pad x0</code>即全部在左边pad</p>
+<p>再举个例子就是，我们如果对x2进行causal conv，窗口即为<code>x0 x1 x2</code>，在数值上等同于对x1进行普通conv，但是<strong>他们代表的意义是不同的（对应的时间步不同）</strong></p>
+<h3 id="LSTM"><a href="#LSTM" class="headerlink" title="LSTM"></a>LSTM</h3><p>Encoder最终会输出（B，C’，F‘，T），CRN中将其reshape为（B，T，C‘ x F’）作为输入</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># [2, 256, 4, 200] = [2, 1024, 200] =&gt; [2, 200, 1024]</span></span><br><span class="line">lstm_in = e_5.reshape(batch_size, n_channels * n_f_bins, n_frame_size).permute(<span class="number">0</span>, <span class="number">2</span>, <span class="number">1</span>)</span><br><span class="line">lstm_out, _ = self.lstm_layer(lstm_in)  <span class="comment"># [2, 200, 1024]</span></span><br><span class="line">lstm_out = lstm_out.permute(<span class="number">0</span>, <span class="number">2</span>, <span class="number">1</span>).reshape(batch_size, n_channels, n_f_bins, n_frame_size)  <span class="comment"># [2, 256, 4, 200]</span></span><br></pre></td></tr></table></figure>
+<h3 id="Decoder"><a href="#Decoder" class="headerlink" title="Decoder"></a>Decoder</h3><p>Decoder使用ConvTranspose2d将LSTM输出还原为原始输入形状，对于反卷积，其原理就是插零+普通卷积进行上采样。为了防止上采样丢失高频细节，Decoder与Encoder之间还存在对应的skip connection以<strong>保留高频细节：</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">d_1 = self.tran_conv_block_1(torch.cat((lstm_out, e_5), <span class="number">1</span>))</span><br><span class="line">d_2 = self.tran_conv_block_2(torch.cat((d_1, e_4), <span class="number">1</span>))</span><br><span class="line">d_3 = self.tran_conv_block_3(torch.cat((d_2, e_3), <span class="number">1</span>))</span><br><span class="line">d_4 = self.tran_conv_block_4(torch.cat((d_3, e_2), <span class="number">1</span>))</span><br><span class="line">d_5 = self.tran_conv_block_5(torch.cat((d_4, e_1), <span class="number">1</span>))</span><br></pre></td></tr></table></figure>
+<p>最终，Decoder输出<strong><u>增强的Mask</u></strong></p>
+<h2 id="CRN以及传统AE任务的缺陷"><a href="#CRN以及传统AE任务的缺陷" class="headerlink" title="CRN以及传统AE任务的缺陷"></a>CRN以及传统AE任务的缺陷</h2><p>CRN预测的仅为幅值谱，在最终增强中使用的是noisy的相位，在低信噪比下性能有限。而对于预测复数谱的模型来说，输出的实部和虚部仅仅是输出的两个channel，<strong><u>模型并没有被显式告知这两个channel满足复数乘法规律</u></strong>，并且这些模型内部计算也全部都是实数表示，也就是说仅仅通过拟合来使模型最终输出倾向于一个实部值一个虚部值，并没有还原复数本身的结构</p>
+<h3 id="Complex-Conv"><a href="#Complex-Conv" class="headerlink" title="Complex Conv"></a>Complex Conv</h3><p>因此，DCCRN直接提出了一个<strong><u>可以直接接收复数输入的卷积模块</u></strong>：</p>
+<p>对于输入：</p>
+<script type="math/tex; mode=display">
+X_r+jX_i</script><p>卷积核对应的也为：</p>
+<script type="math/tex; mode=display">
+W_r+jW_i</script><p><strong>按照复数乘法规律</strong>，则卷积输出为：<strong><u>（DCCRN核心公式）</u></strong></p>
+<script type="math/tex; mode=display">
+Y_r=W_r∗X_r−W_i∗X_i</script><script type="math/tex; mode=display">
+Y_i=W_r∗X_i+W_i∗X_r</script><p>也就是说，一层Complex Conv就进行了4次卷积，更符合STFT的物理意义</p>
+<p>其具体代码就是将Wr和Wi分别定义为两个卷积层：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> self.complex_axis == <span class="number">0</span>:<span class="comment">#已将实部虚部cat在同一维</span></span><br><span class="line">    real = self.real_conv(inputs)</span><br><span class="line">    imag = self.imag_conv(inputs)</span><br><span class="line">    real2real,imag2real = torch.chunk(real,<span class="number">2</span>, self.complex_axis)</span><br><span class="line">    real2imag,imag2imag = torch.chunk(imag,<span class="number">2</span>, self.complex_axis)</span><br><span class="line">    </span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">isinstance</span>(inputs, torch.Tensor):</span><br><span class="line">        real,imag = torch.chunk(inputs, <span class="number">2</span>, self.complex_axis)</span><br><span class="line"></span><br><span class="line">    real2real = self.real_conv(real,)</span><br><span class="line">    imag2imag = self.imag_conv(imag,)</span><br><span class="line"></span><br><span class="line">    real2imag = self.imag_conv(real)</span><br><span class="line">    imag2real = self.real_conv(imag)</span><br><span class="line"></span><br><span class="line">real = real2real - imag2imag</span><br><span class="line">imag = real2imag + imag2real</span><br><span class="line">out = torch.cat([real, imag], self.complex_axis)</span><br></pre></td></tr></table></figure>
+<p>对应的，Batchnorm也加入了协方差来使复数整体归一化，激活函数也改为了复数输入形式</p>
+<h3 id="complex-LSTM"><a href="#complex-LSTM" class="headerlink" title="complex LSTM"></a>complex LSTM</h3><p>格式与complex conv基本一致，也是将两层LSTM结构化复数格式，不再赘述</p>
+<h3 id="输出"><a href="#输出" class="headerlink" title="输出"></a>输出</h3><p>DCCRN最终输出的是CRM（复数比例mask），即：</p>
+<script type="math/tex; mode=display">
+(\hat S_r+ j\hat S_i)=(M_r+jM_i)(Y_r+jY_i)</script><p>损失函数为复数谱的MSE和SI-SNR</p>
+
+    </div>
+
+    
+    
+    <div class="post-widgets">
+      <div id="needsharebutton-postbottom">
+        <span class="btn">
+          <i class="fa fa-share-alt" aria-hidden="true"></i>
+        </span>
+      </div>
+    </div>
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" rel="tag"><i class="fa fa-tag"></i># 深度学习</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2026/06/23/MVDR/" rel="prev" title="自适应波束形成">
+      <i class="fa fa-chevron-left"></i> 自适应波束形成
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#FullSubNet"><span class="nav-number">1.</span> <span class="nav-text">FullSubNet</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BE%93%E5%85%A5"><span class="nav-number">1.1.</span> <span class="nav-text">输入</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A8%A1%E5%9E%8B%E7%BB%93%E6%9E%84"><span class="nav-number">1.2.</span> <span class="nav-text">模型结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AE%AD%E7%BB%83%E7%9B%AE%E6%A0%87"><span class="nav-number">1.3.</span> <span class="nav-text">训练目标</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">1.4.</span> <span class="nav-text">总结</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#DCCRN"><span class="nav-number">2.</span> <span class="nav-text">DCCRN</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#CRN"><span class="nav-number">2.1.</span> <span class="nav-text">CRN</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Encoder"><span class="nav-number">2.1.1.</span> <span class="nav-text">Encoder</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#LSTM"><span class="nav-number">2.1.2.</span> <span class="nav-text">LSTM</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Decoder"><span class="nav-number">2.1.3.</span> <span class="nav-text">Decoder</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CRN%E4%BB%A5%E5%8F%8A%E4%BC%A0%E7%BB%9FAE%E4%BB%BB%E5%8A%A1%E7%9A%84%E7%BC%BA%E9%99%B7"><span class="nav-number">2.2.</span> <span class="nav-text">CRN以及传统AE任务的缺陷</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Complex-Conv"><span class="nav-number">2.2.1.</span> <span class="nav-text">Complex Conv</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#complex-LSTM"><span class="nav-number">2.2.2.</span> <span class="nav-text">complex LSTM</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BE%93%E5%87%BA"><span class="nav-number">2.2.3.</span> <span class="nav-text">输出</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="dhk"
+      src="/images/zoe.gif">
+  <p class="site-author-name" itemprop="name">dhk</p>
+  <div class="site-description" itemprop="description">记录一些学习日常</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">73</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/dhkkkkkk" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;dhkkkkkk" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/1154012965@qq.com" title="QQ email → 1154012965@qq.com"><i class="fa fa-envelope fa-fw"></i>QQ email</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"> </div>
+
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2026</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">dhk</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/xxw/anime.min.js"></script>
+  <script src="/xxw/velocity/velocity.min.js"></script>
+  <script src="/xxw/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+  <script src="//cdn.jsdelivr.net/gh/theme-next/theme-next-needmoreshare2@1/needsharebutton.min.js"></script>
+  <script>
+      pbOptions = {};
+        pbOptions.iconStyle = "box";
+        pbOptions.boxForm = "horizontal";
+        pbOptions.position = "bottomCenter";
+        pbOptions.networks = "Wechat,QQZone,Weibo,Douban,Twitter,Facebook";
+      new needShareButton('#needsharebutton-postbottom', pbOptions);
+  </script>
+<script>
+            window.imageLazyLoadSetting = {
+                isSPA: false,
+                preloadRatio: 1,
+                processImages: null,
+            };
+        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(e.href.match(t)||e.href.match(r))&&(e.href=a.dataset.original)})});</script><script>!function(n){n.imageLazyLoadSetting.processImages=o;var e=n.imageLazyLoadSetting.isSPA,i=n.imageLazyLoadSetting.preloadRatio||1,r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]"));function o(){e&&(r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")));for(var t,a=0;a<r.length;a++)0<=(t=(t=r[a]).getBoundingClientRect()).bottom&&0<=t.left&&t.top<=(n.innerHeight*i||document.documentElement.clientHeight*i)&&function(){var t,e,n,i,o=r[a];t=o,e=function(){r=r.filter(function(t){return o!==t})},n=new Image,i=t.getAttribute("data-original"),n.onload=function(){t.src=i,e&&e()},t.src!==i&&(n.src=i)}()}o(),n.addEventListener("scroll",function(){var t,e;t=o,e=n,clearTimeout(t.tId),t.tId=setTimeout(function(){t.call(e)},500)})}(this);</script><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script></body>
+</html>

@@ -278,6 +278,126 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2026/06/25/%E8%AE%BA%E6%96%87%E7%B2%BE%E8%AF%BB/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/zoe.gif">
+      <meta itemprop="name" content="dhk">
+      <meta itemprop="description" content="记录一些学习日常">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小董的BLOG">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2026/06/25/%E8%AE%BA%E6%96%87%E7%B2%BE%E8%AF%BB/" class="post-title-link" itemprop="url">语音增强论文精读</a>
+        </h2>
+
+        <div class="post-meta">
+		  
+		  
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2026-06-25 09:37:53" itemprop="dateCreated datePublished" datetime="2026-06-25T09:37:53+08:00">2026-06-25</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2026-06-30 17:01:20" itemprop="dateModified" datetime="2026-06-30T17:01:20+08:00">2026-06-30</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="FullSubNet"><a href="#FullSubNet" class="headerlink" title="FullSubNet"></a>FullSubNet</h1><p>核心思路：将一个<strong>纯全频带模型</strong>和一个<strong>纯子频带模型</strong>依次连接起来，并利用实际的联合训练将这两种模型的优点结合起来。</p>
+<ul>
+<li>全频带模型：输入全频带 带噪语音频谱，输出全频带 预测纯净语音 的模型。全频带模型可以捕获全局上下文谱和长距离交叉频带依赖，但<strong>缺乏信号平稳性建模和关注局部谱模式的能力</strong></li>
+<li>子频带模型：模型的输入由一个频率和多个上下文频率组成。输出是对应频率的纯净语音。所有频率都是独立处理。由于噪声较于语音更加平稳，因此其可以通过对局部频带的平稳性建模区分噪声和语音；<strong>但对于信噪比极低的子带，效果不佳，因为其无法利用全频带信息。</strong></li>
+</ul>
+<p>通俗理解，子频带模型负责学习不同频段输入的分布，以<strong>得到不同频段的增强规则</strong>；全频带模型则负责学习<strong>全频带上频率的分布情况</strong>，以补充子频带模型没有利用全频带信息的缺陷</p>
+<h2 id="输入"><a href="#输入" class="headerlink" title="输入"></a>输入</h2><p>首先需要强调一点，在FullSubNet中，<strong><u>两个模型的建模方向均为时间轴（核心！！！）</u></strong>，也就是输出序列的长度为T</p>
+<ul>
+<li>全频带模型：输入直接是带噪语音的stft频谱</li>
+<li>子频带模型：全频带输出的格式为（B，1，F，T），原始FullSubNet会先将其reshape为（BxF，1，1，T），第一个1代表通道数，在此处没有意义；第二个1代表<strong>选择的当前频段</strong>，即全频带输出会将每个频段分离，<strong>每个频段信号都视作单个样本</strong>；此外，FullSubNet还会从原始带噪语音中选择相同频段和周围频段（（BxF，1，N，T），N为全频带当前样本频段的上下N个相邻频段），最后与全频带输出进行拼接，也就是子频带模型的输入为（BxF，1，1+N，T）</li>
+</ul>
+<h2 id="模型结构"><a href="#模型结构" class="headerlink" title="模型结构"></a>模型结构</h2><img src="/images/loading.png" data-original="/2026/06/25/%E8%AE%BA%E6%96%87%E7%B2%BE%E8%AF%BB/model.png" class title="FullSubNet"> 
+<p>全频带模型和子频带模型的结构完全一致，但由于子频带模型样本更小，因此其LSTM中<strong>隐藏层也相对小了一点</strong>；同时，由于子带模型输出的就是当前T时刻，对应频段的mask，因此也<strong>没有布置激活函数</strong></p>
+<p>原文使用的归一化是直接对每个样本的<strong>所有维度求均值</strong>再除以该均值</p>
+<h2 id="训练目标"><a href="#训练目标" class="headerlink" title="训练目标"></a>训练目标</h2><p>模型的输出，也就是子频带模型输出为（B，F，2，T），分别代表实部虚部的mask，这样就可以同时修正幅度和相位：</p>
+<script type="math/tex; mode=display">
+\hat M(t,f)=\hat M_r(t,f)+j\hat M_i(t,f)</script><p>而对于带噪语音，其可以表示为：</p>
+<script type="math/tex; mode=display">
+Y=S+N → S=MY</script><p>因此理想mask可以表示为：</p>
+<script type="math/tex; mode=display">
+M(t,f)= \frac {S}{Y}</script><p>然后直接拟合mask即可</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>其实FullSubNet的核心就是在全频带模型后接了一个子频带模型，该子频带模型用共享的参数处理所有的子频带特征，其他就没啥了</p>
+<h1 id="DCCRN"><a href="#DCCRN" class="headerlink" title="DCCRN"></a>DCCRN</h1><h2 id="CRN"><a href="#CRN" class="headerlink" title="CRN"></a>CRN</h2><p>在介绍DCCRN前，我们需要先知道它的核心框架，CRN：Convolutional Recurrent Network</p>
+<p>在语音领域，CRN同时结合了CNN局部能力强、RNN能学习长程依赖的优点，提出了一个经典的Encoder-Decoder结构：</p>
+<img src="/images/loading.png" data-original="/2026/06/25/%E8%AE%BA%E6%96%87%E7%B2%BE%E8%AF%BB/crn.png" class title="This is an image"> 
+<h3 id="Encoder"><a href="#Encoder" class="headerlink" title="Encoder"></a>Encoder</h3><p>由若干层Conv2D和BN、ELU组成</p>
+<p>每层Conv2D的参数通常为：<code>kernel=(5/3,2),stride=(2,1)</code>对应输入形状（B，C，F，T），即Encoder会通过卷积<strong><u>逐步降采样频率信息</u></strong>，而时间长度则保持不变（但时间轴上也会做卷积）</p>
+<p>对于离线增强任务，使用普通卷积，而对于在线增强推理任务，<strong>由于未来信息不可知，因此会使用掩码卷积（causal conv）</strong>，由于卷积核是有宽度的，因此其原理会比Transformer中的causal mask使用的三角矩阵更复杂一丢丢：</p>
+<p>假设现在数据为<code>x0 x1 x2</code>，卷积核大小为3，步长为1</p>
+<p>那对x0的传统卷积窗口则为：<code>pad x0 x1</code>，即pad默认在两边</p>
+<p>而在实时场景中t0时刻我们只有x0，没有x1，因此我们的causal conv的窗口即为：<code>pad pad x0</code>即全部在左边pad</p>
+<p>再举个例子就是，我们如果对x2进行causal conv，窗口即为<code>x0 x1 x2</code>，在数值上等同于对x1进行普通conv，但是<strong>他们代表的意义是不同的（对应的时间步不同）</strong></p>
+<h3 id="LSTM"><a href="#LSTM" class="headerlink" title="LSTM"></a>LSTM</h3><p>Encoder最终会输出（B，C’，F‘，T），CRN中将其reshape为（B，T，C‘ x F’）作为输入</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># [2, 256, 4, 200] = [2, 1024, 200] =&gt; [2, 200, 1024]</span></span><br><span class="line">lstm_in = e_5.reshape(batch_size, n_channels * n_f_bins, n_frame_size).permute(<span class="number">0</span>, <span class="number">2</span>, <span class="number">1</span>)</span><br><span class="line">lstm_out, _ = self.lstm_layer(lstm_in)  <span class="comment"># [2, 200, 1024]</span></span><br><span class="line">lstm_out = lstm_out.permute(<span class="number">0</span>, <span class="number">2</span>, <span class="number">1</span>).reshape(batch_size, n_channels, n_f_bins, n_frame_size)  <span class="comment"># [2, 256, 4, 200]</span></span><br></pre></td></tr></table></figure>
+<h3 id="Decoder"><a href="#Decoder" class="headerlink" title="Decoder"></a>Decoder</h3><p>Decoder使用ConvTranspose2d将LSTM输出还原为原始输入形状，对于反卷积，其原理就是插零+普通卷积进行上采样。为了防止上采样丢失高频细节，Decoder与Encoder之间还存在对应的skip connection以<strong>保留高频细节：</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">d_1 = self.tran_conv_block_1(torch.cat((lstm_out, e_5), <span class="number">1</span>))</span><br><span class="line">d_2 = self.tran_conv_block_2(torch.cat((d_1, e_4), <span class="number">1</span>))</span><br><span class="line">d_3 = self.tran_conv_block_3(torch.cat((d_2, e_3), <span class="number">1</span>))</span><br><span class="line">d_4 = self.tran_conv_block_4(torch.cat((d_3, e_2), <span class="number">1</span>))</span><br><span class="line">d_5 = self.tran_conv_block_5(torch.cat((d_4, e_1), <span class="number">1</span>))</span><br></pre></td></tr></table></figure>
+<p>最终，Decoder输出<strong><u>增强的Mask</u></strong></p>
+<h2 id="CRN以及传统AE任务的缺陷"><a href="#CRN以及传统AE任务的缺陷" class="headerlink" title="CRN以及传统AE任务的缺陷"></a>CRN以及传统AE任务的缺陷</h2><p>CRN预测的仅为幅值谱，在最终增强中使用的是noisy的相位，在低信噪比下性能有限。而对于预测复数谱的模型来说，输出的实部和虚部仅仅是输出的两个channel，<strong><u>模型并没有被显式告知这两个channel满足复数乘法规律</u></strong>，并且这些模型内部计算也全部都是实数表示，也就是说仅仅通过拟合来使模型最终输出倾向于一个实部值一个虚部值，并没有还原复数本身的结构</p>
+<h3 id="Complex-Conv"><a href="#Complex-Conv" class="headerlink" title="Complex Conv"></a>Complex Conv</h3><p>因此，DCCRN直接提出了一个<strong><u>可以直接接收复数输入的卷积模块</u></strong>：</p>
+<p>对于输入：</p>
+<script type="math/tex; mode=display">
+X_r+jX_i</script><p>卷积核对应的也为：</p>
+<script type="math/tex; mode=display">
+W_r+jW_i</script><p><strong>按照复数乘法规律</strong>，则卷积输出为：<strong><u>（DCCRN核心公式）</u></strong></p>
+<script type="math/tex; mode=display">
+Y_r=W_r∗X_r−W_i∗X_i</script><script type="math/tex; mode=display">
+Y_i=W_r∗X_i+W_i∗X_r</script><p>也就是说，一层Complex Conv就进行了4次卷积，更符合STFT的物理意义</p>
+<p>其具体代码就是将Wr和Wi分别定义为两个卷积层：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> self.complex_axis == <span class="number">0</span>:<span class="comment">#已将实部虚部cat在同一维</span></span><br><span class="line">    real = self.real_conv(inputs)</span><br><span class="line">    imag = self.imag_conv(inputs)</span><br><span class="line">    real2real,imag2real = torch.chunk(real,<span class="number">2</span>, self.complex_axis)</span><br><span class="line">    real2imag,imag2imag = torch.chunk(imag,<span class="number">2</span>, self.complex_axis)</span><br><span class="line">    </span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">isinstance</span>(inputs, torch.Tensor):</span><br><span class="line">        real,imag = torch.chunk(inputs, <span class="number">2</span>, self.complex_axis)</span><br><span class="line"></span><br><span class="line">    real2real = self.real_conv(real,)</span><br><span class="line">    imag2imag = self.imag_conv(imag,)</span><br><span class="line"></span><br><span class="line">    real2imag = self.imag_conv(real)</span><br><span class="line">    imag2real = self.real_conv(imag)</span><br><span class="line"></span><br><span class="line">real = real2real - imag2imag</span><br><span class="line">imag = real2imag + imag2real</span><br><span class="line">out = torch.cat([real, imag], self.complex_axis)</span><br></pre></td></tr></table></figure>
+<p>对应的，Batchnorm也加入了协方差来使复数整体归一化，激活函数也改为了复数输入形式</p>
+<h3 id="complex-LSTM"><a href="#complex-LSTM" class="headerlink" title="complex LSTM"></a>complex LSTM</h3><p>格式与complex conv基本一致，也是将两层LSTM结构化复数格式，不再赘述</p>
+<h3 id="输出"><a href="#输出" class="headerlink" title="输出"></a>输出</h3><p>DCCRN最终输出的是CRM（复数比例mask），即：</p>
+<script type="math/tex; mode=display">
+(\hat S_r+ j\hat S_i)=(M_r+jM_i)(Y_r+jY_i)</script><p>损失函数为复数谱的MSE和SI-SNR</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2026/06/23/MVDR/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -303,10 +423,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2026-06-23 09:35:51 / 修改时间：19:01:57" itemprop="dateCreated datePublished" datetime="2026-06-23T09:35:51+08:00">2026-06-23</time>
+              <time title="创建时间：2026-06-23 09:35:51" itemprop="dateCreated datePublished" datetime="2026-06-23T09:35:51+08:00">2026-06-23</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2026-06-24 16:48:06" itemprop="dateModified" datetime="2026-06-24T16:48:06+08:00">2026-06-24</time>
+              </span>
 
           
 
@@ -342,7 +468,7 @@ L(W, \lambda) = W^H R_{xx} W + \lambda (W^H A(\theta_0) - 1)</script><p>根据�
 <script type="math/tex; mode=display">
 \lambda =- \frac{1}{A(\theta_0)^H R_{xx}^{-1} A(\theta_0)}</script><p>带入W表达式，最终可获得<strong>MVDR最佳权重向量</strong>：</p>
 <script type="math/tex; mode=display">
-W_{\text{MVDR}} = \frac{R_{xx}^{-1} A(\theta_0)}{A(\theta_0)^H R_{xx}^{-1} A(\theta_0)}</script><p>最终功率谱则可表示为：</p>
+W_{\text{MVDR}} = \frac{R_{xx}^{-1} A(\theta_0)}{A(\theta_0)^H R_{xx}^{-1} A(\theta_0)}</script><p>这里就可以看出，W与协方差矩阵直接相关（分子是向量决定方向，分母是标量决定尺度，不能约）。最终功率谱则可表示为：</p>
 <script type="math/tex; mode=display">
 P_{\text{MVDR}}(\theta) = \frac{1}{A(\theta)^H R_{xx}^{-1} A(\theta)}</script><h2 id="py代码"><a href="#py代码" class="headerlink" title="py代码"></a>py代码</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> f_idx, freq <span class="keyword">in</span> <span class="built_in">enumerate</span>(tqdm(freqs, desc=<span class="string">&quot;MVDRing&quot;</span>)):</span><br><span class="line">    X_f = data_valid[:,:, f_idx]	<span class="comment">#提取当前频率分量</span></span><br><span class="line">    R = (X_f.T @ X_f.conj())  <span class="comment">#协方差矩阵</span></span><br><span class="line">    eps = <span class="number">1e-3</span> * np.trace(R)  <span class="comment">#视情况选择大小，越大mvdr性能越强，鲁棒性越差</span></span><br><span class="line">    R = R + eps * np.eye(self.Nchan) <span class="comment">#对角加载</span></span><br><span class="line">    R_inv = np.linalg.pinv(R)	<span class="comment">#求逆</span></span><br><span class="line">    a = np.exp(-<span class="number">1j</span> * <span class="number">2</span> * np.pi * freq * tdoa) <span class="comment">#根据toda构建导向矢量</span></span><br><span class="line">    Ra = R_inv @ a</span><br><span class="line">    denominator = -np.<span class="built_in">sum</span>(a.conj() * Ra, axis=<span class="number">0</span>)  <span class="comment"># a^H R^-1 a</span></span><br><span class="line">    power_at_freq = <span class="number">1.0</span> / np.real(denominator/ X_f.shape[<span class="number">0</span>] + <span class="number">1e-12</span>) <span class="comment">#功率谱</span></span><br></pre></td></tr></table></figure>
 <p>对同一段信号在相同频段进行mvdr和das功率扫描，可以看出MVDR在低频段上表现明显优于DAS，<strong>这是由于MVDR对干扰源的抑制能力极强</strong>，在低频段主瓣都很大的情况下也能区分声源位置</p>
@@ -357,6 +483,7 @@ R_{\text{DL}} = \hat{R}_{xx} + \sigma_{\text{DL}}^2 I</script><p>加入这个底
 <h4 id="基于噪声基底"><a href="#基于噪声基底" class="headerlink" title="基于噪声基底"></a>基于噪声基底</h4><p>直接将加载量设定为系统背景噪声功率的 10到 100 倍</p>
 <h4 id="基于矩阵迹（trace）"><a href="#基于矩阵迹（trace）" class="headerlink" title="基于矩阵迹（trace）"></a>基于矩阵迹（trace）</h4><script type="math/tex; mode=display">
 \sigma_{\text{DL}}^2 = \alpha \cdot \text{trace}(\hat{R}_{xx})/M,\alpha =10^{-3} \sim 10^{-1}</script><p>根据对角线元素总和，即阵列<strong>所有阵元接收到的总功率</strong>，也就是将加载量也设置为一个根据采集信号动态调整的值</p>
+<p><strong><u>在我实际使用中，对角加载对mvdr结果影响很大，因此不能随便选</u></strong></p>
 <h2 id="MVDR的优缺点"><a href="#MVDR的优缺点" class="headerlink" title="MVDR的优缺点"></a>MVDR的优缺点</h2><h3 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h3><ol>
 <li><strong>高分辨率：</strong> 空间分辨能力显著优于传统的延迟求和波束形成。</li>
 <li><strong>强干扰抑制（抑制其他声源对目标声源干扰）：</strong> 能够自动在强干扰源方向形成零陷，大幅提升强干扰环境下的输出信噪比。</li>
@@ -405,113 +532,34 @@ C = \left[ A(\theta_0), \left. \frac{\partial A(\theta)}{\partial \theta} \right
 \mathbf{w}_a = (\mathbf{B} \mathbf{R}_{xx} \mathbf{B}^T)^{-1} \mathbf{B} \mathbf{R}_{xx} \mathbf{w}_q</script><h2 id="优缺点"><a href="#优缺点" class="headerlink" title="优缺点"></a>优缺点</h2><p>主要优点就是把约束优化转化为了无约束的滤波问题，降低了计算复杂度，并且其物理和数学结构清晰，完全解耦；</p>
 <p>缺点就是需要精准的导向矢量，否正阻塞矩阵B会产生泄露，自适应滤波器会将泄露的期望信号视作干扰，导致最后期望信号也受到抑制</p>
 <p>为了防止自适应计算过强，<strong>也可以使用对角加载限制过大变化</strong></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2026/06/15/problem-about-mic-array/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/zoe.gif">
-      <meta itemprop="name" content="dhk">
-      <meta itemprop="description" content="记录一些学习日常">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="小董的BLOG">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2026/06/15/problem-about-mic-array/" class="post-title-link" itemprop="url">麦克风阵列的一些理论补充</a>
-        </h2>
-
-        <div class="post-meta">
-		  
-		  
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2026-06-15 10:17:48" itemprop="dateCreated datePublished" datetime="2026-06-15T10:17:48+08:00">2026-06-15</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2026-06-23 18:50:40" itemprop="dateModified" datetime="2026-06-23T18:50:40+08:00">2026-06-23</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="瑞利极限与远场判据"><a href="#瑞利极限与远场判据" class="headerlink" title="瑞利极限与远场判据"></a>瑞利极限与远场判据</h1><p>之前我们提到过判断声场模型的判据：</p>
+<h2 id="与MVDR的关系"><a href="#与MVDR的关系" class="headerlink" title="与MVDR的关系"></a>与MVDR的关系</h2><p>MVDR 与 GSC 等价，本质上是因为 <strong>GSC只是MVDR约束优化问题的一种结构化实现方式</strong>。</p>
+<p>首先，对于GSC的权重表达，将其共轭转置后都右乘导向矢量后，即<strong>可得到MVDR的约束</strong>；如果将w表达式带入MVDR的目标函数（无约束格式），也可以<strong>直接得到GSC最终w_a的解</strong></p>
+<p>那GSC存在的意义是什么呢，大概是因为较早时期矩阵求逆运算量大，所以GSC实时性更好吧</p>
+<h1 id="GEV广义特征向量波束形成器"><a href="#GEV广义特征向量波束形成器" class="headerlink" title="GEV广义特征向量波束形成器"></a>GEV广义特征向量波束形成器</h1><p>更多出现在语音增强中，GEV波束形成的核心思想是通过最大化输出信号的信噪比（SNR）<strong>或</strong>信号对干扰加噪声比（SINR）来推导最优导向矢量或空间滤波器系数，相比与MVDR<strong>要保证目标方向的无失真，GEV更加激进，选择直接最大化信噪比</strong></p>
+<p>对于带噪的信号，GEV直接将其视为：</p>
 <script type="math/tex; mode=display">
-R_r = \frac{2D^2}{\lambda}</script><p>当声源与阵列的绝对距离大于这个值时即可认为是远场模型，此时不同麦克风接收信号的<strong>幅度差异较小</strong>，因此把不同麦克风采集的语音信号的幅值认为都是一样的，只需对各麦克风接收信号的<strong>相位差异</strong>进行处理即可。声波视为<strong>平面波</strong>。</p>
-<p>并且从公式中我们可以得知波长越小（频率越高），这个判据就会越远，即我们需要更远的距离才能将当前频率下的声场视作远场处理，因此若想使用更简单的远场模型，则要求我们的<strong>频段选择偏小</strong></p>
-<p>但是这又带来了一个问题，<strong>即瑞利极限带来的空间分辨率问题</strong>。</p>
+\mathbf{x}(f, t) = \mathbf{s}(f, t) + \mathbf{n}(f, t)</script><p>所有噪声和干扰均被视为了一整个函数，GEV的目的就是让s和n最终信噪比尽可能大</p>
+<h2 id="构造目标与噪声协方差矩阵"><a href="#构造目标与噪声协方差矩阵" class="headerlink" title="构造目标与噪声协方差矩阵"></a>构造目标与噪声协方差矩阵</h2><p>根据上面分析，GEV的核心之一就是如何判断信号中哪些是目标信号，哪些是噪声。为了量化信号与噪声的空间分布，引入两个关键的空间相关矩阵：</p>
 <script type="math/tex; mode=display">
-Δ\theta_R=1.22\frac {\lambda}{D}</script><p>瑞利极限最先在光学中提出，在声学成像中，我们可以理解为当<strong>两个点源小于这个距离</strong>时，系统则无法分辨他们的准确位置，在我个人的使用中，会出现两个声源在中点合成为一个源峰的现象（主要是DAS和SPR-phat）。</p>
-<p>也就是说，当阵列尺寸不变时，我们如果想获得较高的空间分辨率，则要求波长偏小，也就是<strong>频段选择偏高</strong>，这与我们在<strong><u>远场判据中的要求是冲突的</u></strong></p>
-<p>将上两式联立我们可以得到：</p>
-<script type="math/tex; mode=display">
-R_r=\frac{2.44D}{Δ\theta_R}</script><p><strong><u>也就是说阵列分辨率越高，则远场要求更远</u></strong></p>
-<p>因此，在实际成像中，我们<strong>应该优先满足高分辨率</strong>，则频段选择应该略高一些；即使采集距离较近，也<u><strong>不该使用较低频段强行拉低远场判据</strong>，因为这必然会导致分辨率急剧下降，此时就算可以用远场模型，也是没意义的</u></p>
-<p>综上，若想获得质量较高的成像，在工程中首选是提高孔径D与取到合适的频段</p>
-<h1 id="主瓣宽度问题"><a href="#主瓣宽度问题" class="headerlink" title="主瓣宽度问题"></a>主瓣宽度问题</h1><p>刚刚我们提到，当空间分辨率不足时，也就是波长较长，频率较低时，会出现声源相互合成的现象（或者其他无法准确显示声源位置的现象）。其中很大一部分原因就是<strong>声源的主瓣宽度与空间分辨率成强正比关系</strong>，也就是说合成的峰值其实就是两个声源的主瓣叠加后超过了各自的主瓣中心强度</p>
-<p>也就是说，在不改变孔径的条件下，<strong><u>频率越低，主瓣越宽</u></strong>。当然，主瓣宽度还与孔径大小、阵列数量和使用的定位算法有关，这一节我们主要就讲频率的问题</p>
-<p>其实很好理解，在各类利用相位<strong>差</strong>的算法中（SRP-PHAT，DAS），我们在频域对相位的表达是：</p>
-<script type="math/tex; mode=display">
-Δ\phi=2\pi f \tau</script><p>也就是说，f越小，相位差越不明显，最终导致功率图峰值附近都很平滑，变化很慢，就会呈现出宽主瓣的现象</p>
-<h1 id="MUSIC为什么可以突破瑞利极限"><a href="#MUSIC为什么可以突破瑞利极限" class="headerlink" title="MUSIC为什么可以突破瑞利极限"></a>MUSIC为什么可以突破瑞利极限</h1><p>其实基于上一节主瓣宽度的分析，再结合music的原理，就很好理解了。对于DAS，其定位图像是利用的波束功率，因此非常受限于波长和孔径；而对于SRP-PHAT，由于其舍弃了幅值，相比于DAS会稍微好一点，但是其本质还是基于<strong>相位差</strong>的互相关功率，也会被上述的主瓣问题影响。</p>
-<p>而对于MUSIC，其是直接利用的导向矢量和噪声子空间的正交关系，与相位差无关，因此其空间分辨率理论上可以自己决定其扫描步长，而不是受限于瑞利极限，从而实现超分辨率成像</p>
-<p>虽然但是，实际还是会与频率有影响，因为导向矢量中也包含了相位信息，但是没有去专门计算差值了；但实际中其分辨率还是会达到瑞利极限的数倍。</p>
-<h1 id="关于TDOA，导向矢量和波束权重的定义习惯"><a href="#关于TDOA，导向矢量和波束权重的定义习惯" class="headerlink" title="关于TDOA，导向矢量和波束权重的定义习惯"></a>关于TDOA，导向矢量和波束权重的定义习惯</h1><h2 id="TDOA"><a href="#TDOA" class="headerlink" title="TDOA"></a>TDOA</h2><p>本博客中使用的TODA均为下述函数</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">get_tdoa</span>(<span class="params">self, phi, theta</span>):</span><br><span class="line">    <span class="comment"># phi=0为+x，=180为-x</span></span><br><span class="line">    <span class="comment"># theta=0为+z =180为-z</span></span><br><span class="line"></span><br><span class="line">    a = np.array([  np.sin(theta) * np.cos(phi) ,</span><br><span class="line">                    np.sin(theta) * np.sin(phi),</span><br><span class="line">                    np.cos(theta)])</span><br><span class="line"></span><br><span class="line">    tdoa = np.<span class="built_in">sum</span>(self.mic_struct * a[<span class="literal">None</span>, :], keepdims=<span class="literal">True</span>, axis=<span class="number">1</span>) / self.sound_speed</span><br><span class="line">    <span class="keyword">return</span> tdoa</span><br></pre></td></tr></table></figure>
-<p>其中，a代表了从0点指向声源的方向，但实际信号是从声源指向阵列，因此这里返回的tdoa，<strong>正值则代表了信号提前于参考点到达</strong></p>
-<h2 id="导向矢量"><a href="#导向矢量" class="headerlink" title="导向矢量"></a>导向矢量</h2><p>再说完了上述tdoa的定义后，我们来说导向矢量。对于提前到达的信号，其相位应该也是超前状态，因此导向矢量最常定义为：</p>
-<script type="math/tex; mode=display">
-a=e^{-j2\pi f\tau}</script><p>即用负相位代表超前到达的信号，现在大部分文献都是用的这种格式（虽然本人觉得tdoa就带值然后导向矢量不带负号更合理），因此本博客中所有导向矢量也采用这种形式</p>
-<h2 id="波束权重"><a href="#波束权重" class="headerlink" title="波束权重"></a>波束权重</h2><p>最阴的来了，现在对于波束形成，最常见的公式是：</p>
-<script type="math/tex; mode=display">
-Y(t) = W^H X(t)</script><script type="math/tex; mode=display">
-\mathbf{R}_{xx} = E[\mathbf{X}(t)\mathbf{X}^H(t)] \approx \frac{1}{N} \sum_{t=1}^{N} \mathbf{X}(t)\mathbf{X}^H(t)</script><script type="math/tex; mode=display">
-P = W^H R_{xx} W</script><p>我其实一直就在想W的这个共轭转置是何意味，按照我的理解来说W就应该直接代表了波束形成的最终权重。但现在大部分的定义就是<strong>W形式与导向矢量相同</strong>，即</p>
-<script type="math/tex; mode=display">
-w=e^{-j2\pi f\tau}</script><p>因此对于DAS来说，若要对齐相位则需要对W取共轭来抵消导向矢量，这真的太反人类了，也就是说在代码里W和导向矢量a甚至是相同的值。而在各DOA，波束形成算法中，使用的大都也都是上述的导向矢量和权重格式，即默认：</p>
+\mathbf{R}_{ss/nn}(f) = \frac {\sum_tM_{s/n}{(f,t)}x(f,t)x^H(f,t)}{\sum_tM_{s/n}{(f,t)}}</script><p>其中，M为筛选协方差矩阵的mask，其形状与每个通道的stft结果x(f,t)相同，用于决定当前时-频点加权为噪声还是语音。也就是说，mask的计算是这一步的核心。</p>
+<p>在GEV中，mask是一个[0,1]的概率，目前最主流的方法是通过神经网络进行预测，因此，我们在训练中需要同时拥有：</p>
 <ul>
-<li><p><u><strong>导向矢量指数默认带负号</strong></u></p>
-</li>
-<li><p><u><strong>W^H才代表波束形成最终权重</strong></u></p>
-</li>
+<li>干净语音s</li>
+<li>噪声n</li>
+<li>混合信号x</li>
 </ul>
-<p>同时还需要注意的就是，对于协方差矩阵也要配套为X乘X^H，<strong>千万不要写反了</strong></p>
+<p>而mask的<strong>训练目标</strong>则为s和n的一些算法结果，例如：</p>
+<script type="math/tex; mode=display">
+m=\frac{|s|^2}{|s|^2+|n|^2}</script><p>然后将预测的/hat{m}与mask进行loss计算</p>
+<h2 id="GEV优化目标"><a href="#GEV优化目标" class="headerlink" title="GEV优化目标"></a>GEV优化目标</h2><p>在获得了两个协方差矩阵后，GEV的优化目标如下：</p>
+<script type="math/tex; mode=display">
+\max_{\mathbf{w}} \text{SNR}(\mathbf{w}) = \max_{\mathbf{w}} \frac{\mathbf{w}^{\mathsf{H}} \mathbf{R}_{ss} \mathbf{w}}{\mathbf{w}^{\mathsf{H}} \mathbf{R}_{nn} \mathbf{w}}</script><p>该目标可以直接转化为广义特征值问题：</p>
+<script type="math/tex; mode=display">
+\mathbf{R}_{ss} \mathbf{w} = \lambda \mathbf{R}_{nn} \mathbf{w}</script><p>则权重w为<strong>最大特征值所对应的特征向量</strong></p>
+<h2 id="后置滤波"><a href="#后置滤波" class="headerlink" title="后置滤波"></a>后置滤波</h2><p>GEV算出的特征向量具有任意的缩放因子（Scaling），这会导致输出信号产生频率失真（Speech Distortion）。为了解决这一盲源分离中的固有问题，通常引入 BAN （Blind Analytic Normalization）进行增益归一化：</p>
+<script type="math/tex; mode=display">
+\mathbf{w}_{\text{BAN}}(f) = \frac{\mathbf{w}_{\text{GEV}}(f)}{\sqrt{\frac{1}{M} \mathbf{w}_{\text{GEV}}^{\mathsf{H}}(f) \mathbf{R}_{nn}(f) \mathbf{w}_{\text{GEV}}(f)}}</script><h2 id="优缺点-1"><a href="#优缺点-1" class="headerlink" title="优缺点"></a>优缺点</h2><p>首先，我们可以很明显的看出，GEV在计算上完全不依赖导向矢量，也就是说其对阵列的几何结构没有要求，依靠数据驱动，而MVDR的质量几乎是由导向矢量决定，<strong>因此GEV理论上鲁棒性更高，由于其优化原理，信噪比也会更高</strong></p>
+<p>但是其也需要<strong>大量数据进行拟合</strong>，并且如果不使用BAN，会出现<strong>较大失真</strong></p>
 
       
     </div>
@@ -529,7 +577,7 @@ w=e^{-j2\pi f\tau}</script><p>因此对于DAS来说，若要对齐相位则需�
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/24/">24</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/25/">25</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -596,7 +644,7 @@ w=e^{-j2\pi f\tau}</script><p>因此对于DAS来说，若要对齐相位则需�
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">72</span>
+          <span class="site-state-item-count">73</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -766,11 +814,11 @@ w=e^{-j2\pi f\tau}</script><p>因此对于DAS来说，若要对齐相位则需�
         pbOptions.networks = "Wechat,QQZone,Weibo,Douban,Twitter,Facebook";
       new needShareButton('#needsharebutton-postbottom', pbOptions);
   </script>
-<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script><script>
+<script>
             window.imageLazyLoadSetting = {
                 isSPA: false,
                 preloadRatio: 1,
                 processImages: null,
             };
-        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(e.href.match(t)||e.href.match(r))&&(e.href=a.dataset.original)})});</script><script>!function(n){n.imageLazyLoadSetting.processImages=o;var e=n.imageLazyLoadSetting.isSPA,i=n.imageLazyLoadSetting.preloadRatio||1,r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]"));function o(){e&&(r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")));for(var t,a=0;a<r.length;a++)0<=(t=(t=r[a]).getBoundingClientRect()).bottom&&0<=t.left&&t.top<=(n.innerHeight*i||document.documentElement.clientHeight*i)&&function(){var t,e,n,i,o=r[a];t=o,e=function(){r=r.filter(function(t){return o!==t})},n=new Image,i=t.getAttribute("data-original"),n.onload=function(){t.src=i,e&&e()},t.src!==i&&(n.src=i)}()}o(),n.addEventListener("scroll",function(){var t,e;t=o,e=n,clearTimeout(t.tId),t.tId=setTimeout(function(){t.call(e)},500)})}(this);</script></body>
+        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(e.href.match(t)||e.href.match(r))&&(e.href=a.dataset.original)})});</script><script>!function(n){n.imageLazyLoadSetting.processImages=o;var e=n.imageLazyLoadSetting.isSPA,i=n.imageLazyLoadSetting.preloadRatio||1,r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]"));function o(){e&&(r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")));for(var t,a=0;a<r.length;a++)0<=(t=(t=r[a]).getBoundingClientRect()).bottom&&0<=t.left&&t.top<=(n.innerHeight*i||document.documentElement.clientHeight*i)&&function(){var t,e,n,i,o=r[a];t=o,e=function(){r=r.filter(function(t){return o!==t})},n=new Image,i=t.getAttribute("data-original"),n.onload=function(){t.src=i,e&&e()},t.src!==i&&(n.src=i)}()}o(),n.addEventListener("scroll",function(){var t,e;t=o,e=n,clearTimeout(t.tId),t.tId=setTimeout(function(){t.call(e)},500)})}(this);</script><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script></body>
 </html>

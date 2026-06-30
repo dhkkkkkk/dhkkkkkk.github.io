@@ -33,7 +33,7 @@
 <meta property="og:image" content="https://dhkkkkkk.github.io/images/loading.png">
 <meta property="og:image" content="https://dhkkkkkk.github.io/images/loading.png">
 <meta property="article:published_time" content="2026-06-23T01:35:51.000Z">
-<meta property="article:modified_time" content="2026-06-23T11:01:57.265Z">
+<meta property="article:modified_time" content="2026-06-24T08:48:06.906Z">
 <meta property="article:author" content="dhk">
 <meta property="article:tag" content="麦克风阵列算法">
 <meta name="twitter:card" content="summary">
@@ -229,10 +229,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2026-06-23 09:35:51 / 修改时间：19:01:57" itemprop="dateCreated datePublished" datetime="2026-06-23T09:35:51+08:00">2026-06-23</time>
+              <time title="创建时间：2026-06-23 09:35:51" itemprop="dateCreated datePublished" datetime="2026-06-23T09:35:51+08:00">2026-06-23</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2026-06-24 16:48:06" itemprop="dateModified" datetime="2026-06-24T16:48:06+08:00">2026-06-24</time>
+              </span>
 
           
 
@@ -268,7 +274,7 @@ L(W, \lambda) = W^H R_{xx} W + \lambda (W^H A(\theta_0) - 1)</script><p>根据�
 <script type="math/tex; mode=display">
 \lambda =- \frac{1}{A(\theta_0)^H R_{xx}^{-1} A(\theta_0)}</script><p>带入W表达式，最终可获得<strong>MVDR最佳权重向量</strong>：</p>
 <script type="math/tex; mode=display">
-W_{\text{MVDR}} = \frac{R_{xx}^{-1} A(\theta_0)}{A(\theta_0)^H R_{xx}^{-1} A(\theta_0)}</script><p>最终功率谱则可表示为：</p>
+W_{\text{MVDR}} = \frac{R_{xx}^{-1} A(\theta_0)}{A(\theta_0)^H R_{xx}^{-1} A(\theta_0)}</script><p>这里就可以看出，W与协方差矩阵直接相关（分子是向量决定方向，分母是标量决定尺度，不能约）。最终功率谱则可表示为：</p>
 <script type="math/tex; mode=display">
 P_{\text{MVDR}}(\theta) = \frac{1}{A(\theta)^H R_{xx}^{-1} A(\theta)}</script><h2 id="py代码"><a href="#py代码" class="headerlink" title="py代码"></a>py代码</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> f_idx, freq <span class="keyword">in</span> <span class="built_in">enumerate</span>(tqdm(freqs, desc=<span class="string">&quot;MVDRing&quot;</span>)):</span><br><span class="line">    X_f = data_valid[:,:, f_idx]	<span class="comment">#提取当前频率分量</span></span><br><span class="line">    R = (X_f.T @ X_f.conj())  <span class="comment">#协方差矩阵</span></span><br><span class="line">    eps = <span class="number">1e-3</span> * np.trace(R)  <span class="comment">#视情况选择大小，越大mvdr性能越强，鲁棒性越差</span></span><br><span class="line">    R = R + eps * np.eye(self.Nchan) <span class="comment">#对角加载</span></span><br><span class="line">    R_inv = np.linalg.pinv(R)	<span class="comment">#求逆</span></span><br><span class="line">    a = np.exp(-<span class="number">1j</span> * <span class="number">2</span> * np.pi * freq * tdoa) <span class="comment">#根据toda构建导向矢量</span></span><br><span class="line">    Ra = R_inv @ a</span><br><span class="line">    denominator = -np.<span class="built_in">sum</span>(a.conj() * Ra, axis=<span class="number">0</span>)  <span class="comment"># a^H R^-1 a</span></span><br><span class="line">    power_at_freq = <span class="number">1.0</span> / np.real(denominator/ X_f.shape[<span class="number">0</span>] + <span class="number">1e-12</span>) <span class="comment">#功率谱</span></span><br></pre></td></tr></table></figure>
 <p>对同一段信号在相同频段进行mvdr和das功率扫描，可以看出MVDR在低频段上表现明显优于DAS，<strong>这是由于MVDR对干扰源的抑制能力极强</strong>，在低频段主瓣都很大的情况下也能区分声源位置</p>
@@ -283,6 +289,7 @@ R_{\text{DL}} = \hat{R}_{xx} + \sigma_{\text{DL}}^2 I</script><p>加入这个底
 <h4 id="基于噪声基底"><a href="#基于噪声基底" class="headerlink" title="基于噪声基底"></a>基于噪声基底</h4><p>直接将加载量设定为系统背景噪声功率的 10到 100 倍</p>
 <h4 id="基于矩阵迹（trace）"><a href="#基于矩阵迹（trace）" class="headerlink" title="基于矩阵迹（trace）"></a>基于矩阵迹（trace）</h4><script type="math/tex; mode=display">
 \sigma_{\text{DL}}^2 = \alpha \cdot \text{trace}(\hat{R}_{xx})/M,\alpha =10^{-3} \sim 10^{-1}</script><p>根据对角线元素总和，即阵列<strong>所有阵元接收到的总功率</strong>，也就是将加载量也设置为一个根据采集信号动态调整的值</p>
+<p><strong><u>在我实际使用中，对角加载对mvdr结果影响很大，因此不能随便选</u></strong></p>
 <h2 id="MVDR的优缺点"><a href="#MVDR的优缺点" class="headerlink" title="MVDR的优缺点"></a>MVDR的优缺点</h2><h3 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h3><ol>
 <li><strong>高分辨率：</strong> 空间分辨能力显著优于传统的延迟求和波束形成。</li>
 <li><strong>强干扰抑制（抑制其他声源对目标声源干扰）：</strong> 能够自动在强干扰源方向形成零陷，大幅提升强干扰环境下的输出信噪比。</li>
@@ -331,6 +338,34 @@ C = \left[ A(\theta_0), \left. \frac{\partial A(\theta)}{\partial \theta} \right
 \mathbf{w}_a = (\mathbf{B} \mathbf{R}_{xx} \mathbf{B}^T)^{-1} \mathbf{B} \mathbf{R}_{xx} \mathbf{w}_q</script><h2 id="优缺点"><a href="#优缺点" class="headerlink" title="优缺点"></a>优缺点</h2><p>主要优点就是把约束优化转化为了无约束的滤波问题，降低了计算复杂度，并且其物理和数学结构清晰，完全解耦；</p>
 <p>缺点就是需要精准的导向矢量，否正阻塞矩阵B会产生泄露，自适应滤波器会将泄露的期望信号视作干扰，导致最后期望信号也受到抑制</p>
 <p>为了防止自适应计算过强，<strong>也可以使用对角加载限制过大变化</strong></p>
+<h2 id="与MVDR的关系"><a href="#与MVDR的关系" class="headerlink" title="与MVDR的关系"></a>与MVDR的关系</h2><p>MVDR 与 GSC 等价，本质上是因为 <strong>GSC只是MVDR约束优化问题的一种结构化实现方式</strong>。</p>
+<p>首先，对于GSC的权重表达，将其共轭转置后都右乘导向矢量后，即<strong>可得到MVDR的约束</strong>；如果将w表达式带入MVDR的目标函数（无约束格式），也可以<strong>直接得到GSC最终w_a的解</strong></p>
+<p>那GSC存在的意义是什么呢，大概是因为较早时期矩阵求逆运算量大，所以GSC实时性更好吧</p>
+<h1 id="GEV广义特征向量波束形成器"><a href="#GEV广义特征向量波束形成器" class="headerlink" title="GEV广义特征向量波束形成器"></a>GEV广义特征向量波束形成器</h1><p>更多出现在语音增强中，GEV波束形成的核心思想是通过最大化输出信号的信噪比（SNR）<strong>或</strong>信号对干扰加噪声比（SINR）来推导最优导向矢量或空间滤波器系数，相比与MVDR<strong>要保证目标方向的无失真，GEV更加激进，选择直接最大化信噪比</strong></p>
+<p>对于带噪的信号，GEV直接将其视为：</p>
+<script type="math/tex; mode=display">
+\mathbf{x}(f, t) = \mathbf{s}(f, t) + \mathbf{n}(f, t)</script><p>所有噪声和干扰均被视为了一整个函数，GEV的目的就是让s和n最终信噪比尽可能大</p>
+<h2 id="构造目标与噪声协方差矩阵"><a href="#构造目标与噪声协方差矩阵" class="headerlink" title="构造目标与噪声协方差矩阵"></a>构造目标与噪声协方差矩阵</h2><p>根据上面分析，GEV的核心之一就是如何判断信号中哪些是目标信号，哪些是噪声。为了量化信号与噪声的空间分布，引入两个关键的空间相关矩阵：</p>
+<script type="math/tex; mode=display">
+\mathbf{R}_{ss/nn}(f) = \frac {\sum_tM_{s/n}{(f,t)}x(f,t)x^H(f,t)}{\sum_tM_{s/n}{(f,t)}}</script><p>其中，M为筛选协方差矩阵的mask，其形状与每个通道的stft结果x(f,t)相同，用于决定当前时-频点加权为噪声还是语音。也就是说，mask的计算是这一步的核心。</p>
+<p>在GEV中，mask是一个[0,1]的概率，目前最主流的方法是通过神经网络进行预测，因此，我们在训练中需要同时拥有：</p>
+<ul>
+<li>干净语音s</li>
+<li>噪声n</li>
+<li>混合信号x</li>
+</ul>
+<p>而mask的<strong>训练目标</strong>则为s和n的一些算法结果，例如：</p>
+<script type="math/tex; mode=display">
+m=\frac{|s|^2}{|s|^2+|n|^2}</script><p>然后将预测的/hat{m}与mask进行loss计算</p>
+<h2 id="GEV优化目标"><a href="#GEV优化目标" class="headerlink" title="GEV优化目标"></a>GEV优化目标</h2><p>在获得了两个协方差矩阵后，GEV的优化目标如下：</p>
+<script type="math/tex; mode=display">
+\max_{\mathbf{w}} \text{SNR}(\mathbf{w}) = \max_{\mathbf{w}} \frac{\mathbf{w}^{\mathsf{H}} \mathbf{R}_{ss} \mathbf{w}}{\mathbf{w}^{\mathsf{H}} \mathbf{R}_{nn} \mathbf{w}}</script><p>该目标可以直接转化为广义特征值问题：</p>
+<script type="math/tex; mode=display">
+\mathbf{R}_{ss} \mathbf{w} = \lambda \mathbf{R}_{nn} \mathbf{w}</script><p>则权重w为<strong>最大特征值所对应的特征向量</strong></p>
+<h2 id="后置滤波"><a href="#后置滤波" class="headerlink" title="后置滤波"></a>后置滤波</h2><p>GEV算出的特征向量具有任意的缩放因子（Scaling），这会导致输出信号产生频率失真（Speech Distortion）。为了解决这一盲源分离中的固有问题，通常引入 BAN （Blind Analytic Normalization）进行增益归一化：</p>
+<script type="math/tex; mode=display">
+\mathbf{w}_{\text{BAN}}(f) = \frac{\mathbf{w}_{\text{GEV}}(f)}{\sqrt{\frac{1}{M} \mathbf{w}_{\text{GEV}}^{\mathsf{H}}(f) \mathbf{R}_{nn}(f) \mathbf{w}_{\text{GEV}}(f)}}</script><h2 id="优缺点-1"><a href="#优缺点-1" class="headerlink" title="优缺点"></a>优缺点</h2><p>首先，我们可以很明显的看出，GEV在计算上完全不依赖导向矢量，也就是说其对阵列的几何结构没有要求，依靠数据驱动，而MVDR的质量几乎是由导向矢量决定，<strong>因此GEV理论上鲁棒性更高，由于其优化原理，信噪比也会更高</strong></p>
+<p>但是其也需要<strong>大量数据进行拟合</strong>，并且如果不使用BAN，会出现<strong>较大失真</strong></p>
 
     </div>
 
@@ -358,7 +393,10 @@ C = \left[ A(\theta_0), \left. \frac{\partial A(\theta)}{\partial \theta} \right
     <a href="/2026/06/15/problem-about-mic-array/" rel="prev" title="麦克风阵列的一些理论补充">
       <i class="fa fa-chevron-left"></i> 麦克风阵列的一些理论补充
     </a></div>
-      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/2026/06/25/%E8%AE%BA%E6%96%87%E7%B2%BE%E8%AF%BB/" rel="next" title="语音增强论文精读">
+      语音增强论文精读 <i class="fa fa-chevron-right"></i>
+    </a></div>
     </div>
       </footer>
     
@@ -417,7 +455,7 @@ C = \left[ A(\theta_0), \left. \frac{\partial A(\theta)}{\partial \theta} \right
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%87%AA%E9%80%82%E5%BA%94%E6%B3%A2%E6%9D%9F%E5%BD%A2%E6%88%90"><span class="nav-number">1.</span> <span class="nav-text">自适应波束形成</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E6%95%B0%E5%AD%A6%E6%A8%A1%E5%9E%8B"><span class="nav-number">2.</span> <span class="nav-text">基本数学模型</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#MVDR%E6%9C%80%E5%B0%8F%E6%96%B9%E5%B7%AE%E6%97%A0%E5%A4%B1%E7%9C%9F%E5%93%8D%E5%BA%94"><span class="nav-number">3.</span> <span class="nav-text">MVDR最小方差无失真响应</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8B%89%E6%A0%BC%E6%9C%97%E6%97%A5%E4%B9%98%E5%AD%90%E6%B3%95%E6%B1%82%E8%A7%A3%E6%9C%80%E4%BC%98%E9%97%AE%E9%A2%98"><span class="nav-number">3.1.</span> <span class="nav-text">拉格朗日乘子法求解最优问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#py%E4%BB%A3%E7%A0%81"><span class="nav-number">3.2.</span> <span class="nav-text">py代码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B3%E4%BA%8E%E5%AF%B9%E8%A7%92%E5%8A%A0%E8%BD%BD"><span class="nav-number">3.3.</span> <span class="nav-text">关于对角加载</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A0%B8%E5%BF%83%E7%97%9B%E7%82%B9"><span class="nav-number">3.3.1.</span> <span class="nav-text">核心痛点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E5%AD%A6%E5%8E%9F%E7%90%86"><span class="nav-number">3.3.2.</span> <span class="nav-text">数学原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8A%A0%E8%BD%BD%E9%87%8F%E7%9A%84%E9%80%89%E6%8B%A9"><span class="nav-number">3.3.3.</span> <span class="nav-text">加载量的选择</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9F%BA%E4%BA%8E%E5%99%AA%E5%A3%B0%E5%9F%BA%E5%BA%95"><span class="nav-number">3.3.3.1.</span> <span class="nav-text">基于噪声基底</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9F%BA%E4%BA%8E%E7%9F%A9%E9%98%B5%E8%BF%B9%EF%BC%88trace%EF%BC%89"><span class="nav-number">3.3.3.2.</span> <span class="nav-text">基于矩阵迹（trace）</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MVDR%E7%9A%84%E4%BC%98%E7%BC%BA%E7%82%B9"><span class="nav-number">3.4.</span> <span class="nav-text">MVDR的优缺点</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BC%98%E7%82%B9"><span class="nav-number">3.4.1.</span> <span class="nav-text">优点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BC%BA%E7%82%B9%E4%B8%8E%E5%B7%A5%E7%A8%8B%E6%8C%91%E6%88%98"><span class="nav-number">3.4.2.</span> <span class="nav-text">缺点与工程挑战</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#LCMV%E7%BA%BF%E6%80%A7%E7%BA%A6%E6%9D%9F%E6%9C%80%E5%B0%8F%E6%96%B9%E5%B7%AE"><span class="nav-number">4.</span> <span class="nav-text">LCMV线性约束最小方差</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%B8%E8%A7%81%E7%BA%A6%E6%9D%9F%E7%9F%A9%E9%98%B5%E8%AE%BE%E8%AE%A1"><span class="nav-number">4.1.</span> <span class="nav-text">常见约束矩阵设计</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#GSC%E5%B9%BF%E4%B9%89%E6%97%81%E7%93%A3%E7%9B%B8%E6%B6%88%E5%99%A8"><span class="nav-number">5.</span> <span class="nav-text">GSC广义旁瓣相消器</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%98%BB%E5%A1%9E%E7%9F%A9%E9%98%B5B"><span class="nav-number">5.1.</span> <span class="nav-text">阻塞矩阵B</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%87%AA%E9%80%82%E5%BA%94%E5%99%AA%E5%A3%B0%E7%9B%B8%E6%B6%88%E5%99%A8"><span class="nav-number">5.2.</span> <span class="nav-text">自适应噪声相消器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BC%98%E7%BC%BA%E7%82%B9"><span class="nav-number">5.3.</span> <span class="nav-text">优缺点</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%87%AA%E9%80%82%E5%BA%94%E6%B3%A2%E6%9D%9F%E5%BD%A2%E6%88%90"><span class="nav-number">1.</span> <span class="nav-text">自适应波束形成</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E6%95%B0%E5%AD%A6%E6%A8%A1%E5%9E%8B"><span class="nav-number">2.</span> <span class="nav-text">基本数学模型</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#MVDR%E6%9C%80%E5%B0%8F%E6%96%B9%E5%B7%AE%E6%97%A0%E5%A4%B1%E7%9C%9F%E5%93%8D%E5%BA%94"><span class="nav-number">3.</span> <span class="nav-text">MVDR最小方差无失真响应</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8B%89%E6%A0%BC%E6%9C%97%E6%97%A5%E4%B9%98%E5%AD%90%E6%B3%95%E6%B1%82%E8%A7%A3%E6%9C%80%E4%BC%98%E9%97%AE%E9%A2%98"><span class="nav-number">3.1.</span> <span class="nav-text">拉格朗日乘子法求解最优问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#py%E4%BB%A3%E7%A0%81"><span class="nav-number">3.2.</span> <span class="nav-text">py代码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B3%E4%BA%8E%E5%AF%B9%E8%A7%92%E5%8A%A0%E8%BD%BD"><span class="nav-number">3.3.</span> <span class="nav-text">关于对角加载</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A0%B8%E5%BF%83%E7%97%9B%E7%82%B9"><span class="nav-number">3.3.1.</span> <span class="nav-text">核心痛点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E5%AD%A6%E5%8E%9F%E7%90%86"><span class="nav-number">3.3.2.</span> <span class="nav-text">数学原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8A%A0%E8%BD%BD%E9%87%8F%E7%9A%84%E9%80%89%E6%8B%A9"><span class="nav-number">3.3.3.</span> <span class="nav-text">加载量的选择</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9F%BA%E4%BA%8E%E5%99%AA%E5%A3%B0%E5%9F%BA%E5%BA%95"><span class="nav-number">3.3.3.1.</span> <span class="nav-text">基于噪声基底</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9F%BA%E4%BA%8E%E7%9F%A9%E9%98%B5%E8%BF%B9%EF%BC%88trace%EF%BC%89"><span class="nav-number">3.3.3.2.</span> <span class="nav-text">基于矩阵迹（trace）</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MVDR%E7%9A%84%E4%BC%98%E7%BC%BA%E7%82%B9"><span class="nav-number">3.4.</span> <span class="nav-text">MVDR的优缺点</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BC%98%E7%82%B9"><span class="nav-number">3.4.1.</span> <span class="nav-text">优点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BC%BA%E7%82%B9%E4%B8%8E%E5%B7%A5%E7%A8%8B%E6%8C%91%E6%88%98"><span class="nav-number">3.4.2.</span> <span class="nav-text">缺点与工程挑战</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#LCMV%E7%BA%BF%E6%80%A7%E7%BA%A6%E6%9D%9F%E6%9C%80%E5%B0%8F%E6%96%B9%E5%B7%AE"><span class="nav-number">4.</span> <span class="nav-text">LCMV线性约束最小方差</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%B8%E8%A7%81%E7%BA%A6%E6%9D%9F%E7%9F%A9%E9%98%B5%E8%AE%BE%E8%AE%A1"><span class="nav-number">4.1.</span> <span class="nav-text">常见约束矩阵设计</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#GSC%E5%B9%BF%E4%B9%89%E6%97%81%E7%93%A3%E7%9B%B8%E6%B6%88%E5%99%A8"><span class="nav-number">5.</span> <span class="nav-text">GSC广义旁瓣相消器</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%98%BB%E5%A1%9E%E7%9F%A9%E9%98%B5B"><span class="nav-number">5.1.</span> <span class="nav-text">阻塞矩阵B</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%87%AA%E9%80%82%E5%BA%94%E5%99%AA%E5%A3%B0%E7%9B%B8%E6%B6%88%E5%99%A8"><span class="nav-number">5.2.</span> <span class="nav-text">自适应噪声相消器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BC%98%E7%BC%BA%E7%82%B9"><span class="nav-number">5.3.</span> <span class="nav-text">优缺点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%8EMVDR%E7%9A%84%E5%85%B3%E7%B3%BB"><span class="nav-number">5.4.</span> <span class="nav-text">与MVDR的关系</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#GEV%E5%B9%BF%E4%B9%89%E7%89%B9%E5%BE%81%E5%90%91%E9%87%8F%E6%B3%A2%E6%9D%9F%E5%BD%A2%E6%88%90%E5%99%A8"><span class="nav-number">6.</span> <span class="nav-text">GEV广义特征向量波束形成器</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9E%84%E9%80%A0%E7%9B%AE%E6%A0%87%E4%B8%8E%E5%99%AA%E5%A3%B0%E5%8D%8F%E6%96%B9%E5%B7%AE%E7%9F%A9%E9%98%B5"><span class="nav-number">6.1.</span> <span class="nav-text">构造目标与噪声协方差矩阵</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GEV%E4%BC%98%E5%8C%96%E7%9B%AE%E6%A0%87"><span class="nav-number">6.2.</span> <span class="nav-text">GEV优化目标</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%8E%E7%BD%AE%E6%BB%A4%E6%B3%A2"><span class="nav-number">6.3.</span> <span class="nav-text">后置滤波</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BC%98%E7%BC%BA%E7%82%B9-1"><span class="nav-number">6.4.</span> <span class="nav-text">优缺点</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -433,7 +471,7 @@ C = \left[ A(\theta_0), \left. \frac{\partial A(\theta)}{\partial \theta} \right
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">72</span>
+          <span class="site-state-item-count">73</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -603,11 +641,11 @@ C = \left[ A(\theta_0), \left. \frac{\partial A(\theta)}{\partial \theta} \right
         pbOptions.networks = "Wechat,QQZone,Weibo,Douban,Twitter,Facebook";
       new needShareButton('#needsharebutton-postbottom', pbOptions);
   </script>
-<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script><script>
+<script>
             window.imageLazyLoadSetting = {
                 isSPA: false,
                 preloadRatio: 1,
                 processImages: null,
             };
-        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(e.href.match(t)||e.href.match(r))&&(e.href=a.dataset.original)})});</script><script>!function(n){n.imageLazyLoadSetting.processImages=o;var e=n.imageLazyLoadSetting.isSPA,i=n.imageLazyLoadSetting.preloadRatio||1,r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]"));function o(){e&&(r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")));for(var t,a=0;a<r.length;a++)0<=(t=(t=r[a]).getBoundingClientRect()).bottom&&0<=t.left&&t.top<=(n.innerHeight*i||document.documentElement.clientHeight*i)&&function(){var t,e,n,i,o=r[a];t=o,e=function(){r=r.filter(function(t){return o!==t})},n=new Image,i=t.getAttribute("data-original"),n.onload=function(){t.src=i,e&&e()},t.src!==i&&(n.src=i)}()}o(),n.addEventListener("scroll",function(){var t,e;t=o,e=n,clearTimeout(t.tId),t.tId=setTimeout(function(){t.call(e)},500)})}(this);</script></body>
+        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(e.href.match(t)||e.href.match(r))&&(e.href=a.dataset.original)})});</script><script>!function(n){n.imageLazyLoadSetting.processImages=o;var e=n.imageLazyLoadSetting.isSPA,i=n.imageLazyLoadSetting.preloadRatio||1,r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]"));function o(){e&&(r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")));for(var t,a=0;a<r.length;a++)0<=(t=(t=r[a]).getBoundingClientRect()).bottom&&0<=t.left&&t.top<=(n.innerHeight*i||document.documentElement.clientHeight*i)&&function(){var t,e,n,i,o=r[a];t=o,e=function(){r=r.filter(function(t){return o!==t})},n=new Image,i=t.getAttribute("data-original"),n.onload=function(){t.src=i,e&&e()},t.src!==i&&(n.src=i)}()}o(),n.addEventListener("scroll",function(){var t,e;t=o,e=n,clearTimeout(t.tId),t.tId=setTimeout(function(){t.call(e)},500)})}(this);</script><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script></body>
 </html>
