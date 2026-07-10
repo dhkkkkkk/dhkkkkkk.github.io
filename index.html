@@ -278,6 +278,153 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2026/07/10/beamform-network/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/zoe.gif">
+      <meta itemprop="name" content="dhk">
+      <meta itemprop="description" content="记录一些学习日常">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小董的BLOG">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2026/07/10/beamform-network/" class="post-title-link" itemprop="url">基于神经网络的波束形成方法</a>
+        </h2>
+
+        <div class="post-meta">
+		  
+		  
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2026-07-10 14:59:14 / 修改时间：17:33:21" itemprop="dateCreated datePublished" datetime="2026-07-10T14:59:14+08:00">2026-07-10</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="FaSNet-filter-and-sum-network"><a href="#FaSNet-filter-and-sum-network" class="headerlink" title="FaSNet(filter-and-sum network)"></a>FaSNet(filter-and-sum network)</h1><h2 id="1-研究动机与问题"><a href="#1-研究动机与问题" class="headerlink" title="1. 研究动机与问题"></a>1. 研究动机与问题</h2><ul>
+<li>传统波束成形（beamforming）方法在语音增强、语音分离和语音识别任务中表现良好，但大多数为<strong>非因果（non-causal）系统</strong>，需要较长的上下文来稳健估计通道间特征。</li>
+<li>在需要<strong>低延迟（low-latency）</strong>的应用场景中（如实时语音处理），传统频域方法存在明显不足：频率分辨率与输入信号长度之间的权衡会导致<strong>可感知的系统延迟</strong>。</li>
+<li>基于掩膜（mask-based）的神经波束形成器在因果/在线场景下性能会严重下降。</li>
+</ul>
+<h2 id="2-现有神经波束形成器的三大分类"><a href="#2-现有神经波束形成器的三大分类" class="headerlink" title="2. 现有神经波束形成器的三大分类"></a>2. 现有神经波束形成器的三大分类</h2><div class="table-container">
+<table>
+<thead>
+<tr>
+<th>类别</th>
+<th>方法</th>
+<th>特点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>滤波法 (Filtering-based)</strong></td>
+<td>学习一组波束成形滤波器，进行滤波-求和（FaS）</td>
+<td>时域或频域，滤波器可为固定或自适应</td>
+</tr>
+<tr>
+<td><strong>掩膜法 (Masking-based)</strong></td>
+<td>通过估计 T-F 掩膜来计算空间协方差特征，用于 MVDR/GEV 等</td>
+<td>依赖长片段进行稳健估计，在线性能差</td>
+</tr>
+<tr>
+<td><strong>回归法 (Regression-based)</strong></td>
+<td>隐式地通过网络学习多通道到单通道的映射</td>
+<td>不显式生成波束成形滤波器</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>FaSNet则是基于滤波法进行展开。按照我的理解来说，这里的滤波法就是在不依赖导向矢量的情况下学习波束权重，如果要不依赖导向矢量，则像是FaSNet，最常使用的就是<strong>互相关函数</strong>（其实也差不多），这里我也不知道为什么作者把MVDR归为masking based，不深究了</p>
+<h2 id="核心思想"><a href="#核心思想" class="headerlink" title="核心思想"></a>核心思想</h2><img src="/images/loading.png" data-original="/2026/07/10/beamform-network/1.png" class title="This is an image"> 
+<p>FaSNet核心思想就是一个<strong>双阶段网络</strong>，<strong>直接处理<u>时域数据</u></strong>，优点是<strong>实时与低延迟</strong></p>
+<h3 id="第一阶段"><a href="#第一阶段" class="headerlink" title="第一阶段"></a>第一阶段</h3><p>由图可知，第一阶段需要计算参考麦克风和其他麦克风的互相关（论文中直接使用余弦相似度），并且由图中我们可以看到，所有信号均进行了截取，并且参考信号的截取长度更长，为3L，应该是为了充分得到互相关信息，也就是说每个通道的时间差应该在这个3L范围内</p>
+<p>互相关计算会生成N-1个[1,2L+1]互相关向量（余弦相似度向量，NCC特征），然后通过<strong>平均池化</strong>为[1,2L+1]</p>
+<p>然后，对于参考通道信号，有一层额外线性层将其投影为K维，与NCC特征拼接为[1,K+2L+1]输入进TCN网络（TCN网络内容不再展开）</p>
+<p>TCN最终会输出C个用于参考信号的波束形成滤波器[C,2L+1]，C为声源个数</p>
+<p>参考信号通过滤波器后，即为第一阶段输出：<strong>去噪后的参考信号</strong></p>
+<h3 id="第二阶段"><a href="#第二阶段" class="headerlink" title="第二阶段"></a>第二阶段</h3><p>将第一阶段输出作为输入（这里我们就不讨论声源个数的问题了），与每个通道再进行互相关计算得到N-1个NCC特征[1,2L+1]</p>
+<p>与第一阶段不同的是，第二阶段是对<strong>其他麦克风通道信号</strong>进行额外投影至K维，再与NCC特征拼接，输入到一个共享TCN中。第二阶段的TCN输出为<strong>N个波束形成信号</strong>（可以理解为与参考信号进行了对齐的信号），最后与参考通道相加得到最终波束形成信号</p>
+<h2 id="关键技术细节"><a href="#关键技术细节" class="headerlink" title="关键技术细节"></a>关键技术细节</h2><ul>
+<li><strong>帧级处理</strong>：帧长 L，hop size H，上下文窗口 3L（覆盖 ±L 的跨麦克风延迟）</li>
+<li><strong>NCC 特征</strong>：代替传统频域的 GCC-PHAT 特征，同时包含 TDOA 信息和信号内容信息</li>
+<li><strong>TCN 结构</strong>：每个 TCN 有 R 个 repeat，每个 repeat 含 P 个 1-D 卷积块（R=2, P=5），嵌入维度 K=64，参数仅 0.76M</li>
+<li><strong>门控输出层</strong>：<code>tanh(pW+b) ⊙ σ(pV+q)</code>，用于生成滤波器</li>
+</ul>
+<h2 id="损失函数"><a href="#损失函数" class="headerlink" title="损失函数"></a>损失函数</h2><ul>
+<li><strong>信号质量任务</strong>：SI-SNR（尺度不变信噪比）</li>
+<li><strong>ASR 任务</strong>：Mel 谱图的 SI-MSE</li>
+<li>采用 uPIT（排列不变训练）解决输出排列问题</li>
+</ul>
+<h2 id="实验与数据集"><a href="#实验与数据集" class="headerlink" title="实验与数据集"></a>实验与数据集</h2><div class="table-container">
+<table>
+<thead>
+<tr>
+<th>任务</th>
+<th>描述</th>
+<th>使用数据集</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>ESE</strong></td>
+<td>回声噪声环境下的语音增强（去噪+去混响）</td>
+<td>TIMIT + 模拟 RIR</td>
+</tr>
+<tr>
+<td><strong>ESS</strong></td>
+<td>回声噪声环境下的两说话人语音分离</td>
+<td>TIMIT + 模拟 RIR</td>
+</tr>
+<tr>
+<td><strong>ASR</strong></td>
+<td>多通道远场语音识别</td>
+<td>CHiME-3</td>
+</tr>
+</tbody>
+</table>
+</div>
+<ul>
+<li>圆形全向麦克风阵列（最多 4 个，直径 10cm），（这也太少了）</li>
+<li>使用 image method 模拟房间脉冲响应（gpuRIR 工具）</li>
+<li>源距离、房间尺寸随机采样</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2026/06/25/%E8%AE%BA%E6%96%87%E7%B2%BE%E8%AF%BB/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -423,187 +570,6 @@ Y_i=W_r∗X_i+W_i∗X_r</script><p>也就是说，一层Complex Conv就进行了
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2026/06/23/MVDR/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/zoe.gif">
-      <meta itemprop="name" content="dhk">
-      <meta itemprop="description" content="记录一些学习日常">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="小董的BLOG">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2026/06/23/MVDR/" class="post-title-link" itemprop="url">自适应波束形成</a>
-        </h2>
-
-        <div class="post-meta">
-		  
-		  
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2026-06-23 09:35:51" itemprop="dateCreated datePublished" datetime="2026-06-23T09:35:51+08:00">2026-06-23</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2026-06-24 16:48:06" itemprop="dateModified" datetime="2026-06-24T16:48:06+08:00">2026-06-24</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="自适应波束形成"><a href="#自适应波束形成" class="headerlink" title="自适应波束形成"></a>自适应波束形成</h1><p>波束形成的原理是调整相位阵列的基本单元参数，使得某些角度的信号获得相长干涉，而另一些角度的信号获得相消干涉。对各个麦克风信号加权求和、滤波，最终得到期望方向的语音信号，相当于形成一个“波束”。</p>
-<p>传统波束形成是使用<strong>固定的权值</strong>来形成某个方向的波束，而自适应波束形成则是根据环境的变化，动态调整阵列麦克风的权重和相位，从而<strong>最大限度地抑制干扰噪声</strong>并增强目标信号。</p>
-<h1 id="基本数学模型"><a href="#基本数学模型" class="headerlink" title="基本数学模型"></a>基本数学模型</h1><p>假设一个由 M 个阵元组成的任意构型的接收阵列，空间中存在一个来自方向 θ_0的期望信号，以及来自其他方向的干扰和环境噪声。则各麦克风接收到的信号（Mx1维）可表示为：</p>
-<script type="math/tex; mode=display">
-X(t) = A(\theta_0)S(t) + \sum_{i=1}^{K} A(\theta_i)I_i(t) + N(t)</script><p>其中A为导向矢量，0为目标方向，其他为干扰声源，N为环境噪声。</p>
-<p>所有波束形成器的输出都可表示为:</p>
-<script type="math/tex; mode=display">
-Y(t) = W^H X(t)</script><p>其中权重W则根据各波束形成算法而不同</p>
-<h1 id="MVDR最小方差无失真响应"><a href="#MVDR最小方差无失真响应" class="headerlink" title="MVDR最小方差无失真响应"></a>MVDR最小方差无失真响应</h1><p>Minimum Variance Distortionless Response，最小方差-无失真响应MVDR的核心思想就是：在确保当前目标方向的<strong><u>信号增益为1（无失真）</u></strong>的约束条件（可以直接理解为使用导向矢量进行约束）下，<strong><u>最小化阵列输出的总功率</u></strong>（即最小化方差），可以表示为：</p>
-<script type="math/tex; mode=display">
-\min_{W} \quad E[|Y(t)|^2] = W^H R_{xx} W \quad \text{s.t.} \quad W^H A(\theta_0) = 1</script><h2 id="拉格朗日乘子法求解最优问题"><a href="#拉格朗日乘子法求解最优问题" class="headerlink" title="拉格朗日乘子法求解最优问题"></a>拉格朗日乘子法求解最优问题</h2><p>现在我们是要寻找功率函数在无失真约束下的最小值，则可以使用拉格朗日乘子法。</p>
-<p>拉格朗日乘子法（Lagrange multipliers）是一种寻找多元函数<strong>在一组约束下</strong>的<strong>极值</strong>的方法。</p>
-<p>对于求f(x)在g(x)约束下的极值，可以得到如下结论，在最优点x0处，f(x)和g(x)的<strong>梯度向量的方向</strong>必相同或相反，即存在一个拉格朗日乘子，使得</p>
-<script type="math/tex; mode=display">
- f'(x_0)+\lambda g'(x_0)=0</script><p>将该等式与约束条件联立即可求得乘子λ，将λ再带回上式即可获得x_0</p>
-<p>在MVDR中，我们的拉格朗日目标函数可表示为：</p>
-<script type="math/tex; mode=display">
-L(W, \lambda) = W^H R_{xx} W + \lambda (W^H A(\theta_0) - 1)</script><p>根据上述结论，对W^H求偏导，有：</p>
-<script type="math/tex; mode=display">
-\frac{\partial L}{\partial W^H} = R_{xx} W + \lambda A(\theta_0) = 0 \implies W = -\lambda R_{xx}^{-1} A(\theta_0)</script><p>将该结果带入约束条件，最终可获得λ的表达：</p>
-<script type="math/tex; mode=display">
-\lambda =- \frac{1}{A(\theta_0)^H R_{xx}^{-1} A(\theta_0)}</script><p>带入W表达式，最终可获得<strong>MVDR最佳权重向量</strong>：</p>
-<script type="math/tex; mode=display">
-W_{\text{MVDR}} = \frac{R_{xx}^{-1} A(\theta_0)}{A(\theta_0)^H R_{xx}^{-1} A(\theta_0)}</script><p>这里就可以看出，W与协方差矩阵直接相关（分子是向量决定方向，分母是标量决定尺度，不能约）。最终功率谱则可表示为：</p>
-<script type="math/tex; mode=display">
-P_{\text{MVDR}}(\theta) = \frac{1}{A(\theta)^H R_{xx}^{-1} A(\theta)}</script><h2 id="py代码"><a href="#py代码" class="headerlink" title="py代码"></a>py代码</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> f_idx, freq <span class="keyword">in</span> <span class="built_in">enumerate</span>(tqdm(freqs, desc=<span class="string">&quot;MVDRing&quot;</span>)):</span><br><span class="line">    X_f = data_valid[:,:, f_idx]	<span class="comment">#提取当前频率分量</span></span><br><span class="line">    R = (X_f.T @ X_f.conj())  <span class="comment">#协方差矩阵</span></span><br><span class="line">    eps = <span class="number">1e-3</span> * np.trace(R)  <span class="comment">#视情况选择大小，越大mvdr性能越强，鲁棒性越差</span></span><br><span class="line">    R = R + eps * np.eye(self.Nchan) <span class="comment">#对角加载</span></span><br><span class="line">    R_inv = np.linalg.pinv(R)	<span class="comment">#求逆</span></span><br><span class="line">    a = np.exp(-<span class="number">1j</span> * <span class="number">2</span> * np.pi * freq * tdoa) <span class="comment">#根据toda构建导向矢量</span></span><br><span class="line">    Ra = R_inv @ a</span><br><span class="line">    denominator = -np.<span class="built_in">sum</span>(a.conj() * Ra, axis=<span class="number">0</span>)  <span class="comment"># a^H R^-1 a</span></span><br><span class="line">    power_at_freq = <span class="number">1.0</span> / np.real(denominator/ X_f.shape[<span class="number">0</span>] + <span class="number">1e-12</span>) <span class="comment">#功率谱</span></span><br></pre></td></tr></table></figure>
-<p>对同一段信号在相同频段进行mvdr和das功率扫描，可以看出MVDR在低频段上表现明显优于DAS，<strong>这是由于MVDR对干扰源的抑制能力极强</strong>，在低频段主瓣都很大的情况下也能区分声源位置</p>
-<img src="/images/loading.png" data-original="/2026/06/23/MVDR/mvdr.png" class title="This is an image"> 
-<img src="/images/loading.png" data-original="/2026/06/23/MVDR/das.png" class title="This is an image"> 
-<h2 id="关于对角加载"><a href="#关于对角加载" class="headerlink" title="关于对角加载"></a>关于对角加载</h2><p>MVDR中比较关键的一步就是需要求协方差矩阵R的逆，而从代码中我们可以看到，在求逆之前，我们进行了对角加载，那么对角加载有什么用呢？</p>
-<h3 id="核心痛点"><a href="#核心痛点" class="headerlink" title="核心痛点"></a>核心痛点</h3><p>在理想状态下，MVDR 依赖真实的协方差矩阵（数学期望）。但在实际工程中，我们只能通过有限个采样快照来估计。这就会导致一个问题：当快拍数较少（甚至小于阵元数），<strong>协方差矩阵会发生秩亏缺或条件数极高</strong>。此时对 <strong><u>求逆</u></strong>会带来巨大的数值计算误差，导致波束形成器的权重剧烈抖动，旁瓣自适应抬高。</p>
-<h3 id="数学原理"><a href="#数学原理" class="headerlink" title="数学原理"></a>数学原理</h3><p>因此，在估计的协方差矩阵的对角线上，我们加入了一个底噪声功率：（I为单位矩阵）</p>
-<script type="math/tex; mode=display">
-R_{\text{DL}} = \hat{R}_{xx} + \sigma_{\text{DL}}^2 I</script><p>加入这个底噪后，原本<strong><u>快拍数不足导致的最小特征值接近于0</u></strong>的问题（会使求逆输出极大值）会因为引入对角加载而被<strong><u>强行拉高特征值</u></strong>，令矩阵的条件数（最大特征值/最小特征值）大幅降低。矩阵求逆运算变得极度稳定，抑制了权重的随机剧烈抖动。</p>
-<h3 id="加载量的选择"><a href="#加载量的选择" class="headerlink" title="加载量的选择"></a>加载量的选择</h3><p>对于添加的底噪值，其越小则代表自适应能力越强（太强的自适应会导致鲁棒性变差，对导向矢量准确性要求极高），当其接近于无限大时，<strong>此时MVDR则退化为DAS</strong>，因此需要选择一个合适的值</p>
-<h4 id="基于噪声基底"><a href="#基于噪声基底" class="headerlink" title="基于噪声基底"></a>基于噪声基底</h4><p>直接将加载量设定为系统背景噪声功率的 10到 100 倍</p>
-<h4 id="基于矩阵迹（trace）"><a href="#基于矩阵迹（trace）" class="headerlink" title="基于矩阵迹（trace）"></a>基于矩阵迹（trace）</h4><script type="math/tex; mode=display">
-\sigma_{\text{DL}}^2 = \alpha \cdot \text{trace}(\hat{R}_{xx})/M,\alpha =10^{-3} \sim 10^{-1}</script><p>根据对角线元素总和，即阵列<strong>所有阵元接收到的总功率</strong>，也就是将加载量也设置为一个根据采集信号动态调整的值</p>
-<p><strong><u>在我实际使用中，对角加载对mvdr结果影响很大，因此不能随便选</u></strong></p>
-<h2 id="MVDR的优缺点"><a href="#MVDR的优缺点" class="headerlink" title="MVDR的优缺点"></a>MVDR的优缺点</h2><h3 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h3><ol>
-<li><strong>高分辨率：</strong> 空间分辨能力显著优于传统的延迟求和波束形成。</li>
-<li><strong>强干扰抑制（抑制其他声源对目标声源干扰）：</strong> 能够自动在强干扰源方向形成零陷，大幅提升强干扰环境下的输出信噪比。</li>
-<li><strong>无需先验干扰信息：</strong> 只需要知道目标方向，不需要知道干扰的数量和方向。</li>
-</ol>
-<h3 id="缺点与工程挑战"><a href="#缺点与工程挑战" class="headerlink" title="缺点与工程挑战"></a>缺点与工程挑战</h3><ol>
-<li><strong><u>对模型误差极其敏感（鲁棒性差，对导向矢量要求高</u>）：</strong> 如果目标方向存在偏差（Pointing Error）或者阵元位置存在校准误差，MVDR会误将目标信号视为“干扰”并进行自适应压制，导致严重的自消散（Signal Canceling）现象。</li>
-<li>相干源失效（快衰落）： 当目标信号与干扰信号高度相关或相干（如同频多径反射）时，协方差矩阵 $R_{xx}$ 会趋于退化，导致算法失效。通常需要结合空间平滑（Spatial Smoothing）技术来解相干。</li>
-<li><strong>**计算量大</strong>：** 每次计算都需要对 $M \times M$ 的矩阵进行求逆操作，在阵元数 $M$ 较大或需要实时更新时，计算复杂度较高（$O(M^3)$）。</li>
-<li><strong>**样本快照数限制</strong>：** 在实际应用中，$R_{xx}$ 是通过有限的样本快照估计得到的（即 $\hat{R}_{xx} = \frac{1}{N}\sum X X^H$）。如果快照数 $N$ 小于阵元数 $M$，$\hat{R}_{xx}$ 将不可逆。</li>
-</ol>
-<h1 id="LCMV线性约束最小方差"><a href="#LCMV线性约束最小方差" class="headerlink" title="LCMV线性约束最小方差"></a>LCMV线性约束最小方差</h1><p>线性约束最小方差(Linearly Constrained Minimum Variance, LCMV)波束形成器，是MVDR的扩展形式，其可表示为：</p>
-<script type="math/tex; mode=display">
-\min_{W} \quad W^H R_{xx} W \quad \text{s.t.} \quad W^H C = F^H</script><p>其实就是把原来的单个约束替换为了一组线性约束，C为MxL维的约束矩阵，每一列代表一个约束条件；F为Lx1维的增益控制向量，代表对应约束想达到的复增益</p>
-<p>同样使用拉格朗日乘子法可以得到LCMV的最佳权重表达：</p>
-<script type="math/tex; mode=display">
-W_{\text{LCMV}} = R_{xx}^{-1} C (C^H R_{xx}^{-1} C)^{-1} F</script><p>当约束条件为单个导向矢量时，退化为MVDR，上式也完全等价于MVDR形式</p>
-<h2 id="常见约束矩阵设计"><a href="#常见约束矩阵设计" class="headerlink" title="常见约束矩阵设计"></a>常见约束矩阵设计</h2><ul>
-<li><p><strong>多方向无失真约束</strong>，即对两个方向同时进行无失真约束：</p>
-<script type="math/tex; mode=display">
-C = [A(\theta_1), A(\theta_2)] ,F = [1, 1]^T</script></li>
-<li><p><strong>强迫干扰零陷约束</strong>，即对已知干扰源直接约束其增益为0：</p>
-<script type="math/tex; mode=display">
-C = [A(\theta_0), A(\theta_i)],F = [1, 0]^T</script></li>
-<li><p>导数约束，约束导向矢量对角度的<strong>一阶导数（甚至二阶导数）为 0</strong>，来使主瓣平坦化。</p>
-<script type="math/tex; mode=display">
-C = \left[ A(\theta_0), \left. \frac{\partial A(\theta)}{\partial \theta} \right|_{\theta_0} \right],F = [1, 0]^T</script><p>此时主瓣会增大，具备更强稳定性</p>
-</li>
-</ul>
-<h1 id="GSC广义旁瓣相消器"><a href="#GSC广义旁瓣相消器" class="headerlink" title="GSC广义旁瓣相消器"></a>GSC广义旁瓣相消器</h1><p>GSC可以看作是LCMV的一种<strong>无约束</strong>等效实现，其示意图如下：</p>
-<img src="/images/loading.png" data-original="/2026/06/23/MVDR/GSC.png" class title="This is an image"> 
-<p>其可分为两部分，即上方的主路和下方的辅路，其中主路就是标准DAS波束形成，不再细说。</p>
-<p>对于辅路，其任务是尽可能的还原信号中的噪声和干扰，并从DAS权重中减去，因此GSC的最终权重可表示为：</p>
-<script type="math/tex; mode=display">
-\mathbf{w} = \mathbf{w}_q - \mathbf{B}^T \mathbf{w}_a</script><p>与MVDR不同，其自适应权重用于计算干扰和噪声，而不是直接用于增强方向信号</p>
-<h2 id="阻塞矩阵B"><a href="#阻塞矩阵B" class="headerlink" title="阻塞矩阵B"></a>阻塞矩阵B</h2><p>其功能是各通道中的<strong><u>期望信号完全滤除</u></strong>（阻塞），仅允许噪声和干扰信号通过。因此，其与约束矩阵（导向矢量）是一定正交的，因此，当我们已经有比较准确的导向矢量a时，<strong>将各信号对齐后</strong>即可直接令B让相邻阵元相减来<strong><u>消除同相的目标信号</u></strong>：</p>
-<script type="math/tex; mode=display">
-\mathbf{B} = \begin{bmatrix} 1 & -1 & 0 & 0 \\ 0 & 1 & -1 & 0 \\ 0 & 0 & 1 & -1 \end{bmatrix}</script><p>这样得到的干扰和噪声是基于两两相邻阵元信号的，也可以通过均值计算：</p>
-<script type="math/tex; mode=display">
-\mathbf{B} = \begin{bmatrix} 3/4 & -1/4 & -1/4 & -1/4 \\ -1/4 & 3/4 & -1/4 & -1/4 \\ -1/4 & -1/4 & 3/4 & -1/4 \end{bmatrix}</script><p>这样每个阵元减去的都是所有阵元和的均值，理论上会更稳定一点点</p>
-<h2 id="自适应噪声相消器"><a href="#自适应噪声相消器" class="headerlink" title="自适应噪声相消器"></a>自适应噪声相消器</h2><p>信号通过阻塞矩阵后，只剩下干扰和噪声。自适应滤波器（如 LMS、RLS 或直接求逆算法）通过调整权重 w_a，使自适应支路的<strong><u>输出尽可能逼近静态支路中的干扰和噪声成分</u></strong>。</p>
-<p>理论上在经过阻塞矩阵B后，信号中已不包含期望信号成分，因此自适应权重w_a的优化完全不会影响期望信号。基于这个前提，自适应部分的优化目标也就等同于使经过B后的信号输出总功率（方差）最小：</p>
-<script type="math/tex; mode=display">
-\min_{\mathbf{w}_a} E\left[ |y(t)|^2 \right] = \min_{\mathbf{w}_a} (\mathbf{w}_q - \mathbf{B}^T \mathbf{w}_a)^H \mathbf{R}_{xx} (\mathbf{w}_q - \mathbf{B}^T \mathbf{w}_a)</script><p>也就是最小化噪声和干扰，直接对目标函数求导找零点，即可得到无约束最优解：</p>
-<script type="math/tex; mode=display">
-\mathbf{w}_a = (\mathbf{B} \mathbf{R}_{xx} \mathbf{B}^T)^{-1} \mathbf{B} \mathbf{R}_{xx} \mathbf{w}_q</script><h2 id="优缺点"><a href="#优缺点" class="headerlink" title="优缺点"></a>优缺点</h2><p>主要优点就是把约束优化转化为了无约束的滤波问题，降低了计算复杂度，并且其物理和数学结构清晰，完全解耦；</p>
-<p>缺点就是需要精准的导向矢量，否正阻塞矩阵B会产生泄露，自适应滤波器会将泄露的期望信号视作干扰，导致最后期望信号也受到抑制</p>
-<p>为了防止自适应计算过强，<strong>也可以使用对角加载限制过大变化</strong></p>
-<h2 id="与MVDR的关系"><a href="#与MVDR的关系" class="headerlink" title="与MVDR的关系"></a>与MVDR的关系</h2><p>MVDR 与 GSC 等价，本质上是因为 <strong>GSC只是MVDR约束优化问题的一种结构化实现方式</strong>。</p>
-<p>首先，对于GSC的权重表达，将其共轭转置后都右乘导向矢量后，即<strong>可得到MVDR的约束</strong>；如果将w表达式带入MVDR的目标函数（无约束格式），也可以<strong>直接得到GSC最终w_a的解</strong></p>
-<p>那GSC存在的意义是什么呢，大概是因为较早时期矩阵求逆运算量大，所以GSC实时性更好吧</p>
-<h1 id="GEV广义特征向量波束形成器"><a href="#GEV广义特征向量波束形成器" class="headerlink" title="GEV广义特征向量波束形成器"></a>GEV广义特征向量波束形成器</h1><p>更多出现在语音增强中，GEV波束形成的核心思想是通过最大化输出信号的信噪比（SNR）<strong>或</strong>信号对干扰加噪声比（SINR）来推导最优导向矢量或空间滤波器系数，相比与MVDR<strong>要保证目标方向的无失真，GEV更加激进，选择直接最大化信噪比</strong></p>
-<p>对于带噪的信号，GEV直接将其视为：</p>
-<script type="math/tex; mode=display">
-\mathbf{x}(f, t) = \mathbf{s}(f, t) + \mathbf{n}(f, t)</script><p>所有噪声和干扰均被视为了一整个函数，GEV的目的就是让s和n最终信噪比尽可能大</p>
-<h2 id="构造目标与噪声协方差矩阵"><a href="#构造目标与噪声协方差矩阵" class="headerlink" title="构造目标与噪声协方差矩阵"></a>构造目标与噪声协方差矩阵</h2><p>根据上面分析，GEV的核心之一就是如何判断信号中哪些是目标信号，哪些是噪声。为了量化信号与噪声的空间分布，引入两个关键的空间相关矩阵：</p>
-<script type="math/tex; mode=display">
-\mathbf{R}_{ss/nn}(f) = \frac {\sum_tM_{s/n}{(f,t)}x(f,t)x^H(f,t)}{\sum_tM_{s/n}{(f,t)}}</script><p>其中，M为筛选协方差矩阵的mask，其形状与每个通道的stft结果x(f,t)相同，用于决定当前时-频点加权为噪声还是语音。也就是说，mask的计算是这一步的核心。</p>
-<p>在GEV中，mask是一个[0,1]的概率，目前最主流的方法是通过神经网络进行预测，因此，我们在训练中需要同时拥有：</p>
-<ul>
-<li>干净语音s</li>
-<li>噪声n</li>
-<li>混合信号x</li>
-</ul>
-<p>而mask的<strong>训练目标</strong>则为s和n的一些算法结果，例如：</p>
-<script type="math/tex; mode=display">
-m=\frac{|s|^2}{|s|^2+|n|^2}</script><p>然后将预测的/hat{m}与mask进行loss计算</p>
-<h2 id="GEV优化目标"><a href="#GEV优化目标" class="headerlink" title="GEV优化目标"></a>GEV优化目标</h2><p>在获得了两个协方差矩阵后，GEV的优化目标如下：</p>
-<script type="math/tex; mode=display">
-\max_{\mathbf{w}} \text{SNR}(\mathbf{w}) = \max_{\mathbf{w}} \frac{\mathbf{w}^{\mathsf{H}} \mathbf{R}_{ss} \mathbf{w}}{\mathbf{w}^{\mathsf{H}} \mathbf{R}_{nn} \mathbf{w}}</script><p>该目标可以直接转化为广义特征值问题：</p>
-<script type="math/tex; mode=display">
-\mathbf{R}_{ss} \mathbf{w} = \lambda \mathbf{R}_{nn} \mathbf{w}</script><p>则权重w为<strong>最大特征值所对应的特征向量</strong></p>
-<h2 id="后置滤波"><a href="#后置滤波" class="headerlink" title="后置滤波"></a>后置滤波</h2><p>GEV算出的特征向量具有任意的缩放因子（Scaling），这会导致输出信号产生频率失真（Speech Distortion）。为了解决这一盲源分离中的固有问题，通常引入 BAN （Blind Analytic Normalization）进行增益归一化：</p>
-<script type="math/tex; mode=display">
-\mathbf{w}_{\text{BAN}}(f) = \frac{\mathbf{w}_{\text{GEV}}(f)}{\sqrt{\frac{1}{M} \mathbf{w}_{\text{GEV}}^{\mathsf{H}}(f) \mathbf{R}_{nn}(f) \mathbf{w}_{\text{GEV}}(f)}}</script><h2 id="优缺点-1"><a href="#优缺点-1" class="headerlink" title="优缺点"></a>优缺点</h2><p>首先，我们可以很明显的看出，GEV在计算上完全不依赖导向矢量，也就是说其对阵列的几何结构没有要求，依靠数据驱动，而MVDR的质量几乎是由导向矢量决定，<strong>因此GEV理论上鲁棒性更高，由于其优化原理，信噪比也会更高</strong></p>
-<p>但是其也需要<strong>大量数据进行拟合</strong>，并且如果不使用BAN，会出现<strong>较大失真</strong></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   
   <nav class="pagination">
     <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/25/">25</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
@@ -673,7 +639,7 @@ m=\frac{|s|^2}{|s|^2+|n|^2}</script><p>然后将预测的/hat{m}与mask进行los
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">73</span>
+          <span class="site-state-item-count">74</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>

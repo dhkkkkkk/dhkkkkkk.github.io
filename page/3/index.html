@@ -197,6 +197,165 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2026/06/04/DOA/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/zoe.gif">
+      <meta itemprop="name" content="dhk">
+      <meta itemprop="description" content="记录一些学习日常">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小董的BLOG">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2026/06/04/DOA/" class="post-title-link" itemprop="url">声源定位之基于相对时延估计</a>
+        </h2>
+
+        <div class="post-meta">
+		  
+		  
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2026-06-04 16:03:39" itemprop="dateCreated datePublished" datetime="2026-06-04T16:03:39+08:00">2026-06-04</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2026-07-10 15:20:24" itemprop="dateModified" datetime="2026-07-10T15:20:24+08:00">2026-07-10</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>我是后背</p>
+<p>要想实现一个声源的定位，我们需要：</p>
+<ul>
+<li>声源的到达<strong>方向</strong> (Direction of Arrival，DOA) ，主要计算其的方位角和俯仰角</li>
+<li>声源的<strong>距离</strong>估计</li>
+</ul>
+<p>目前我们的重点先放在DOA上，对于DOA估计，主要有三个方法：</p>
+<ul>
+<li>基于<strong>到达时间差（TDOA）</strong>：计算不同阵元之间接收到的信号的时延差，根据该时延差即可推断出声源位置</li>
+<li>基于<strong>波束形成</strong>的方法：进行不同角度遍历扫描，分别进行波束形成（即假设时延差），功率最大处即为声源位置</li>
+<li>基于高分辨谱估计：然后采用特征分解操作，从协方差矩阵中提取出信号子空间。之后，利用空间谱 估计技术对该子空间进行分析，最终得出声源方向的估计结果。</li>
+</ul>
+<p>根据定义我们就可以看出，基于相对时延估计的技术点主要在于如何计算出时延差；而波束形成方法则更简单暴力，技术点在于使用什么波束形成方法更好</p>
+<p>本章我们将对基于相对时延估计的方法进行展开，其可以分为两部分：</p>
+<ul>
+<li>时间差计算</li>
+<li>角度计算</li>
+</ul>
+<p>其中，时间差计算为核心</p>
+<h1 id="声场模型"><a href="#声场模型" class="headerlink" title="声场模型"></a>声场模型</h1><p>根据麦克风阵列和声源距离的远近，我们可以将声场模型分为：<strong><u>近场模型</u>和<u>远场模型</u></strong>，在近场模型下我们将声波看作为<strong>球面波</strong>，其主要考虑麦克风阵列各阵元接收到信号的幅度差; 而远场模型将声波看作为<strong>平面波</strong>，忽略阵元接收信号间的幅度差，近似认为各阵元接收信号之间为简单的时延关系</p>
+<p>评判模型的标准为声源到阵列参考阵元的判据：</p>
+<script type="math/tex; mode=display">
+R_r = \frac{2D^2}{\lambda}</script><ul>
+<li>D：阵列最大几何尺寸</li>
+<li>λ：波长（传播速度/频率）</li>
+</ul>
+<p>当绝对距离大于该值时即为远场模型</p>
+<p>由公式可知，<strong><u>当选择的频率越大，远场判据越大</u></strong>，即该频率越容易表现出近场特性，因此<strong>若要使用更简单的远场模型，我们选择的频率应该偏小一点，</strong>工程中常选取主要频带上的最大频率值（关于距离这一块后面的章节会细说）</p>
+<p>例子：当我们阵列直径为0.2m时，瑞利距离则约为0.47m</p>
+<p>如果对近场模型使用了基于远场模型的算法，则会导致<strong>导向矢量的失配</strong>，最终导致结果的不准确</p>
+<h1 id="传统互相关法"><a href="#传统互相关法" class="headerlink" title="传统互相关法"></a>传统互相关法</h1><p>假设参考阵元信号为x1，则我们可以直接通过互相关函数计算阵元x2与x1的时延差：</p>
+<script type="math/tex; mode=display">
+R_{x_1 x_2}(\tau) = \int_{-\infty}^{\infty} x_1(t) x_2(t + \tau) dt</script><p>当互相关值最大时，对应的tau即为时延差。然而，在实际室内环境中，由于声波反射（混响）和环境噪声的影响，<strong>传统互相关函数的峰值往往会变得非常平缓，甚至出现多个伪峰</strong>，导致估计彻底失效。</p>
+<h1 id="广义互相关法GCC"><a href="#广义互相关法GCC" class="headerlink" title="广义互相关法GCC"></a>广义互相关法GCC</h1><p>由维纳-辛钦定理可知，随机信号的<strong>相关函数和功率谱密度函数服从一对傅里叶变换的关系</strong>（即互相关时域函数在频域的表达就是互功率谱密度），<strong>功率谱密度函数</strong>可以表示为：</p>
+<script type="math/tex; mode=display">
+P(ω)= X_1(ω) \cdot X_2^*(ω)=\int_{-\infty}^{\infty} R(\tau)e^{-jω\tau} d\tau</script><p>这里我们就建立了频域表达与互相关函数（时域）的等式。为了增强互相关函数峰值，我们<u>引入一个加权函数</u>ψ来<strong>增强信号中有用的<u>频率部分</u></strong>，在频域增强完后再转到时域：</p>
+<script type="math/tex; mode=display">
+R_{x_1 x_2}^{GCC}(\tau)=\int_{-\infty}^{\infty}\psi(ω) P(ω)e^{jω\tau} dω</script><p>对于这个加权函数的设计，则就是GCC各种分支的由来了</p>
+<h2 id="相位变换加权（PHAT-phase-transform）"><a href="#相位变换加权（PHAT-phase-transform）" class="headerlink" title="相位变换加权（PHAT,phase transform）"></a>相位变换加权（PHAT,phase transform）</h2><p>互功率谱密度是指在f处的共有的能量密集度和在f下两信号的相位差，而我们现在<strong>只需要通过相位差来得到时延值</strong>，因此，可以直接令加权函数为<strong>功率谱密度的<u>模（幅值）</u></strong>的倒数：</p>
+<script type="math/tex; mode=display">
+\psi_{PHAT}(f) = \frac{1}{|P_{x_1 x_2}(f)|} = \frac{1}{|X_1(f) \cdot X_2^*(f)|}</script><p>这样的话，互相关函数就是一个<strong>仅与<u>功率谱密度的相位</u>相关</strong>的函数了：</p>
+<script type="math/tex; mode=display">
+R_{x_1 x_2}^{PHAT}(\tau) = \int_{-\infty}^{\infty} e^{j \theta(f)} e^{j 2 \pi f \tau} df= \int_{-\infty}^{\infty} e^{j 2 \pi f (\tau - \tau_0)} df</script><p>也就是说，PHAT本身就是指通过相位差来计算时延值，当t取到t0时，互相关函数就是最大值</p>
+<h2 id="py实现"><a href="#py实现" class="headerlink" title="py实现"></a>py实现</h2><figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">gcc_get_tdoa</span>(<span class="params">self, freq_range=<span class="literal">None</span></span>):</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> freq_range <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">        freq_range = [<span class="number">1000</span>, <span class="number">2000</span>]</span><br><span class="line">    mask = (self.freqbin &gt;= freq_range[<span class="number">0</span>]) &amp; (self.freqbin &lt;= freq_range[<span class="number">1</span>])</span><br><span class="line"></span><br><span class="line">    X_ref = self.data[<span class="number">0</span>, <span class="number">0</span>:<span class="number">1</span>, :]</span><br><span class="line">    G = np.conjugate(X_ref) * self.data[<span class="number">0</span>,:,:]</span><br><span class="line">    eps = <span class="number">1e-12</span></span><br><span class="line">    G_phat = G / (np.<span class="built_in">abs</span>(G) + eps)</span><br><span class="line">    G_filtered = G_phat * mask[<span class="literal">None</span>, <span class="literal">None</span>, :]   <span class="comment">#带通滤波</span></span><br><span class="line">    G_avg = np.mean(G_filtered, axis=<span class="number">0</span>)</span><br><span class="line">    gcc_time = np.fft.irfft(G_avg, n=self.num_freqs, axis=-<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">    gcc_time_shifted = np.fft.fftshift(gcc_time, axes=-<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment">#构建中心对齐的时延轴（单位：秒）</span></span><br><span class="line">    lags = np.arange(-self.num_freqs // <span class="number">2</span>, self.num_freqs // <span class="number">2</span>) / self.sampling_frequency</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 9. 寻找互相关谱峰对应的索引，提取 TDOA</span></span><br><span class="line">    <span class="comment"># tdoa_indices 形状: (Nchan,)</span></span><br><span class="line">    tdoa_indices = np.argmax(gcc_time_shifted, axis=-<span class="number">1</span>)</span><br><span class="line">    tdoa = lags[tdoa_indices]</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> tdoa, gcc_time_shifted, lags</span><br></pre></td></tr></table></figure>
+<p>这里简单实现了基于麦克风第一个通道的GCC-PHAT计算，这里需要注意几点：</p>
+<ul>
+<li><code>np.conjugate(X_ref)</code>：对参考通道进行共轭转置，及对应上面的公式中的-t0，这样晚于参考通道的信号的t就是正值</li>
+<li>带通滤波：若要进行窄带运算，必须要使用带通滤波，而不是简单的仅提取对应通道，因为后面要使用ifft</li>
+<li><code>gcc_time_shifted</code>：当ifft对象为普通信号时，其会正常还原时域波形；但如果对象为互功率谱，其对应的时域为互相关函数，包含正负时延，因此ifft的输出会首先输出正时延值，再输出负时延值（与常规顺序相反），gcc_time_shifted会根据0值位置，将正负互换</li>
+<li><code>lags = np.arange...</code>刚刚提到，互相关函数的完整物理定义域是有正负的，具体其实就是[-0.5T,0.5T]（因为任何傅里叶变换得到的都是一个周期函数/序列，ifft得到的就是各频段周期函数的叠加，而一个长度为N的周期序列，任何索引n都可以映射到唯一区间[-0.5T,0.5T]），因此gcc_time_shifted<strong>对应的时间索引是一定对称的</strong>，而lags就是把这个索引值算出来，因为gcc_time_shifted没有包含每个索引对应的时延值，<u>它代表的是每个时延值上对应的互相关值</u></li>
+</ul>
+<h2 id="优缺点"><a href="#优缺点" class="headerlink" title="优缺点"></a>优缺点</h2><p>优点：由于仅通过相位差来得到时延值，因此该方法拥有极强的抗混响能力（混响对相位影响小）</p>
+<p>缺点：当信号中存在噪声时，当某些频段上噪声为主要成分时，也就意为着此时得到的相位也是噪声的相位，而PHAT舍弃了幅值，因此也将<strong>放大噪声</strong>，最终导致互相关函数上真<strong>峰降低</strong>，并出现<strong>大量伪峰</strong>（因为互相关函数代表的是不同t上信号的相关程度，伪峰即为噪声与信号产生的相关）</p>
+<p>后记，由于是对每个频段分别进行相位差计算，因此在噪声源存在的情况下几乎没办法准确定位声源（即使噪声比较微弱）</p>
+<h1 id="SRP-PHAT（Steered-Response-Power-with-Phase-Transform）"><a href="#SRP-PHAT（Steered-Response-Power-with-Phase-Transform）" class="headerlink" title="SRP-PHAT（Steered Response Power with Phase Transform）"></a>SRP-PHAT（<strong>Steered Response Power with Phase Transform</strong>）</h1><p>准确来说这个方法已经不算是直接计算DOA，但是跟GCC-PHAT强相关，所以也放这里了</p>
+<p>SRP-PHAT<strong>先在空间中划分网格（候选声源点）</strong>。对于空间中任意一个假设的声源点，计算它到达所有麦克风对的理论时延。然后将所有麦克风对在这些理论时延处的 GCC-PHAT 值进行<strong>空间累加</strong>。</p>
+<p>这和基于波束形成的方法非常像，只是波束形成的输出是声压，而SRP-PHAT的输出是互相关函数值：</p>
+<script type="math/tex; mode=display">
+P(\mathbf{s}) = \sum_{i=1}^{M} \sum_{j=1}^{M} R_{x_i x_j}^{PHAT}\left( \tau_{ij}(\mathbf{s}) \right)</script><p>显而易见，该方法要计算任意两个阵元的互相关值，计算量极大，即使预先计算出所有的时延，仍要计算大量次互相关，因此实际使用时一般配合一些简化计算量的优化：</p>
+<p><strong>由粗到精的搜索（Coarse-to-Fine Search）</strong>：先用极稀疏的网格扫描空间，锁定高能量的局部区域；再在这些候选区域内细化网格进行微观搜索。</p>
+<p><strong>随机区域收缩法（Stochastic Region Contraction, SRC）</strong>：基于动态优化思想，每次随机抽取空间样本点，根据响应功率不断收缩搜索空间收敛到最优解，能将计算量降低几个数量级。</p>
+<p><strong>GPU 并行加速</strong>：由于每个空间网格点的功率计算 彼此完全独立，属于典型的数据并行（SIMD）任务。在现代工程中，利用 CUDA 将网格映射分发给 GPU 执行，可以极其轻松地实现高分辨率的三维实时 SRP-PHAT 定位。</p>
+<h2 id="代码实现："><a href="#代码实现：" class="headerlink" title="代码实现："></a>代码实现：</h2><h3 id="建立麦克风对tdoa"><a href="#建立麦克风对tdoa" class="headerlink" title="建立麦克风对tdoa"></a>建立麦克风对tdoa</h3><p>由于pair tdoa是srp-phat的主要计算量处，而其结果仅与阵列坐标和扫描角度有关，因此通常是预计算，在后续计算中直接读取保存的toda结果</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">build_pair_tdoa_table</span>(<span class="params"></span></span><br><span class="line"><span class="params">        mic_struct,</span></span><br><span class="line"><span class="params">        phi_scan,</span></span><br><span class="line"><span class="params">        theta_scan,</span></span><br><span class="line"><span class="params">        sound_speed=<span class="number">343.0</span></span>):</span><br><span class="line">    <span class="comment">#计算每个麦克风对的时延（n*n-1 /2）</span></span><br><span class="line">    M = mic_struct.shape[<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line">    pairs = <span class="built_in">list</span>(combinations(<span class="built_in">range</span>(M), <span class="number">2</span>))</span><br><span class="line">    Npair = <span class="built_in">len</span>(pairs)</span><br><span class="line"></span><br><span class="line">    pair_tdoa = np.zeros(</span><br><span class="line">        (</span><br><span class="line">            <span class="built_in">len</span>(theta_scan),</span><br><span class="line">            <span class="built_in">len</span>(phi_scan),</span><br><span class="line">            Npair</span><br><span class="line">        ),</span><br><span class="line">        dtype=np.float32</span><br><span class="line">    )</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> it, theta <span class="keyword">in</span> <span class="built_in">enumerate</span>(tqdm(theta_scan,desc=<span class="string">&quot;计算各麦克风pairs时延中&quot;</span>)):</span><br><span class="line"></span><br><span class="line">        sin_t = np.sin(theta)</span><br><span class="line">        cos_t = np.cos(theta)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> ip, phi <span class="keyword">in</span> <span class="built_in">enumerate</span>(phi_scan):</span><br><span class="line"></span><br><span class="line">            u = np.array([</span><br><span class="line">                sin_t*np.cos(phi),</span><br><span class="line">                sin_t*np.sin(phi),</span><br><span class="line">                cos_t</span><br><span class="line">            ])</span><br><span class="line"></span><br><span class="line">            tau = -mic_struct @ u / sound_speed</span><br><span class="line"></span><br><span class="line">            <span class="keyword">for</span> k, (i, j) <span class="keyword">in</span> <span class="built_in">enumerate</span>(pairs):</span><br><span class="line"></span><br><span class="line">                pair_tdoa[it, ip, k] = (</span><br><span class="line">                    tau[i] - tau[j]</span><br><span class="line">                )<span class="comment">#注意这里tau是带了-号，如果i是-1，j是-2，则结果+1则代表i晚于j 1s</span></span><br><span class="line"></span><br><span class="line">    pair_lag = np.<span class="built_in">round</span>(pair_tdoa * <span class="number">51200</span>).astype(np.int32)</span><br><span class="line">    np.savez_compressed(</span><br><span class="line">        <span class="string">&quot;pair_tdoa.npz&quot;</span>,</span><br><span class="line">        pair_tdoa=pair_tdoa,</span><br><span class="line">        pairs=pairs,</span><br><span class="line">        pair_lag = pair_lag,</span><br><span class="line">        phi_scan=phi_scan,</span><br><span class="line">        theta_scan=theta_scan,</span><br><span class="line">    )</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">1</span></span><br></pre></td></tr></table></figure>
+<p>我们后续使用的主要是pair_lag（每对时延值对应的互相关函数采样索引，后面再说详细情况）和pairs（麦克风对索引）</p>
+<h3 id="计算麦克风对的互相关函数"><a href="#计算麦克风对的互相关函数" class="headerlink" title="计算麦克风对的互相关函数"></a>计算麦克风对的互相关函数</h3><p>对每个麦克风对的信号进行互相关计算</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">compute_gcc_phat</span>(<span class="params">spec, pairs, N_fft</span>):</span><br><span class="line"></span><br><span class="line">    eps = <span class="number">1e-12</span></span><br><span class="line"></span><br><span class="line">    Npair = <span class="built_in">len</span>(pairs)</span><br><span class="line"></span><br><span class="line">    gcc = np.zeros(</span><br><span class="line">        (Npair, N_fft),</span><br><span class="line">        dtype=np.float32</span><br><span class="line">    )</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> k, (i, j) <span class="keyword">in</span> <span class="built_in">enumerate</span>(tqdm(pairs, desc=<span class="string">&quot;gcc计算中&quot;</span>)):</span><br><span class="line"></span><br><span class="line">        cross = spec[:,i,:] * np.conj(spec[:,j,:])</span><br><span class="line"></span><br><span class="line">        cross /= np.<span class="built_in">abs</span>(cross) + eps</span><br><span class="line">        avg_cross = np.mean(cross,axis=<span class="number">0</span>)</span><br><span class="line">        gcc_time = np.fft.irfft(avg_cross)</span><br><span class="line"></span><br><span class="line">        gcc_time = np.real(</span><br><span class="line">            np.fft.fftshift(gcc_time)</span><br><span class="line">        )</span><br><span class="line"></span><br><span class="line">        gcc[k] = gcc_time</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> gcc <span class="comment">#(Npair,F)</span></span><br></pre></td></tr></table></figure>
+<p>得到是每个麦克风对对应的互相关函数</p>
+<p>这个函数需要注意，输入的spec如果是单边谱，则使用irfft还原，如果是双边谱，就用ifft。如果这里没有对应，最后输出的功率谱上声源方向会出现缩放情况</p>
+<h3 id="SRP-PHAT扫描"><a href="#SRP-PHAT扫描" class="headerlink" title="SRP-PHAT扫描"></a>SRP-PHAT扫描</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">srp_phat_fast</span>(<span class="params"></span></span><br><span class="line"><span class="params">        gcc,</span></span><br><span class="line"><span class="params">        pair_lag</span>):</span><br><span class="line"></span><br><span class="line">    Npair, Nlag = gcc.shape</span><br><span class="line"></span><br><span class="line">    center = Nlag // <span class="number">2</span></span><br><span class="line"></span><br><span class="line">    idx = center + pair_lag</span><br><span class="line"></span><br><span class="line">    idx = np.clip(</span><br><span class="line">        idx,</span><br><span class="line">        <span class="number">0</span>,</span><br><span class="line">        Nlag - <span class="number">1</span></span><br><span class="line">    )</span><br><span class="line"></span><br><span class="line">    gcc_expand = gcc[</span><br><span class="line">        np.arange(Npair)[<span class="literal">None</span>, <span class="literal">None</span>, :],</span><br><span class="line">        idx</span><br><span class="line">    ]</span><br><span class="line"></span><br><span class="line">    power_map = np.<span class="built_in">sum</span>(</span><br><span class="line">        gcc_expand,</span><br><span class="line">        axis=<span class="number">2</span></span><br><span class="line">    )</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> power_map</span><br></pre></td></tr></table></figure>
+<p>之前得到的pair_lag是根据0点计算的索引，也就是一个带正负的索引，所以在用之前要先进行<code>idx = center + pair_lag</code>转化为真正的[0,N_fft]的索引，用于索引gcc</p>
+<p>SRP-PHAT就是直接用假想方向的tdoa来索引gcc，使用客观索引避免了噪声干扰，再通过每个麦克风对求和来增加稳定性；gcc-phat就是直接找gcc的最大值，因此更容易被噪声干扰</p>
+<p>个人实际使用下来，SPR-PHAT通过查表方式和DAS的计算时长都还不错，接近的计算时间下SPR-PHAT精度甚至更高</p>
+<p>DAS成像：</p>
+<img src="/images/loading.png" data-original="/2026/06/04/DOA/DAS.png" class title="This is an image"> 
+<p>SRP-PHAT成像：</p>
+<img src="/images/loading.png" data-original="/2026/06/04/DOA/SRP.png" class title="This is an image"> 
+<h1 id="从TDOA得到DOA"><a href="#从TDOA得到DOA" class="headerlink" title="从TDOA得到DOA"></a>从TDOA得到DOA</h1><p>本节默认在远场模型下计算（远场模型只能得到DOA，无法得到距离，想象声源在参考阵元射出的一条射线方向，而波就是以该射线为法线的平面）</p>
+<p>先从二维说起，对于两个距离为d的阵元，对于平面波的入射角（与阵元连线的夹角），有：</p>
+<script type="math/tex; mode=display">
+\Delta x = c \cdot \tau = d \cdot \cos\theta</script><p>c为声速，t为TODA，即可通过反三角求解θ</p>
+<p>现在来到三维，方向就变为了方位角Φ和俯仰角θ(与xy平面夹角），与球坐标系定义相同，此时声源方向单位向量就可以表示为：</p>
+<script type="math/tex; mode=display">
+n=[\cos\theta \cos\phi, \cos\theta \sin\phi,\sin\theta]</script><p>于是就有：</p>
+<script type="math/tex; mode=display">
+Δx\cos\theta \cos\phi + Δy\cos\theta \sin\phi + Δz\sin\theta = -c\tau</script><p>理论上只需要3阵元（也就是3对TDOA）就可以求解这个方程，当阵元大于3时，一般使用最小二乘法求最优解，对于平面阵列，有：</p>
+<script type="math/tex; mode=display">
+\mathbf{A} = \begin{bmatrix} \Delta x_{12} & \Delta y_{12} \\ \Delta x_{13} & \Delta y_{13} \\ \vdots & \vdots \\ \Delta x_{i j} & \Delta y_{i j} \\ \vdots & \vdots \end{bmatrix}_{P \times 2}, \quad \mathbf{m} = \begin{bmatrix} n_x \\ n_y \end{bmatrix}_{2 \times 1}, \quad \mathbf{Y} = \begin{bmatrix} -c\tau_{12} \\ -c\tau_{13} \\ \vdots \\ -c\tau_{ij} \\ \vdots \end{bmatrix}_{P \times 1}</script><p>线性方程组可以紧凑地表示为：</p>
+<script type="math/tex; mode=display">
+\mathbf{A}\mathbf{m} = \mathbf{Y}</script><p>最小二乘法就是让损失函数（Am-b)^2最小，即让该函数对m的偏导为0，化简后则有：</p>
+<script type="math/tex; mode=display">
+\mathbf{m} = \begin{bmatrix} n_x \\ n_y \end{bmatrix} = (\mathbf{A}^T \mathbf{A})^{-1} \mathbf{A}^T \mathbf{Y}</script><p>（上式为最小二乘法通用解），得到方向向量后根据三角函数关系即可得到具体角度</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>基于TDOA的声源定位方法实现原理较为简单，速度也还算可以（SRP不算该方法），核心就是互相关函数和如何设计加权函数，普遍存在的缺点就是极容易被噪声干扰。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2026/03/11/GIS/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -475,200 +634,6 @@ WER = \frac{S + D + I}{N}</script><p>其中：</p>
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2025/11/21/LLM/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/zoe.gif">
-      <meta itemprop="name" content="dhk">
-      <meta itemprop="description" content="记录一些学习日常">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="小董的BLOG">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2025/11/21/LLM/" class="post-title-link" itemprop="url">LLM学习</a>
-        </h2>
-
-        <div class="post-meta">
-		  
-		  
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2025-11-21 09:27:07" itemprop="dateCreated datePublished" datetime="2025-11-21T09:27:07+08:00">2025-11-21</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2026-04-02 11:18:53" itemprop="dateModified" datetime="2026-04-02T11:18:53+08:00">2026-04-02</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>本章是在有一定深度学习基础，熟悉attention和transformer结构的基础上写的</p>
-<h1 id="Transformer"><a href="#Transformer" class="headerlink" title="Transformer"></a>Transformer</h1><h2 id="attention的抽象理解"><a href="#attention的抽象理解" class="headerlink" title="attention的抽象理解"></a>attention的抽象理解</h2><p>还是以”I love you“到”我爱你“的翻译任务举例：</p>
-<ul>
-<li>encoder的自注意力：在模型逐字翻译中文的过程中，encoder只计算一次。encoder主要是为了得到英文中“I love you”的语义关系，例如主谓宾结构，或者“这是一个表达情感的语句“等</li>
-<li>decoder的自注意力：当已完成”我“的翻译时，现在decoder的输入则是”我“，在自注意力计算中，decoder则会生成中文”我“的语义</li>
-<li>decoder的交叉注意力：由于”我“这个中文语义中缺失谓语，因此<u>在Q与K的计算中</u>，”love“这个表示谓语的词语会得到更高的关注度（只是举例，实际上不只有这一个原因，但具体训练过程其实我们人类是难以理解的）；将关注度进行softmax后<u>与V相乘</u>，最终会输出一个<strong>与”love”强相关的”I love you”的深层语义表达</strong>（可以理解为：decoder当前需要翻译“love”，并且考虑了“I”和“you”在全文中的含义）。</li>
-<li>decoder尾部：线性层和softmax最后会基于之前的语义表达，输出一个与中文“爱”相似度最高的embedding</li>
-</ul>
-<h2 id="语言模型类型"><a href="#语言模型类型" class="headerlink" title="语言模型类型"></a>语言模型类型</h2><p>语言模型通常分为三种架构类别：</p>
-<ul>
-<li><strong>仅编码器模型</strong>（如 BERT）：这些模型使用双向方法来理解来自两个方向的上下文。它们最适合需要深入理解文本的任务，如<strong>分类、命名实体识别和问答</strong>。</li>
-<li><strong>仅解码器模型</strong>（如 GPT、Llama）：这些模型从左到右处理文本，特别擅长<strong>文本生成</strong>任务。它们可以根据提示完成句子、写文章，甚至生成代码。</li>
-<li><strong>编码器-解码器模型</strong>（如 T5、BART）：这些模型结合了两种方法，使用编码器理解输入，使用解码器生成输出。它们在序列到序列任务中表现出色，如<strong>翻译、摘要和问答</strong>。</li>
-</ul>
-<p>而这些模型通常有两种训练方法：</p>
-<ol>
-<li><strong>掩码语言建模（MLM）</strong>：由像 <strong>BERT 这样的编码器模型</strong>使用，这种方法随机掩盖输入中的一些词元，并训练模型根据周围的上下文预测原始词元。这使得模型能够学习双向上下文（同时关注被掩盖词语之前和之后的词语）。</li>
-<li><strong>因果语言建模（CLM）</strong>：由像 <strong>GPT 这样的解码器模型</strong>使用，这种方法根据序列中所有之前的词元来预测下一个词元。模型只能使用左侧（之前的词元）的上下文来预测下一个词元。</li>
-</ol>
-<h2 id="常规架构（encoder-decoder）"><a href="#常规架构（encoder-decoder）" class="headerlink" title="常规架构（encoder-decoder）"></a>常规架构（encoder-decoder）</h2><p>该结构常见于翻译、语音转录等需要<strong>理解+较为严格的生成要求</strong>的任务</p>
-<ul>
-<li><p>encoder用于接收源输入并提取特征（例如翻译任务中的待翻译原文）</p>
-</li>
-<li><p>decoder通过encoder输出的特征和之前的输出内容，生成下一个输出</p>
-<p>例如，当要将”I love you”翻译为中文时，encoder接收的便是”I love you”全文，decoder则是按顺序依次生成“我”，“爱”，“你”，而当生成“爱”时，decoder会将”我”与对”I love you“的特征进行attention计算，在训练优异的情况下，”love“这个谓语会被重点关注（被认为是下一个被翻译的对象），decoder会生成一个基于”I“和”you“的”love“深层语义表达，在decoder的最后，该语义表达会与中文”爱“的匹配度最高</p>
-</li>
-</ul>
-<p><a href="https://dhkkkkkk.github.io/2026/01/05/whisper/">Whisper</a>就是典型的该结构（whisper实现了从头到尾的全任务适用，而不需要额外训练下游网络）</p>
-<h2 id="Encoder-only"><a href="#Encoder-only" class="headerlink" title="Encoder-only"></a>Encoder-only</h2><p>该结构强调对<strong>输入的理解</strong>，常用于语义理解、分类任务，本小节以BERT为例</p>
-<p>因为强调“理解”，需要模型对文本有充分的上下文结构理解，因此该类模型通常使用<strong>MLM训练</strong>（见上节），该训练方法即实现了文本双向理解（不同于使用两个相反的RNN）</p>
-<p>另外，BERT还添加了<strong>NSP预测任务</strong>（Next Sentence Prediction），即预测输入的两个句子是否存在上下句关系。在标注时，额外通过对所有token添加一个0or1的embedding来<u>告诉模型当前输入的是一个句子还是两个句子（不是表示它们是不是来自于同一句子！，这是模型自己要学的东西）</u></p>
-<p>另外，BERT添加这些不同训练任务（MLM和NSP）是为了增强模型的学习能力，因为<strong>BERT一般作为上游模型</strong>使用，即使用pre-train的BERT再添加下游网络进行微调从而用于特定任务</p>
-<h2 id="Decoder-only"><a href="#Decoder-only" class="headerlink" title="Decoder-only"></a>Decoder-only</h2><p>该结构常用于像GPT等的<strong>生成任务模型</strong>，适用于开发式生成任务。本小节以GPT为例</p>
-<p>仅使用decoder的结构不代表GPT就不需要对输入进行“理解”，与使用encoder进行“理解”的工作不同，GPT类模型<strong>直接使用同一个decoder进行输入的“理解”与内容的生成</strong></p>
-<h3 id="prefill阶段"><a href="#prefill阶段" class="headerlink" title="prefill阶段"></a>prefill阶段</h3><p>当用户输入一段话prompt时，decoder会将其中的每个token都计算其k,v向量，并存储到 <strong>KV Cache</strong> 中。 KV Cache 就是模型对用户输入“理解结果”的物理存储。在后续生成（Decoding）时，模型不需要重新计算 Prompt，直接通过查询这些 Cache （即将q与prompt的KV cache进行注意力计算）就能“回想起”用户到底问了什么。</p>
-<p>另外，该阶段为<u>并行计算</u>，<strong>其计算得到的 KV cache会直接与decoding阶段的KV cache直接拼接</strong>（append）</p>
-<p>为了加速 Prefill 阶段，工业界采用了多种优化手段：</p>
-<ul>
-<li><strong>FlashAttention:</strong> 通过优化 GPU 上 SRAM 和 HBM 之间的数据传输，极大提升了计算 $O(N^2)$ 注意力矩阵的速度。</li>
-<li><strong>Chunked Prefill:</strong> 将超长的 Prompt 切分成小块（Chunks）处理，防止长文本预填充时瞬间撑爆显存。</li>
-<li><strong>Parallel Prefill &amp; Decode:</strong> 允许模型在处理一个请求的 Prefill 时，同时处理另一个请求的 Decoding，提高吞吐量。</li>
-</ul>
-<h3 id="decoding阶段"><a href="#decoding阶段" class="headerlink" title="decoding阶段"></a>decoding阶段</h3><p>就是正常的decoder生成流程了，现在普遍的做法都是使用KV cache，这样就可以在每次生成新token时<strong>仅使用上一个token</strong>作为decoder输入（q向量），<strong>因为之前的所有已生成token和用户输入都已经作为 KV cache被存储了</strong></p>
-<h2 id="自编码器模型（Autoencoder，AE）"><a href="#自编码器模型（Autoencoder，AE）" class="headerlink" title="自编码器模型（Autoencoder，AE）"></a>自编码器模型（Autoencoder，AE）</h2><p>自编码器为transformer结构在<strong><u>无监督学习</u></strong>上的核心模型。一般为encoder+decoder的<strong>完整端到端<u>串联</u>结构</strong>，这与传统的transformer结构不同。其核心逻辑始终围绕着：通过“压缩-还原”的过程，<strong>学习数据最本质的特征</strong>。</p>
-<p>在自编码器模型中，encoder本质为“特征压缩器”，负责将高维输入映射到<strong>低维空间</strong>（隐向量，与数据语义高度相关）；而decoder则为“特征重建器”，将压缩后的隐向量<strong>还原</strong>为原始维度，在通过解码器重建时，模型必须丢弃噪声和冗余信息——这种“信息瓶颈”（Information Bottleneck）迫使它只<strong>保留最关键的特征</strong>（例如手写数字的轮廓、纹理等）。</p>
-<h3 id="卷积自编码器（CAE）"><a href="#卷积自编码器（CAE）" class="headerlink" title="卷积自编码器（CAE）"></a>卷积自编码器（CAE）</h3><p>用卷积层替代全连接层（编码器用Conv+Pooling，解码器用ConvTranspose反卷积）。保留图像的<strong>空间局部性</strong>特征，在图像任务中性能远超全连接自编码器。</p>
-<h3 id="降噪自编码器（DAE）"><a href="#降噪自编码器（DAE）" class="headerlink" title="降噪自编码器（DAE）"></a>降噪自编码器（DAE）</h3><p>与MAE类似，在输入主动添加噪声（高斯噪声，随机遮挡mask等），让模型<u>重建无噪声原始输入</u>。<strong><u>可直接用于去噪任务，也可单独取训练完的encoder用作上游模型</u></strong></p>
-<h3 id="变分自编码器（VAE）"><a href="#变分自编码器（VAE）" class="headerlink" title="变分自编码器（VAE）"></a>变分自编码器（VAE）</h3><p>传统的AE的encoder输出的是低维隐向量z，而VAE则是<strong>输出x的概率分布参数：均值和方差（均值代表x在隐空间中的最具代表性位置，方差代表不确定性or容错范围）</strong>，避免了传统z离散无约束的缺点，使隐空间符合正态分布。</p>
-<h4 id="重参数化"><a href="#重参数化" class="headerlink" title="重参数化"></a>重参数化</h4><p>由于直接从encoder输出的分布中采样是一个随机过程，无法求导。因此VAE需要引入重参数化：</p>
-<script type="math/tex; mode=display">
-z = \mu + \sigma \odot \epsilon, \quad \epsilon \sim \mathcal{N}(0, I)</script><p>其中ε为从标准正态分布中采样的一个<strong>噪声变量</strong>，这样随机性就被转移了，便可以对均值和方差进行反向传播</p>
-<h4 id="损失函数"><a href="#损失函数" class="headerlink" title="损失函数"></a>损失函数</h4><p>一般的AE一般只使用MSE（连续）或交叉熵（离散），VAE引入了KL散度<strong>正则</strong>项，即衡量encoder输出的分布z与先验分布（一般为标准正态分布）的差异，<strong>强制所有编码在潜在空间中靠近原点且具有一定的重叠。这保证了潜在空间的连续性和完整性。</strong></p>
-<h2 id="音频Transformer"><a href="#音频Transformer" class="headerlink" title="音频Transformer"></a>音频Transformer</h2><h3 id="模型输入格式"><a href="#模型输入格式" class="headerlink" title="模型输入格式"></a>模型输入格式</h3><ul>
-<li>文本输入：通常出现在文本到语音的任务中（TTS），与原始Transformer或任何其他NLP模型的工作方式相同：<strong>首先对文本进行标记化</strong>（tokenization），得到一系列文本标记。然后将此序列<strong>通过输入嵌入层</strong>，将标记转换为512维向量。然后将这些嵌入向量传递到Transformer编码器（一般为decoder）中。</li>
-<li>波形输入：<strong>Wav2Vec2</strong>和<strong>HuBERT</strong>一类的模型直接使用音频波形作为模型的输入。我们首先将原始波形<strong>标准化为零均值和单位方差的序列</strong>，这有助于标准化不同音量（振幅）的音频样本。对于这类模型，encoder前一般会用一个小型CNN进行下采样和提取局部特征，减少序列长度</li>
-<li>时频谱输入：老朋友了，通过时频域转化可以大幅缩减样本尺寸。该类模型通常也会使用一个小型CNN提取局部特征和修改尺寸</li>
-</ul>
-<h3 id="模型输出格式"><a href="#模型输出格式" class="headerlink" title="模型输出格式"></a>模型输出格式</h3><ul>
-<li>文本输出：和语言模型相同，将decoder输出的输出嵌入向量通过一个线性头和sofrmax转换为词汇表中文本id的概率（也就是<strong>最终输出维度=词汇表大小</strong>）</li>
-<li>直接波形输出：有些模型可以直接输出波形，但较少</li>
-<li>时频谱输出：对于该类模型，由于我们最终还是需要输出一个波形，因此通常有两种做法：<ul>
-<li>基于istft：如果我们输入模型的时频谱是stft得到的，也可以通过istft还原。但此时我们需要知道<strong>幅值和相位</strong>两部分的信息，而一般音频模型输入仅使用基于幅值信息的功率谱，因此需要一个额外的网络估计其相位信息（也有其他方法，跟模型输入有关）</li>
-<li>基于神经网络：直接再使用一个神经网络将decoder输出嵌入转换为波形（Vocoder声码器）</li>
-</ul>
-</li>
-</ul>
-<h2 id="两种结构"><a href="#两种结构" class="headerlink" title="两种结构"></a>两种结构</h2><h3 id="CTC结构"><a href="#CTC结构" class="headerlink" title="CTC结构"></a>CTC结构</h3><p>CTC结构（Connectionist Temporal Classification）是一种<strong>仅</strong>使用Transformer编码器（encoder）结构的<strong>语音识别</strong>（ASR）模型。使用该架构的模型包括Wav2Vec2、HuBERT、M-CTC-T等等。</p>
-<p>在CTC结构模型中，所使用的词汇表通常是小词汇表（字符、音素等）。该类模型通常将若干ms的样本切片输出为一个token，由于一个字母发音可能包含多个切片，<strong>模型便会输出多个重复字母</strong>，因为每个token必须对应一个结果。而CTC算法就是通过一个特殊标记（blank token），压缩模型输出的重复或空白内容</p>
-<p>对于空白标记，其是通过<strong>特殊的损失函数</strong>让模型学习何时该输出空白标记的，因此CTC模型使用的loss不是标准的交叉熵。<strong>除了词汇表中添加空白标记、仅使用encoder和使用特殊的训练策略之外</strong>，该类模型就没有什么特殊的点了。</p>
-<p>对于只考虑单字符的CTC模型，可能会输出听起来正确但拼写不正确的单词，因此可以使用<strong>额外的语言模型</strong>来提高音频的转录质量。这个语言模型实际上是作为了CTC输出的<strong>拼写检查器</strong>。</p>
-<h3 id="Seq2seq结构"><a href="#Seq2seq结构" class="headerlink" title="Seq2seq结构"></a>Seq2seq结构</h3><p>比CTC结构的模型能力更强，使用标准的transformer结构，与语言模型基本一致。因此其最终的输出和语言模型一样，都是subword，对于whisper，其使用的就是GPT2的分词器。在ASR任务中，其使用交叉熵作为损失函数。</p>
-<h1 id="🤗Transformers库基础🤗"><a href="#🤗Transformers库基础🤗" class="headerlink" title="🤗Transformers库基础🤗"></a>🤗Transformers库基础🤗</h1><h2 id="pipeline"><a href="#pipeline" class="headerlink" title="pipeline"></a>pipeline</h2><p>transformer库直接调用已确定具体功能的模型的函数</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> transformers <span class="keyword">import</span> pipeline</span><br><span class="line"></span><br><span class="line">classifier = pipeline(<span class="string">&quot;sentiment-analysis&quot;</span>)</span><br><span class="line">classifier(</span><br><span class="line">    [</span><br><span class="line">        <span class="string">&quot;I&#x27;ve been waiting for a HuggingFace course my whole life.&quot;</span>,</span><br><span class="line">        <span class="string">&quot;I hate this so much!&quot;</span>,</span><br><span class="line">    ]</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt;[&#123;<span class="string">&#x27;label&#x27;</span>: <span class="string">&#x27;POSITIVE&#x27;</span>, <span class="string">&#x27;score&#x27;</span>: <span class="number">0.9598047137260437</span>&#125;,</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>&#123;<span class="string">&#x27;label&#x27;</span>: <span class="string">&#x27;NEGATIVE&#x27;</span>, <span class="string">&#x27;score&#x27;</span>: <span class="number">0.9994558095932007</span>&#125;]</span><br></pre></td></tr></table></figure>
-<p>对于一个语言模型，其大致可以分为两个部分，即tokenizer和model</p>
-<h2 id="tokenizer"><a href="#tokenizer" class="headerlink" title="tokenizer"></a>tokenizer</h2><h3 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h3><p>tokenizer的作用就是将输入的文本转化为模型可处理的tensor（<strong>即编码encode</strong>），同时生成每句话所对应的一些额外信息，如token_type_ids和attention_mask等</p>
-<p>基本的tokenizer可以分为三类：</p>
-<ul>
-<li>word-based：直接以空格分隔单词，将每个单词（word）对应一个唯一ID。缺点即是需要大量的token库，以存储所有单词</li>
-<li>Character-based：直接拆为单个字符，将每个字符对应唯一ID。缺点是对于一个句子，模型需要处理大量token，并且每个字符本身没有太大意义（对于英文来说）</li>
-<li>subword：<strong>几乎所有大模型都在使用的分词策略</strong>，原则：常用词不应被分解为更小的子词，但罕见词应被分解为有意义的子词。例如，对于”tokenization”，则可以被分为”token”和”ization”，因为这两个subword出现更为频繁，并且这样分词也可以保留其意义</li>
-</ul>
-<p>每个模型都有自己的具体tokenizer以实现subword策略</p>
-<p>transformers例程：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> transformers <span class="keyword">import</span> AutoTokenizer, AutoModelForSequenceClassification</span><br><span class="line"></span><br><span class="line">checkpoint = <span class="string">&quot;distilbert-base-uncased-finetuned-sst-2-english&quot;</span></span><br><span class="line">tokenizer = AutoTokenizer.from_pretrained(checkpoint)</span><br><span class="line">model = AutoModelForSequenceClassification.from_pretrained(checkpoint)</span><br><span class="line">sequences = [<span class="string">&quot;I&#x27;ve been waiting for a HuggingFace course my whole life.&quot;</span>, <span class="string">&quot;So have I!&quot;</span>]</span><br><span class="line"></span><br><span class="line">tokens = tokenizer(sequences, padding=<span class="literal">True</span>, truncation=<span class="literal">True</span>, return_tensors=<span class="string">&quot;pt&quot;</span>)</span><br></pre></td></tr></table></figure>
-<p>token此时为一个字典，包括了编码和注意力掩码（指padding mask）</p>
-<h3 id="具体实现"><a href="#具体实现" class="headerlink" title="具体实现"></a>具体实现</h3><p>编码分为两步，即分词+转化为ID</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#仅分词</span></span><br><span class="line">tokenizer = AutoTokenizer.from_pretrained(<span class="string">&quot;bert-base-cased&quot;</span>)</span><br><span class="line">sequence = <span class="string">&quot;Using a Transformer network is simple&quot;</span></span><br><span class="line">tokens = tokenizer.tokenize(sequence)</span><br><span class="line">&gt;&gt;&gt;[<span class="string">&#x27;Using&#x27;</span>, <span class="string">&#x27;a&#x27;</span>, <span class="string">&#x27;transform&#x27;</span>, <span class="string">&#x27;##er&#x27;</span>, <span class="string">&#x27;network&#x27;</span>, <span class="string">&#x27;is&#x27;</span>, <span class="string">&#x27;simple&#x27;</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment">#将分词转为ID</span></span><br><span class="line">ids = tokenizer.convert_tokens_to_ids(tokens)</span><br><span class="line"><span class="built_in">print</span>(ids)</span><br><span class="line">&gt;&gt;&gt;[<span class="number">7993</span>, <span class="number">170</span>, <span class="number">11303</span>, <span class="number">1200</span>, <span class="number">2443</span>, <span class="number">1110</span>, <span class="number">3014</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment">#解码</span></span><br><span class="line">decoded_string = tokenizer.decode([<span class="number">7993</span>, <span class="number">170</span>, <span class="number">11303</span>, <span class="number">1200</span>, <span class="number">2443</span>, <span class="number">1110</span>, <span class="number">3014</span>])</span><br><span class="line"><span class="built_in">print</span>(decoded_string)</span><br><span class="line">&gt;&gt;&gt;<span class="string">&#x27;Using a Transformer network is simple&#x27;</span></span><br></pre></td></tr></table></figure>
-<p>对于不同的模型，其还要求了其他的额外输入，因此其tokenizer也具有除编码外的其他功能：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 将句子序列填充到最长句子的长度</span></span><br><span class="line">model_inputs = tokenizer(sequences, padding=<span class="string">&quot;longest&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 将句子序列填充到模型的最大长度</span></span><br><span class="line"><span class="comment"># (512 for BERT or DistilBERT)</span></span><br><span class="line">model_inputs = tokenizer(sequences, padding=<span class="string">&quot;max_length&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 将句子序列填充到指定的最大长度</span></span><br><span class="line">model_inputs = tokenizer(sequences, padding=<span class="string">&quot;max_length&quot;</span>, max_length=<span class="number">8</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 将截断比模型最大长度长的句子序列</span></span><br><span class="line"><span class="comment"># (512 for BERT or DistilBERT)</span></span><br><span class="line">model_inputs = tokenizer(sequences, truncation=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 将截断长于指定最大长度的句子序列</span></span><br><span class="line">model_inputs = tokenizer(sequences, max_length=<span class="number">8</span>, truncation=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 返回 PyTorch tensors</span></span><br><span class="line">model_inputs = tokenizer(sequences, padding=<span class="literal">True</span>, return_tensors=<span class="string">&quot;pt&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 返回 TensorFlow tensors</span></span><br><span class="line">model_inputs = tokenizer(sequences, padding=<span class="literal">True</span>, return_tensors=<span class="string">&quot;tf&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 返回 NumPy arrays</span></span><br><span class="line">model_inputs = tokenizer(sequences, padding=<span class="literal">True</span>, return_tensors=<span class="string">&quot;np&quot;</span>)</span><br></pre></td></tr></table></figure>
-<h2 id="model"><a href="#model" class="headerlink" title="model"></a>model</h2><h3 id="创建模型"><a href="#创建模型" class="headerlink" title="创建模型"></a>创建模型</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> transformers <span class="keyword">import</span> BertConfig, BertModel</span><br><span class="line"></span><br><span class="line">config = BertConfig()</span><br><span class="line">model = BertModel(config)</span><br></pre></td></tr></table></figure>
-<h3 id="加载预训练权重"><a href="#加载预训练权重" class="headerlink" title="加载预训练权重"></a>加载预训练权重</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">model = BertModel.from_pretrained(<span class="string">&quot;bert-base-cased&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">#或是直接通过AutoModel类</span></span><br><span class="line">checkpoint = <span class="string">&quot;bert-base-cased&quot;</span></span><br><span class="line">model = AutoModel.from_pretrained(checkpoint)</span><br></pre></td></tr></table></figure>
-<p>需要注意的是，此处的模型输入需参考各模型具体要求，一般为一个字典，例如：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#x27;input_ids&#x27;: tensor([[  101,  1045,  1005,  2310,  2042,  3403,  2005,  1037, 17662, 			12172,     2607,  2026,  2878,  2166,  1012,   102],</span><br><span class="line">        [  101,  2061,  2031,  1045,   999,   102,     0,     0,     0,     0,</span><br><span class="line">             0,     0,     0,     0,     0,     0]]), </span><br><span class="line"> &#x27;attention_mask&#x27;: tensor([[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],</span><br><span class="line">        [1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]])&#125;</span><br></pre></td></tr></table></figure>
-<p>这些可以被模型对应的tokenizer直接生成，仅需：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">model(**tokens) </span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">python的字典解包机制，等同于model(</span></span><br><span class="line"><span class="string">    input_ids=tensor(...),</span></span><br><span class="line"><span class="string">    attention_mask=tensor(...)</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br></pre></td></tr></table></figure>
-<h2 id="dataset"><a href="#dataset" class="headerlink" title="dataset"></a>dataset</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> datasets <span class="keyword">import</span> load_dataset</span><br><span class="line"></span><br><span class="line">raw_datasets = load_dataset(<span class="string">&quot;glue&quot;</span>, <span class="string">&quot;mrpc&quot;</span>)</span><br><span class="line">raw_train_dataset = raw_datasets[<span class="string">&quot;train&quot;</span>]</span><br><span class="line">sentence1 = raw_train_dataset[<span class="string">&#x27;sentence1&#x27;</span>]</span><br><span class="line">sample = raw_train_dataset[<span class="number">0</span>]</span><br></pre></td></tr></table></figure>
-<h3 id="Datadict"><a href="#Datadict" class="headerlink" title="Datadict"></a>Datadict</h3><p>该函数会返回一个<u>DatasetDict</u>数据结构，这是一个类似字典的结构</p>
-<img src="/images/loading.png" data-original="/2025/11/21/LLM/1.png" class title="This is an image"> 
-<p>对其进行索引可以得到单个数据集结构<u>Dataset</u></p>
-<h3 id="Dataset"><a href="#Dataset" class="headerlink" title="Dataset"></a>Dataset</h3><p>对于Dataset结构，也就是<code>raw_train_dataset</code>，其存储方式是列式存储，对于本代码，其每一列为：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x27;sentence1&#x27;, &#x27;sentence2&#x27;, &#x27;label&#x27;, &#x27;idx&#x27;</span><br></pre></td></tr></table></figure>
-<p>对这些键名进行索引即可返回单个<u>Column</u>结构</p>
-<p>也可以对其进行<strong>行索引</strong>，则会返回单个样本的每列信息（<strong>一个标准字典</strong>）：</p>
-<img src="/images/loading.png" data-original="/2025/11/21/LLM/2.png" class title="This is an image"> 
-<p>其中，对于本代码来说，label则是代表sentence1和sentence2<strong>是否</strong>同义</p>
-<h3 id="返回token的dataset"><a href="#返回token的dataset" class="headerlink" title="返回token的dataset"></a>返回token的dataset</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">tokenize_function</span>(<span class="params">examples</span>):</span><br><span class="line">    <span class="keyword">return</span> tokenizer(</span><br><span class="line">        examples[<span class="string">&quot;sentence1&quot;</span>],</span><br><span class="line">        examples[<span class="string">&quot;sentence2&quot;</span>],</span><br><span class="line">        truncation=<span class="literal">True</span></span><br><span class="line">    )</span><br><span class="line">tokenized_datasets = raw_datasets.<span class="built_in">map</span>(tokenize_function, batched=<span class="literal">True</span>)</span><br></pre></td></tr></table></figure>
-<p>.map方法可以将每个文本经过tokenization后的结果添加到原本的Datadict中：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">DatasetDict(&#123;</span><br><span class="line">    train: Dataset(&#123;</span><br><span class="line">        features: [&#x27;attention_mask&#x27;, &#x27;idx&#x27;, &#x27;input_ids&#x27;, &#x27;label&#x27;, &#x27;sentence1&#x27;, &#x27;sentence2&#x27;, &#x27;token_type_ids&#x27;],</span><br><span class="line">        num_rows: 3668</span><br><span class="line">    &#125;)</span><br><span class="line">    validation: Dataset(&#123;</span><br><span class="line">        features: [&#x27;attention_mask&#x27;, &#x27;idx&#x27;, &#x27;input_ids&#x27;, &#x27;label&#x27;, &#x27;sentence1&#x27;, &#x27;sentence2&#x27;, &#x27;token_type_ids&#x27;],</span><br><span class="line">        num_rows: 408</span><br><span class="line">    &#125;)</span><br><span class="line">    test: Dataset(&#123;</span><br><span class="line">        features: [&#x27;attention_mask&#x27;, &#x27;idx&#x27;, &#x27;input_ids&#x27;, &#x27;label&#x27;, &#x27;sentence1&#x27;, &#x27;sentence2&#x27;, &#x27;token_type_ids&#x27;],</span><br><span class="line">        num_rows: 1725</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
-<p>当不需要其中的某些features时，可以：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">samples = tokenized_datasets[<span class="string">&quot;train&quot;</span>][:]</span><br><span class="line">samples = &#123;k: v <span class="keyword">for</span> k, v <span class="keyword">in</span> samples.items() <span class="keyword">if</span> k <span class="keyword">not</span> <span class="keyword">in</span> [<span class="string">&quot;idx&quot;</span>, <span class="string">&quot;sentence1&quot;</span>, <span class="string">&quot;sentence2&quot;</span>]&#125;</span><br></pre></td></tr></table></figure>
-<p>或者也可以调用Datasetdict的方法：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tokenized_datasets = tokenized_datasets.remove_columns([<span class="string">&quot;sentence1&quot;</span>, <span class="string">&quot;sentence2&quot;</span>, <span class="string">&quot;idx&quot;</span>])</span><br></pre></td></tr></table></figure>
-<h3 id="动态填充"><a href="#动态填充" class="headerlink" title="动态填充"></a>动态填充</h3><p>在训练 LLM时，只需要对每个 batch 进行<strong>动态 padding</strong>（因为模型的输入必须是规则的），而不是对整个数据集进行统一 padding，因为这样会大量浪费计算资源。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> transformers <span class="keyword">import</span> DataCollatorWithPadding</span><br><span class="line"></span><br><span class="line">data_collator = DataCollatorWithPadding(tokenizer=tokenizer)</span><br><span class="line">samples = tokenized_datasets[<span class="string">&quot;train&quot;</span>][:<span class="number">8</span>]</span><br><span class="line">samples = &#123;k: v <span class="keyword">for</span> k, v <span class="keyword">in</span> samples.items() <span class="keyword">if</span> k <span class="keyword">not</span> <span class="keyword">in</span> [<span class="string">&quot;idx&quot;</span>, <span class="string">&quot;sentence1&quot;</span>, <span class="string">&quot;sentence2&quot;</span>]&#125;</span><br><span class="line">batch = data_collator(samples)</span><br></pre></td></tr></table></figure>
-<p>其中batch则是n个样本（代码中为8）所对应的经过tokenizaiton后的samples，并且其中的id全部都被padding至8个样本中最长文本id的长度（batch.item()和samples的数据结构是相同的，都是一个标准字典，仅有id发生了padding）</p>
-<h1 id="模型微调"><a href="#模型微调" class="headerlink" title="模型微调"></a>模型微调</h1><h2 id="调用Trainer-API"><a href="#调用Trainer-API" class="headerlink" title="调用Trainer API"></a>调用Trainer API</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> datasets <span class="keyword">import</span> load_dataset</span><br><span class="line"><span class="keyword">from</span> transformers <span class="keyword">import</span> AutoTokenizer, DataCollatorWithPadding, AutoModelForSequenceClassification</span><br><span class="line"><span class="keyword">from</span> transformers <span class="keyword">import</span> TrainingArguments, Trainer</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">raw_datasets = load_dataset(<span class="string">&quot;glue&quot;</span>, <span class="string">&quot;mrpc&quot;</span>)</span><br><span class="line">checkpoint = <span class="string">&quot;bert-base-uncased&quot;</span></span><br><span class="line">tokenizer = AutoTokenizer.from_pretrained(checkpoint)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">tokenize_function</span>(<span class="params">example</span>):</span><br><span class="line">    <span class="keyword">return</span> tokenizer(example[<span class="string">&quot;sentence1&quot;</span>], example[<span class="string">&quot;sentence2&quot;</span>], truncation=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">tokenized_datasets = raw_datasets.<span class="built_in">map</span>(tokenize_function, batched=<span class="literal">True</span>)</span><br><span class="line">data_collator = DataCollatorWithPadding(tokenizer=tokenizer)</span><br><span class="line">training_args = TrainingArguments(<span class="string">&quot;test-trainer&quot;</span>)</span><br><span class="line">model = AutoModelForSequenceClassification.from_pretrained(checkpoint, num_labels=<span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">trainer = Trainer(</span><br><span class="line">    model,</span><br><span class="line">    training_args,</span><br><span class="line">    train_dataset=tokenized_datasets[<span class="string">&quot;train&quot;</span>],</span><br><span class="line">    eval_dataset=tokenized_datasets[<span class="string">&quot;validation&quot;</span>],</span><br><span class="line">    data_collator=data_collator,</span><br><span class="line">    tokenizer=tokenizer,</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">trainer.train()</span><br></pre></td></tr></table></figure>
-<p>在使用<code>AutoModelForSequenceClassification</code>实例化模型时，会收到一个警告，这是因为 BERT 没有在句子对分类方面进行过预训练，所以<strong>预训练模型的 head 已经被丢弃</strong>，而是<strong>添加了一个适合句子序列分类的新头部</strong>。这些警告表明一些权重没有使用（对应于被放弃的预训练头的权重），而有些权重被随机初始化（对应于新 head 的权重）。</p>
-<h3 id="评估"><a href="#评估" class="headerlink" title="评估"></a>评估</h3><p>对于模型的输出：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">predictions = trainer.predict(tokenized_datasets[<span class="string">&quot;validation&quot;</span>])</span><br></pre></td></tr></table></figure>
-<p>其会返回一个元组：<code>(predictions,label_ids,metrics)</code>；其中predictions为一个形状为(batchsize,cls_num)的二维张量，第二维度为每个样本的logits，其中的最大值则为预测结果；label_ids为样本真实标签，metrics为自定义评估指标，默认只返回loss</p>
-<p>因此我们可以定义一个评估函数：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">compute_metrics</span>(<span class="params">eval_preds</span>):</span><br><span class="line">    metric = evaluate.load(<span class="string">&quot;glue&quot;</span>, <span class="string">&quot;mrpc&quot;</span>)</span><br><span class="line">    logits, labels = eval_preds</span><br><span class="line">    predictions = np.argmax(logits, axis=-<span class="number">1</span>)</span><br><span class="line">    <span class="keyword">return</span> metric.compute(predictions=predictions, references=labels)</span><br><span class="line"></span><br><span class="line">trainer = Trainer(</span><br><span class="line">    model,</span><br><span class="line">    training_args,</span><br><span class="line">    train_dataset=tokenized_datasets[<span class="string">&quot;train&quot;</span>],</span><br><span class="line">    eval_dataset=tokenized_datasets[<span class="string">&quot;validation&quot;</span>],</span><br><span class="line">    data_collator=data_collator,</span><br><span class="line">    tokenizer=tokenizer,</span><br><span class="line">    compute_metrics=compute_metrics,</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
-<p>其中.compute方法会返回准确率与f1分数</p>
-<h2 id="不使用Trainer"><a href="#不使用Trainer" class="headerlink" title="不使用Trainer"></a>不使用Trainer</h2><h3 id="使用torch的Dataloader加载数据集"><a href="#使用torch的Dataloader加载数据集" class="headerlink" title="使用torch的Dataloader加载数据集"></a>使用torch的Dataloader加载数据集</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">tokenized_datasets = raw_datasets.<span class="built_in">map</span>(tokenize_function, batched=<span class="literal">True</span>)</span><br><span class="line">data_collator = DataCollatorWithPadding(tokenizer=tokenizer)</span><br><span class="line"></span><br><span class="line"><span class="comment">#删去不需要列，将label改名为labels（模型默认输入格式）</span></span><br><span class="line">tokenized_datasets = tokenized_datasets.remove_columns([<span class="string">&quot;sentence1&quot;</span>, <span class="string">&quot;sentence2&quot;</span>, <span class="string">&quot;idx&quot;</span>])</span><br><span class="line">tokenized_datasets = tokenized_datasets.rename_column(<span class="string">&quot;label&quot;</span>, <span class="string">&quot;labels&quot;</span>)</span><br><span class="line">tokenized_datasets.set_format(<span class="string">&quot;torch&quot;</span>)</span><br><span class="line"><span class="comment">#&gt;&gt;&gt;[&quot;attention_mask&quot;, &quot;input_ids&quot;, &quot;labels&quot;, &quot;token_type_ids&quot;]</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> torch.utils.data <span class="keyword">import</span> DataLoader</span><br><span class="line"><span class="comment">#Dataloader兼容transformers的DataCollatorWithPadding</span></span><br><span class="line">train_dataloader = DataLoader(</span><br><span class="line">    tokenized_datasets[<span class="string">&quot;train&quot;</span>], shuffle=<span class="literal">True</span>, batch_size=<span class="number">8</span>, collate_fn=data_collator</span><br><span class="line">)</span><br><span class="line">eval_dataloader = DataLoader(</span><br><span class="line">    tokenized_datasets[<span class="string">&quot;validation&quot;</span>], batch_size=<span class="number">8</span>, collate_fn=data_collator</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
-<p>此时dataloader返回的每个batch为：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#x27;attention_mask&#x27;: torch.Size([8, 65]),</span><br><span class="line"> &#x27;input_ids&#x27;: torch.Size([8, 65]),</span><br><span class="line"> &#x27;labels&#x27;: torch.Size([8]),</span><br><span class="line"> &#x27;token_type_ids&#x27;: torch.Size([8, 65])&#125;</span><br></pre></td></tr></table></figure>
-<p>该batch可以直接输入到AutoModelForSequenceClassification实例化的模型中：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> transformers <span class="keyword">import</span> get_scheduler</span><br><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"></span><br><span class="line">optimizer = AdamW(model.parameters(), lr=<span class="number">5e-5</span>)</span><br><span class="line">num_epochs = <span class="number">3</span></span><br><span class="line">num_training_steps = num_epochs * <span class="built_in">len</span>(train_dataloader)</span><br><span class="line">lr_scheduler = get_scheduler(	<span class="comment">#学习率线性衰减</span></span><br><span class="line">    <span class="string">&quot;linear&quot;</span>,</span><br><span class="line">    optimizer=optimizer,</span><br><span class="line">    num_warmup_steps=<span class="number">0</span>,</span><br><span class="line">    num_training_steps=num_training_steps,</span><br><span class="line">)</span><br><span class="line">model.to(device)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> epoch <span class="keyword">in</span> <span class="built_in">range</span>(num_epoch):</span><br><span class="line">    model.train()</span><br><span class="line">    <span class="keyword">for</span> batch <span class="keyword">in</span> train_dataloader:</span><br><span class="line">        batch = &#123;k: v.to(device) <span class="keyword">for</span> k, v <span class="keyword">in</span> batch.items()&#125;</span><br><span class="line">        outputs = model(**batch)</span><br><span class="line">        loss = outputs.loss</span><br><span class="line">        loss.backward()</span><br><span class="line"></span><br><span class="line">        optimizer.step()</span><br><span class="line">        lr_scheduler.step()</span><br><span class="line">        optimizer.zero_grad()</span><br><span class="line">    </span><br><span class="line">    model.<span class="built_in">eval</span>()</span><br><span class="line">	<span class="keyword">for</span> batch <span class="keyword">in</span> eval_loader:</span><br><span class="line">        batch = &#123;k: v.to(device) <span class="keyword">for</span> k, v <span class="keyword">in</span> batch.items()&#125;</span><br><span class="line">    	<span class="keyword">with</span> torch.no_grad():</span><br><span class="line">        	outputs = model(**batch)</span><br><span class="line">        logits = outputs.logits</span><br><span class="line">        ...</span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   
   <nav class="pagination">
     <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/25/">25</a><a class="extend next" rel="next" href="/page/4/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
@@ -738,7 +703,7 @@ z = \mu + \sigma \odot \epsilon, \quad \epsilon \sim \mathcal{N}(0, I)</script><
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">73</span>
+          <span class="site-state-item-count">74</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>

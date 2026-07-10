@@ -197,6 +197,187 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2026/06/23/MVDR/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/zoe.gif">
+      <meta itemprop="name" content="dhk">
+      <meta itemprop="description" content="记录一些学习日常">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小董的BLOG">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2026/06/23/MVDR/" class="post-title-link" itemprop="url">自适应波束形成</a>
+        </h2>
+
+        <div class="post-meta">
+		  
+		  
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2026-06-23 09:35:51" itemprop="dateCreated datePublished" datetime="2026-06-23T09:35:51+08:00">2026-06-23</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2026-06-24 16:48:06" itemprop="dateModified" datetime="2026-06-24T16:48:06+08:00">2026-06-24</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="自适应波束形成"><a href="#自适应波束形成" class="headerlink" title="自适应波束形成"></a>自适应波束形成</h1><p>波束形成的原理是调整相位阵列的基本单元参数，使得某些角度的信号获得相长干涉，而另一些角度的信号获得相消干涉。对各个麦克风信号加权求和、滤波，最终得到期望方向的语音信号，相当于形成一个“波束”。</p>
+<p>传统波束形成是使用<strong>固定的权值</strong>来形成某个方向的波束，而自适应波束形成则是根据环境的变化，动态调整阵列麦克风的权重和相位，从而<strong>最大限度地抑制干扰噪声</strong>并增强目标信号。</p>
+<h1 id="基本数学模型"><a href="#基本数学模型" class="headerlink" title="基本数学模型"></a>基本数学模型</h1><p>假设一个由 M 个阵元组成的任意构型的接收阵列，空间中存在一个来自方向 θ_0的期望信号，以及来自其他方向的干扰和环境噪声。则各麦克风接收到的信号（Mx1维）可表示为：</p>
+<script type="math/tex; mode=display">
+X(t) = A(\theta_0)S(t) + \sum_{i=1}^{K} A(\theta_i)I_i(t) + N(t)</script><p>其中A为导向矢量，0为目标方向，其他为干扰声源，N为环境噪声。</p>
+<p>所有波束形成器的输出都可表示为:</p>
+<script type="math/tex; mode=display">
+Y(t) = W^H X(t)</script><p>其中权重W则根据各波束形成算法而不同</p>
+<h1 id="MVDR最小方差无失真响应"><a href="#MVDR最小方差无失真响应" class="headerlink" title="MVDR最小方差无失真响应"></a>MVDR最小方差无失真响应</h1><p>Minimum Variance Distortionless Response，最小方差-无失真响应MVDR的核心思想就是：在确保当前目标方向的<strong><u>信号增益为1（无失真）</u></strong>的约束条件（可以直接理解为使用导向矢量进行约束）下，<strong><u>最小化阵列输出的总功率</u></strong>（即最小化方差），可以表示为：</p>
+<script type="math/tex; mode=display">
+\min_{W} \quad E[|Y(t)|^2] = W^H R_{xx} W \quad \text{s.t.} \quad W^H A(\theta_0) = 1</script><h2 id="拉格朗日乘子法求解最优问题"><a href="#拉格朗日乘子法求解最优问题" class="headerlink" title="拉格朗日乘子法求解最优问题"></a>拉格朗日乘子法求解最优问题</h2><p>现在我们是要寻找功率函数在无失真约束下的最小值，则可以使用拉格朗日乘子法。</p>
+<p>拉格朗日乘子法（Lagrange multipliers）是一种寻找多元函数<strong>在一组约束下</strong>的<strong>极值</strong>的方法。</p>
+<p>对于求f(x)在g(x)约束下的极值，可以得到如下结论，在最优点x0处，f(x)和g(x)的<strong>梯度向量的方向</strong>必相同或相反，即存在一个拉格朗日乘子，使得</p>
+<script type="math/tex; mode=display">
+ f'(x_0)+\lambda g'(x_0)=0</script><p>将该等式与约束条件联立即可求得乘子λ，将λ再带回上式即可获得x_0</p>
+<p>在MVDR中，我们的拉格朗日目标函数可表示为：</p>
+<script type="math/tex; mode=display">
+L(W, \lambda) = W^H R_{xx} W + \lambda (W^H A(\theta_0) - 1)</script><p>根据上述结论，对W^H求偏导，有：</p>
+<script type="math/tex; mode=display">
+\frac{\partial L}{\partial W^H} = R_{xx} W + \lambda A(\theta_0) = 0 \implies W = -\lambda R_{xx}^{-1} A(\theta_0)</script><p>将该结果带入约束条件，最终可获得λ的表达：</p>
+<script type="math/tex; mode=display">
+\lambda =- \frac{1}{A(\theta_0)^H R_{xx}^{-1} A(\theta_0)}</script><p>带入W表达式，最终可获得<strong>MVDR最佳权重向量</strong>：</p>
+<script type="math/tex; mode=display">
+W_{\text{MVDR}} = \frac{R_{xx}^{-1} A(\theta_0)}{A(\theta_0)^H R_{xx}^{-1} A(\theta_0)}</script><p>这里就可以看出，W与协方差矩阵直接相关（分子是向量决定方向，分母是标量决定尺度，不能约）。最终功率谱则可表示为：</p>
+<script type="math/tex; mode=display">
+P_{\text{MVDR}}(\theta) = \frac{1}{A(\theta)^H R_{xx}^{-1} A(\theta)}</script><h2 id="py代码"><a href="#py代码" class="headerlink" title="py代码"></a>py代码</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> f_idx, freq <span class="keyword">in</span> <span class="built_in">enumerate</span>(tqdm(freqs, desc=<span class="string">&quot;MVDRing&quot;</span>)):</span><br><span class="line">    X_f = data_valid[:,:, f_idx]	<span class="comment">#提取当前频率分量</span></span><br><span class="line">    R = (X_f.T @ X_f.conj())  <span class="comment">#协方差矩阵</span></span><br><span class="line">    eps = <span class="number">1e-3</span> * np.trace(R)  <span class="comment">#视情况选择大小，越大mvdr性能越强，鲁棒性越差</span></span><br><span class="line">    R = R + eps * np.eye(self.Nchan) <span class="comment">#对角加载</span></span><br><span class="line">    R_inv = np.linalg.pinv(R)	<span class="comment">#求逆</span></span><br><span class="line">    a = np.exp(-<span class="number">1j</span> * <span class="number">2</span> * np.pi * freq * tdoa) <span class="comment">#根据toda构建导向矢量</span></span><br><span class="line">    Ra = R_inv @ a</span><br><span class="line">    denominator = -np.<span class="built_in">sum</span>(a.conj() * Ra, axis=<span class="number">0</span>)  <span class="comment"># a^H R^-1 a</span></span><br><span class="line">    power_at_freq = <span class="number">1.0</span> / np.real(denominator/ X_f.shape[<span class="number">0</span>] + <span class="number">1e-12</span>) <span class="comment">#功率谱</span></span><br></pre></td></tr></table></figure>
+<p>对同一段信号在相同频段进行mvdr和das功率扫描，可以看出MVDR在低频段上表现明显优于DAS，<strong>这是由于MVDR对干扰源的抑制能力极强</strong>，在低频段主瓣都很大的情况下也能区分声源位置</p>
+<img src="/images/loading.png" data-original="/2026/06/23/MVDR/mvdr.png" class title="This is an image"> 
+<img src="/images/loading.png" data-original="/2026/06/23/MVDR/das.png" class title="This is an image"> 
+<h2 id="关于对角加载"><a href="#关于对角加载" class="headerlink" title="关于对角加载"></a>关于对角加载</h2><p>MVDR中比较关键的一步就是需要求协方差矩阵R的逆，而从代码中我们可以看到，在求逆之前，我们进行了对角加载，那么对角加载有什么用呢？</p>
+<h3 id="核心痛点"><a href="#核心痛点" class="headerlink" title="核心痛点"></a>核心痛点</h3><p>在理想状态下，MVDR 依赖真实的协方差矩阵（数学期望）。但在实际工程中，我们只能通过有限个采样快照来估计。这就会导致一个问题：当快拍数较少（甚至小于阵元数），<strong>协方差矩阵会发生秩亏缺或条件数极高</strong>。此时对 <strong><u>求逆</u></strong>会带来巨大的数值计算误差，导致波束形成器的权重剧烈抖动，旁瓣自适应抬高。</p>
+<h3 id="数学原理"><a href="#数学原理" class="headerlink" title="数学原理"></a>数学原理</h3><p>因此，在估计的协方差矩阵的对角线上，我们加入了一个底噪声功率：（I为单位矩阵）</p>
+<script type="math/tex; mode=display">
+R_{\text{DL}} = \hat{R}_{xx} + \sigma_{\text{DL}}^2 I</script><p>加入这个底噪后，原本<strong><u>快拍数不足导致的最小特征值接近于0</u></strong>的问题（会使求逆输出极大值）会因为引入对角加载而被<strong><u>强行拉高特征值</u></strong>，令矩阵的条件数（最大特征值/最小特征值）大幅降低。矩阵求逆运算变得极度稳定，抑制了权重的随机剧烈抖动。</p>
+<h3 id="加载量的选择"><a href="#加载量的选择" class="headerlink" title="加载量的选择"></a>加载量的选择</h3><p>对于添加的底噪值，其越小则代表自适应能力越强（太强的自适应会导致鲁棒性变差，对导向矢量准确性要求极高），当其接近于无限大时，<strong>此时MVDR则退化为DAS</strong>，因此需要选择一个合适的值</p>
+<h4 id="基于噪声基底"><a href="#基于噪声基底" class="headerlink" title="基于噪声基底"></a>基于噪声基底</h4><p>直接将加载量设定为系统背景噪声功率的 10到 100 倍</p>
+<h4 id="基于矩阵迹（trace）"><a href="#基于矩阵迹（trace）" class="headerlink" title="基于矩阵迹（trace）"></a>基于矩阵迹（trace）</h4><script type="math/tex; mode=display">
+\sigma_{\text{DL}}^2 = \alpha \cdot \text{trace}(\hat{R}_{xx})/M,\alpha =10^{-3} \sim 10^{-1}</script><p>根据对角线元素总和，即阵列<strong>所有阵元接收到的总功率</strong>，也就是将加载量也设置为一个根据采集信号动态调整的值</p>
+<p><strong><u>在我实际使用中，对角加载对mvdr结果影响很大，因此不能随便选</u></strong></p>
+<h2 id="MVDR的优缺点"><a href="#MVDR的优缺点" class="headerlink" title="MVDR的优缺点"></a>MVDR的优缺点</h2><h3 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h3><ol>
+<li><strong>高分辨率：</strong> 空间分辨能力显著优于传统的延迟求和波束形成。</li>
+<li><strong>强干扰抑制（抑制其他声源对目标声源干扰）：</strong> 能够自动在强干扰源方向形成零陷，大幅提升强干扰环境下的输出信噪比。</li>
+<li><strong>无需先验干扰信息：</strong> 只需要知道目标方向，不需要知道干扰的数量和方向。</li>
+</ol>
+<h3 id="缺点与工程挑战"><a href="#缺点与工程挑战" class="headerlink" title="缺点与工程挑战"></a>缺点与工程挑战</h3><ol>
+<li><strong><u>对模型误差极其敏感（鲁棒性差，对导向矢量要求高</u>）：</strong> 如果目标方向存在偏差（Pointing Error）或者阵元位置存在校准误差，MVDR会误将目标信号视为“干扰”并进行自适应压制，导致严重的自消散（Signal Canceling）现象。</li>
+<li>相干源失效（快衰落）： 当目标信号与干扰信号高度相关或相干（如同频多径反射）时，协方差矩阵 $R_{xx}$ 会趋于退化，导致算法失效。通常需要结合空间平滑（Spatial Smoothing）技术来解相干。</li>
+<li><strong>**计算量大</strong>：** 每次计算都需要对 $M \times M$ 的矩阵进行求逆操作，在阵元数 $M$ 较大或需要实时更新时，计算复杂度较高（$O(M^3)$）。</li>
+<li><strong>**样本快照数限制</strong>：** 在实际应用中，$R_{xx}$ 是通过有限的样本快照估计得到的（即 $\hat{R}_{xx} = \frac{1}{N}\sum X X^H$）。如果快照数 $N$ 小于阵元数 $M$，$\hat{R}_{xx}$ 将不可逆。</li>
+</ol>
+<h1 id="LCMV线性约束最小方差"><a href="#LCMV线性约束最小方差" class="headerlink" title="LCMV线性约束最小方差"></a>LCMV线性约束最小方差</h1><p>线性约束最小方差(Linearly Constrained Minimum Variance, LCMV)波束形成器，是MVDR的扩展形式，其可表示为：</p>
+<script type="math/tex; mode=display">
+\min_{W} \quad W^H R_{xx} W \quad \text{s.t.} \quad W^H C = F^H</script><p>其实就是把原来的单个约束替换为了一组线性约束，C为MxL维的约束矩阵，每一列代表一个约束条件；F为Lx1维的增益控制向量，代表对应约束想达到的复增益</p>
+<p>同样使用拉格朗日乘子法可以得到LCMV的最佳权重表达：</p>
+<script type="math/tex; mode=display">
+W_{\text{LCMV}} = R_{xx}^{-1} C (C^H R_{xx}^{-1} C)^{-1} F</script><p>当约束条件为单个导向矢量时，退化为MVDR，上式也完全等价于MVDR形式</p>
+<h2 id="常见约束矩阵设计"><a href="#常见约束矩阵设计" class="headerlink" title="常见约束矩阵设计"></a>常见约束矩阵设计</h2><ul>
+<li><p><strong>多方向无失真约束</strong>，即对两个方向同时进行无失真约束：</p>
+<script type="math/tex; mode=display">
+C = [A(\theta_1), A(\theta_2)] ,F = [1, 1]^T</script></li>
+<li><p><strong>强迫干扰零陷约束</strong>，即对已知干扰源直接约束其增益为0：</p>
+<script type="math/tex; mode=display">
+C = [A(\theta_0), A(\theta_i)],F = [1, 0]^T</script></li>
+<li><p>导数约束，约束导向矢量对角度的<strong>一阶导数（甚至二阶导数）为 0</strong>，来使主瓣平坦化。</p>
+<script type="math/tex; mode=display">
+C = \left[ A(\theta_0), \left. \frac{\partial A(\theta)}{\partial \theta} \right|_{\theta_0} \right],F = [1, 0]^T</script><p>此时主瓣会增大，具备更强稳定性</p>
+</li>
+</ul>
+<h1 id="GSC广义旁瓣相消器"><a href="#GSC广义旁瓣相消器" class="headerlink" title="GSC广义旁瓣相消器"></a>GSC广义旁瓣相消器</h1><p>GSC可以看作是LCMV的一种<strong>无约束</strong>等效实现，其示意图如下：</p>
+<img src="/images/loading.png" data-original="/2026/06/23/MVDR/GSC.png" class title="This is an image"> 
+<p>其可分为两部分，即上方的主路和下方的辅路，其中主路就是标准DAS波束形成，不再细说。</p>
+<p>对于辅路，其任务是尽可能的还原信号中的噪声和干扰，并从DAS权重中减去，因此GSC的最终权重可表示为：</p>
+<script type="math/tex; mode=display">
+\mathbf{w} = \mathbf{w}_q - \mathbf{B}^T \mathbf{w}_a</script><p>与MVDR不同，其自适应权重用于计算干扰和噪声，而不是直接用于增强方向信号</p>
+<h2 id="阻塞矩阵B"><a href="#阻塞矩阵B" class="headerlink" title="阻塞矩阵B"></a>阻塞矩阵B</h2><p>其功能是各通道中的<strong><u>期望信号完全滤除</u></strong>（阻塞），仅允许噪声和干扰信号通过。因此，其与约束矩阵（导向矢量）是一定正交的，因此，当我们已经有比较准确的导向矢量a时，<strong>将各信号对齐后</strong>即可直接令B让相邻阵元相减来<strong><u>消除同相的目标信号</u></strong>：</p>
+<script type="math/tex; mode=display">
+\mathbf{B} = \begin{bmatrix} 1 & -1 & 0 & 0 \\ 0 & 1 & -1 & 0 \\ 0 & 0 & 1 & -1 \end{bmatrix}</script><p>这样得到的干扰和噪声是基于两两相邻阵元信号的，也可以通过均值计算：</p>
+<script type="math/tex; mode=display">
+\mathbf{B} = \begin{bmatrix} 3/4 & -1/4 & -1/4 & -1/4 \\ -1/4 & 3/4 & -1/4 & -1/4 \\ -1/4 & -1/4 & 3/4 & -1/4 \end{bmatrix}</script><p>这样每个阵元减去的都是所有阵元和的均值，理论上会更稳定一点点</p>
+<h2 id="自适应噪声相消器"><a href="#自适应噪声相消器" class="headerlink" title="自适应噪声相消器"></a>自适应噪声相消器</h2><p>信号通过阻塞矩阵后，只剩下干扰和噪声。自适应滤波器（如 LMS、RLS 或直接求逆算法）通过调整权重 w_a，使自适应支路的<strong><u>输出尽可能逼近静态支路中的干扰和噪声成分</u></strong>。</p>
+<p>理论上在经过阻塞矩阵B后，信号中已不包含期望信号成分，因此自适应权重w_a的优化完全不会影响期望信号。基于这个前提，自适应部分的优化目标也就等同于使经过B后的信号输出总功率（方差）最小：</p>
+<script type="math/tex; mode=display">
+\min_{\mathbf{w}_a} E\left[ |y(t)|^2 \right] = \min_{\mathbf{w}_a} (\mathbf{w}_q - \mathbf{B}^T \mathbf{w}_a)^H \mathbf{R}_{xx} (\mathbf{w}_q - \mathbf{B}^T \mathbf{w}_a)</script><p>也就是最小化噪声和干扰，直接对目标函数求导找零点，即可得到无约束最优解：</p>
+<script type="math/tex; mode=display">
+\mathbf{w}_a = (\mathbf{B} \mathbf{R}_{xx} \mathbf{B}^T)^{-1} \mathbf{B} \mathbf{R}_{xx} \mathbf{w}_q</script><h2 id="优缺点"><a href="#优缺点" class="headerlink" title="优缺点"></a>优缺点</h2><p>主要优点就是把约束优化转化为了无约束的滤波问题，降低了计算复杂度，并且其物理和数学结构清晰，完全解耦；</p>
+<p>缺点就是需要精准的导向矢量，否正阻塞矩阵B会产生泄露，自适应滤波器会将泄露的期望信号视作干扰，导致最后期望信号也受到抑制</p>
+<p>为了防止自适应计算过强，<strong>也可以使用对角加载限制过大变化</strong></p>
+<h2 id="与MVDR的关系"><a href="#与MVDR的关系" class="headerlink" title="与MVDR的关系"></a>与MVDR的关系</h2><p>MVDR 与 GSC 等价，本质上是因为 <strong>GSC只是MVDR约束优化问题的一种结构化实现方式</strong>。</p>
+<p>首先，对于GSC的权重表达，将其共轭转置后都右乘导向矢量后，即<strong>可得到MVDR的约束</strong>；如果将w表达式带入MVDR的目标函数（无约束格式），也可以<strong>直接得到GSC最终w_a的解</strong></p>
+<p>那GSC存在的意义是什么呢，大概是因为较早时期矩阵求逆运算量大，所以GSC实时性更好吧</p>
+<h1 id="GEV广义特征向量波束形成器"><a href="#GEV广义特征向量波束形成器" class="headerlink" title="GEV广义特征向量波束形成器"></a>GEV广义特征向量波束形成器</h1><p>更多出现在语音增强中，GEV波束形成的核心思想是通过最大化输出信号的信噪比（SNR）<strong>或</strong>信号对干扰加噪声比（SINR）来推导最优导向矢量或空间滤波器系数，相比与MVDR<strong>要保证目标方向的无失真，GEV更加激进，选择直接最大化信噪比</strong></p>
+<p>对于带噪的信号，GEV直接将其视为：</p>
+<script type="math/tex; mode=display">
+\mathbf{x}(f, t) = \mathbf{s}(f, t) + \mathbf{n}(f, t)</script><p>所有噪声和干扰均被视为了一整个函数，GEV的目的就是让s和n最终信噪比尽可能大</p>
+<h2 id="构造目标与噪声协方差矩阵"><a href="#构造目标与噪声协方差矩阵" class="headerlink" title="构造目标与噪声协方差矩阵"></a>构造目标与噪声协方差矩阵</h2><p>根据上面分析，GEV的核心之一就是如何判断信号中哪些是目标信号，哪些是噪声。为了量化信号与噪声的空间分布，引入两个关键的空间相关矩阵：</p>
+<script type="math/tex; mode=display">
+\mathbf{R}_{ss/nn}(f) = \frac {\sum_tM_{s/n}{(f,t)}x(f,t)x^H(f,t)}{\sum_tM_{s/n}{(f,t)}}</script><p>其中，M为筛选协方差矩阵的mask，其形状与每个通道的stft结果x(f,t)相同，用于决定当前时-频点加权为噪声还是语音。也就是说，mask的计算是这一步的核心。</p>
+<p>在GEV中，mask是一个[0,1]的概率，目前最主流的方法是通过神经网络进行预测，因此，我们在训练中需要同时拥有：</p>
+<ul>
+<li>干净语音s</li>
+<li>噪声n</li>
+<li>混合信号x</li>
+</ul>
+<p>而mask的<strong>训练目标</strong>则为s和n的一些算法结果，例如：</p>
+<script type="math/tex; mode=display">
+m=\frac{|s|^2}{|s|^2+|n|^2}</script><p>然后将预测的/hat{m}与mask进行loss计算</p>
+<h2 id="GEV优化目标"><a href="#GEV优化目标" class="headerlink" title="GEV优化目标"></a>GEV优化目标</h2><p>在获得了两个协方差矩阵后，GEV的优化目标如下：</p>
+<script type="math/tex; mode=display">
+\max_{\mathbf{w}} \text{SNR}(\mathbf{w}) = \max_{\mathbf{w}} \frac{\mathbf{w}^{\mathsf{H}} \mathbf{R}_{ss} \mathbf{w}}{\mathbf{w}^{\mathsf{H}} \mathbf{R}_{nn} \mathbf{w}}</script><p>该目标可以直接转化为广义特征值问题：</p>
+<script type="math/tex; mode=display">
+\mathbf{R}_{ss} \mathbf{w} = \lambda \mathbf{R}_{nn} \mathbf{w}</script><p>则权重w为<strong>最大特征值所对应的特征向量</strong></p>
+<h2 id="后置滤波"><a href="#后置滤波" class="headerlink" title="后置滤波"></a>后置滤波</h2><p>GEV算出的特征向量具有任意的缩放因子（Scaling），这会导致输出信号产生频率失真（Speech Distortion）。为了解决这一盲源分离中的固有问题，通常引入 BAN （Blind Analytic Normalization）进行增益归一化：</p>
+<script type="math/tex; mode=display">
+\mathbf{w}_{\text{BAN}}(f) = \frac{\mathbf{w}_{\text{GEV}}(f)}{\sqrt{\frac{1}{M} \mathbf{w}_{\text{GEV}}^{\mathsf{H}}(f) \mathbf{R}_{nn}(f) \mathbf{w}_{\text{GEV}}(f)}}</script><h2 id="优缺点-1"><a href="#优缺点-1" class="headerlink" title="优缺点"></a>优缺点</h2><p>首先，我们可以很明显的看出，GEV在计算上完全不依赖导向矢量，也就是说其对阵列的几何结构没有要求，依靠数据驱动，而MVDR的质量几乎是由导向矢量决定，<strong>因此GEV理论上鲁棒性更高，由于其优化原理，信噪比也会更高</strong></p>
+<p>但是其也需要<strong>大量数据进行拟合</strong>，并且如果不使用BAN，会出现<strong>较大失真</strong></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2026/06/15/problem-about-mic-array/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -426,165 +607,6 @@ P_{\text{MUSIC}}(\theta) = \frac{1}{\mathbf{a}^H(\theta) \mathbf{U}_n \mathbf{U}
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://dhkkkkkk.github.io/2026/06/04/DOA/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/zoe.gif">
-      <meta itemprop="name" content="dhk">
-      <meta itemprop="description" content="记录一些学习日常">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="小董的BLOG">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2026/06/04/DOA/" class="post-title-link" itemprop="url">声源定位之基于相对时延估计</a>
-        </h2>
-
-        <div class="post-meta">
-		  
-		  
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2026-06-04 16:03:39" itemprop="dateCreated datePublished" datetime="2026-06-04T16:03:39+08:00">2026-06-04</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2026-06-15 10:34:50" itemprop="dateModified" datetime="2026-06-15T10:34:50+08:00">2026-06-15</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>我是后背</p>
-<p>要想实现一个声源的定位，我们需要：</p>
-<ul>
-<li>声源的到达<strong>方向</strong> (Direction of Arrival，DOA) ，主要计算其的方位角和俯仰角</li>
-<li>声源的<strong>距离</strong>估计</li>
-</ul>
-<p>目前我们的重点先放在DOA上，对于DOA估计，主要有三个方法：</p>
-<ul>
-<li>基于<strong>到达时间差（TDOA）</strong>：计算不同阵元之间接收到的信号的时延差，根据该时延差即可推断出声源位置</li>
-<li>基于<strong>波束形成</strong>的方法：进行不同角度遍历扫描，分别进行波束形成（即假设时延差），功率最大处即为声源位置</li>
-<li>基于高分辨谱估计：然后采用特征分解操作，从协方差矩阵中提取出信号子空间。之后，利用空间谱 估计技术对该子空间进行分析，最终得出声源方向的估计结果。</li>
-</ul>
-<p>根据定义我们就可以看出，基于相对时延估计的技术点主要在于如何计算出时延差；而波束形成方法则更简单暴力，技术点在于使用什么波束形成方法更好</p>
-<p>本章我们将对基于相对时延估计的方法进行展开，其可以分为两部分：</p>
-<ul>
-<li>时间差计算</li>
-<li>角度计算</li>
-</ul>
-<p>其中，时间差计算为核心</p>
-<h1 id="声场模型"><a href="#声场模型" class="headerlink" title="声场模型"></a>声场模型</h1><p>根据麦克风阵列和声源距离的远近，我们可以将声场模型分为：<strong><u>近场模型</u>和<u>远场模型</u></strong>，在近场模型下我们将声波看作为<strong>球面波</strong>，其主要考虑麦克风阵列各阵元接收到信号的幅度差; 而远场模型将声波看作为<strong>平面波</strong>，忽略阵元接收信号间的幅度差，近似认为各阵元接收信号之间为简单的时延关系</p>
-<p>评判模型的标准为声源到阵列参考阵元的判据：</p>
-<script type="math/tex; mode=display">
-R_r = \frac{2D^2}{\lambda}</script><ul>
-<li>D：阵列最大几何尺寸</li>
-<li>λ：波长（传播速度/频率）</li>
-</ul>
-<p>当绝对距离大于该值时即为远场模型</p>
-<p>由公式可知，<strong><u>当选择的频率越大，远场判据越大</u></strong>，即该频率越容易表现出近场特性，因此<strong>若要使用更简单的远场模型，我们选择的频率应该偏小一点，</strong>工程中常选取主要频带上的最大频率值（关于距离这一块后面的章节会细说）</p>
-<p>例子：当我们阵列直径为0.2m时，瑞利距离则约为0.47m</p>
-<p>如果对近场模型使用了基于远场模型的算法，则会导致<strong>导向矢量的失配</strong>，最终导致结果的不准确</p>
-<h1 id="传统互相关法"><a href="#传统互相关法" class="headerlink" title="传统互相关法"></a>传统互相关法</h1><p>假设参考阵元信号为x1，则我们可以直接通过互相关函数计算阵元x2与x1的时延差：</p>
-<script type="math/tex; mode=display">
-R_{x_1 x_2}(\tau) = \int_{-\infty}^{\infty} x_1(t) x_2(t + \tau) dt</script><p>当互相关值最大时，对应的tau即为时延差。然而，在实际室内环境中，由于声波反射（混响）和环境噪声的影响，<strong>传统互相关函数的峰值往往会变得非常平缓，甚至出现多个伪峰</strong>，导致估计彻底失效。</p>
-<h1 id="广义互相关法GCC"><a href="#广义互相关法GCC" class="headerlink" title="广义互相关法GCC"></a>广义互相关法GCC</h1><p>由维纳-辛钦定理可知，随机信号的<strong>自相关函数和功率谱密度函数服从一对傅里叶变换的关系</strong>（即互相关时域函数在频域的表达就是互功率谱密度），<strong>功率谱密度函数</strong>可以表示为：</p>
-<script type="math/tex; mode=display">
-P(ω)= X_1(ω) \cdot X_2^*(ω)=\int_{-\infty}^{\infty} R(\tau)e^{-jω\tau} d\tau</script><p>这里我们就建立了频域表达与互相关函数（时域）的等式。为了增强互相关函数峰值，我们<u>引入一个加权函数</u>ψ来<strong>增强信号中有用的<u>频率部分</u></strong>，在频域增强完后再转到时域：</p>
-<script type="math/tex; mode=display">
-R_{x_1 x_2}^{GCC}(\tau)=\int_{-\infty}^{\infty}\psi(ω) P(ω)e^{jω\tau} dω</script><p>对于这个加权函数的设计，则就是GCC各种分支的由来了</p>
-<h2 id="相位变换加权（PHAT-phase-transform）"><a href="#相位变换加权（PHAT-phase-transform）" class="headerlink" title="相位变换加权（PHAT,phase transform）"></a>相位变换加权（PHAT,phase transform）</h2><p>互功率谱密度是指在f处的共有的能量密集度和在f下两信号的相位差，而我们现在<strong>只需要通过相位差来得到时延值</strong>，因此，可以直接令加权函数为<strong>功率谱密度的<u>模（幅值）</u></strong>的倒数：</p>
-<script type="math/tex; mode=display">
-\psi_{PHAT}(f) = \frac{1}{|P_{x_1 x_2}(f)|} = \frac{1}{|X_1(f) \cdot X_2^*(f)|}</script><p>这样的话，互相关函数就是一个<strong>仅与<u>功率谱密度的相位</u>相关</strong>的函数了：</p>
-<script type="math/tex; mode=display">
-R_{x_1 x_2}^{PHAT}(\tau) = \int_{-\infty}^{\infty} e^{j \theta(f)} e^{j 2 \pi f \tau} df= \int_{-\infty}^{\infty} e^{j 2 \pi f (\tau - \tau_0)} df</script><p>也就是说，PHAT本身就是指通过相位差来计算时延值，当t取到t0时，互相关函数就是最大值</p>
-<h2 id="py实现"><a href="#py实现" class="headerlink" title="py实现"></a>py实现</h2><figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">gcc_get_tdoa</span>(<span class="params">self, freq_range=<span class="literal">None</span></span>):</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> freq_range <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">        freq_range = [<span class="number">1000</span>, <span class="number">2000</span>]</span><br><span class="line">    mask = (self.freqbin &gt;= freq_range[<span class="number">0</span>]) &amp; (self.freqbin &lt;= freq_range[<span class="number">1</span>])</span><br><span class="line"></span><br><span class="line">    X_ref = self.data[<span class="number">0</span>, <span class="number">0</span>:<span class="number">1</span>, :]</span><br><span class="line">    G = np.conjugate(X_ref) * self.data[<span class="number">0</span>,:,:]</span><br><span class="line">    eps = <span class="number">1e-12</span></span><br><span class="line">    G_phat = G / (np.<span class="built_in">abs</span>(G) + eps)</span><br><span class="line">    G_filtered = G_phat * mask[<span class="literal">None</span>, <span class="literal">None</span>, :]   <span class="comment">#带通滤波</span></span><br><span class="line">    G_avg = np.mean(G_filtered, axis=<span class="number">0</span>)</span><br><span class="line">    gcc_time = np.fft.irfft(G_avg, n=self.num_freqs, axis=-<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">    gcc_time_shifted = np.fft.fftshift(gcc_time, axes=-<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment">#构建中心对齐的时延轴（单位：秒）</span></span><br><span class="line">    lags = np.arange(-self.num_freqs // <span class="number">2</span>, self.num_freqs // <span class="number">2</span>) / self.sampling_frequency</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 9. 寻找互相关谱峰对应的索引，提取 TDOA</span></span><br><span class="line">    <span class="comment"># tdoa_indices 形状: (Nchan,)</span></span><br><span class="line">    tdoa_indices = np.argmax(gcc_time_shifted, axis=-<span class="number">1</span>)</span><br><span class="line">    tdoa = lags[tdoa_indices]</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> tdoa, gcc_time_shifted, lags</span><br></pre></td></tr></table></figure>
-<p>这里简单实现了基于麦克风第一个通道的GCC-PHAT计算，这里需要注意几点：</p>
-<ul>
-<li><code>np.conjugate(X_ref)</code>：对参考通道进行共轭转置，及对应上面的公式中的-t0，这样晚于参考通道的信号的t就是正值</li>
-<li>带通滤波：若要进行窄带运算，必须要使用带通滤波，而不是简单的仅提取对应通道，因为后面要使用ifft</li>
-<li><code>gcc_time_shifted</code>：当ifft对象为普通信号时，其会正常还原时域波形；但如果对象为互功率谱，其对应的时域为互相关函数，包含正负时延，因此ifft的输出会首先输出正时延值，再输出负时延值（与常规顺序相反），gcc_time_shifted会根据0值位置，将正负互换</li>
-<li><code>lags = np.arange...</code>刚刚提到，互相关函数的完整物理定义域是有正负的，具体其实就是[-0.5T,0.5T]（因为任何傅里叶变换得到的都是一个周期函数/序列，ifft得到的就是各频段周期函数的叠加，而一个长度为N的周期序列，任何索引n都可以映射到唯一区间[-0.5T,0.5T]），因此gcc_time_shifted<strong>对应的时间索引是一定对称的</strong>，而lags就是把这个索引值算出来，因为gcc_time_shifted没有包含每个索引对应的时延值，<u>它代表的是每个时延值上对应的互相关值</u></li>
-</ul>
-<h2 id="优缺点"><a href="#优缺点" class="headerlink" title="优缺点"></a>优缺点</h2><p>优点：由于仅通过相位差来得到时延值，因此该方法拥有极强的抗混响能力（混响对相位影响小）</p>
-<p>缺点：当信号中存在噪声时，当某些频段上噪声为主要成分时，也就意为着此时得到的相位也是噪声的相位，而PHAT舍弃了幅值，因此也将<strong>放大噪声</strong>，最终导致互相关函数上真<strong>峰降低</strong>，并出现<strong>大量伪峰</strong>（因为互相关函数代表的是不同t上信号的相关程度，伪峰即为噪声与信号产生的相关）</p>
-<p>后记，由于是对每个频段分别进行相位差计算，因此在噪声源存在的情况下几乎没办法准确定位声源（即使噪声比较微弱）</p>
-<h1 id="SRP-PHAT（Steered-Response-Power-with-Phase-Transform）"><a href="#SRP-PHAT（Steered-Response-Power-with-Phase-Transform）" class="headerlink" title="SRP-PHAT（Steered Response Power with Phase Transform）"></a>SRP-PHAT（<strong>Steered Response Power with Phase Transform</strong>）</h1><p>准确来说这个方法已经不算是直接计算DOA，但是跟GCC-PHAT强相关，所以也放这里了</p>
-<p>SRP-PHAT<strong>先在空间中划分网格（候选声源点）</strong>。对于空间中任意一个假设的声源点，计算它到达所有麦克风对的理论时延。然后将所有麦克风对在这些理论时延处的 GCC-PHAT 值进行<strong>空间累加</strong>。</p>
-<p>这和基于波束形成的方法非常像，只是波束形成的输出是声压，而SRP-PHAT的输出是互相关函数值：</p>
-<script type="math/tex; mode=display">
-P(\mathbf{s}) = \sum_{i=1}^{M} \sum_{j=1}^{M} R_{x_i x_j}^{PHAT}\left( \tau_{ij}(\mathbf{s}) \right)</script><p>显而易见，该方法要计算任意两个阵元的互相关值，计算量极大，即使预先计算出所有的时延，仍要计算大量次互相关，因此实际使用时一般配合一些简化计算量的优化：</p>
-<p><strong>由粗到精的搜索（Coarse-to-Fine Search）</strong>：先用极稀疏的网格扫描空间，锁定高能量的局部区域；再在这些候选区域内细化网格进行微观搜索。</p>
-<p><strong>随机区域收缩法（Stochastic Region Contraction, SRC）</strong>：基于动态优化思想，每次随机抽取空间样本点，根据响应功率不断收缩搜索空间收敛到最优解，能将计算量降低几个数量级。</p>
-<p><strong>GPU 并行加速</strong>：由于每个空间网格点的功率计算 彼此完全独立，属于典型的数据并行（SIMD）任务。在现代工程中，利用 CUDA 将网格映射分发给 GPU 执行，可以极其轻松地实现高分辨率的三维实时 SRP-PHAT 定位。</p>
-<h2 id="代码实现："><a href="#代码实现：" class="headerlink" title="代码实现："></a>代码实现：</h2><h3 id="建立麦克风对tdoa"><a href="#建立麦克风对tdoa" class="headerlink" title="建立麦克风对tdoa"></a>建立麦克风对tdoa</h3><p>由于pair tdoa是srp-phat的主要计算量处，而其结果仅与阵列坐标和扫描角度有关，因此通常是预计算，在后续计算中直接读取保存的toda结果</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">build_pair_tdoa_table</span>(<span class="params"></span></span><br><span class="line"><span class="params">        mic_struct,</span></span><br><span class="line"><span class="params">        phi_scan,</span></span><br><span class="line"><span class="params">        theta_scan,</span></span><br><span class="line"><span class="params">        sound_speed=<span class="number">343.0</span></span>):</span><br><span class="line">    <span class="comment">#计算每个麦克风对的时延（n*n-1 /2）</span></span><br><span class="line">    M = mic_struct.shape[<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line">    pairs = <span class="built_in">list</span>(combinations(<span class="built_in">range</span>(M), <span class="number">2</span>))</span><br><span class="line">    Npair = <span class="built_in">len</span>(pairs)</span><br><span class="line"></span><br><span class="line">    pair_tdoa = np.zeros(</span><br><span class="line">        (</span><br><span class="line">            <span class="built_in">len</span>(theta_scan),</span><br><span class="line">            <span class="built_in">len</span>(phi_scan),</span><br><span class="line">            Npair</span><br><span class="line">        ),</span><br><span class="line">        dtype=np.float32</span><br><span class="line">    )</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> it, theta <span class="keyword">in</span> <span class="built_in">enumerate</span>(tqdm(theta_scan,desc=<span class="string">&quot;计算各麦克风pairs时延中&quot;</span>)):</span><br><span class="line"></span><br><span class="line">        sin_t = np.sin(theta)</span><br><span class="line">        cos_t = np.cos(theta)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> ip, phi <span class="keyword">in</span> <span class="built_in">enumerate</span>(phi_scan):</span><br><span class="line"></span><br><span class="line">            u = np.array([</span><br><span class="line">                sin_t*np.cos(phi),</span><br><span class="line">                sin_t*np.sin(phi),</span><br><span class="line">                cos_t</span><br><span class="line">            ])</span><br><span class="line"></span><br><span class="line">            tau = -mic_struct @ u / sound_speed</span><br><span class="line"></span><br><span class="line">            <span class="keyword">for</span> k, (i, j) <span class="keyword">in</span> <span class="built_in">enumerate</span>(pairs):</span><br><span class="line"></span><br><span class="line">                pair_tdoa[it, ip, k] = (</span><br><span class="line">                    tau[i] - tau[j]</span><br><span class="line">                )<span class="comment">#注意这里tau是带了-号，如果i是-1，j是-2，则结果+1则代表i晚于j 1s</span></span><br><span class="line"></span><br><span class="line">    pair_lag = np.<span class="built_in">round</span>(pair_tdoa * <span class="number">51200</span>).astype(np.int32)</span><br><span class="line">    np.savez_compressed(</span><br><span class="line">        <span class="string">&quot;pair_tdoa.npz&quot;</span>,</span><br><span class="line">        pair_tdoa=pair_tdoa,</span><br><span class="line">        pairs=pairs,</span><br><span class="line">        pair_lag = pair_lag,</span><br><span class="line">        phi_scan=phi_scan,</span><br><span class="line">        theta_scan=theta_scan,</span><br><span class="line">    )</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">1</span></span><br></pre></td></tr></table></figure>
-<p>我们后续使用的主要是pair_lag（每对时延值对应的互相关函数采样索引，后面再说详细情况）和pairs（麦克风对索引）</p>
-<h3 id="计算麦克风对的互相关函数"><a href="#计算麦克风对的互相关函数" class="headerlink" title="计算麦克风对的互相关函数"></a>计算麦克风对的互相关函数</h3><p>对每个麦克风对的信号进行互相关计算</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">compute_gcc_phat</span>(<span class="params">spec, pairs, N_fft</span>):</span><br><span class="line"></span><br><span class="line">    eps = <span class="number">1e-12</span></span><br><span class="line"></span><br><span class="line">    Npair = <span class="built_in">len</span>(pairs)</span><br><span class="line"></span><br><span class="line">    gcc = np.zeros(</span><br><span class="line">        (Npair, N_fft),</span><br><span class="line">        dtype=np.float32</span><br><span class="line">    )</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> k, (i, j) <span class="keyword">in</span> <span class="built_in">enumerate</span>(tqdm(pairs, desc=<span class="string">&quot;gcc计算中&quot;</span>)):</span><br><span class="line"></span><br><span class="line">        cross = spec[:,i,:] * np.conj(spec[:,j,:])</span><br><span class="line"></span><br><span class="line">        cross /= np.<span class="built_in">abs</span>(cross) + eps</span><br><span class="line">        avg_cross = np.mean(cross,axis=<span class="number">0</span>)</span><br><span class="line">        gcc_time = np.fft.irfft(avg_cross)</span><br><span class="line"></span><br><span class="line">        gcc_time = np.real(</span><br><span class="line">            np.fft.fftshift(gcc_time)</span><br><span class="line">        )</span><br><span class="line"></span><br><span class="line">        gcc[k] = gcc_time</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> gcc <span class="comment">#(Npair,F)</span></span><br></pre></td></tr></table></figure>
-<p>得到是每个麦克风对对应的互相关函数</p>
-<p>这个函数需要注意，输入的spec如果是单边谱，则使用irfft还原，如果是双边谱，就用ifft。如果这里没有对应，最后输出的功率谱上声源方向会出现缩放情况</p>
-<h3 id="SRP-PHAT扫描"><a href="#SRP-PHAT扫描" class="headerlink" title="SRP-PHAT扫描"></a>SRP-PHAT扫描</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">srp_phat_fast</span>(<span class="params"></span></span><br><span class="line"><span class="params">        gcc,</span></span><br><span class="line"><span class="params">        pair_lag</span>):</span><br><span class="line"></span><br><span class="line">    Npair, Nlag = gcc.shape</span><br><span class="line"></span><br><span class="line">    center = Nlag // <span class="number">2</span></span><br><span class="line"></span><br><span class="line">    idx = center + pair_lag</span><br><span class="line"></span><br><span class="line">    idx = np.clip(</span><br><span class="line">        idx,</span><br><span class="line">        <span class="number">0</span>,</span><br><span class="line">        Nlag - <span class="number">1</span></span><br><span class="line">    )</span><br><span class="line"></span><br><span class="line">    gcc_expand = gcc[</span><br><span class="line">        np.arange(Npair)[<span class="literal">None</span>, <span class="literal">None</span>, :],</span><br><span class="line">        idx</span><br><span class="line">    ]</span><br><span class="line"></span><br><span class="line">    power_map = np.<span class="built_in">sum</span>(</span><br><span class="line">        gcc_expand,</span><br><span class="line">        axis=<span class="number">2</span></span><br><span class="line">    )</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> power_map</span><br></pre></td></tr></table></figure>
-<p>之前得到的pair_lag是根据0点计算的索引，也就是一个带正负的索引，所以在用之前要先进行<code>idx = center + pair_lag</code>转化为真正的[0,N_fft]的索引，用于索引gcc</p>
-<p>SRP-PHAT就是直接用假想方向的tdoa来索引gcc，使用客观索引避免了噪声干扰，再通过每个麦克风对求和来增加稳定性；gcc-phat就是直接找gcc的最大值，因此更容易被噪声干扰</p>
-<p>个人实际使用下来，SPR-PHAT通过查表方式和DAS的计算时长都还不错，接近的计算时间下SPR-PHAT精度甚至更高</p>
-<p>DAS成像：</p>
-<img src="/images/loading.png" data-original="/2026/06/04/DOA/DAS.png" class title="This is an image"> 
-<p>SRP-PHAT成像：</p>
-<img src="/images/loading.png" data-original="/2026/06/04/DOA/SRP.png" class title="This is an image"> 
-<h1 id="从TDOA得到DOA"><a href="#从TDOA得到DOA" class="headerlink" title="从TDOA得到DOA"></a>从TDOA得到DOA</h1><p>本节默认在远场模型下计算（远场模型只能得到DOA，无法得到距离，想象声源在参考阵元射出的一条射线方向，而波就是以该射线为法线的平面）</p>
-<p>先从二维说起，对于两个距离为d的阵元，对于平面波的入射角（与阵元连线的夹角），有：</p>
-<script type="math/tex; mode=display">
-\Delta x = c \cdot \tau = d \cdot \cos\theta</script><p>c为声速，t为TODA，即可通过反三角求解θ</p>
-<p>现在来到三维，方向就变为了方位角Φ和俯仰角θ(与xy平面夹角），与球坐标系定义相同，此时声源方向单位向量就可以表示为：</p>
-<script type="math/tex; mode=display">
-n=[\cos\theta \cos\phi, \cos\theta \sin\phi,\sin\theta]</script><p>于是就有：</p>
-<script type="math/tex; mode=display">
-Δx\cos\theta \cos\phi + Δy\cos\theta \sin\phi + Δz\sin\theta = -c\tau</script><p>理论上只需要3阵元（也就是3对TDOA）就可以求解这个方程，当阵元大于3时，一般使用最小二乘法求最优解，对于平面阵列，有：</p>
-<script type="math/tex; mode=display">
-\mathbf{A} = \begin{bmatrix} \Delta x_{12} & \Delta y_{12} \\ \Delta x_{13} & \Delta y_{13} \\ \vdots & \vdots \\ \Delta x_{i j} & \Delta y_{i j} \\ \vdots & \vdots \end{bmatrix}_{P \times 2}, \quad \mathbf{m} = \begin{bmatrix} n_x \\ n_y \end{bmatrix}_{2 \times 1}, \quad \mathbf{Y} = \begin{bmatrix} -c\tau_{12} \\ -c\tau_{13} \\ \vdots \\ -c\tau_{ij} \\ \vdots \end{bmatrix}_{P \times 1}</script><p>线性方程组可以紧凑地表示为：</p>
-<script type="math/tex; mode=display">
-\mathbf{A}\mathbf{m} = \mathbf{Y}</script><p>最小二乘法就是让损失函数（Am-b)^2最小，即让该函数对m的偏导为0，化简后则有：</p>
-<script type="math/tex; mode=display">
-\mathbf{m} = \begin{bmatrix} n_x \\ n_y \end{bmatrix} = (\mathbf{A}^T \mathbf{A})^{-1} \mathbf{A}^T \mathbf{Y}</script><p>（上式为最小二乘法通用解），得到方向向量后根据三角函数关系即可得到具体角度</p>
-<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>基于TDOA的声源定位方法实现原理较为简单，速度也还算可以（SRP不算该方法），核心就是互相关函数和如何设计加权函数，普遍存在的缺点就是极容易被噪声干扰。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   
   <nav class="pagination">
     <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/25/">25</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
@@ -654,7 +676,7 @@ n=[\cos\theta \cos\phi, \cos\theta \sin\phi,\sin\theta]</script><p>于是就有�
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">73</span>
+          <span class="site-state-item-count">74</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
