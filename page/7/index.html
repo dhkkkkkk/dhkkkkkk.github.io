@@ -631,7 +631,7 @@ y = \frac{x - \mu}{\sqrt{\sigma^2 + \epsilon}} \cdot \gamma + \beta</script><p>�
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2026-04-08 14:45:53" itemprop="dateModified" datetime="2026-04-08T14:45:53+08:00">2026-04-08</time>
+                <time title="修改时间：2026-07-13 17:14:53" itemprop="dateModified" datetime="2026-07-13T17:14:53+08:00">2026-07-13</time>
               </span>
 
           
@@ -722,6 +722,11 @@ Y_i=\sum_{j=1}^nA_{ij}V_j</script><p>因此对于Y_i，也就是每个输出的t
 <li>推理：对于生成任务，未来内容未知，因此其是一个串行状态。每生成一个token，都要作为q<u>向量</u>与已生成的所有tokens的k，v<u>向量</u>进行注意力计算，<u>由于<strong>已生成的tokens的k，v向量值是固定的，因此只用计算一次即可（并且每次推理的输入tensor仅为当前最新token，在训练时因为causal mask的存在，第i个token只能看到前面的token，因此对于第t-1个token，在推理时只需要计算第t个token对它的关注，而不需要计算t-1对t的关注，这是没有意义的）</strong>，而不是在每次注意力计算时又重新生成一遍（但是q，K，V相关的注意力矩阵计算仍是每次都要重新计算）</u></li>
 </ul>
 <p>因此，对于不需要重复生成的k，v向量，使用cache将其存储起来，这样做的好处是提高推理速度，但cache的额外引入也会在长序列任务中导致显存的飙升</p>
+<p>对于流式的实时任务，以语音识别举例</p>
+<ul>
+<li>Encoder：用于处理输入音频，对于实时任务，通常是将输入划分为固定帧长的chunk，新chunk的Q会对自己和历史chunk的K，V进行注意力计算。因此，Encoder需要维护的则是<strong>每个chunk的K，V cache</strong></li>
+<li>Decoder，用于生成语音文本。在自注意力阶段，最新token的Q会与自身和历史的KV进行注意力计算；而在交叉注意力阶段，会将自注意力输出用于计算Q，将encoder每个chunk的输出用于计算K，V（每个chunk对应一个K，V矩阵，类似token，不过一个token只会生成向量，而chunk是直接为矩阵）。总结一下，就是<strong>Decoder需要维护每个token的K，V cache<u>以及</u>encoder每个chunk输出在decoder的交叉注意力中生成的K，V cache</strong></li>
+</ul>
 
       
     </div>
