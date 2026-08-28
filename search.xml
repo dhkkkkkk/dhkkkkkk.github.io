@@ -394,18 +394,20 @@ R_r=\frac{2.44D}{Δ\theta_R}</script><p><strong><u>也就是说阵列分辨率�
 <p>而对于MUSIC，其是直接利用的导向矢量和噪声子空间的正交关系，与相位差无关，因此其空间分辨率理论上可以自己决定其扫描步长，而不是受限于瑞利极限，从而实现超分辨率成像</p>
 <p>虽然但是，实际还是会与频率有影响，因为导向矢量中也包含了相位信息，但是没有去专门计算差值了；但实际中其分辨率还是会达到瑞利极限的数倍。</p>
 <h1 id="关于TDOA，导向矢量和波束权重的定义习惯"><a href="#关于TDOA，导向矢量和波束权重的定义习惯" class="headerlink" title="关于TDOA，导向矢量和波束权重的定义习惯"></a>关于TDOA，导向矢量和波束权重的定义习惯</h1><h2 id="TDOA"><a href="#TDOA" class="headerlink" title="TDOA"></a>TDOA</h2><p>本博客中使用的TODA均为下述函数</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">get_tdoa</span>(<span class="params">self, phi, theta</span>):</span><br><span class="line">    <span class="comment"># phi=0为+x，=180为-x</span></span><br><span class="line">    <span class="comment"># theta=0为+z =180为-z</span></span><br><span class="line"></span><br><span class="line">    a = np.array([  np.sin(theta) * np.cos(phi) ,</span><br><span class="line">                    np.sin(theta) * np.sin(phi),</span><br><span class="line">                    np.cos(theta)])</span><br><span class="line"></span><br><span class="line">    tdoa = np.<span class="built_in">sum</span>(self.mic_struct * a[<span class="literal">None</span>, :], keepdims=<span class="literal">True</span>, axis=<span class="number">1</span>) / self.sound_speed</span><br><span class="line">    <span class="keyword">return</span> tdoa</span><br></pre></td></tr></table></figure>
-<p>其中，a代表了从0点指向声源的方向，但实际信号是从声源指向阵列，因此这里返回的tdoa，<strong>正值则代表了信号提前于参考点到达</strong></p>
-<h2 id="导向矢量"><a href="#导向矢量" class="headerlink" title="导向矢量"></a>导向矢量</h2><p>再说完了上述tdoa的定义后，我们来说导向矢量。对于提前到达的信号，其相位应该也是超前状态，因此导向矢量最常定义为：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">get_tdoa</span>(<span class="params">self, phi, theta</span>):</span><br><span class="line">    <span class="comment"># phi=0为+x，=180为-x</span></span><br><span class="line">    <span class="comment"># theta=0为+z =180为-z</span></span><br><span class="line"></span><br><span class="line">    a = np.array([  np.sin(theta) * np.cos(phi) ,</span><br><span class="line">                    np.sin(theta) * np.sin(phi),</span><br><span class="line">                    np.cos(theta)])</span><br><span class="line"></span><br><span class="line">    tdoa = np.<span class="built_in">sum</span>(self.mic_struct * a[<span class="literal">None</span>, :], keepdims=<span class="literal">True</span>, axis=<span class="number">1</span>) / self.sound_speed</span><br><span class="line">    <span class="keyword">return</span> -tdoa</span><br></pre></td></tr></table></figure>
+<p>其中，a代表了从<strong><u>0点指向声源的方向</u></strong>（正负问题的核心，这点ai都容易搞错，需要注意），但实际信号是从声源指向阵列，因此这里得到的tdoa，<strong>正值则代表了信号提前于参考点到达，因此，为了和后续标准公式中的τ接轨，该函数最终应返回负值，即：</strong></p>
 <script type="math/tex; mode=display">
-a=e^{-j2\pi f\tau}</script><p>即用负相位代表超前到达的信号，现在大部分文献都是用的这种格式（虽然本人觉得tdoa就带值然后导向矢量不带负号更合理），因此本博客中所有导向矢量也采用这种形式</p>
+\tau = -tdoa</script><p><strong><u>τ为正代表信号晚到</u></strong></p>
+<h2 id="导向矢量"><a href="#导向矢量" class="headerlink" title="导向矢量"></a>导向矢量</h2><p>再说完了上述tdoa的定义后，我们来说导向矢量。现在大部分的导向矢量都定义为：</p>
+<script type="math/tex; mode=display">
+a=e^{-j2\pi f\tau}</script><p>而这里的τ则是<strong>代表信号晚到了多少</strong>（即晚到信号τ为正），现在大部分文献都是用的这种格式（虽然本人觉得tdoa就带值然后导向矢量不带负号更合理），因此本博客中所有导向矢量也采用这种形式</p>
 <h2 id="波束权重"><a href="#波束权重" class="headerlink" title="波束权重"></a>波束权重</h2><p>最阴的来了，现在对于波束形成，最常见的公式是：</p>
 <script type="math/tex; mode=display">
 Y(t) = W^H X(t)</script><script type="math/tex; mode=display">
 \mathbf{R}_{xx} = E[\mathbf{X}(t)\mathbf{X}^H(t)] \approx \frac{1}{N} \sum_{t=1}^{N} \mathbf{X}(t)\mathbf{X}^H(t)</script><script type="math/tex; mode=display">
 P = W^H R_{xx} W</script><p>我其实一直就在想W的这个共轭转置是何意味，按照我的理解来说W就应该直接代表了波束形成的最终权重。但现在大部分的定义就是<strong>W形式与导向矢量相同</strong>，即</p>
 <script type="math/tex; mode=display">
-w=e^{-j2\pi f\tau}</script><p>因此对于DAS来说，若要对齐相位则需要对W取共轭来抵消导向矢量，这真的太反人类了，也就是说在代码里W和导向矢量a甚至是相同的值。而在各DOA，波束形成算法中，使用的大都也都是上述的导向矢量和权重格式，即默认：</p>
+w=e^{-j2\pi f\tau}</script><p>因此对于DAS来说，若要对齐相位则需要对W取共轭来抵消导向矢量中的相位，这真的太反人类了，也就是说在代码里W和导向矢量a甚至是相同的值。而在各DOA，波束形成算法中，使用的大都也都是上述的导向矢量和权重格式，即默认：</p>
 <ul>
 <li><p><u><strong>导向矢量指数默认带负号</strong></u></p>
 </li>
@@ -1414,7 +1416,7 @@ e^{j\omega_0 t}x(t) \Leftrightarrow X(\omega-\omega_0)</script></li>
 x(t)↔X(f)⇒X(t)↔x(−f)</script></li>
 </ul>
 <h2 id="物理意义与理解"><a href="#物理意义与理解" class="headerlink" title="物理意义与理解"></a>物理意义与理解</h2><p>具体分析可以看：<a href="https://zhuanlan.zhihu.com/p/40396861">傅里叶变换后面的到底有什么小秘密 - 知乎</a></p>
-<p>通过取不同的ω，傅里叶变换可以将一个时域信号分解为不同频率上的复数值。根据欧拉公式我们可以看出，将时域信号与复指数相乘，本质上就是：<strong>将时域信号 x(t) 投影到多组正交基上</strong>（因为cos和sin相位差90，正交），将信号分解为了<strong>实部（余弦波）</strong>和<strong>虚部（正弦波）</strong>：（也可以理解为是在和复指数进行相关性计算，一样的）</p>
+<p>通过取不同的ω，傅里叶变换可以将一个时域信号分解为不同频率上的复数值。根据欧拉公式我们可以看出，将时域信号与复指数相乘，本质上就是：<strong>将时域信号 x(t) 投影到多组正交基上</strong>（因为cos和sin相位差90，正交），将信号分解为了<strong>实部（余弦波）</strong>和<strong>虚部（正弦波）</strong>：</p>
 <ul>
 <li><p><strong>实部 (Real Part):</strong> 描述信号中与 cos<strong>同相</strong>的部分。</p>
 </li>
@@ -1422,7 +1424,9 @@ x(t)↔X(f)⇒X(t)↔x(−f)</script></li>
 </li>
 </ul>
 <p>当信号中存在与ω同频分量时，就会投影得到一个<strong>复数域矢量</strong>。而由于实部和虚部是线性无关、相互垂直的两根轴线，我们便可根据这组正交基描述复平面上的信号矢量的模长（幅值）和与参考轴的夹角（相位）</p>
-<p><strong><u>总结一下，就是：我们将信号与复指数进行相关度计算，而由于欧拉定理，相关度计算得到的结果可以被正交分解到复数域。而通过复数域性质，我们便可通过实部和虚部表达该矢量的幅值和相位。</u></strong></p>
+<p><strong><u>总结一下，就是：我们将信号与复指数进行内积（投影）计算，而由于欧拉定理，计算得到的结果可以被正交分解到复数域。而通过复数域性质，我们便可通过实部和虚部表达该矢量的幅值和相位。</u></strong></p>
+<h3 id="补充，关于内积与互相关"><a href="#补充，关于内积与互相关" class="headerlink" title="补充，关于内积与互相关"></a>补充，关于内积与互相关</h3><p>内积是互相关函数在τ=0时的值，内积是一个值，互相关是一个函数，表示不同时间差时两个信号的相关程度。</p>
+<p>而对于连续傅里叶变换，其是把信号与不同频的复指数在每一个时刻的内积值进行<strong>求和</strong>，而对于不同频的信号，其内积是为0的，（积分域满足周期区间），<strong>也就是正交</strong>，因此傅里叶变换可以区分不同频的信号</p>
 <h2 id="逆傅里叶变换"><a href="#逆傅里叶变换" class="headerlink" title="逆傅里叶变换"></a>逆傅里叶变换</h2><p>IFT和FT在算法架构上几乎完全一样：(以离散为例)</p>
 <script type="math/tex; mode=display">
 x[n] = \frac{1}{N} \sum_{k=0}^{N-1} X[k] e^{j\frac{2\pi}{N}kn}</script><p>相当于在n时间点上，将该时间点对应的所有频率分量（矢量）进行相加</p>
@@ -1443,7 +1447,8 @@ X(\omega)= \int_{-\infty}^{\infty} x(t) e^{-j\omega t} \, dt</script><h2 id="时
 <script type="math/tex; mode=display">
 x[n]=x(t)∑^{∞}_{n=-∞}δ(t−nT_s)</script><p>因为时域相乘等价于频域卷积，而冲激串在频域上表现仍为等距(f_s)冲激串，因此<u>原信号在频域上会表现为以f_s的距离复制出现</u>，当信号的最大频率成分大于采样率f_s时就会出现<strong>混叠现象</strong>，因此也有了奈奎斯特定理：</p>
 <script type="math/tex; mode=display">
-ω_s−ω_{max}>ω_{max}⇒ω_s>2ω_{max}</script><h3 id="关于降采样"><a href="#关于降采样" class="headerlink" title="关于降采样"></a>关于降采样</h3><h2 id="离散傅里叶变换DFT"><a href="#离散傅里叶变换DFT" class="headerlink" title="离散傅里叶变换DFT"></a>离散傅里叶变换DFT</h2><p>对频率同样进行离散化后，将其和x[n]带入FT公式中则有：</p>
+ω_s−ω_{max}>ω_{max}⇒ω_s>2ω_{max}</script><p>这里2倍关系是由于对于声音等<strong>实信号</strong>，其傅里叶变换结果是一个<strong><u>双边谱</u></strong>（共轭对称），这点可以从欧拉公式体现出</p>
+<h2 id="离散傅里叶变换DFT"><a href="#离散傅里叶变换DFT" class="headerlink" title="离散傅里叶变换DFT"></a>离散傅里叶变换DFT</h2><p>对频率同样进行离散化后，将其和x[n]带入FT公式中则有：</p>
 <script type="math/tex; mode=display">
 X[k]=∑^{N-1}_{n=0}x[n]e^{−j\frac{2\pi}{N}kn}</script><p>其中k,n=0,1,2…，k代表频率索引，n代表时间索引，N为时域总采样点数。</p>
 <p>这里有一点需要提一下，对于<strong>离散</strong>复指数：（由欧拉公式得）</p>
@@ -2235,7 +2240,7 @@ z=\frac{1}{y}=\frac{1}{e^{(-(2x+1)+1)}+1}</script><p>其计算图为：</p>
 <p>选定参考阵元后，后面阵元接收到的信号比参考阵元晚：</p>
 <script type="math/tex; mode=display">
 \Delta t = \left[0,\ \frac{\delta \cos(\theta_d)}{c},\ \frac{2\delta \cos(\theta_d)}{c},\ \cdots,\ \frac{(M-1)\delta \cos(\theta_d)}{c}\right]</script><p>其中c为声速，δ为后续阵元相对参考阵元的间距（针对复杂阵元δ不为定值），θ为信号入射角度，将其反应到信号的相位变化上（假设输入为单频信号）：</p>
-<p>早到的信号t值为<strong>正</strong>，相位为负，代表相位超前</p>
+<p>由上图可知，对于相对于参考点更晚到达的信号，其t为正值，因此导向矢量中<strong><u>取负相位来表示延后</u></strong></p>
 <script type="math/tex; mode=display">
 y(n) = \left[ x(n),\ x(n)e^{-j2\pi f_0\frac{\delta\cos(\theta_d)}{c}},\ x(n)e^{-j2\pi f_0\frac{2\delta\cos(\theta_d)}{c}},\ \cdots,\ x(n)e^{-j2\pi f_0\frac{(M-1)\delta\cos(\theta_d)}{c}} \right]  \\ = \left[ 1,\ e^{-j2\pi f_0\frac{\delta\cos(\theta_d)}{c}},\ e^{-j2\pi f_0\frac{2\delta\cos(\theta_d)}{c}},\ \cdots,\ e^{-j2\pi f_0\frac{(M-1)\delta\cos(\theta_d)}{c}} \right]x(n) \\
 =a(\theta_d) \cdot x(n)</script><p>其中a反应了不同a阵元的空间相位差，即导向矢量，受到以下变量影响：</p>
